@@ -1,0 +1,13 @@
+*.bak
+*.pyc
+__pycache__/
+*.csv
+*.parquet
+exports/
+cleaned_tutors_data.db
+cleaned_tutors_data.db-wal
+cleaned_tutors_data.db-shm
+finalSKAoutput.xlsx
+ProjectTracker.xlsx
+tutors.db
+.~lock.*

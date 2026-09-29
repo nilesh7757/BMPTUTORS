@@ -1,0 +1,2745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BMP Tutors - National Market Intelligence Platform</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f8fafc; }
+    .leaflet-popup-content-wrapper { border-radius: 14px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); border: 1px solid #e2e8f0; }
+    .white-map-container { background: #ffffff !important; }
+    .polygon-number-label { background: transparent; border: none; text-align: center; pointer-events: none; }
+    .polygon-number-label span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      color: #0f172a;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(15, 23, 42, 0.15);
+      padding: 1px 4px;
+      border-radius: 4px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+      display: inline-block;
+      white-space: nowrap;
+    }
+    .shadow-2xs { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+    .shadow-xs { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.07), 0 1px 2px -1px rgba(0, 0, 0, 0.07); }
+  </style>
+</head>
+<body class="bg-slate-50/70 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-indigo-100 selection:text-indigo-900">
+
+  <!-- TOP EXECUTIVE NAVIGATION BAR -->
+  <header class="bg-slate-900/95 backdrop-blur-md text-white border-b border-slate-800 sticky top-0 z-40 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Brand & Title -->
+      <div class="flex items-center gap-3 shrink-0">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 shadow-md flex items-center justify-center font-bold text-lg text-white ring-1 ring-white/20">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base font-extrabold tracking-tight text-white">BMP Tutors</h1>
+            <span class="px-2 py-0.5 rounded-full bg-slate-800 border border-slate-700/80 text-[10px] font-semibold text-emerald-400 flex items-center gap-1.5 font-mono">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              Live Data
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-400 font-medium">National Market Intelligence & Analytics Platform</p>
+        </div>
+      </div>
+
+      <!-- Segmented Navigation Controller -->
+      <nav class="hidden md:flex items-center bg-slate-800/80 p-1 rounded-xl ring-1 ring-white/10 shadow-inner">
+        <button id="tab-btn-explorer" onclick="switchTab('explorer')" class="px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-indigo-600 text-white shadow-xs flex items-center gap-2">
+          <i class="fa-solid fa-table-cells-large"></i>
+          <span>Tutors Explorer</span>
+        </button>
+        <button id="tab-btn-analytics" onclick="switchTab('analytics')" class="px-4 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-700/60 flex items-center gap-2">
+          <i class="fa-solid fa-chart-column"></i>
+          <span>Visual Analytics</span>
+        </button>
+        <button id="tab-btn-schema" onclick="switchTab('schema')" class="px-4 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-700/60 flex items-center gap-2">
+          <i class="fa-solid fa-layer-group"></i>
+          <span>Schema & Exports</span>
+        </button>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2 shrink-0">
+        <a href="/report" target="_blank" class="hidden sm:inline-flex px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 hover:border-slate-600 transition-all items-center gap-1.5 shadow-2xs">
+          <i class="fa-solid fa-file-invoice text-indigo-400"></i>
+          <span>Academic Report</span>
+          <i class="fa-solid fa-arrow-up-right-from-square text-[9px] opacity-60"></i>
+        </a>
+
+        <a href="/api/download/active-master-excel" download="BMP_Tutors_Verified_Active_Master.xlsx" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-xs transition-all flex items-center gap-1.5 ring-1 ring-blue-400/30" title="Download 100% URL-Verified Active Educators (76,705 Tutors + 247k Bridge Links)">
+          <i class="fa-solid fa-user-check text-xs text-blue-200"></i>
+          <span>Active Excel</span>
+          <span class="px-1.5 py-0.2 rounded bg-black/25 text-[10px] font-mono">58 MB</span>
+        </a>
+
+        <a href="/api/download/master-excel" download="BMP_Tutors_Cleaned_Master.xlsx" class="hidden lg:inline-flex px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-xs transition-all items-center gap-1.5 ring-1 ring-emerald-400/30" title="Download Complete Cleaned Dataset (All 107k Tutors)">
+          <i class="fa-solid fa-file-excel text-xs text-emerald-200"></i>
+          <span>All Tutors</span>
+          <span class="px-1.5 py-0.2 rounded bg-black/25 text-[10px] font-mono">79 MB</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Mobile Segmented Controller -->
+    <div class="flex md:hidden px-4 pb-3 border-t border-slate-800/80 pt-2">
+      <nav class="flex w-full bg-slate-800/80 p-1 rounded-xl ring-1 ring-white/10">
+        <button onclick="switchTab('explorer')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center bg-indigo-600 text-white">Explorer</button>
+        <button onclick="switchTab('analytics')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Analytics</button>
+        <button onclick="switchTab('schema')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Schema</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- METRIC SUMMARY KPI CARDS -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 w-full">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      
+      <!-- Card 1: Unique Tutors -->
+      <div class="bg-white rounded-2xl p-5 shadow-xs border border-slate-200/80 hover:shadow-md hover:border-slate-300 transition-all group relative overflow-hidden">
+        <div class="h-1 bg-indigo-500 absolute top-0 left-0 right-0"></div>
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Verified Unique Tutors</p>
+            <h3 id="stat-tutors" class="text-3xl font-extrabold text-slate-900 mt-1 font-mono tracking-tight">107,723</h3>
+            <p class="text-xs text-emerald-600 mt-1.5 font-medium flex items-center gap-1">
+              <i class="fa-solid fa-circle-check text-[11px]"></i>
+              <span>100% Normalized Star Schema</span>
+            </p>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
+            <i class="fa-solid fa-users"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Bridge Offerings -->
+      <div class="bg-white rounded-2xl p-5 shadow-xs border border-slate-200/80 hover:shadow-md hover:border-slate-300 transition-all group relative overflow-hidden">
+        <div class="h-1 bg-violet-500 absolute top-0 left-0 right-0"></div>
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Subject-Grade Linkages</p>
+            <h3 id="stat-bridge" class="text-3xl font-extrabold text-slate-900 mt-1 font-mono tracking-tight">403,353</h3>
+            <p class="text-xs text-violet-600 mt-1.5 font-medium flex items-center gap-1">
+              <i class="fa-solid fa-diagram-project text-[11px]"></i>
+              <span>3.7 Subjects per Educator</span>
+            </p>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-violet-50 text-violet-600 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
+            <i class="fa-solid fa-book-open"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Avg Hourly Fee -->
+      <div class="bg-white rounded-2xl p-5 shadow-xs border border-slate-200/80 hover:shadow-md hover:border-slate-300 transition-all group relative overflow-hidden">
+        <div class="h-1 bg-emerald-500 absolute top-0 left-0 right-0"></div>
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Benchmark Hourly Rate</p>
+            <h3 id="stat-fee" class="text-3xl font-extrabold text-slate-900 mt-1 font-mono tracking-tight">₹416.4 <span class="text-base font-sans font-medium text-slate-500">/hr</span></h3>
+            <p class="text-xs text-slate-500 mt-1.5 font-medium flex items-center gap-1">
+              <i class="fa-solid fa-shield-halved text-emerald-600 text-[11px]"></i>
+              <span>Outlier-Trimmed Mean (₹50-₹5k)</span>
+            </p>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Active Profiles -->
+      <div class="bg-white rounded-2xl p-5 shadow-xs border border-slate-200/80 hover:shadow-md hover:border-slate-300 transition-all group relative overflow-hidden">
+        <div class="h-1 bg-amber-500 absolute top-0 left-0 right-0"></div>
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Live Active Profiles</p>
+            <h3 id="stat-active" class="text-3xl font-extrabold text-slate-900 mt-1 font-mono tracking-tight">76,706</h3>
+            <p class="text-xs text-amber-600 mt-1.5 font-medium flex items-center gap-1">
+              <i class="fa-solid fa-bolt text-[11px]"></i>
+              <span>71.2% URL Verified Active Rate</span>
+            </p>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
+            <i class="fa-solid fa-user-check"></i>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MAIN TAB CONTENT AREA -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1 flex flex-col">
+
+    <!-- TAB 1: EXPLORER -->
+    <div id="tab-explorer" class="flex flex-col lg:flex-row gap-6 flex-1">
+      
+      <!-- SIDEBAR FACETED FILTERS -->
+      <aside class="w-full lg:w-80 bg-white p-5 rounded-2xl shadow-xs border border-slate-200/80 flex-shrink-0 flex flex-col gap-4">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div class="flex items-center gap-2">
+            <div class="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs">
+              <i class="fa-solid fa-sliders"></i>
+            </div>
+            <h2 class="font-bold text-slate-900 text-sm">Filter Dataset</h2>
+          </div>
+          <button onclick="resetFilters()" class="text-xs text-slate-500 hover:text-indigo-600 font-semibold flex items-center gap-1 transition-colors">
+            <i class="fa-solid fa-rotate-left text-[10px]"></i> Reset
+          </button>
+        </div>
+
+        <!-- Search input -->
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Keyword Search</label>
+          <div class="relative">
+            <input type="text" id="filter-search" onkeydown="if(event.key==='Enter') applyFilters()" placeholder="ID (T1), name, city, hookline... (Press Enter)" class="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs" />
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+          </div>
+        </div>
+
+        <!-- Facet Group 1: Academics & Subject -->
+        <div class="space-y-3 pt-1">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50/60 px-2 py-1 rounded-md">
+            Academics & Curriculum
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Subject Category</label>
+            <select id="filter-subject-category" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs">
+              <option value="">All Categories</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Level / Grade</label>
+            <select id="filter-level" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs">
+              <option value="">All Levels</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Competitive Exam</label>
+            <select id="filter-exam" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs">
+              <option value="">All Exams (JEE, NEET, IELTS...)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Facet Group 2: Geography -->
+        <div class="space-y-3 pt-2 border-t border-slate-100">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-blue-700 bg-blue-50/60 px-2 py-1 rounded-md">
+            Geographic Territory
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Region</label>
+            <select id="filter-region" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs">
+              <option value="">All Regions</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">State / UT</label>
+            <select id="filter-state" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs">
+              <option value="">All States & UTs</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Facet Group 3: Professional & Career -->
+        <div class="space-y-3 pt-2 border-t border-slate-100">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50/60 px-2 py-1 rounded-md">
+            Professional & Credentials
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Occupation (Side / Primary)</label>
+            <select id="filter-occupation" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs">
+              <option value="">All Occupations (IT, CA, Doctors...)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Seniority Tier</label>
+            <select id="filter-seniority" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs">
+              <option value="">All Seniority Tiers</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Experience Role</label>
+            <select id="filter-role" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs">
+              <option value="">All Roles</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Highest Qualification</label>
+            <select id="filter-qualification" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs">
+              <option value="">All Qualifications</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Facet Group 4: Preferences -->
+        <div class="space-y-3 pt-2 border-t border-slate-100">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-50/60 px-2 py-1 rounded-md">
+            Delivery & Demographics
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Gender</label>
+            <select id="filter-gender" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs">
+              <option value="">All Genders</option>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Teaches Online</label>
+            <select id="filter-online" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs">
+              <option value="">Any Mode</option>
+              <option value="1">Yes (Online)</option>
+              <option value="0">No (Offline only)</option>
+            </select>
+          </div>
+        </div>
+
+        <button onclick="applyFilters()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white rounded-xl text-xs font-bold shadow-xs transition-all mt-2 flex items-center justify-center gap-2">
+          <i class="fa-solid fa-magnifying-glass text-[11px]"></i>
+          <span>Apply Filters</span>
+        </button>
+      </aside>
+
+      <!-- TABLE & PAGINATION CONTAINER -->
+      <section class="flex-1 bg-white rounded-2xl shadow-xs border border-slate-200/80 flex flex-col overflow-hidden">
+        
+        <!-- Results Header Toolbar -->
+        <div class="px-6 py-4 border-b border-slate-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 bg-slate-50/40">
+          <div class="flex items-center gap-2.5">
+            <h3 class="font-bold text-slate-900 text-sm">Tutor Profiles</h3>
+            <span id="results-count-badge" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/70 font-mono">
+              Loading...
+            </span>
+          </div>
+          
+          <!-- Download Buttons & Page size selector -->
+          <div class="flex flex-wrap items-center gap-2.5 text-xs text-slate-600 w-full md:w-auto justify-between md:justify-end">
+            <!-- Downloads -->
+            <div class="flex items-center gap-2">
+              <select onchange="if(this.value){window.location.href='/api/download/category-excel?category='+this.value; this.value='';}" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 transition-all cursor-pointer" title="Download fast category-specific thematic Excel files">
+                <option value="">📁 By Domain...</option>
+                <option value="coding">💻 Coding & Tech (~15 MB)</option>
+                <option value="science">🔬 Science & Math (~62 MB)</option>
+                <option value="languages">🗣️ Languages (~27 MB)</option>
+                <option value="commerce">📈 Commerce & Finance (~7 MB)</option>
+                <option value="arts">🎨 Arts & Humanities (~8 MB)</option>
+                <option value="eca">♟️ Extracurricular & Skills (~6 MB)</option>
+              </select>
+
+              <button onclick="downloadFilteredExcel()" class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shadow-2xs" title="Download matching rows based on current filters">
+                <i class="fa-solid fa-filter text-[10px]"></i>
+                <span>Filtered Export</span>
+              </button>
+            </div>
+
+            <div class="flex items-center gap-1.5 pl-2 border-l border-slate-200">
+              <span class="text-slate-500 font-medium text-[11px]">Rows:</span>
+              <select id="page-size" onchange="changePageSize()" class="bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-indigo-500 shadow-2xs">
+                <option value="15">15</option>
+                <option value="25" selected>25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table Container -->
+        <div class="flex-1 overflow-x-auto custom-scrollbar">
+          <table class="w-full text-left border-collapse text-sm">
+            <thead>
+              <tr class="bg-slate-50/80 border-b border-slate-200/80 text-[11px] font-bold text-slate-500 uppercase tracking-wider sticky top-0 backdrop-blur-sm z-10">
+                <th class="py-3 px-4">Tutor ID</th>
+                <th class="py-3 px-4">Educator Profile</th>
+                <th class="py-3 px-4">Occupation & Role</th>
+                <th class="py-3 px-4">Location</th>
+                <th class="py-3 px-4">Qualification & Exp</th>
+                <th class="py-3 px-4">Subjects Taught (Bridge)</th>
+                <th class="py-3 px-4">Fee / hr</th>
+                <th class="py-3 px-4 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody id="tutors-table-body" class="divide-y divide-slate-100 text-slate-700">
+              <tr class="animate-pulse">
+                <td class="py-4 px-4"><div class="h-4 w-12 bg-slate-200 rounded"></div></td>
+                <td class="py-4 px-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-slate-200 shrink-0"></div>
+                    <div class="space-y-1.5 flex-1">
+                      <div class="h-3.5 w-32 bg-slate-200 rounded"></div>
+                      <div class="h-2.5 w-48 bg-slate-100 rounded"></div>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-4 px-4"><div class="h-5 w-24 bg-slate-200 rounded-full"></div></td>
+                <td class="py-4 px-4"><div class="h-3.5 w-24 bg-slate-200 rounded"></div></td>
+                <td class="py-4 px-4"><div class="h-3.5 w-20 bg-slate-200 rounded"></div></td>
+                <td class="py-4 px-4"><div class="h-5 w-40 bg-slate-200 rounded"></div></td>
+                <td class="py-4 px-4"><div class="h-5 w-16 bg-slate-200 rounded-full"></div></td>
+                <td class="py-4 px-4 text-center"><div class="h-7 w-16 bg-slate-200 rounded-lg mx-auto"></div></td>
+              </tr>
+              <tr class="animate-pulse">
+                <td class="py-4 px-4"><div class="h-4 w-12 bg-slate-200 rounded"></div></td>
+                <td class="py-4 px-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-slate-200 shrink-0"></div>
+                    <div class="space-y-1.5 flex-1">
+                      <div class="h-3.5 w-32 bg-slate-200 rounded"></div>
+                      <div class="h-2.5 w-48 bg-slate-100 rounded"></div>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-4 px-4"><div class="h-5 w-24 bg-slate-200 rounded-full"></div></td>
+                <td class="py-4 px-4"><div class="h-3.5 w-24 bg-slate-200 rounded"></div></td>
+                <td class="py-4 px-4"><div class="h-3.5 w-20 bg-slate-200 rounded"></div></td>
+                <td class="py-4 px-4"><div class="h-5 w-40 bg-slate-200 rounded"></div></td>
+                <td class="py-4 px-4"><div class="h-5 w-16 bg-slate-200 rounded-full"></div></td>
+                <td class="py-4 px-4 text-center"><div class="h-7 w-16 bg-slate-200 rounded-lg mx-auto"></div></td>
+              </tr>
+              <tr class="animate-pulse">
+                <td class="py-4 px-4"><div class="h-4 w-12 bg-slate-200 rounded"></div></td>
+                <td class="py-4 px-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-slate-200 shrink-0"></div>
+                    <div class="space-y-1.5 flex-1">
+                      <div class="h-3.5 w-32 bg-slate-200 rounded"></div>
+                      <div class="h-2.5 w-48 bg-slate-100 rounded"></div>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-4 px-4"><div class="h-5 w-24 bg-slate-200 rounded-full"></div></td>
+                <td class="py-4 px-4"><div class="h-3.5 w-24 bg-slate-200 rounded"></div></td>
+                <td class="py-4 px-4"><div class="h-3.5 w-20 bg-slate-200 rounded"></div></td>
+                <td class="py-4 px-4"><div class="h-5 w-40 bg-slate-200 rounded"></div></td>
+                <td class="py-4 px-4"><div class="h-5 w-16 bg-slate-200 rounded-full"></div></td>
+                <td class="py-4 px-4 text-center"><div class="h-7 w-16 bg-slate-200 rounded-lg mx-auto"></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="px-6 py-3.5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-50/50">
+          <div id="page-info" class="text-xs text-slate-500 font-medium">
+            Showing 1 to 25 of 107,723 entries
+          </div>
+          <div class="flex items-center space-x-1">
+            <button onclick="goToPage(1)" class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-xs hover:bg-slate-50 disabled:opacity-40 shadow-2xs transition-colors" id="btn-first" title="First Page">
+              <i class="fa-solid fa-angles-left text-[10px]"></i>
+            </button>
+            <button onclick="changePage(-1)" class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs hover:bg-slate-50 disabled:opacity-40 shadow-2xs transition-colors flex items-center gap-1" id="btn-prev">
+              <i class="fa-solid fa-chevron-left text-[10px]"></i> <span>Prev</span>
+            </button>
+            <span id="current-page-display" class="px-3 py-1.5 text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/80 rounded-lg font-mono">1</span>
+            <button onclick="changePage(1)" class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs hover:bg-slate-50 disabled:opacity-40 shadow-2xs transition-colors flex items-center gap-1" id="btn-next">
+              <span>Next</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </button>
+            <button onclick="goToLastPage()" class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-xs hover:bg-slate-50 disabled:opacity-40 shadow-2xs transition-colors" id="btn-last" title="Last Page">
+              <i class="fa-solid fa-angles-right text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- TAB 2: VISUAL ANALYTICS & GEOGRAPHIC MAPS -->
+    <div id="tab-analytics" class="hidden flex-col gap-6">
+
+      <!-- VISUAL ANALYTICS HEADER & DOWNLOAD BAR -->
+      <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-indigo-200/60">Empirical Research</span>
+            <span class="text-xs text-slate-400 font-mono">107,723 Tutors &bull; 403,353 Offerings &bull; 37 States & UTs</span>
+          </div>
+          <h2 class="text-xl font-extrabold text-slate-900 mt-1 flex items-center gap-2 tracking-tight">
+            <i class="fa-solid fa-chart-line text-indigo-600"></i> Visual Analytics & National Market Dossier
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5">Empirical breakdown of private tutoring demand, hourly fee benchmarks, subject distributions, and district-level cartography.</p>
+        </div>
+
+        <!-- Download & Export Actions -->
+        <div class="flex items-center gap-2 flex-wrap shrink-0">
+          <a href="/report" target="_blank" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition-all flex items-center gap-1.5 shadow-2xs">
+            <i class="fa-solid fa-arrow-up-right-from-square text-slate-500"></i> Full Printable Dossier
+          </a>
+          <a href="/api/download/visual-analytics-docx" download="BMP_Tutors_Visual_Analytics_Report.docx" class="px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white transition-all flex items-center gap-2 shadow-xs active:scale-[0.98]">
+            <i class="fa-solid fa-file-word text-sm"></i> Download Word (.docx)
+          </a>
+          <a href="/api/export/visual-analytics-pdf" download="BMP_Tutors_Visual_Analytics_Complete_Report.pdf" class="px-4 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white transition-all flex items-center gap-2 shadow-xs active:scale-[0.98]">
+            <i class="fa-solid fa-file-pdf text-sm"></i> Download PDF
+          </a>
+        </div>
+      </div>
+
+      <!-- SECTION 1: ALL-INDIA ACADEMIC BOUNDARY MAP -->
+      <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
+        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-4 pb-3 border-b border-slate-100">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-indigo-200/60">Cartographic Overview</span>
+              <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-map text-indigo-600"></i> Map of India: State-Wise Boundaries & Data Labels
+              </h3>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">State administrative boundaries with direct in-polygon verified numbers and choropleth shading. Click any state boundary to view district spatial breakdown.</p>
+          </div>
+
+          <!-- Controls: Metric Toggle & View Mode -->
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider text-[10px]">Active Metric:</span>
+            <div class="bg-slate-100 p-1 rounded-xl flex items-center space-x-1 border border-slate-200">
+              <button id="btn-metric-count" onclick="setMapMetric('count')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-2xs">
+                Tutor Count
+              </button>
+              <button id="btn-metric-fee" onclick="setMapMetric('fee')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900">
+                Avg Fee (₹/hr)
+              </button>
+              <button id="btn-metric-online" onclick="setMapMetric('online')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900">
+                Online %
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Color Scale Legend -->
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-3 p-2.5 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-slate-700 text-[11px]" id="legend-title">Tutor Count Range:</span>
+            <div id="legend-scale-bar" class="flex items-center space-x-1"></div>
+          </div>
+          <div class="text-[11px] text-slate-500 flex items-center gap-2 font-medium">
+            <span><i class="fa-solid fa-square text-indigo-800 mr-1"></i>High Concentration</span>
+            <span><i class="fa-solid fa-square text-purple-200 mr-1"></i>Low / Emerging</span>
+          </div>
+        </div>
+
+        <!-- Academic White India Map Container -->
+        <div class="relative w-full rounded-2xl overflow-hidden border border-slate-300 shadow-xs bg-white" style="height: 520px;">
+          <div id="map-india" class="w-full h-full z-10 white-map-container"></div>
+          <div class="absolute bottom-4 left-4 z-20 bg-white/95 backdrop-blur-md p-3.5 rounded-xl shadow-md border border-slate-200 text-xs max-w-xs">
+            <p class="font-bold text-slate-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-hand-pointer text-indigo-600"></i> Interactive Drilldown:
+            </p>
+            <p class="text-slate-600 text-[11px] mt-1 leading-relaxed">Labels inside boundaries show exact state values. Click any state boundary to view district-level boundaries below.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: STATE-LEVEL DISTRICT BOUNDARY MAP -->
+      <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
+        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-4 pb-3 border-b border-slate-100">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-emerald-200/60">District Spatial Deep-Dive</span>
+              <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-draw-polygon text-emerald-600"></i> State District Boundaries & Spatial Distribution
+              </h3>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">Detailed administrative district polygons for the selected state with local tutor numbers and pricing metrics.</p>
+          </div>
+
+          <!-- State Selector Controls -->
+          <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider text-[10px]">Select State:</label>
+            <select id="map-state-select" onchange="onStateSelectChange(this.value)" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-indigo-500 shadow-2xs">
+              <option value="Karnataka">Karnataka</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- State Quick Metric Highlights -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+          <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80">
+            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">State Analyzed</span>
+            <span id="state-metric-name" class="font-extrabold text-indigo-700 text-sm mt-0.5 block">Karnataka</span>
+          </div>
+          <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80">
+            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Total Tutors</span>
+            <span id="state-metric-tutors" class="font-extrabold text-slate-900 text-sm mt-0.5 block font-mono">—</span>
+          </div>
+          <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80">
+            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Avg Hourly Fee</span>
+            <span id="state-metric-fee" class="font-extrabold text-emerald-600 text-sm mt-0.5 block font-mono">—</span>
+          </div>
+          <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80">
+            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Online Delivery</span>
+            <span id="state-metric-online" class="font-extrabold text-violet-600 text-sm mt-0.5 block font-mono">—</span>
+          </div>
+        </div>
+
+        <!-- Split Map + District Table -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <div class="lg:col-span-7 rounded-2xl overflow-hidden border border-slate-300 shadow-xs relative bg-white" style="height: 480px;">
+            <div id="map-state-cities" class="w-full h-full z-10 white-map-container"></div>
+          </div>
+
+          <div class="lg:col-span-5 bg-slate-50/70 rounded-2xl border border-slate-200/80 p-4 h-[480px] flex flex-col shadow-xs">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+              <h4 class="font-bold text-xs text-slate-800 flex items-center gap-1.5">
+                <i class="fa-solid fa-list-ol text-emerald-600"></i>
+                <span id="city-table-state-title">Districts in Karnataka</span>
+              </h4>
+              <span id="city-count-badge" class="text-[10px] font-bold bg-white px-2 py-0.5 rounded-full border border-slate-200 text-slate-600 font-mono">0 Districts</span>
+            </div>
+            <div class="flex-1 overflow-y-auto custom-scrollbar mt-2 pr-1">
+              <table class="w-full text-left text-xs">
+                <thead>
+                  <tr class="text-[10px] font-bold text-slate-500 uppercase border-b border-slate-200">
+                    <th class="py-2">District</th>
+                    <th class="py-2 text-right">Tutors</th>
+                    <th class="py-2 text-right">Avg Fee</th>
+                  </tr>
+                </thead>
+                <tbody id="city-table-body" class="divide-y divide-slate-100 font-medium">
+                  <tr><td colspan="3" class="py-8 text-center text-slate-400">Loading districts...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NEW SECTION: PROFESSIONAL LANDSCAPE — NON-TEACHING & SIDE OCCUPATIONS -->
+      <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-purple-200/60">Professional Gig Economy</span>
+              <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-briefcase text-purple-600"></i> Non-Teaching & Side Occupations Landscape (N = 36,525)
+              </h3>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">Cross-disciplinary breakdown of 36,500+ tutors practicing an outside profession (IT, CA, Doctors, Research Scholars, Engineers).</p>
+          </div>
+
+          <div class="bg-slate-100 p-1 rounded-xl flex items-center space-x-1 border border-slate-200 text-xs">
+            <button id="btn-occ-count" onclick="switchOccupationsChart('count')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-2xs">Tutor Volume</button>
+            <button id="btn-occ-fee" onclick="switchOccupationsChart('fee')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900">Avg Fee (₹/hr)</button>
+          </div>
+        </div>
+
+        <div class="h-80 my-2 relative">
+          <canvas id="chart-occupations"></canvas>
+        </div>
+
+        <p class="text-[11px] text-slate-500 italic pt-2 border-t border-slate-100">
+          <strong>Key Insight:</strong> Independent consultants, Chartered Accountants, and Software Engineers command an 80% fee premium (₹1,050–₹1,180/hr) over entry-level university peer tutors (₹767/hr).
+        </p>
+      </div>
+
+      <!-- SECTION 3: ACADEMIC FIGURES (FIGURE 1 & FIGURE 2) -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Figure 1 -->
+        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-chart-column text-indigo-600"></i> Figure 1: Subjects Offered for Tuition
+              </h3>
+              <div class="bg-slate-100 p-0.5 rounded-lg flex items-center space-x-0.5 border border-slate-200 text-[11px]">
+                <button id="btn-fig1-macro" onclick="switchFigure1('macro')" class="px-2.5 py-0.5 rounded-md font-bold bg-indigo-600 text-white shadow-2xs">Macro Clusters</button>
+                <button id="btn-fig1-top" onclick="switchFigure1('top')" class="px-2.5 py-0.5 rounded-md font-medium text-slate-600 hover:text-slate-900">Top 12 Disciplines</button>
+              </div>
+            </div>
+            <p class="text-xs text-slate-500 mt-0.5">Categorical volume of private tutoring offerings across India (N = 403,353).</p>
+          </div>
+
+          <div class="h-72 my-4 relative">
+            <canvas id="chart-figure-1"></canvas>
+          </div>
+
+          <p class="text-[11px] text-slate-500 italic pt-2 border-t border-slate-100">
+            <strong>Notes:</strong> Values indicate absolute frequency (N) and percentage share across all 403,353 subject links.
+          </p>
+        </div>
+
+        <!-- Figure 2: Experience Structure -->
+        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-chart-line text-indigo-600"></i> Figure 2: Teaching Experience Structure
+              </h3>
+              <div class="bg-slate-100 p-0.5 rounded-lg flex items-center space-x-0.5 border border-slate-200 text-[11px]">
+                <button id="btn-fig3-total" onclick="switchFigure3('total')" class="px-2.5 py-0.5 rounded-md font-bold bg-indigo-600 text-white shadow-2xs">Total Curve</button>
+                <button id="btn-fig3-gender" onclick="switchFigure3('gender')" class="px-2.5 py-0.5 rounded-md font-medium text-slate-600 hover:text-slate-900">Men vs Women</button>
+              </div>
+            </div>
+            <p class="text-xs text-slate-500 mt-0.5">Empirical distribution of teaching experience across tutors (0 to 30 years).</p>
+          </div>
+
+          <!-- Summary Badges -->
+          <div class="grid grid-cols-4 gap-2 mt-2 text-center text-xs">
+            <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+              <div class="text-[10px] text-slate-400 uppercase font-bold">Peak Mode</div>
+              <div class="font-bold font-mono text-indigo-600 text-sm">1–2 Yrs</div>
+            </div>
+            <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+              <div class="text-[10px] text-slate-400 uppercase font-bold">Median Exp</div>
+              <div class="font-bold font-mono text-slate-800 text-sm">3.0 Yrs</div>
+            </div>
+            <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+              <div class="text-[10px] text-slate-400 uppercase font-bold">Mean Exp</div>
+              <div class="font-bold font-mono text-slate-800 text-sm">4.6 Yrs</div>
+            </div>
+            <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+              <div class="text-[10px] text-slate-400 uppercase font-bold">&le; 3 Yrs Share</div>
+              <div class="font-bold font-mono text-slate-800 text-sm">47.3%</div>
+            </div>
+          </div>
+
+          <div class="h-60 my-2 relative">
+            <canvas id="chart-figure-3"></canvas>
+          </div>
+
+          <p class="text-[11px] text-slate-500 italic pt-2 border-t border-slate-100">
+            <strong>Notes:</strong> Shows early-career entry peaking at 1–2 years with a long professional tail up to 30 years.
+          </p>
+        </div>
+      </div>
+
+      <!-- SECTION 4: ACADEMIC TABLES (TABLE 2 & TABLE 3) -->
+      <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
+          <div>
+            <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-rose-200/60">Demographic Breakdown</span>
+            <h3 class="text-base font-bold text-slate-900 mt-1">Table 2: Gender Distribution by Tutoring Subject</h3>
+            <p class="text-xs text-slate-500 mt-0.5">Disaggregated participation rates for women vs men across academic domains.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="bg-slate-100 p-0.5 rounded-lg flex items-center space-x-0.5 border border-slate-200 text-xs">
+              <button id="btn-gender-cats" onclick="switchGenderTable('cats')" class="px-3 py-1 rounded-md font-bold bg-indigo-600 text-white shadow-2xs">Broad Domains</button>
+              <button id="btn-gender-subs" onclick="switchGenderTable('subs')" class="px-3 py-1 rounded-md font-medium text-slate-600 hover:text-slate-900">Top Subjects</button>
+            </div>
+            <button onclick="copyGenderTable()" class="px-3 py-1 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors flex items-center gap-1 shadow-2xs">
+              <i class="fa-solid fa-copy text-[10px]"></i> <span id="copy-table-btn-text">Copy Table</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto custom-scrollbar">
+          <table id="academic-gender-table" class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-900 text-white font-semibold">
+                <th class="py-2.5 px-4 rounded-tl-lg">Subject Domain / Discipline</th>
+                <th class="py-2.5 px-4 text-right">Men (%)</th>
+                <th class="py-2.5 px-4 text-right">Women (%)</th>
+                <th class="py-2.5 px-4 text-right rounded-tr-lg">Sample Size (N)</th>
+              </tr>
+            </thead>
+            <tbody id="gender-table-body" class="divide-y divide-slate-100 font-medium"></tbody>
+            <tfoot id="gender-table-foot" class="border-t-2 border-slate-300 font-bold bg-slate-100"></tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- SECTION 5: HOURLY TUITION FEES TABLE (TABLE 3) -->
+      <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
+          <div>
+            <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-emerald-200/60">Pricing Architecture</span>
+            <h3 class="text-base font-bold text-slate-900 mt-1">Table 3: Hourly Tuition Fees by Educational Stage & Geographic Zone</h3>
+            <p class="text-xs text-slate-500 mt-0.5">Empirical pricing escalations across primary, secondary, senior secondary, and higher education.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="bg-slate-100 p-0.5 rounded-lg flex items-center space-x-0.5 border border-slate-200 text-xs">
+              <button id="btn-fee-me" onclick="switchFeeTable('me')" class="px-2.5 py-1 rounded-md font-bold bg-indigo-600 text-white shadow-2xs">Maths & English</button>
+              <button id="btn-fee-all" onclick="switchFeeTable('all')" class="px-2.5 py-1 rounded-md font-medium text-slate-600 hover:text-slate-900">All 5 Subjects</button>
+              <button id="btn-fee-matrix" onclick="switchFeeTable('matrix')" class="px-2.5 py-1 rounded-md font-medium text-slate-600 hover:text-slate-900">Cross-Matrix</button>
+            </div>
+            <button onclick="copyFeeTable()" class="px-3 py-1 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors flex items-center gap-1 shadow-2xs">
+              <i class="fa-solid fa-copy text-[10px]"></i> <span id="copy-fee-table-btn-text">Copy Table</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto custom-scrollbar">
+          <table id="academic-fee-table" class="w-full text-left border-collapse text-xs">
+            <thead id="fee-table-head"></thead>
+            <tbody id="fee-table-body" class="divide-y divide-slate-100 font-medium"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SECTION 6: CORE MARKET STRUCTURE CHARTS GRID -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
+          <h3 class="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-shapes text-indigo-600"></i> Subject Offerings Distribution
+          </h3>
+          <p class="text-xs text-slate-500 mb-4">Total breakdown across 403,353 subject-tutor links</p>
+          <div class="h-64"><canvas id="chart-subjects"></canvas></div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
+          <h3 class="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-graduation-cap text-purple-600"></i> Target Educational Levels
+          </h3>
+          <p class="text-xs text-slate-500 mb-4">100% concrete educational stages across offerings</p>
+          <div class="h-64"><canvas id="chart-levels"></canvas></div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
+          <h3 class="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-user-graduate text-blue-600"></i> Highest Academic Qualifications
+          </h3>
+          <p class="text-xs text-slate-500 mb-4">Undergraduate, Postgraduate, Doctorate credentials</p>
+          <div class="h-64"><canvas id="chart-qualifications"></canvas></div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
+          <h3 class="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-award text-amber-600"></i> Pedagogical Seniority Tiers
+          </h3>
+          <p class="text-xs text-slate-500 mb-4">Mastery tiers inferred from experience, degrees, fee rates</p>
+          <div class="h-64"><canvas id="chart-seniority"></canvas></div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
+          <h3 class="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-indian-rupee-sign text-emerald-600"></i> Hourly Fees by Subject Domain
+          </h3>
+          <p class="text-xs text-slate-500 mb-4">Standardized mean hourly tuition rates (INR / hour)</p>
+          <div class="h-64"><canvas id="chart-fees"></canvas></div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
+          <h3 class="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-bullseye text-rose-600"></i> Competitive Exam Coaching Frequency
+          </h3>
+          <p class="text-xs text-slate-500 mb-4">Top 10 specialized target examinations (JEE, NEET, IELTS...)</p>
+          <div class="h-64"><canvas id="chart-exams"></canvas></div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
+          <h3 class="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-compass text-teal-600"></i> Geographic Supply by Zonal Region
+          </h3>
+          <p class="text-xs text-slate-500 mb-4">Distribution across South, North, West, East, Central</p>
+          <div class="h-64"><canvas id="chart-regions"></canvas></div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
+          <h3 class="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-city text-cyan-600"></i> City Tier Distribution
+          </h3>
+          <p class="text-xs text-slate-500 mb-4">Metros (Tier 1) vs Urban Hubs (Tier 2) vs Semi-Urban (Tier 3)</p>
+          <div class="h-64"><canvas id="chart-city-tiers"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: SCHEMA & EXPORTS -->
+    <div id="tab-schema" class="hidden flex-col gap-6">
+      <div class="bg-white p-8 rounded-2xl shadow-xs border border-slate-200/80">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl">
+            <i class="fa-solid fa-network-wired"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-slate-900 tracking-tight">Relational Star Schema & Bridge Architecture</h3>
+            <p class="text-xs text-slate-500">Zero data redundancy, zero wide sparsity, relational 3NF production standard</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div class="p-5 rounded-xl bg-slate-50 border border-slate-200/80">
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-bold text-sm text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-table-list text-blue-600"></i> Table: `teachers` (Master Dimension)
+              </span>
+              <span class="text-xs bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full font-mono font-bold">107,723 rows</span>
+            </div>
+            <p class="text-xs text-slate-600 mb-3 leading-relaxed">Stores educator profile attributes exactly once, preventing repeating text contamination across subjects.</p>
+            <ul class="text-xs space-y-1 font-mono text-slate-700 bg-white p-3 rounded-lg border border-slate-200/80">
+              <li>• <span class="text-indigo-600 font-bold">tutor_id</span> (PK: 'T1'..'T107723')</li>
+              <li>• teacher_name, hookline, description</li>
+              <li>• state, region, city, city_tier, location_raw</li>
+              <li>• gender, works_as</li>
+              <li>• <span class="text-emerald-700 font-bold">occupation</span> (100% classified domain)</li>
+              <li>• experience_role, seniority_tier, total_teaching_exp_years</li>
+              <li>• highest_qualification, has_education_degree</li>
+              <li>• hourly_fee_min, hourly_fee_max, hourly_fee_avg</li>
+              <li>• teaches_online, teaches_at_student_home, can_travel</li>
+            </ul>
+          </div>
+
+          <div class="p-5 rounded-xl bg-slate-50 border border-slate-200/80">
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-bold text-sm text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-diagram-project text-indigo-600"></i> Table: `teacher_subjects` (Relational Bridge)
+              </span>
+              <span class="text-xs bg-indigo-100 text-indigo-800 px-2.5 py-0.5 rounded-full font-mono font-bold">403,353 rows</span>
+            </div>
+            <p class="text-xs text-slate-600 mb-3 leading-relaxed">Narrow junction table mapping each tutor to their specific subject disciplines, grade levels, and competitive tests.</p>
+            <ul class="text-xs space-y-1 font-mono text-slate-700 bg-white p-3 rounded-lg border border-slate-200/80">
+              <li>• bridge_id (PK: Auto increment)</li>
+              <li>• <span class="text-indigo-600 font-bold">tutor_id</span> (FK: References teachers.tutor_id)</li>
+              <li>• canonical_subject (Standardized subject name)</li>
+              <li>• subject_category (Science, Coding, Languages...)</li>
+              <li>• level_category (Secondary, Sr Secondary, College...)</li>
+              <li>• competitive_exam (JEE, NEET, IELTS, UPSC...)</li>
+              <li>• raw_subject_string (Original uncleaned text token)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mt-8 border-t border-slate-200 pt-6">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+            <div>
+              <h4 class="font-bold text-slate-900 text-sm">Direct Deliverable Downloads & Export Formats</h4>
+              <p class="text-xs text-slate-500">All data exported in open standard formats with 100% original and cleaned attributes</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <a href="/api/download/active-master-excel" download="BMP_Tutors_Verified_Active_Master.xlsx" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-2">
+                <i class="fa-solid fa-user-check text-sm text-blue-200"></i> Download Active Only Excel (.xlsx)
+              </a>
+              <a href="/api/download/master-excel" download="BMP_Tutors_Cleaned_Master.xlsx" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-2">
+                <i class="fa-solid fa-file-excel text-sm text-emerald-200"></i> Download Complete Master (.xlsx)
+              </a>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div class="p-3.5 bg-blue-50/70 border border-blue-200/80 rounded-xl text-xs">
+              <span class="font-bold text-blue-900 block flex items-center justify-between">
+                <span><i class="fa-solid fa-user-check mr-1 text-blue-600"></i> Active Only Excel:</span>
+                <span class="px-1.5 py-0.5 rounded bg-blue-200/70 text-blue-800 text-[10px] font-mono font-bold">58 MB</span>
+              </span>
+              <a href="/api/download/active-master-excel" download="BMP_Tutors_Verified_Active_Master.xlsx" class="font-mono text-blue-700 hover:underline text-[11px] block mt-1 truncate">BMP_Tutors_Verified_Active_Master.xlsx</a>
+              <p class="text-[10px] text-blue-700 mt-1">76,705 Verified Active Tutors &bull; 100% Opening URLs</p>
+            </div>
+            <div class="p-3.5 bg-emerald-50/70 border border-emerald-200/80 rounded-xl text-xs">
+              <span class="font-bold text-emerald-900 block flex items-center justify-between">
+                <span><i class="fa-solid fa-file-excel mr-1 text-emerald-600"></i> Complete Master:</span>
+                <span class="px-1.5 py-0.5 rounded bg-emerald-200/70 text-emerald-800 text-[10px] font-mono font-bold">79 MB</span>
+              </span>
+              <a href="/api/download/master-excel" download="BMP_Tutors_Cleaned_Master.xlsx" class="font-mono text-emerald-700 hover:underline text-[11px] block mt-1 truncate">BMP_Tutors_Cleaned_Master.xlsx</a>
+              <p class="text-[10px] text-emerald-700 mt-1">All 107k Tutors (Active + Inactive)</p>
+            </div>
+            <div class="p-3.5 bg-slate-100 rounded-xl text-xs border border-slate-200">
+              <span class="font-semibold text-slate-800 block">SQLite Database:</span>
+              <span class="font-mono text-slate-600 select-all text-[11px] block mt-1">cleaned_tutors_data.db (302 MB)</span>
+              <p class="text-[10px] text-slate-500 mt-1">Indexed 3NF relational schema</p>
+            </div>
+            <div class="p-3.5 bg-slate-100 rounded-xl text-xs border border-slate-200">
+              <span class="font-semibold text-slate-800 block">Cleaned CSVs:</span>
+              <span class="font-mono text-slate-600 select-all text-[11px] block mt-1">cleaned_teachers.csv (128 MB)<br/>cleaned_teacher_subjects.csv (26 MB)</span>
+            </div>
+            <div class="p-3.5 bg-slate-100 rounded-xl text-xs border border-slate-200">
+              <span class="font-semibold text-slate-800 block">Fast Parquet Files:</span>
+              <span class="font-mono text-slate-600 select-all text-[11px] block mt-1">cleaned_teachers.parquet (57 MB)<br/>cleaned_teacher_subjects.parquet (3.3 MB)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- TUTOR DETAIL SLIDE-OVER DRAWER MODAL -->
+  <div id="detail-modal" class="fixed inset-0 z-50 hidden bg-slate-950/40 backdrop-blur-sm flex justify-end transition-opacity">
+    <div class="bg-white w-full max-w-2xl h-full shadow-2xl flex flex-col transform transition-transform duration-300 translate-x-0 overflow-hidden">
+      
+      <!-- Drawer Header -->
+      <div class="p-6 bg-slate-900 text-white flex items-start justify-between border-b border-slate-800">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-500 to-violet-500 text-white flex items-center justify-center font-bold text-lg ring-2 ring-white/10 shrink-0">
+            <span id="modal-initials">T</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 id="modal-name" class="text-lg font-extrabold tracking-tight">Tutor Details</h3>
+              <span id="modal-active-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider font-mono"></span>
+            </div>
+            <p id="modal-tutor-id" class="text-xs text-indigo-300 font-mono mt-0.5 font-semibold">T1</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-2">
+          <a id="modal-url" href="#" target="_blank" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 transition-colors flex items-center gap-1.5" title="Open TeacherOn Profile in new tab">
+            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            <span>TeacherOn Profile</span>
+          </a>
+          <button onclick="closeModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center text-sm transition-colors">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Drawer Scrollable Content -->
+      <div class="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar text-sm">
+        
+        <!-- Headline / Hookline -->
+        <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100 text-slate-800">
+          <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider block mb-1">Professional Headline</span>
+          <p id="modal-hookline" class="text-sm font-semibold italic text-slate-900 leading-relaxed"></p>
+        </div>
+
+        <!-- 4 Metric Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
+            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Hourly Fee</span>
+            <span id="modal-fee" class="text-base font-extrabold text-emerald-600 block mt-0.5 font-mono">₹500 / hr</span>
+          </div>
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
+            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Total Experience</span>
+            <span id="modal-exp" class="text-base font-extrabold text-slate-900 block mt-0.5 font-mono">5 yrs</span>
+          </div>
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
+            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Seniority Tier</span>
+            <span id="modal-seniority" class="text-xs font-bold text-amber-700 block mt-1">Experienced</span>
+          </div>
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
+            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Gender</span>
+            <span id="modal-gender" class="text-xs font-bold text-slate-800 block mt-1">Female</span>
+          </div>
+        </div>
+
+        <!-- Occupation & Role -->
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80">
+          <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Career & Professional Domain</span>
+          <div class="flex flex-wrap items-center gap-2">
+            <span id="modal-occupation" class="px-3 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800 font-mono">Software Engineer & IT Professional</span>
+            <span id="modal-role" class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200 text-slate-700">Online Educator</span>
+            <span id="modal-works-as" class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200 text-slate-700">Individual Teacher</span>
+          </div>
+        </div>
+
+        <!-- Delivery Modes & Flags -->
+        <div>
+          <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2">Teaching Preferences & Delivery</span>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+            <div id="flag-online" class="p-2 rounded-lg border font-semibold">Online</div>
+            <div id="flag-home" class="p-2 rounded-lg border font-semibold">Home Visit</div>
+            <div id="flag-travel" class="p-2 rounded-lg border font-semibold">Can Travel</div>
+            <div id="flag-hw" class="p-2 rounded-lg border font-semibold">Homework Help</div>
+          </div>
+        </div>
+
+        <!-- Location Details -->
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80">
+          <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Geographic Classification</span>
+          <div class="flex items-center gap-2 text-sm text-slate-900 font-semibold">
+            <i class="fa-solid fa-map-pin text-rose-500"></i>
+            <span id="modal-location">Bangalore, Karnataka</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-1">
+            State: <span id="modal-state" class="font-semibold text-slate-700">Karnataka</span> &bull; 
+            City Tier: <span id="modal-city-tier" class="font-semibold text-slate-700">Tier 1 (Metro)</span>
+          </p>
+        </div>
+
+        <!-- Academic Credentials -->
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80">
+          <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Academic Credentials</span>
+          <p id="modal-qualification" class="font-bold text-slate-900 text-sm">Postgraduate (Master's)</p>
+          <p id="modal-edu-deg" class="text-xs text-slate-600 mt-0.5">Education Degree (B.Ed/M.Ed): No</p>
+          <p id="modal-speaks" class="text-xs text-slate-500 mt-1">Languages: English, Hindi</p>
+        </div>
+
+        <!-- Subjects List (Bridge Links) -->
+        <div>
+          <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2">Subject Offerings (Bridge Links)</span>
+          <div id="modal-subjects-container" class="space-y-2 max-h-60 overflow-y-auto custom-scrollbar"></div>
+        </div>
+
+        <!-- Bio Description -->
+        <div>
+          <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2">Full Educator Bio</span>
+          <div id="modal-desc" class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed max-h-60 overflow-y-auto custom-scrollbar whitespace-pre-line font-serif italic"></div>
+        </div>
+
+        <!-- System Metadata -->
+        <div class="pt-4 border-t border-slate-100 text-[11px] text-slate-400 flex items-center justify-between font-mono">
+          <div><span id="modal-source-tab">Tab: scraped</span> &bull; Registered: <span id="modal-registered">—</span></div>
+          <div>Last Login: <span id="modal-last-login">—</span></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <p>BMP Tutors &bull; Empirical Market Intelligence & Geospatial Analytics &bull; September 2026</p>
+      <div class="flex items-center space-x-4">
+        <a href="/report" target="_blank" class="hover:text-indigo-600 transition-colors">Academic Report</a>
+        <a href="/api/download/master-excel" class="hover:text-emerald-600 transition-colors">Download Master Dataset</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+
+    let currentPage = 1;
+    let totalPages = 1;
+    let pageSize = 25;
+    let chartsInitialized = false;
+
+    // Initialize application
+    
+    // Occupations Chart (Figure 6)
+    let occupationsChartInstance = null;
+    let currentOccMode = 'count';
+
+    function switchOccupationsChart(mode) {
+      currentOccMode = mode;
+      document.getElementById('btn-occ-count').className = mode === 'count'
+        ? "px-3 py-1 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-2xs"
+        : "px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900";
+      document.getElementById('btn-occ-fee').className = mode === 'fee'
+        ? "px-3 py-1 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-2xs"
+        : "px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900";
+      renderOccupationsChart();
+    }
+
+    function renderOccupationsChart() {
+      const canvas = document.getElementById('chart-occupations');
+      if (!canvas || !window.dashboardCharts || !window.dashboardCharts.occupations) return;
+      
+      const occData = window.dashboardCharts.occupations;
+      const sorted = [...occData].sort((a,b) => currentOccMode === 'count' ? a.count - b.count : a.avg_fee - b.avg_fee);
+      const labels = sorted.map(d => d.occupation);
+      const values = sorted.map(d => currentOccMode === 'count' ? d.count : d.avg_fee);
+
+      if (occupationsChartInstance) occupationsChartInstance.destroy();
+
+      occupationsChartInstance = new Chart(canvas, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: currentOccMode === 'count' ? 'Tutor Headcount' : 'Average Hourly Fee (₹/hr)',
+            data: values,
+            backgroundColor: currentOccMode === 'count' ? '#4f46e5' : '#10b981',
+            borderRadius: 6,
+            borderSkipped: false
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#0f172a',
+              titleFont: { size: 12, weight: 'bold' },
+              padding: 10,
+              cornerRadius: 8,
+              callbacks: {
+                label: function(ctx) {
+                  return currentOccMode === 'count' 
+                    ? ` ${ctx.raw.toLocaleString()} Registered Tutors`
+                    : ` ₹${ctx.raw.toLocaleString()} / hour`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: '#f1f5f9' },
+              ticks: {
+                callback: function(v) {
+                  return currentOccMode === 'count' ? v.toLocaleString() : '₹' + v.toLocaleString();
+                },
+                font: { family: 'JetBrains Mono', size: 10 }
+              }
+            },
+            y: {
+              grid: { display: false },
+              ticks: { font: { size: 10.5, weight: '500' } }
+            }
+          }
+        }
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      // Fire tutors fetch immediately for instantaneous table population
+      loadTutors();
+      // Load stats and filter options concurrently in the background
+      loadStats();
+      loadFilterOptions();
+    });
+
+    // Load Overall Platform Statistics
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/stats');
+        const data = await res.json();
+        document.getElementById('stat-tutors').textContent = data.total_tutors.toLocaleString();
+        document.getElementById('stat-bridge').textContent = data.total_bridge.toLocaleString();
+        document.getElementById('stat-fee').textContent = '₹' + data.avg_fee + ' / hr';
+        document.getElementById('stat-active').textContent = data.active_tutors.toLocaleString();
+      } catch (err) {
+        console.error('Error loading stats:', err);
+      }
+    }
+
+    // Switch Tabs
+    function switchTab(tabId) {
+      document.getElementById('tab-explorer').classList.add('hidden');
+      document.getElementById('tab-analytics').classList.add('hidden');
+      document.getElementById('tab-schema').classList.add('hidden');
+
+      document.getElementById('tab-btn-explorer').className = "px-4 py-2 rounded-lg text-sm font-medium transition-all text-indigo-200 hover:text-white hover:bg-indigo-800/50 flex items-center gap-2";
+      document.getElementById('tab-btn-analytics').className = "px-4 py-2 rounded-lg text-sm font-medium transition-all text-indigo-200 hover:text-white hover:bg-indigo-800/50 flex items-center gap-2";
+      document.getElementById('tab-btn-schema').className = "px-4 py-2 rounded-lg text-sm font-medium transition-all text-indigo-200 hover:text-white hover:bg-indigo-800/50 flex items-center gap-2";
+
+      if (tabId === 'explorer') {
+        document.getElementById('tab-explorer').classList.remove('hidden');
+        document.getElementById('tab-btn-explorer').className = "px-4 py-2 rounded-lg text-sm font-medium transition-all bg-indigo-600 text-white shadow-sm flex items-center gap-2";
+      } else if (tabId === 'analytics') {
+        document.getElementById('tab-analytics').classList.remove('hidden');
+        document.getElementById('tab-btn-analytics').className = "px-4 py-2 rounded-lg text-sm font-medium transition-all bg-indigo-600 text-white shadow-sm flex items-center gap-2";
+        if (!chartsInitialized) {
+          loadCharts();
+          chartsInitialized = true;
+        }
+        setTimeout(() => {
+          initOrUpdateMaps();
+        }, 150);
+      } else if (tabId === 'schema') {
+        document.getElementById('tab-schema').classList.remove('hidden');
+        document.getElementById('tab-btn-schema').className = "px-4 py-2 rounded-lg text-sm font-medium transition-all bg-indigo-600 text-white shadow-sm flex items-center gap-2";
+      }
+    }
+
+    // Load Filter Options
+    async function loadFilterOptions() {
+      try {
+        const res = await fetch('/api/filters');
+        const data = await res.json();
+
+        populateSelect('filter-subject-category', data.subject_categories);
+        populateSelect('filter-level', data.levels);
+        populateSelect('filter-exam', data.exams);
+        populateSelect('filter-region', data.regions);
+        populateSelect('filter-state', data.states);
+        populateSelect('filter-qualification', data.qualifications);
+        populateSelect('filter-seniority', data.seniority_tiers);
+        populateSelect('filter-role', data.experience_roles);
+        if (data.occupations && document.getElementById('filter-occupation')) {
+          populateSelect('filter-occupation', data.occupations);
+        }
+      } catch (err) {
+        console.error('Error loading filters:', err);
+      }
+    }
+
+    function populateSelect(elemId, items) {
+      const select = document.getElementById(elemId);
+      items.forEach(item => {
+        if (!item) return;
+        const opt = document.createElement('option');
+        opt.value = item;
+        opt.textContent = item;
+        select.appendChild(opt);
+      });
+    }
+
+    // Load Tutors Data
+    async function loadTutors() {
+      const tbody = document.getElementById('tutors-table-body');
+      tbody.innerHTML = Array(8).fill(0).map(() => `
+        <tr class="animate-pulse">
+          <td class="py-4 px-4"><div class="h-4 w-12 bg-slate-200 rounded"></div></td>
+          <td class="py-4 px-4">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-slate-200 shrink-0"></div>
+              <div class="space-y-1.5 flex-1">
+                <div class="h-3.5 w-32 bg-slate-200 rounded"></div>
+                <div class="h-2.5 w-48 bg-slate-100 rounded"></div>
+              </div>
+            </div>
+          </td>
+          <td class="py-4 px-4"><div class="h-5 w-24 bg-slate-200 rounded-full"></div></td>
+          <td class="py-4 px-4"><div class="h-3.5 w-24 bg-slate-200 rounded"></div></td>
+          <td class="py-4 px-4"><div class="h-3.5 w-20 bg-slate-200 rounded"></div></td>
+          <td class="py-4 px-4"><div class="h-5 w-40 bg-slate-200 rounded"></div></td>
+          <td class="py-4 px-4"><div class="h-5 w-16 bg-slate-200 rounded-full"></div></td>
+          <td class="py-4 px-4 text-center"><div class="h-7 w-16 bg-slate-200 rounded-lg mx-auto"></div></td>
+        </tr>
+      `).join('');
+
+      const params = new URLSearchParams({
+        page: currentPage,
+        page_size: pageSize,
+        search: document.getElementById('filter-search').value,
+        subject_category: document.getElementById('filter-subject-category').value,
+        level: document.getElementById('filter-level').value,
+        exam: document.getElementById('filter-exam').value,
+        region: document.getElementById('filter-region').value,
+        state: document.getElementById('filter-state').value,
+        qualification: document.getElementById('filter-qualification').value,
+        seniority_tier: document.getElementById('filter-seniority').value,
+        experience_role: document.getElementById('filter-role').value,
+        occupation: document.getElementById('filter-occupation') ? document.getElementById('filter-occupation').value : '',
+        gender: document.getElementById('filter-gender').value,
+        teaches_online: document.getElementById('filter-online').value
+      });
+
+      try {
+        const res = await fetch(`/api/tutors?${params.toString()}`);
+        const data = await res.json();
+
+        totalPages = data.total_pages;
+        document.getElementById('results-count-badge').textContent = `${data.total_count.toLocaleString()} Matches`;
+        
+        const start = ((currentPage - 1) * pageSize) + 1;
+        const end = Math.min(currentPage * pageSize, data.total_count);
+        document.getElementById('page-info').textContent = `Showing ${data.total_count ? start.toLocaleString() : 0} to ${end.toLocaleString()} of ${data.total_count.toLocaleString()} entries`;
+        document.getElementById('current-page-display').textContent = currentPage;
+
+        document.getElementById('btn-prev').disabled = currentPage <= 1;
+        document.getElementById('btn-first').disabled = currentPage <= 1;
+        document.getElementById('btn-next').disabled = currentPage >= totalPages;
+        document.getElementById('btn-last').disabled = currentPage >= totalPages;
+
+        if (!data.items || !data.items.length) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="8" class="py-16 text-center text-slate-400">
+                <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3 text-slate-400">
+                  <i class="fa-solid fa-user-slash text-xl"></i>
+                </div>
+                <p class="text-sm font-semibold text-slate-700">No verified educators match your filters</p>
+                <p class="text-xs text-slate-400 mt-1">Try resetting or broadening your search criteria.</p>
+                <button onclick="resetFilters()" class="mt-4 px-3.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 transition-colors">
+                  <i class="fa-solid fa-rotate-left text-[10px]"></i> Reset All Filters
+                </button>
+              </td>
+            </tr>`;
+          return;
+        }
+
+        let html = '';
+        
+        data.items.forEach(t => {
+          let subjsBadges = '';
+          if (t.subjects && t.subjects.length) {
+            subjsBadges = t.subjects.slice(0, 3).map(s => {
+              let badgeColor = "bg-slate-100 text-slate-700 border-slate-200";
+              if (s.subject_category === 'Science') badgeColor = "bg-blue-50 text-blue-700 border-blue-200/70";
+              if (s.subject_category === 'Coding') badgeColor = "bg-purple-50 text-purple-700 border-purple-200/70";
+              if (s.subject_category === 'Languages') badgeColor = "bg-amber-50 text-amber-700 border-amber-200/70";
+              if (s.subject_category === 'Commerce') badgeColor = "bg-emerald-50 text-emerald-700 border-emerald-200/70";
+              return `<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10.5px] font-medium border ${badgeColor}">
+                ${escapeHtml(s.canonical_subject)}
+                ${s.level_category ? `<span class="ml-1 opacity-75 text-[9px] font-mono">(${escapeHtml(s.level_category)})</span>` : ''}
+              </span>`;
+            }).join(' ');
+
+            if (t.subjects.length > 3) {
+              subjsBadges += ` <span class="text-[10px] text-slate-500 font-semibold px-1 py-0.5 rounded bg-slate-100 border border-slate-200">+${t.subjects.length - 3}</span>`;
+            }
+          } else {
+            subjsBadges = '<span class="text-xs text-slate-400 italic">None listed</span>';
+          }
+    
+          // Helper for initials
+          const names = (t.teacher_name || 'Anonymous').trim().split(' ');
+          const initials = (names[0][0] + (names.length > 1 ? names[names.length - 1][0] : '')).toUpperCase();
+          const avatarColors = [
+            'bg-indigo-100 text-indigo-700 ring-indigo-200',
+            'bg-blue-100 text-blue-700 ring-blue-200',
+            'bg-emerald-100 text-emerald-700 ring-emerald-200',
+            'bg-purple-100 text-purple-700 ring-purple-200',
+            'bg-rose-100 text-rose-700 ring-rose-200',
+            'bg-amber-100 text-amber-700 ring-amber-200'
+          ];
+          const avatarColor = avatarColors[Math.abs(t.tutor_id.split('').reduce((a,c)=>a+c.charCodeAt(0),0)) % avatarColors.length];
+
+          // Occupation badge style
+          let occBadge = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200">
+            ${escapeHtml(t.occupation || t.experience_role || 'Tutor')}
+          </span>`;
+          if (t.occupation) {
+            if (t.occupation.includes('Software') || t.occupation.includes('IT')) {
+              occBadge = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200/60">
+                <i class="fa-solid fa-code text-[9px] mr-1"></i> Software & IT
+              </span>`;
+            } else if (t.occupation.includes('Student') || t.occupation.includes('Researcher')) {
+              occBadge = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-200/60">
+                <i class="fa-solid fa-graduation-cap text-[9px] mr-1"></i> Student / Scholar
+              </span>`;
+            } else if (t.occupation.includes('Medical') || t.occupation.includes('Healthcare')) {
+              occBadge = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-cyan-50 text-cyan-700 border border-cyan-200/60">
+                <i class="fa-solid fa-user-doctor text-[9px] mr-1"></i> Medical / Doctor
+              </span>`;
+            } else if (t.occupation.includes('Chartered Accountant') || t.occupation.includes('Finance')) {
+              occBadge = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+                <i class="fa-solid fa-chart-line text-[9px] mr-1"></i> Finance & CA
+              </span>`;
+            } else if (t.occupation.includes('Engineer')) {
+              occBadge = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200/60">
+                <i class="fa-solid fa-gears text-[9px] mr-1"></i> Core Engineer
+              </span>`;
+            } else if (t.occupation.includes('Faculty') || t.occupation.includes('School')) {
+              occBadge = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-purple-50 text-purple-700 border border-purple-200/60">
+                <i class="fa-solid fa-chalkboard-user text-[9px] mr-1"></i> Academic Faculty
+              </span>`;
+            }
+          }
+
+          // Active indicator dot
+          const statusDot = t.is_active == 1 
+            ? `<span class="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 bg-emerald-50/80 px-1.5 py-0.5 rounded-md border border-emerald-200/50"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>Active</span>`
+            : `<span class="inline-flex items-center text-[10px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded-md">Inactive</span>`;
+
+          html += `
+            <tr class="hover:bg-indigo-50/30 transition-colors group cursor-pointer" onclick="viewTutorDetails('${t.tutor_id}')">
+              <td class="py-3.5 px-4 font-mono font-bold text-xs text-indigo-600">
+                <span class="bg-indigo-50/80 group-hover:bg-indigo-100 text-indigo-700 px-2 py-1 rounded-md border border-indigo-200/60 transition-colors">
+                  ${t.tutor_id}
+                </span>
+              </td>
+              <td class="py-3.5 px-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full ${avatarColor} ring-1 flex items-center justify-center text-xs font-bold shrink-0">
+                    ${initials}
+                  </div>
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-2">
+                      <span class="font-semibold text-slate-900 text-sm group-hover:text-indigo-600 transition-colors truncate">${escapeHtml(t.teacher_name || 'Anonymous')}</span>
+                      ${statusDot}
+                    </div>
+                    <div class="text-xs text-slate-500 truncate max-w-xs mt-0.5">${escapeHtml(t.teacher_hookline || 'No headline available')}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="py-3.5 px-4">
+                <div class="flex flex-col gap-1 items-start">
+                  ${occBadge}
+                  <span class="text-[10px] text-slate-400 font-medium">${escapeHtml(t.seniority_tier || 'Practitioner')}</span>
+                </div>
+              </td>
+              <td class="py-3.5 px-4">
+                <div class="font-medium text-slate-800 text-xs flex items-center gap-1">
+                  <i class="fa-solid fa-location-dot text-slate-400 text-[10px]"></i>
+                  <span>${escapeHtml(t.city || t.state || 'India')}</span>
+                </div>
+                <div class="text-[11px] text-slate-500 ml-3.5">${escapeHtml(t.state || '')} <span class="text-slate-400">(${escapeHtml(t.region || '—')})</span></div>
+              </td>
+              <td class="py-3.5 px-4">
+                <div class="text-xs font-semibold text-slate-800">${escapeHtml(t.highest_qualification || 'Degree')}</div>
+                <div class="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1">
+                  <i class="fa-regular fa-clock text-slate-400 text-[10px]"></i>
+                  <span>${t.total_teaching_exp_years != null ? t.total_teaching_exp_years + ' yrs exp' : '0 yrs exp'}</span>
+                </div>
+              </td>
+              <td class="py-3.5 px-4">
+                <div class="flex flex-wrap gap-1 items-center max-w-sm">
+                  ${subjsBadges}
+                </div>
+              </td>
+              <td class="py-3.5 px-4">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold font-mono bg-emerald-50 text-emerald-700 border border-emerald-200/80">
+                  ${t.hourly_fee_avg ? `₹${Math.round(t.hourly_fee_avg)}<span class="text-[10px] text-emerald-600/70 font-sans ml-0.5">/hr</span>` : 'N/A'}
+                </span>
+              </td>
+              <td class="py-3.5 px-4 text-center" onclick="event.stopPropagation()">
+                <button onclick="viewTutorDetails('${t.tutor_id}')" class="px-3 py-1.5 bg-slate-100 hover:bg-indigo-600 hover:text-white text-slate-700 rounded-lg text-xs font-semibold transition-all shadow-2xs flex items-center gap-1.5 mx-auto">
+                  <span>Profile</span>
+                  <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </button>
+              </td>
+            </tr>`;
+        });
+        tbody.innerHTML = html;
+      } catch (err) {
+        console.error('Error fetching tutors:', err);
+        tbody.innerHTML = Array(8).fill(0).map(() => `
+        <tr class="animate-pulse">
+          <td class="py-4 px-4"><div class="h-4 w-12 bg-slate-200 rounded"></div></td>
+          <td class="py-4 px-4">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-slate-200 shrink-0"></div>
+              <div class="space-y-1.5 flex-1">
+                <div class="h-3.5 w-32 bg-slate-200 rounded"></div>
+                <div class="h-2.5 w-48 bg-slate-100 rounded"></div>
+              </div>
+            </div>
+          </td>
+          <td class="py-4 px-4"><div class="h-5 w-24 bg-slate-200 rounded-full"></div></td>
+          <td class="py-4 px-4"><div class="h-3.5 w-24 bg-slate-200 rounded"></div></td>
+          <td class="py-4 px-4"><div class="h-3.5 w-20 bg-slate-200 rounded"></div></td>
+          <td class="py-4 px-4"><div class="h-5 w-40 bg-slate-200 rounded"></div></td>
+          <td class="py-4 px-4"><div class="h-5 w-16 bg-slate-200 rounded-full"></div></td>
+          <td class="py-4 px-4 text-center"><div class="h-7 w-16 bg-slate-200 rounded-lg mx-auto"></div></td>
+        </tr>
+      `).join('');
+      }
+    }
+
+    // Modal Details
+    async function viewTutorDetails(tutorId) {
+      try {
+        const res = await fetch(`/api/tutors/${tutorId}`);
+        const t = await res.json();
+
+        document.getElementById('modal-tutor-id').textContent = t.tutor_id;
+        document.getElementById('modal-name').textContent = t.teacher_name || 'Anonymous';
+        document.getElementById('modal-hookline').textContent = t.teacher_hookline || 'No hookline';
+        document.getElementById('modal-location').textContent = `${t.city || ''}${t.city ? ', ' : ''}${t.state || 'Other'} (${t.region || '—'})`;
+        document.getElementById('modal-qualification').textContent = t.highest_qualification || 'Not Specified';
+        document.getElementById('modal-fee').textContent = t.hourly_fee_avg ? `₹${Math.round(t.hourly_fee_avg)} / hr` : (t.fee_raw || 'Not reported');
+        const expRole = (t.experience_role && t.experience_role !== 'null') ? ` (${t.experience_role})` : '';
+        document.getElementById('modal-exp').textContent = `${t.seniority_tier || ''} • ${(t.total_teaching_exp_years != null) ? t.total_teaching_exp_years + ' yrs' : ''}${expRole}`;
+        document.getElementById('modal-desc').textContent = t.description || 'No bio provided.';
+
+        // Flags
+        document.getElementById('flag-online').textContent = `Online: ${t.teaches_online ? 'Yes' : 'No'}`;
+        document.getElementById('flag-online').className = t.teaches_online ? 'p-2 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 font-medium text-center' : 'p-2 rounded-lg bg-slate-100 text-slate-600 border border-slate-200 font-medium text-center';
+        
+        document.getElementById('flag-home').textContent = `Student Home: ${t.teaches_at_student_home ? 'Yes' : 'No'}`;
+        document.getElementById('flag-travel').textContent = `Can Travel: ${t.can_travel ? 'Yes' : 'No'}`;
+        document.getElementById('flag-hw').textContent = `Homework Help: ${t.homework_help ? 'Yes' : 'No'}`;
+
+        document.getElementById('modal-source-tab').textContent = `Tab: ${t.source_tab}`;
+        document.getElementById('modal-registered').textContent = `Registered: ${t.registered_date || 'N/A'}`;
+        document.getElementById('modal-last-login').textContent = `Last Login: ${t.last_login_date || 'N/A'}`;
+        
+        const urlElem = document.getElementById('modal-url');
+        if (t.profile_url) {
+          urlElem.href = t.profile_url;
+          urlElem.classList.remove('hidden');
+        } else {
+          urlElem.classList.add('hidden');
+        }
+
+        // Bridge Subjects List
+        const subjsContainer = document.getElementById('modal-subjects-container');
+        if (t.subjects && t.subjects.length) {
+          subjsContainer.innerHTML = t.subjects.map(s => `
+            <div class="p-2.5 rounded-lg border border-slate-200 bg-slate-50 flex items-start justify-between gap-2">
+              <div>
+                <span class="font-bold text-slate-800 text-xs block">${escapeHtml(s.canonical_subject)}</span>
+                <span class="text-[11px] text-slate-500 italic block mt-0.5 truncate">${escapeHtml(s.raw_subject_string)}</span>
+              </div>
+              <div class="flex flex-col items-end gap-1 flex-shrink-0">
+                <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-indigo-100 text-indigo-800">${escapeHtml(s.subject_category)}</span>
+                ${s.level_category ? `<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-100 text-emerald-800">${escapeHtml(s.level_category)}</span>` : ''}
+                ${s.competitive_exam ? `<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-rose-100 text-rose-800">${escapeHtml(s.competitive_exam)}</span>` : ''}
+              </div>
+            </div>
+          `).join('');
+        } else {
+          subjsContainer.innerHTML = '<p class="text-xs text-slate-400">No subjects registered in bridge table.</p>';
+        }
+
+        document.getElementById('detail-modal').classList.remove('hidden');
+      } catch (err) {
+        console.error('Error viewing tutor details:', err);
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('detail-modal').classList.add('hidden');
+    }
+
+    // Filter and Pagination helpers
+    function applyFilters() {
+      currentPage = 1;
+      loadTutors();
+    }
+
+    function resetFilters() {
+      document.getElementById('filter-search').value = '';
+      document.getElementById('filter-subject-category').value = '';
+      document.getElementById('filter-level').value = '';
+      document.getElementById('filter-exam').value = '';
+      document.getElementById('filter-region').value = '';
+      document.getElementById('filter-state').value = '';
+      document.getElementById('filter-qualification').value = '';
+      document.getElementById('filter-seniority').value = '';
+      document.getElementById('filter-role').value = '';
+      if (document.getElementById('filter-occupation')) document.getElementById('filter-occupation').value = '';
+      document.getElementById('filter-gender').value = '';
+      document.getElementById('filter-online').value = '';
+      currentPage = 1;
+      loadTutors();
+    }
+
+    function downloadFilteredExcel() {
+      const params = new URLSearchParams({
+        search: document.getElementById('filter-search').value,
+        subject_category: document.getElementById('filter-subject-category').value,
+        level: document.getElementById('filter-level').value,
+        exam: document.getElementById('filter-exam').value,
+        region: document.getElementById('filter-region').value,
+        state: document.getElementById('filter-state').value,
+        qualification: document.getElementById('filter-qualification').value,
+        seniority_tier: document.getElementById('filter-seniority').value,
+        experience_role: document.getElementById('filter-role').value,
+        gender: document.getElementById('filter-gender').value,
+        teaches_online: document.getElementById('filter-online').value
+      });
+      window.location.href = `/api/download/filtered-excel?${params.toString()}`;
+    }
+
+    function changePage(delta) {
+      const target = currentPage + delta;
+      if (target >= 1 && target <= totalPages) {
+        currentPage = target;
+        loadTutors();
+      }
+    }
+
+    function goToPage(page) {
+      currentPage = page;
+      loadTutors();
+    }
+
+    function goToLastPage() {
+      currentPage = totalPages;
+      loadTutors();
+    }
+
+    function changePageSize() {
+      pageSize = parseInt(document.getElementById('page-size').value, 10);
+      currentPage = 1;
+      loadTutors();
+    }
+
+    // Chart.js Visualizations
+    async function loadCharts() {
+      try {
+        const res = await fetch('/api/charts');
+        const data = await res.json();
+
+        // 1. Subjects Chart
+        new Chart(document.getElementById('chart-subjects'), {
+          type: 'bar',
+          data: {
+            labels: data.subject_categories.map(c => c.subject_category),
+            datasets: [{
+              label: 'Subject Count',
+              data: data.subject_categories.map(c => c.count),
+              backgroundColor: '#4f46e5',
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } }
+          }
+        });
+
+        // 2. Qualifications Chart
+        new Chart(document.getElementById('chart-qualifications'), {
+          type: 'doughnut',
+          data: {
+            labels: data.qualifications.map(q => q.highest_qualification),
+            datasets: [{
+              data: data.qualifications.map(q => q.count),
+              backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#94a3b8']
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } }
+          }
+        });
+
+        // 3. Regional Chart
+        new Chart(document.getElementById('chart-regions'), {
+          type: 'bar',
+          data: {
+            labels: data.regions.map(r => r.region),
+            datasets: [{
+              label: 'Tutors',
+              data: data.regions.map(r => r.count),
+              backgroundColor: '#0d9488',
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } }
+          }
+        });
+
+        // 4. Fees by Subject Category
+        new Chart(document.getElementById('chart-fees'), {
+          type: 'bar',
+          data: {
+            labels: data.fee_by_category.map(f => f.subject_category),
+            datasets: [{
+              label: 'Avg Hourly Fee (₹)',
+              data: data.fee_by_category.map(f => f.avg_fee),
+              backgroundColor: '#10b981',
+              borderRadius: 6
+            }]
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } }
+          }
+        });
+
+        // 5. Target Levels Chart (100% classified)
+        if (data.levels && document.getElementById('chart-levels')) {
+          new Chart(document.getElementById('chart-levels'), {
+            type: 'bar',
+            data: {
+              labels: data.levels.map(l => l.level_category),
+              datasets: [{
+                label: 'Subject-Level Links',
+                data: data.levels.map(l => l.count),
+                backgroundColor: '#9333ea',
+                borderRadius: 6
+              }]
+            },
+            options: {
+              indexAxis: 'y',
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { display: false } }
+            }
+          });
+        }
+
+        // 6. Seniority & Mastery Tiers Chart
+        if (data.seniority_tiers && document.getElementById('chart-seniority')) {
+          new Chart(document.getElementById('chart-seniority'), {
+            type: 'doughnut',
+            data: {
+              labels: data.seniority_tiers.map(s => s.seniority_tier),
+              datasets: [{
+                data: data.seniority_tiers.map(s => s.count),
+                backgroundColor: ['#f59e0b', '#3b82f6', '#8b5cf6', '#10b981']
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } }
+            }
+          });
+        }
+
+        // 7. City Tiers Chart
+        if (data.city_tiers && document.getElementById('chart-city-tiers')) {
+          new Chart(document.getElementById('chart-city-tiers'), {
+            type: 'doughnut',
+            data: {
+              labels: data.city_tiers.map(t => t.city_tier),
+              datasets: [{
+                data: data.city_tiers.map(t => t.count),
+                backgroundColor: ['#06b6d4', '#3b82f6', '#8b5cf6', '#94a3b8']
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } }
+            }
+          });
+        }
+
+        // 8. Competitive Exams
+        new Chart(document.getElementById('chart-exams'), {
+          type: 'bar',
+          data: {
+            labels: data.exams.map(e => e.competitive_exam),
+            datasets: [{
+              label: 'Offerings',
+              data: data.exams.map(e => e.count),
+              backgroundColor: '#f43f5e',
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } }
+          }
+        });
+
+        // Store and render Academic Table 2: Gender Distribution
+        window.dashboardCharts = data;
+        if (data.occupations) { renderOccupationsChart(); }
+        window.genderAnalyticsData = data;
+        renderGenderTable('categories');
+
+        // Store and render Academic Table 2.8, Figure 1, Figure 3
+        window.academicAnalyticsData = data;
+        if (data.table2_8) renderFeeTable('math_english');
+        if (data.figure1) renderFigure1('macro');
+        if (data.figure3) renderFigure3('total');
+
+      } catch (err) {
+        console.error('Error loading charts:', err);
+      }
+    }
+
+    // =========================================================================
+    // ACADEMIC TABLE 2: GENDER DISTRIBUTION SUBJECT-WISE
+    // =========================================================================
+    let currentGenderMode = 'categories';
+
+    const CATEGORY_ACADEMIC_LABELS = {
+      'Science': 'Natural sciences & mathematics (biology, chemistry, physics, mathematics)',
+      'Languages': 'Foreign & modern languages (English, Hindi, Tamil, French, Arabic, etc.)',
+      'Coding': 'Computer science & programming (Python, Java, web development, AI/ML, SQL)',
+      'Arts': 'History, geography, social sciences & humanities',
+      'Commerce': 'Commerce, economics & business studies (accounting, finance)',
+      'Misc/ECA': 'Creative arts, music, yoga & extracurricular skills',
+      'All Subjects': 'General elementary & primary school foundation (all subjects)'
+    };
+
+    function switchGenderTable(mode) {
+      currentGenderMode = mode;
+      const btnCats = document.getElementById('btn-gender-cats');
+      const btnSubs = document.getElementById('btn-gender-subs');
+
+      if (mode === 'categories') {
+        btnCats.className = "px-3 py-1 rounded-lg font-bold transition-all bg-indigo-600 text-white shadow-sm";
+        btnSubs.className = "px-3 py-1 rounded-lg font-bold transition-all text-slate-600 hover:text-slate-900";
+      } else {
+        btnSubs.className = "px-3 py-1 rounded-lg font-bold transition-all bg-indigo-600 text-white shadow-sm";
+        btnCats.className = "px-3 py-1 rounded-lg font-bold transition-all text-slate-600 hover:text-slate-900";
+      }
+
+      renderGenderTable(mode);
+    }
+
+    function renderGenderTable(mode) {
+      const data = window.genderAnalyticsData;
+      if (!data) return;
+
+      const tbody = document.getElementById('gender-table-body');
+      const tfoot = document.getElementById('gender-table-foot');
+      if (!tbody || !tfoot) return;
+
+      const rows = mode === 'categories' ? data.gender_by_category : data.gender_by_subject;
+      const tot = data.gender_total || { n: 106552, m_pct: 41.3, f_pct: 58.7 };
+
+      let bodyHtml = '';
+      rows.forEach(r => {
+        const displaySubject = mode === 'categories' 
+          ? (CATEGORY_ACADEMIC_LABELS[r.subject] || r.subject)
+          : r.subject;
+
+        bodyHtml += `
+          <tr class="hover:bg-slate-50 transition-colors">
+            <td class="py-2.5 px-3 font-medium text-slate-900">${escapeHtml(displaySubject)}</td>
+            <td class="py-2.5 px-3 text-right">
+              <div class="inline-flex items-center gap-2 justify-end">
+                <div class="w-14 bg-slate-100 rounded h-1.5 overflow-hidden flex justify-end">
+                  <div class="bg-blue-600 h-1.5 rounded" style="width: ${r.m_pct}%"></div>
+                </div>
+                <span class="font-bold text-blue-900 font-mono w-10">${r.m_pct}%</span>
+              </div>
+            </td>
+            <td class="py-2.5 px-3 text-right">
+              <div class="inline-flex items-center gap-2 justify-end">
+                <div class="w-14 bg-slate-100 rounded h-1.5 overflow-hidden">
+                  <div class="bg-rose-500 h-1.5 rounded" style="width: ${r.f_pct}%"></div>
+                </div>
+                <span class="font-bold text-rose-900 font-mono w-10">${r.f_pct}%</span>
+              </div>
+            </td>
+            <td class="py-2.5 px-3 text-right font-mono font-bold text-slate-700">${r.n.toLocaleString()}</td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = bodyHtml;
+
+      // Table Footer with academic double border
+      tfoot.innerHTML = `
+        <tr class="border-t-2 border-b-2 border-slate-900 bg-slate-100/80 font-bold text-slate-900">
+          <td class="py-2.5 px-3 font-bold uppercase tracking-wider">Total</td>
+          <td class="py-2.5 px-3 text-right">
+            <span class="font-mono font-bold text-blue-950 text-xs">${tot.m_pct}%</span>
+          </td>
+          <td class="py-2.5 px-3 text-right">
+            <span class="font-mono font-bold text-rose-950 text-xs">${tot.f_pct}%</span>
+          </td>
+          <td class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">${tot.n.toLocaleString()}</td>
+        </tr>
+      `;
+    }
+
+    function copyGenderTable() {
+      const data = window.genderAnalyticsData;
+      if (!data) return;
+
+      const rows = currentGenderMode === 'categories' ? data.gender_by_category : data.gender_by_subject;
+      const tot = data.gender_total || { n: 106552, m_pct: 41.3, f_pct: 58.7 };
+
+      let text = "Table 2. Proportion of men and women according to tutoring subject.\n";
+      text += "Subject\tM (%)\tF (%)\tN\n";
+
+      rows.forEach(r => {
+        const displaySubject = currentGenderMode === 'categories' 
+          ? (CATEGORY_ACADEMIC_LABELS[r.subject] || r.subject)
+          : r.subject;
+        text += `${displaySubject}\t${r.m_pct}\t${r.f_pct}\t${r.n}\n`;
+      });
+      text += `Total\t${tot.m_pct}\t${tot.f_pct}\t${tot.n}\n`;
+      text += "Notes: If tutors offer tutoring in two or more subjects, they were included for each subject.\n";
+
+      navigator.clipboard.writeText(text).then(() => {
+        const btnText = document.getElementById('copy-table-btn-text');
+        if (btnText) {
+          const orig = btnText.textContent;
+          btnText.textContent = "Copied!";
+          setTimeout(() => { btnText.textContent = orig; }, 2000);
+        }
+      });
+    }
+
+    // =========================================================================
+    // ACADEMIC TABLE 2.8: SUBJECT-WISE FEES BY LEVEL
+    // =========================================================================
+    let currentFeeMode = 'math_english';
+
+    function switchFeeTable(mode) {
+      currentFeeMode = mode;
+      const btnMe = document.getElementById('btn-fee-me');
+      const btnAll = document.getElementById('btn-fee-all');
+      const btnMat = document.getElementById('btn-fee-matrix');
+
+      const activeClass = "px-3 py-1 rounded-lg font-bold transition-all bg-emerald-600 text-white shadow-sm";
+      const inactiveClass = "px-3 py-1 rounded-lg font-bold transition-all text-slate-600 hover:text-slate-900";
+
+      if (btnMe) btnMe.className = mode === 'math_english' ? activeClass : inactiveClass;
+      if (btnAll) btnAll.className = mode === 'all_subjects' ? activeClass : inactiveClass;
+      if (btnMat) btnMat.className = mode === 'matrix' ? activeClass : inactiveClass;
+
+      renderFeeTable(mode);
+    }
+
+    function renderFeeTable(mode) {
+      const data = window.academicAnalyticsData ? window.academicAnalyticsData.table2_8 : null;
+      if (!data) return;
+
+      const thead = document.getElementById('fee-table-head');
+      const tbody = document.getElementById('fee-table-body');
+      if (!thead || !tbody) return;
+
+      const levelsDef = [
+        { key: 'Primary', label: 'Primary & Middle (Class 1–8)', short: 'Primary' },
+        { key: 'Secondary', label: 'Secondary (Class 9–10)', short: 'Secondary' },
+        { key: 'SeniorSec', label: 'Senior Secondary (Class 11–12)', short: 'Senior Sec.' },
+        { key: 'HigherEd', label: 'Higher Education (College)', short: 'Higher Ed' }
+      ];
+
+      if (mode === 'math_english') {
+        // Direct replicate of Table 2.8 in paper
+        thead.innerHTML = `
+          <tr class="border-t-2 border-b border-slate-900 bg-slate-50 text-[11px] font-bold text-slate-800 uppercase tracking-wider">
+            <th rowspan="2" class="py-2.5 px-3 border-r border-slate-200">Region / Zone</th>
+            ${levelsDef.map(l => `<th colspan="2" class="py-2 px-2 text-center border-r border-slate-200">${l.label}</th>`).join('')}
+          </tr>
+          <tr class="border-b border-slate-900 bg-slate-50/70 text-[10px] font-semibold text-slate-700 uppercase">
+            ${levelsDef.map(() => `
+              <th class="py-1.5 px-2 text-right">Maths</th>
+              <th class="py-1.5 px-2 text-right border-r border-slate-200">English</th>
+            `).join('')}
+          </tr>
+        `;
+
+        let bodyHtml = '';
+        data.regions_order.forEach((reg) => {
+          const isNat = reg === 'Nationwide';
+          const rowClass = isNat 
+            ? 'font-bold bg-slate-100/90 text-slate-900 border-b-2 border-slate-900' 
+            : 'hover:bg-slate-50 transition-colors';
+          const regLabel = isNat ? 'Nationwide (All India)' : `${reg} Zone`;
+
+          let cells = `<td class="py-2 px-3 ${isNat ? 'font-bold text-indigo-950' : 'font-medium text-slate-800'} border-r border-slate-200">${regLabel}</td>`;
+
+          levelsDef.forEach(l => {
+            const m = data.data[reg]?.[l.key]?.Maths || { fee: 0, n: 0 };
+            const e = data.data[reg]?.[l.key]?.English || { fee: 0, n: 0 };
+
+            cells += `
+              <td class="py-2 px-2 text-right font-mono">
+                ${m.n > 0 ? `<span class="font-bold text-slate-900">₹${m.fee}</span><span class="text-[10px] text-slate-400 ml-1">(n=${m.n})</span>` : '<span class="text-slate-300">-</span>'}
+              </td>
+              <td class="py-2 px-2 text-right font-mono border-r border-slate-200">
+                ${e.n > 0 ? `<span class="font-bold text-slate-900">₹${e.fee}</span><span class="text-[10px] text-slate-400 ml-1">(n=${e.n})</span>` : '<span class="text-slate-300">-</span>'}
+              </td>
+            `;
+          });
+
+          bodyHtml += `<tr class="${rowClass}">${cells}</tr>`;
+        });
+        tbody.innerHTML = bodyHtml;
+
+      } else if (mode === 'all_subjects') {
+        // Extended 5 subjects per level
+        const subjs = [
+          { key: 'Maths', label: 'Maths' },
+          { key: 'English', label: 'English' },
+          { key: 'Sciences', label: 'Science' },
+          { key: 'Coding', label: 'Coding' },
+          { key: 'Languages', label: 'Languages' }
+        ];
+
+        thead.innerHTML = `
+          <tr class="border-t-2 border-b border-slate-900 bg-slate-50 text-[11px] font-bold text-slate-800 uppercase tracking-wider">
+            <th rowspan="2" class="py-2.5 px-3 border-r border-slate-200">Region / Zone</th>
+            ${levelsDef.map(l => `<th colspan="5" class="py-2 px-2 text-center border-r border-slate-200">${l.short}</th>`).join('')}
+          </tr>
+          <tr class="border-b border-slate-900 bg-slate-50/70 text-[10px] font-semibold text-slate-700 uppercase">
+            ${levelsDef.map(() => subjs.map((s, si) => `
+              <th class="py-1 px-1.5 text-right ${si === 4 ? 'border-r border-slate-200' : ''}">${s.label}</th>
+            `).join('')).join('')}
+          </tr>
+        `;
+
+        let bodyHtml = '';
+        data.regions_order.forEach((reg) => {
+          const isNat = reg === 'Nationwide';
+          const rowClass = isNat ? 'font-bold bg-slate-100/90 text-slate-900 border-b-2 border-slate-900' : 'hover:bg-slate-50 transition-colors';
+          const regLabel = isNat ? 'Nationwide (All India)' : `${reg} Zone`;
+
+          let cells = `<td class="py-2 px-3 ${isNat ? 'font-bold text-indigo-950' : 'font-medium text-slate-800'} border-r border-slate-200">${regLabel}</td>`;
+
+          levelsDef.forEach(l => {
+            subjs.forEach((s, si) => {
+              const item = data.data[reg]?.[l.key]?.[s.key] || { fee: 0, n: 0 };
+              cells += `
+                <td class="py-2 px-1.5 text-right font-mono ${si === 4 ? 'border-r border-slate-200' : ''}">
+                  ${item.n > 0 ? `<div class="font-bold text-slate-900 text-[11px]">₹${item.fee}</div><div class="text-[9px] text-slate-400">n=${item.n}</div>` : '<span class="text-slate-300">-</span>'}
+                </td>
+              `;
+            });
+          });
+
+          bodyHtml += `<tr class="${rowClass}">${cells}</tr>`;
+        });
+        tbody.innerHTML = bodyHtml;
+
+      } else if (mode === 'matrix') {
+        // Subject x Level Matrix
+        thead.innerHTML = `
+          <tr class="border-t-2 border-b-2 border-slate-900 bg-slate-50 text-[11px] font-bold text-slate-800 uppercase tracking-wider">
+            <th class="py-2.5 px-3">Tutoring Subject Discipline</th>
+            <th class="py-2.5 px-3 text-right">Primary & Middle (Class 1–8)</th>
+            <th class="py-2.5 px-3 text-right">Secondary (Class 9–10)</th>
+            <th class="py-2.5 px-3 text-right">Senior Secondary (Class 11–12)</th>
+            <th class="py-2.5 px-3 text-right">Higher Education (College)</th>
+            <th class="py-2.5 px-3 text-right bg-emerald-50/60 text-emerald-950">Combined Mean (₹/hr)</th>
+            <th class="py-2.5 px-3 text-right font-mono">Total N</th>
+          </tr>
+        `;
+
+        let bodyHtml = '';
+        data.matrix.forEach(r => {
+          bodyHtml += `
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="py-2.5 px-3 font-semibold text-slate-900">${r.subject_name}</td>
+              <td class="py-2.5 px-3 text-right font-mono">
+                <span class="font-bold text-slate-900">₹${r.levels.Primary.fee}</span>
+                <span class="text-[10px] text-slate-400 ml-1">(n=${r.levels.Primary.n.toLocaleString()})</span>
+              </td>
+              <td class="py-2.5 px-3 text-right font-mono">
+                <span class="font-bold text-slate-900">₹${r.levels.Secondary.fee}</span>
+                <span class="text-[10px] text-slate-400 ml-1">(n=${r.levels.Secondary.n.toLocaleString()})</span>
+              </td>
+              <td class="py-2.5 px-3 text-right font-mono">
+                <span class="font-bold text-slate-900">₹${r.levels.SeniorSec.fee}</span>
+                <span class="text-[10px] text-slate-400 ml-1">(n=${r.levels.SeniorSec.n.toLocaleString()})</span>
+              </td>
+              <td class="py-2.5 px-3 text-right font-mono">
+                <span class="font-bold text-slate-900">₹${r.levels.HigherEd.fee}</span>
+                <span class="text-[10px] text-slate-400 ml-1">(n=${r.levels.HigherEd.n.toLocaleString()})</span>
+              </td>
+              <td class="py-2.5 px-3 text-right font-mono font-bold text-emerald-900 bg-emerald-50/40">
+                ₹${r.overall_fee.toLocaleString()}
+              </td>
+              <td class="py-2.5 px-3 text-right font-mono font-bold text-slate-700">
+                ${r.total_n.toLocaleString()}
+              </td>
+            </tr>
+          `;
+        });
+        tbody.innerHTML = bodyHtml;
+      }
+    }
+
+    function copyFeeTable() {
+      const data = window.academicAnalyticsData ? window.academicAnalyticsData.table2_8 : null;
+      if (!data) return;
+
+      let text = "Table 2.8 Mean prices for one hour of tuition by level\n";
+
+      if (currentFeeMode === 'math_english') {
+        text += "Region\tPrimary Maths\tn\tPrimary English\tn\tSecondary Maths\tn\tSecondary English\tn\tSenior Sec Maths\tn\tSenior Sec English\tn\tHigher Ed Maths\tn\tHigher Ed English\tn\n";
+        data.regions_order.forEach(reg => {
+          const regLabel = reg === 'Nationwide' ? 'Nationwide' : `${reg} Zone`;
+          let line = [regLabel];
+          ['Primary', 'Secondary', 'SeniorSec', 'HigherEd'].forEach(l => {
+            const m = data.data[reg]?.[l]?.Maths || { fee: '', n: '' };
+            const e = data.data[reg]?.[l]?.English || { fee: '', n: '' };
+            line.push(m.fee, m.n, e.fee, e.n);
+          });
+          text += line.join("\t") + "\n";
+        });
+      } else if (currentFeeMode === 'matrix') {
+        text += "Subject\tPrimary & Middle (₹)\tn\tSecondary (₹)\tn\tSenior Secondary (₹)\tn\tHigher Ed (₹)\tn\tOverall Fee (₹)\tTotal N\n";
+        data.matrix.forEach(r => {
+          text += `${r.subject_name}\t${r.levels.Primary.fee}\t${r.levels.Primary.n}\t${r.levels.Secondary.fee}\t${r.levels.Secondary.n}\t${r.levels.SeniorSec.fee}\t${r.levels.SeniorSec.n}\t${r.levels.HigherEd.fee}\t${r.levels.HigherEd.n}\t${r.overall_fee}\t${r.total_n}\n`;
+        });
+      }
+
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copy-fee-table-btn-text');
+        if (btn) {
+          const orig = btn.textContent;
+          btn.textContent = "Copied!";
+          setTimeout(() => { btn.textContent = orig; }, 2000);
+        }
+      });
+    }
+
+    // =========================================================================
+    // ACADEMIC FIGURE 1: SUBJECTS OFFERED FOR PRIVATE TUITION
+    // =========================================================================
+    let chartFigure1Instance = null;
+    let currentFig1Mode = 'macro';
+
+    function switchFigure1(mode) {
+      currentFig1Mode = mode;
+      const btnMacro = document.getElementById('btn-fig1-macro');
+      const btnTop = document.getElementById('btn-fig1-top');
+      if (mode === 'macro') {
+        btnMacro.className = "px-2.5 py-0.5 rounded-md font-bold bg-slate-800 text-white shadow-xs";
+        btnTop.className = "px-2.5 py-0.5 rounded-md font-medium text-slate-600 hover:text-slate-900";
+      } else {
+        btnTop.className = "px-2.5 py-0.5 rounded-md font-bold bg-slate-800 text-white shadow-xs";
+        btnMacro.className = "px-2.5 py-0.5 rounded-md font-medium text-slate-600 hover:text-slate-900";
+      }
+      renderFigure1(mode);
+    }
+
+    function renderFigure1(mode) {
+      const data = window.academicAnalyticsData ? window.academicAnalyticsData.figure1 : null;
+      if (!data) return;
+
+      const ctx = document.getElementById('chart-figure-1');
+      if (!ctx) return;
+
+      const items = mode === 'macro' ? data.macro : data.top_subjects;
+      const labels = items.map(i => i.name);
+      const values = items.map(i => i.count);
+
+      if (chartFigure1Instance) {
+        chartFigure1Instance.destroy();
+      }
+
+      chartFigure1Instance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Offered Tutoring Courses (N)',
+            data: values,
+            backgroundColor: '#475569',
+            borderColor: '#334155',
+            borderWidth: 1,
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: mode === 'macro' ? 'x' : 'y',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  const item = items[ctx.dataIndex];
+                  return `${(ctx.parsed.y || ctx.parsed.x).toLocaleString()} offerings (${item.pct}% share)`;
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                font: { size: 10, family: 'Inter' },
+                callback: function(val) {
+                  return val >= 1000 ? (val/1000).toFixed(0) + 'k' : val;
+                }
+              },
+              grid: { color: 'rgba(203, 213, 225, 0.4)' }
+            },
+            x: {
+              ticks: {
+                font: { size: 10, family: 'Inter' },
+                maxRotation: mode === 'macro' ? 20 : 0,
+                autoSkip: false
+              },
+              grid: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    // =========================================================================
+    // ACADEMIC FIGURE 3: YEARS OF EXPERIENCE DISTRIBUTION (AGE PROXY)
+    // =========================================================================
+    let chartFigure3Instance = null;
+    let currentFig3Mode = 'total';
+
+    function switchFigure3(mode) {
+      currentFig3Mode = mode;
+      const btnTot = document.getElementById('btn-fig3-total');
+      const btnGen = document.getElementById('btn-fig3-gender');
+      if (mode === 'total') {
+        btnTot.className = "px-2.5 py-0.5 rounded-md font-bold bg-indigo-600 text-white shadow-xs";
+        btnGen.className = "px-2.5 py-0.5 rounded-md font-medium text-slate-600 hover:text-slate-900";
+      } else {
+        btnGen.className = "px-2.5 py-0.5 rounded-md font-bold bg-indigo-600 text-white shadow-xs";
+        btnTot.className = "px-2.5 py-0.5 rounded-md font-medium text-slate-600 hover:text-slate-900";
+      }
+      renderFigure3(mode);
+    }
+
+    function renderFigure3(mode) {
+      const data = window.academicAnalyticsData ? window.academicAnalyticsData.figure3 : null;
+      if (!data) return;
+
+      const ctx = document.getElementById('chart-figure-3');
+      if (!ctx) return;
+
+      if (chartFigure3Instance) {
+        chartFigure3Instance.destroy();
+      }
+
+      let datasets = [];
+      if (mode === 'total') {
+        datasets = [{
+          label: 'Total Tutors (N)',
+          data: data.total,
+          borderColor: '#4f46e5',
+          backgroundColor: 'rgba(79, 70, 229, 0.08)',
+          fill: true,
+          tension: 0.35,
+          borderWidth: 2,
+          pointRadius: 2.5,
+          pointHoverRadius: 5,
+          pointBackgroundColor: '#4f46e5'
+        }];
+      } else {
+        datasets = [
+          {
+            label: 'Women Tutors (F)',
+            data: data.female,
+            borderColor: '#e11d48',
+            backgroundColor: 'rgba(225, 29, 72, 0.05)',
+            fill: true,
+            tension: 0.35,
+            borderWidth: 2,
+            pointRadius: 2,
+            pointHoverRadius: 4,
+            pointBackgroundColor: '#e11d48'
+          },
+          {
+            label: 'Men Tutors (M)',
+            data: data.male,
+            borderColor: '#2563eb',
+            backgroundColor: 'rgba(37, 99, 235, 0.05)',
+            fill: true,
+            tension: 0.35,
+            borderWidth: 2,
+            pointRadius: 2,
+            pointHoverRadius: 4,
+            pointBackgroundColor: '#2563eb'
+          }
+        ];
+      }
+
+      chartFigure3Instance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: data.labels.map(y => `${y} yrs`),
+          datasets: datasets
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: {
+              display: mode !== 'total',
+              position: 'top',
+              labels: { boxWidth: 12, font: { size: 11, family: 'Inter' } }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  return `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()} tutors`;
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { font: { size: 10, family: 'Inter' } },
+              grid: { color: 'rgba(203, 213, 225, 0.4)' }
+            },
+            x: {
+              ticks: {
+                font: { size: 10, family: 'Inter' },
+                maxTicksLimit: 12
+              },
+              grid: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    // =========================================================================
+    // ACADEMIC WHITE BOUNDARY CHOROPLETH MAPS (DOCX FIGURE 4 STYLE)
+    // =========================================================================
+    let mapIndia = null;
+    let mapStateCities = null;
+    let indiaGeoLayer = null;
+    let indiaLabelsGroup = null;
+    let stateDistrictsGeoLayer = null;
+    let stateDistrictsLabelsGroup = null;
+    
+    let statesGeoDataCache = null;
+    let currentDistrictGeoCache = null;
+    let currentMapMetric = 'count'; // 'count', 'fee', 'online'
+    let currentSelectedState = 'Karnataka';
+    let mapsInitialized = false;
+
+    // Academic Color Scales (Docx Figure 4 Purple Spectrum)
+    const COLOR_RAMP = ['#f5f3ff', '#ddd6fe', '#a78bfa', '#7c3aed', '#4c1d95'];
+
+    function getMetricValue(props, metric) {
+      if (!props) return 0;
+      if (metric === 'count') return props.tutor_count || 0;
+      if (metric === 'fee') return props.avg_fee || 0;
+      if (metric === 'online') return props.online_pct || 0;
+      return 0;
+    }
+
+    function getMetricBreakpoints(metric) {
+      if (metric === 'count') return [500, 2000, 6000, 12000];
+      if (metric === 'fee') return [500, 700, 900, 1100];
+      if (metric === 'online') return [85, 92, 96, 98];
+      return [1, 2, 3, 4];
+    }
+
+    function getPolygonColor(val, metric) {
+      const breaks = getMetricBreakpoints(metric);
+      if (val === 0 || val == null) return '#f8fafc'; // Neutral off-white for 0
+      if (val < breaks[0]) return COLOR_RAMP[0];
+      if (val < breaks[1]) return COLOR_RAMP[1];
+      if (val < breaks[2]) return COLOR_RAMP[2];
+      if (val < breaks[3]) return COLOR_RAMP[3];
+      return COLOR_RAMP[4];
+    }
+
+    function formatLabelValue(val, metric) {
+      if (val === 0 || val == null) return '0';
+      if (metric === 'count') return val >= 1000 ? (val >= 10000 ? Math.round(val/1000) + 'k' : (val/1000).toFixed(1) + 'k') : val.toString();
+      if (metric === 'fee') return '₹' + Math.round(val);
+      if (metric === 'online') return Math.round(val) + '%';
+      return val;
+    }
+
+    function updateLegendUI() {
+      const breaks = getMetricBreakpoints(currentMapMetric);
+      const legendBar = document.getElementById('legend-scale-bar');
+      const legendTitle = document.getElementById('legend-title');
+
+      if (currentMapMetric === 'count') {
+        legendTitle.textContent = 'Tutor Count Range:';
+      } else if (currentMapMetric === 'fee') {
+        legendTitle.textContent = 'Average Hourly Fee:';
+      } else {
+        legendTitle.textContent = 'Online Tutoring Rate:';
+      }
+
+      const labels = [
+        `&lt; ${breaks[0]}`,
+        `${breaks[0]} – ${breaks[1]}`,
+        `${breaks[1]} – ${breaks[2]}`,
+        `${breaks[2]} – ${breaks[3]}`,
+        `&gt; ${breaks[3]}`
+      ];
+
+      let html = '';
+      COLOR_RAMP.forEach((color, i) => {
+        html += `
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded border border-slate-300 text-[10px] font-semibold" style="background-color: ${color}; color: ${i >= 3 ? '#ffffff' : '#1e1b4b'};">
+            ${labels[i]}
+          </span>
+        `;
+      });
+      legendBar.innerHTML = html;
+    }
+
+    function setMapMetric(metric) {
+      currentMapMetric = metric;
+
+      // Update button styles
+      ['count', 'fee', 'online'].forEach(m => {
+        const btn = document.getElementById(`btn-metric-${m}`);
+        if (m === metric) {
+          btn.className = "px-3 py-1 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-sm";
+        } else {
+          btn.className = "px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900 bg-slate-100";
+        }
+      });
+
+      updateLegendUI();
+
+      if (statesGeoDataCache) {
+        renderIndiaChoropleth(statesGeoDataCache);
+      }
+      if (currentDistrictGeoCache) {
+        renderDistrictChoropleth(currentDistrictGeoCache);
+      }
+    }
+
+    function initOrUpdateMaps() {
+      if (!mapsInitialized) {
+        // 1. Initialize All-India Boundary Map (Pure Academic White)
+        mapIndia = L.map('map-india', {
+          scrollWheelZoom: false,
+          zoomControl: true,
+          attributionControl: false
+        }).setView([22.8, 80.0], 4.4);
+
+        indiaLabelsGroup = L.layerGroup().addTo(mapIndia);
+
+        // 2. Initialize State District Map
+        mapStateCities = L.map('map-state-cities', {
+          scrollWheelZoom: false,
+          zoomControl: true,
+          attributionControl: false
+        }).setView([15.3173, 75.7139], 6.5);
+
+        stateDistrictsLabelsGroup = L.layerGroup().addTo(mapStateCities);
+
+        mapsInitialized = true;
+        updateLegendUI();
+        loadGeoJSONData();
+      } else {
+        mapIndia.invalidateSize();
+        mapStateCities.invalidateSize();
+      }
+    }
+
+    async function loadGeoJSONData() {
+      try {
+        const res = await fetch('/api/geojson/states');
+        statesGeoDataCache = await res.json();
+
+        // Populate State Dropdown
+        const stateSelect = document.getElementById('map-state-select');
+        stateSelect.innerHTML = '';
+        
+        // Sort states by tutor count descending
+        const sortedFeatures = [...statesGeoDataCache.features].sort((a, b) => (b.properties.tutor_count || 0) - (a.properties.tutor_count || 0));
+        
+        sortedFeatures.forEach(feat => {
+          const p = feat.properties;
+          const opt = document.createElement('option');
+          opt.value = p.state;
+          opt.textContent = `${p.state} (${(p.tutor_count || 0).toLocaleString()} tutors)`;
+          stateSelect.appendChild(opt);
+        });
+
+        renderIndiaChoropleth(statesGeoDataCache);
+
+        // Load default state
+        selectState(currentSelectedState);
+
+      } catch (err) {
+        console.error('Error loading GeoJSON states:', err);
+      }
+    }
+
+    function renderIndiaChoropleth(geoData) {
+      if (indiaGeoLayer) {
+        mapIndia.removeLayer(indiaGeoLayer);
+      }
+      indiaLabelsGroup.clearLayers();
+
+      indiaGeoLayer = L.geoJSON(geoData, {
+        style: function(feature) {
+          const val = getMetricValue(feature.properties, currentMapMetric);
+          return {
+            fillColor: getPolygonColor(val, currentMapMetric),
+            weight: 1.5,
+            opacity: 1,
+            color: '#1e293b', // Crisp dark boundary stroke
+            fillOpacity: 0.9
+          };
+        },
+        onEachFeature: function(feature, layer) {
+          const p = feature.properties;
+          const val = getMetricValue(p, currentMapMetric);
+          const formattedVal = formatLabelValue(val, currentMapMetric);
+
+          // Centroid Label placement (Academic paper direct number in boundary)
+          try {
+            const bounds = layer.getBounds();
+            let center = bounds.getCenter();
+            if (p.label_lat && p.label_lng) {
+              center = [p.label_lat, p.label_lng];
+            }
+
+            // Label marker inside state boundary
+            if (p.tutor_count > 0 || currentMapMetric === 'fee') {
+              const labelMarker = L.marker(center, {
+                icon: L.divIcon({
+                  className: 'polygon-number-label',
+                  html: `<span>${formattedVal}</span>`,
+                  iconSize: [40, 16],
+                  iconAnchor: [20, 8]
+                })
+              });
+              indiaLabelsGroup.addLayer(labelMarker);
+            }
+          } catch(e) {}
+
+          // Interactive Hover & Tooltip
+          layer.bindTooltip(`
+            <div class="font-sans text-xs">
+              <div class="font-bold text-slate-900 border-b pb-0.5 mb-1">${escapeHtml(p.state)}</div>
+              <div>Tutors: <b>${(p.tutor_count || 0).toLocaleString()}</b></div>
+              <div>Avg Fee: <b>₹${p.avg_fee}/hr</b></div>
+              <div>Online: <b>${p.online_pct}%</b></div>
+            </div>
+          `, { sticky: true });
+
+          layer.on({
+            mouseover: function(e) {
+              const l = e.target;
+              l.setStyle({
+                weight: 3,
+                color: '#000000',
+                fillOpacity: 1
+              });
+              l.bringToFront();
+            },
+            mouseout: function(e) {
+              indiaGeoLayer.resetStyle(e.target);
+            },
+            click: function() {
+              selectState(p.state);
+            }
+          });
+        }
+      }).addTo(mapIndia);
+
+      mapIndia.fitBounds(indiaGeoLayer.getBounds(), { padding: [10, 10] });
+    }
+
+    function onStateSelectChange(stateName) {
+      selectState(stateName);
+    }
+
+    async function selectState(stateName) {
+      currentSelectedState = stateName;
+      const selectElem = document.getElementById('map-state-select');
+      if (selectElem) selectElem.value = stateName;
+
+      // Update state summary cards
+      if (statesGeoDataCache) {
+        const feat = statesGeoDataCache.features.find(f => 
+          (f.properties.state && f.properties.state.toLowerCase() === stateName.toLowerCase()) ||
+          (f.properties.display_name && f.properties.display_name.toLowerCase() === stateName.toLowerCase()) ||
+          (f.properties.ST_NM && f.properties.ST_NM.toLowerCase() === stateName.toLowerCase())
+        );
+        if (feat) {
+          const p = feat.properties;
+          document.getElementById('state-metric-name').textContent = p.state;
+          document.getElementById('state-metric-tutors').textContent = `${(p.tutor_count || 0).toLocaleString()} Tutors`;
+          document.getElementById('state-metric-fee').textContent = `₹${p.avg_fee} / hr`;
+          document.getElementById('state-metric-online').textContent = `${p.online_pct}%`;
+          document.getElementById('city-table-state-title').textContent = p.state;
+        }
+      }
+
+      // Fetch district boundaries
+      const tbody = document.getElementById('city-table-body');
+      tbody.innerHTML = '<tr><td colspan="4" class="py-8 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Loading district boundaries...</td></tr>';
+
+      try {
+        const res = await fetch(`/api/geojson/districts?state=${encodeURIComponent(stateName)}`);
+        currentDistrictGeoCache = await res.json();
+
+        document.getElementById('city-count-badge').textContent = `${currentDistrictGeoCache.features.length} Districts`;
+
+        renderDistrictChoropleth(currentDistrictGeoCache);
+
+        // Populate Table with districts/cities
+        if (!currentDistrictGeoCache.features || !currentDistrictGeoCache.features.length) {
+          tbody.innerHTML = '<tr><td colspan="4" class="py-8 text-center text-slate-400">No district boundaries available for this state.</td></tr>';
+          return;
+        }
+
+        const sortedDistricts = [...currentDistrictGeoCache.features]
+          .map(f => f.properties)
+          .sort((a, b) => (b.tutor_count || 0) - (a.tutor_count || 0));
+
+        const maxDistTutors = Math.max(...sortedDistricts.map(d => d.tutor_count || 0), 1);
+        let tableHtml = '';
+
+        sortedDistricts.forEach((d, idx) => {
+          const pctWidth = Math.round(((d.tutor_count || 0) / maxDistTutors) * 100);
+          tableHtml += `
+            <tr class="hover:bg-slate-100/80 transition-colors">
+              <td class="py-2.5 px-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-4 h-4 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-[10px] font-bold">${idx + 1}</span>
+                  <div>
+                    <span class="font-semibold text-slate-800">${escapeHtml(d.district || d.city)}</span>
+                    <div class="w-20 bg-slate-200 rounded-full h-1 mt-0.5 overflow-hidden">
+                      <div class="bg-indigo-600 h-1 rounded-full" style="width: ${pctWidth}%"></div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td class="py-2.5 px-2 text-right font-bold text-slate-900">${(d.tutor_count || 0).toLocaleString()}</td>
+              <td class="py-2.5 px-2 text-right font-semibold text-emerald-700">${d.avg_fee ? '₹' + Math.round(d.avg_fee) : '—'}</td>
+              <td class="py-2.5 px-2 text-right">
+                <span class="px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-medium text-[10px]">${d.online_pct || 0}%</span>
+              </td>
+            </tr>
+          `;
+        });
+
+        tbody.innerHTML = tableHtml;
+
+      } catch (err) {
+        console.error('Error fetching district boundaries:', err);
+        tbody.innerHTML = '<tr><td colspan="4" class="py-8 text-center text-rose-500">Error loading district data.</td></tr>';
+      }
+    }
+
+    function renderDistrictChoropleth(geoData) {
+      if (stateDistrictsGeoLayer) {
+        mapStateCities.removeLayer(stateDistrictsGeoLayer);
+      }
+      stateDistrictsLabelsGroup.clearLayers();
+
+      if (!geoData.features || !geoData.features.length) return;
+
+      stateDistrictsGeoLayer = L.geoJSON(geoData, {
+        style: function(feature) {
+          const val = getMetricValue(feature.properties, currentMapMetric);
+          return {
+            fillColor: getPolygonColor(val, currentMapMetric),
+            weight: 1.5,
+            opacity: 1,
+            color: '#1e293b',
+            fillOpacity: 0.9
+          };
+        },
+        onEachFeature: function(feature, layer) {
+          const p = feature.properties;
+          const val = getMetricValue(p, currentMapMetric);
+          const formattedVal = formatLabelValue(val, currentMapMetric);
+
+          try {
+            const bounds = layer.getBounds();
+            const center = bounds.getCenter();
+
+            if (p.tutor_count > 0 || currentMapMetric === 'fee') {
+              const labelMarker = L.marker(center, {
+                icon: L.divIcon({
+                  className: 'polygon-number-label',
+                  html: `<span>${formattedVal}</span>`,
+                  iconSize: [36, 14],
+                  iconAnchor: [18, 7]
+                })
+              });
+              stateDistrictsLabelsGroup.addLayer(labelMarker);
+            }
+          } catch(e) {}
+
+          layer.bindTooltip(`
+            <div class="font-sans text-xs">
+              <div class="font-bold text-slate-900 border-b pb-0.5 mb-1">${escapeHtml(p.district || p.city)}</div>
+              <div>Tutors: <b>${(p.tutor_count || 0).toLocaleString()}</b></div>
+              <div>Avg Fee: <b>₹${p.avg_fee}/hr</b></div>
+              <div>Online: <b>${p.online_pct}%</b></div>
+            </div>
+          `, { sticky: true });
+
+          layer.on({
+            mouseover: function(e) {
+              const l = e.target;
+              l.setStyle({
+                weight: 3,
+                color: '#000000',
+                fillOpacity: 1
+              });
+              l.bringToFront();
+            },
+            mouseout: function(e) {
+              stateDistrictsGeoLayer.resetStyle(e.target);
+            }
+          });
+        }
+      }).addTo(mapStateCities);
+
+      mapStateCities.fitBounds(stateDistrictsGeoLayer.getBounds(), { padding: [15, 15] });
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+  
+  </script>
+</body>
+</html>

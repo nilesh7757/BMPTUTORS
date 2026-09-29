@@ -1,0 +1,7 @@
+*.bak
+*.pyc
+__pycache__
+.git
+.gitignore
+finalSKAoutput.xlsx
+ProjectTracker.xlsx

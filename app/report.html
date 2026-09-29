@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BMP Tutors - Visual Analytics & Comprehensive Market Intelligence Report</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    body { font-family: 'Inter', sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    @page {
+      size: A4 portrait;
+      margin: 10mm 10mm 10mm 10mm;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      .page-break { page-break-after: always; break-after: page; }
+      .avoid-break { break-inside: avoid; page-break-inside: avoid; }
+      body { background: white !important; color: #0f172a !important; }
+      .shadow-sm, .shadow-md, .shadow-lg { box-shadow: none !important; }
+      .border { border-color: #cbd5e1 !important; }
+    }
+    .avoid-break { break-inside: avoid; page-break-inside: avoid; }
+    .page-break { page-break-after: always; break-after: page; }
+    table { border-collapse: collapse; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased p-4 sm:p-8">
+
+  <!-- TOP BAR (SCREEN ONLY) -->
+  <div class="max-w-6xl mx-auto mb-6 flex items-center justify-between no-print bg-indigo-900 text-white p-4 rounded-2xl shadow-md">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center font-bold text-xl text-white">
+        <i class="fa-solid fa-file-pdf"></i>
+      </div>
+      <div>
+        <h1 class="text-base font-bold">BMP Tutors - Visual Analytics Complete Report</h1>
+        <p class="text-xs text-indigo-200">Full Academic & Economic Dossier (All 37 States, Tables 2 & 2.8, Figures 1 & 3, All Charts)</p>
+      </div>
+    </div>
+    <div class="flex items-center space-x-2">
+      <a href="/" class="px-3 py-1.5 rounded-lg bg-indigo-800 hover:bg-indigo-700 text-xs font-semibold text-white transition-all flex items-center gap-1.5">
+        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+      </a>
+      <a href="/api/download/visual-analytics-docx" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-xs font-bold text-white transition-all flex items-center gap-1.5 shadow-sm" download="BMP_Tutors_Visual_Analytics_Report.docx">
+        <i class="fa-solid fa-file-word"></i> Download Word (.docx)
+      </a>
+      <a href="/api/export/visual-analytics-pdf" class="px-4 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-xs font-bold text-white transition-all flex items-center gap-1.5 shadow-sm" download="BMP_Tutors_Visual_Analytics_Complete_Report.pdf">
+        <i class="fa-solid fa-download"></i> Download PDF File
+      </a>
+      <button onclick="window.print()" class="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-xs font-bold text-white transition-all flex items-center gap-1.5 shadow-sm">
+        <i class="fa-solid fa-print"></i> Print / Save as PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN REPORT CONTAINER (A4 FORMATTED) -->
+  <main class="max-w-6xl mx-auto bg-white p-8 sm:p-12 rounded-2xl shadow-sm border border-slate-200 space-y-8">
+
+    <!-- REPORT COVER HEADER -->
+    <header class="border-b-2 border-slate-900 pb-6 avoid-break">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-slate-900 text-white text-[10px] font-bold uppercase tracking-wider mb-2 font-mono">
+            Research Working Paper & Market Intelligence Report
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight">
+            Indian Private Tutoring Market: Comprehensive Visual Analytics
+          </h1>
+          <p class="text-sm text-slate-600 mt-1 font-medium">
+            Empirical structure of 107,723 verified educators, 403,353 subject-grade offerings, 37 states & union territories, and academic pricing architecture.
+          </p>
+        </div>
+        <div class="text-right text-xs text-slate-500 font-mono shrink-0">
+          <div><strong>Source Corpus:</strong> TeacherOn India</div>
+          <div><strong>Date:</strong> September 2026</div>
+          <div><strong>Status:</strong> Validated & Normalized</div>
+        </div>
+      </div>
+
+      <!-- ALL-INDIA EXECUTIVE KPI METRICS -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mt-6">
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <span class="text-[10px] uppercase font-bold text-slate-500 block">Total Verified Tutors</span>
+          <span class="text-xl font-extrabold text-indigo-950 font-mono mt-0.5 block">107,723</span>
+          <span class="text-[10px] text-emerald-600 font-semibold">100% deduplicated</span>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <span class="text-[10px] uppercase font-bold text-slate-500 block">All-India Avg Fee</span>
+          <span class="text-xl font-extrabold text-slate-900 font-mono mt-0.5 block">₹657<span class="text-xs font-normal text-slate-500">/hr</span></span>
+          <span class="text-[10px] text-slate-500">Range: ₹50–₹5,000/hr</span>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <span class="text-[10px] uppercase font-bold text-slate-500 block">Online Adoption</span>
+          <span class="text-xl font-extrabold text-blue-700 font-mono mt-0.5 block">74.3%</span>
+          <span class="text-[10px] text-slate-500">80,038 online educators</span>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <span class="text-[10px] uppercase font-bold text-slate-500 block">Active Tutors</span>
+          <span class="text-xl font-extrabold text-emerald-700 font-mono mt-0.5 block">85,618</span>
+          <span class="text-[10px] text-emerald-600 font-semibold">79.5% active engagement</span>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <span class="text-[10px] uppercase font-bold text-slate-500 block">Subject Offerings</span>
+          <span class="text-xl font-extrabold text-purple-900 font-mono mt-0.5 block">403,353</span>
+          <span class="text-[10px] text-slate-500">Avg 3.7 subjects / tutor</span>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <span class="text-[10px] uppercase font-bold text-slate-500 block">States & UTs</span>
+          <span class="text-xl font-extrabold text-amber-700 font-mono mt-0.5 block">37</span>
+          <span class="text-[10px] text-slate-500">Full national coverage</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- SECTION 1: MAP OF INDIA & DISTRICT SPATIAL DISTRIBUTION -->
+    <section class="space-y-6 avoid-break">
+      <div class="border-b border-slate-200 pb-3">
+        <h2 class="text-base font-bold text-slate-900 uppercase tracking-wide flex items-center gap-2">
+          <i class="fa-solid fa-map text-indigo-600"></i> 1. Map of India: State-Wise Boundaries & District Spatial Distribution
+        </h2>
+        <p class="text-xs text-slate-500">Official cartographic intelligence: All 36 states and union territories labeled with verified tutor counts, and district-wise spatial distribution across all 594 administrative districts.</p>
+      </div>
+
+      <!-- Map of India (Dashboard Style) -->
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm max-w-3xl mx-auto">
+        <h3 class="text-xs font-bold text-slate-800 uppercase mb-2 flex items-center gap-1.5">
+          <i class="fa-solid fa-map-pin text-indigo-600"></i> Figure 1A: Map of India — State-Wise Boundaries & Data Labels (N = 107,723)
+        </h3>
+        <img src="/static/images/maps/india_all_states_labeled_dashboard.png" alt="All India State-Wise Tutor Map" class="w-full h-auto rounded-lg border border-slate-100">
+        <p class="text-[11px] text-slate-500 mt-2 italic text-center">Academic presentation matching the Visual Analytics Dashboard. In-polygon numerical labels display the verified tutor count for every single state and union territory across all of India.</p>
+      </div>
+    </section>
+
+    <!-- SECTION 1B: WHOLE STATES COMPLETE DATA TABLE (ALL 37 STATES/UTS) -->
+    <section class="avoid-break space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+        <div>
+          <h2 class="text-base font-bold text-slate-900 uppercase tracking-wide flex items-center gap-2">
+            <i class="fa-solid fa-table-list text-indigo-600"></i> Table 1. All-India State & Union Territory Complete Distribution
+          </h2>
+          <p class="text-xs text-slate-500">Total tutor headcount, market share, average hourly tuition fees (₹/hr), online instruction rate, and active tutor volume across all 37 Indian states and union territories.</p>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left font-sans text-xs border-collapse">
+          <thead>
+            <tr class="border-t-2 border-b-2 border-slate-900 bg-slate-100 text-[11px] font-bold text-slate-900 uppercase tracking-wider">
+              <th class="py-2 px-2 text-center w-12">Rank</th>
+              <th class="py-2 px-3">State / Union Territory</th>
+              <th class="py-2 px-3">Zonal Region</th>
+              <th class="py-2 px-3 text-right">Tutors (N)</th>
+              <th class="py-2 px-3 text-right">Share (%)</th>
+              <th class="py-2 px-3 text-right">Avg Fee (₹/hr)</th>
+              <th class="py-2 px-3 text-right">Online %</th>
+              <th class="py-2 px-3 text-right">Active Tutors</th>
+            </tr>
+          </thead>
+          <tbody id="states-table-body" class="divide-y divide-slate-200 text-slate-700">
+            <!-- Injected via JavaScript -->
+          </tbody>
+          <tfoot id="states-table-foot" class="border-t-2 border-b-2 border-slate-900 bg-slate-100 font-bold text-slate-900">
+            <!-- Injected via JavaScript -->
+          </tfoot>
+        </table>
+      </div>
+      <p class="text-[10px] text-slate-500 italic pt-1">
+        <strong>Notes:</strong> Tutors geocoded from address records across 107,723 profiles. Hourly fee excludes unverified outliers (&lt; ₹50 or &gt; ₹5,000/hr). Online percentage indicates availability for remote/video instruction.
+      </p>
+    </section>
+
+    <!-- SECTION 1C: INDIVIDUAL STATE DISTRICT-WISE DATA & PROFILES -->
+    <section class="space-y-4 avoid-break">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-200 pb-2">
+        <div>
+          <h2 class="text-base font-bold text-slate-900 uppercase tracking-wide flex items-center gap-2">
+            <i class="fa-solid fa-city text-indigo-600"></i> Individual State District-Wise Data & State Profiles
+          </h2>
+          <p class="text-xs text-slate-500">Micro-geographic census of districts for each individual state with executive summary on top.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <label class="text-xs font-bold text-slate-700">Select State:</label>
+          <select id="report-district-state-select" onchange="renderReportDistrictTable(this.value)" class="bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-800 focus:outline-none focus:border-indigo-500 shadow-sm">
+            <!-- Injected via JS -->
+          </select>
+        </div>
+      </div>
+
+      <!-- State Profile Box on Top -->
+      <div id="report-state-profile-box" class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
+        <!-- Injected via JS -->
+      </div>
+
+      <!-- State District Diagram & Table Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Left: That Particular State's District Boundary Diagram -->
+        <div class="lg:col-span-5 bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+          <h4 id="report-district-map-title" class="text-xs font-bold text-slate-800 mb-2 flex items-center gap-1.5">
+            <i class="fa-solid fa-draw-polygon text-indigo-600"></i> <span id="report-diagram-title-state">State</span> District Boundary Diagram
+          </h4>
+          <img id="report-state-diagram-img" src="/static/images/state_maps/tamil_nadu.png" alt="State District Diagram" class="w-full h-auto rounded-lg border border-slate-100">
+          <p class="text-[10px] text-slate-500 mt-1.5 italic">Direct in-district labels show verified tutor headcounts inside local boundaries.</p>
+        </div>
+
+        <!-- Right: District Table -->
+        <div class="lg:col-span-7 overflow-x-auto bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+          <table class="w-full text-left font-sans text-xs border-collapse">
+            <thead>
+              <tr class="border-t-2 border-b-2 border-slate-900 bg-slate-100 text-[11px] font-bold text-slate-900 uppercase tracking-wider">
+                <th class="py-2 px-2 text-center w-12">Rank</th>
+                <th class="py-2 px-3">District / Administrative Division</th>
+                <th class="py-2 px-3 text-right">Tutors (N)</th>
+                <th class="py-2 px-3 text-right">Share (%)</th>
+                <th class="py-2 px-3 text-right">Avg Fee (₹/hr)</th>
+                <th class="py-2 px-3 text-right">Online %</th>
+              </tr>
+            </thead>
+            <tbody id="report-district-table-body" class="divide-y divide-slate-100 text-slate-700">
+              <!-- Injected via JS -->
+            </tbody>
+            <tfoot id="report-district-table-foot" class="border-t-2 border-b-2 border-slate-900 bg-slate-100 font-bold text-slate-900">
+              <!-- Injected via JS -->
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <div class="page-break"></div>
+
+    <!-- SECTION 2: ACADEMIC TABLES -->
+    <section class="avoid-break space-y-6">
+      
+      <!-- TABLE 2: GENDER DISTRIBUTION -->
+      <div class="space-y-2">
+        <div class="border-b border-slate-200 pb-2">
+          <h2 class="text-base font-bold text-slate-900">
+            Table 2. Gender Distribution by Tutoring Subject
+          </h2>
+          <p class="text-xs text-slate-500">Empirical distribution of registered tutors across subject domains with gender proportions.</p>
+        </div>
+
+        <table class="w-full text-left font-sans text-xs border-collapse">
+          <thead>
+            <tr class="border-t-2 border-b border-slate-900 bg-slate-50 text-[11px] font-bold text-slate-900 uppercase tracking-wider">
+              <th class="py-2.5 px-3">Subject Domain / Discipline</th>
+              <th class="py-2.5 px-3 text-right w-32">M (%)</th>
+              <th class="py-2.5 px-3 text-right w-32">F (%)</th>
+              <th class="py-2.5 px-3 text-right w-28">N</th>
+            </tr>
+          </thead>
+          <tbody id="report-gender-body" class="divide-y divide-slate-100 text-slate-700">
+            <!-- Injected via JS -->
+          </tbody>
+          <tfoot id="report-gender-foot">
+            <!-- Injected via JS -->
+          </tfoot>
+        </table>
+        <p class="text-[10px] text-slate-500 italic pt-1 border-t border-slate-200">
+          <strong>Notes:</strong> If tutors offer tutoring in two or more subjects, they were included for each subject. Percentages are calculated across tutors with specified gender.
+        </p>
+      </div>
+
+      <!-- TABLE 3: FEES BY LEVEL AND REGION -->
+      <div class="space-y-2 pt-4">
+        <div class="border-b border-slate-200 pb-2">
+          <h2 class="text-base font-bold text-slate-900">
+            Table 3. Hourly Tuition Fees by Subject and Educational Level
+          </h2>
+          <p class="text-xs text-slate-500">Mean hourly price (₹/hr) and sample size (n) across educational stages and geographical regions.</p>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left font-sans text-xs border-collapse">
+            <thead id="report-fee-head">
+              <!-- Injected via JS -->
+            </thead>
+            <tbody id="report-fee-body" class="divide-y divide-slate-100 text-slate-700">
+              <!-- Injected via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SUBJECT X LEVEL MATRIX -->
+      <div class="space-y-2 pt-4">
+        <h3 class="text-sm font-bold text-slate-900">
+          Cross-Tabulation Matrix: Mean Fees (₹/hr) Across All 5 Core Subjects & Educational Levels
+        </h3>
+        <table class="w-full text-left font-sans text-xs border-collapse">
+          <thead>
+            <tr class="border-t-2 border-b-2 border-slate-900 bg-slate-50 text-[11px] font-bold text-slate-900 uppercase tracking-wider">
+              <th class="py-2 px-3">Subject Discipline</th>
+              <th class="py-2 px-3 text-right">Primary & Middle (Class 1–8)</th>
+              <th class="py-2 px-3 text-right">Secondary (Class 9–10)</th>
+              <th class="py-2 px-3 text-right">Senior Secondary (Class 11–12)</th>
+              <th class="py-2 px-3 text-right">Higher Education (College)</th>
+              <th class="py-2 px-3 text-right bg-slate-100 font-bold">Combined Mean</th>
+              <th class="py-2 px-3 text-right">Total N</th>
+            </tr>
+          </thead>
+          <tbody id="report-matrix-body" class="divide-y divide-slate-100 text-slate-700">
+            <!-- Injected via JS -->
+          </tbody>
+        </table>
+        <p class="text-[10px] text-slate-500 italic pt-1 border-t border-slate-200">
+          <strong>Notes:</strong> Excludes fees &lt; ₹50 or &gt; ₹5,000/hr. Level mapping: Primary & Middle (Class 1–8), Secondary (Class 9–10), Senior Secondary (Class 11–12 / Boards / JEE / NEET), Higher Education (College / University).
+        </p>
+      </div>
+
+    </section>
+
+    <div class="page-break"></div>
+
+    <!-- SECTION 3: ACADEMIC FIGURES 1 & 2 -->
+    <section class="avoid-break space-y-6">
+      <div class="border-b border-slate-200 pb-2">
+        <h2 class="text-base font-bold text-slate-900 uppercase tracking-wide">
+          Academic Research Figures (Figures 1 & 2)
+        </h2>
+        <p class="text-xs text-slate-500">Visual representations of subject offerings and tutor experience structure.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- Figure 1 -->
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
+          <div>
+            <h3 class="text-sm font-bold text-slate-900 mt-0.5">
+              Figure 1. Tutoring Subjects Offered
+            </h3>
+            <p class="text-[11px] text-slate-500">Volume across broad macro disciplines (N = 403,353).</p>
+          </div>
+          <div class="h-64 my-4">
+            <canvas id="report-chart-fig1"></canvas>
+          </div>
+          <p class="text-[10px] text-slate-500 italic pt-2 border-t border-slate-200">
+            <strong>Notes:</strong> School curriculum & STEM comprises 55.1% of all offered courses, followed by languages (18.1%) and computer programming (11.4%).
+          </p>
+        </div>
+
+        <!-- Figure 2 -->
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
+          <div>
+            <h3 class="text-sm font-bold text-slate-900 mt-0.5">
+              Figure 2. Teaching Experience Distribution
+            </h3>
+            <p class="text-[11px] text-slate-500">Distribution of educators over 0 to 30 years of experience.</p>
+          </div>
+          <div class="h-64 my-4">
+            <canvas id="report-chart-fig3"></canvas>
+          </div>
+          <p class="text-[10px] text-slate-500 italic pt-2 border-t border-slate-200">
+            <strong>Notes:</strong> Peak entry mode occurs at 1–2 years (16,689 tutors). Median experience is 3.0 years, mean is 4.6 years, with 47.3% having $\le$ 3 years of experience.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="page-break"></div>
+
+    <!-- SECTION 4: ALL 7 CORE MARKET & ECONOMIC CHARTS -->
+    <section class="avoid-break space-y-6">
+      <div class="border-b border-slate-200 pb-2">
+        <h2 class="text-base font-bold text-slate-900 uppercase tracking-wide">
+          Core Market Structure & Economic Charts
+        </h2>
+        <p class="text-xs text-slate-500">Comprehensive distribution charts across specializations, credentials, educational stages, seniority tiers, pricing, and exams.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Chart 1: Subject Categories -->
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 avoid-break">
+          <h3 class="text-xs font-bold text-slate-900 mb-1">Subject Offerings Breakdown (403,353 Links)</h3>
+          <div class="h-52"><canvas id="c-sub-cats"></canvas></div>
+        </div>
+
+        <!-- Chart 2: Education Levels -->
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 avoid-break">
+          <h3 class="text-xs font-bold text-slate-900 mb-1">Target Education Levels & Learning Stages</h3>
+          <div class="h-52"><canvas id="c-levels"></canvas></div>
+        </div>
+
+        <!-- Chart 3: Highest Qualifications -->
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 avoid-break">
+          <h3 class="text-xs font-bold text-slate-900 mb-1">Highest Qualification of Tutors</h3>
+          <div class="h-52"><canvas id="c-quals"></canvas></div>
+        </div>
+
+        <!-- Chart 4: Seniority Tiers -->
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 avoid-break">
+          <h3 class="text-xs font-bold text-slate-900 mb-1">Pedagogical Seniority & Mastery Tiers</h3>
+          <div class="h-52"><canvas id="c-seniority"></canvas></div>
+        </div>
+
+        <!-- Chart 5: Fee by Subject Category -->
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 avoid-break">
+          <h3 class="text-xs font-bold text-slate-900 mb-1">Average Hourly Fee by Subject Discipline (₹/hr)</h3>
+          <div class="h-52"><canvas id="c-fee-cat"></canvas></div>
+        </div>
+
+        <!-- Chart 6: Competitive Exams -->
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 avoid-break">
+          <h3 class="text-xs font-bold text-slate-900 mb-1">Competitive Exam Coaching Frequency</h3>
+          <div class="h-52"><canvas id="c-exams"></canvas></div>
+        </div>
+
+      </div>
+
+      <!-- Chart 7: Regional Distribution -->
+      <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 avoid-break">
+        <h3 class="text-xs font-bold text-slate-900 mb-1">Tutor Headcount by Zonal Region of India</h3>
+        <div class="h-52"><canvas id="c-regions"></canvas></div>
+      </div>
+
+    </section>
+
+    <!-- REPORT FOOTER -->
+    <footer class="pt-6 border-t border-slate-300 text-slate-500 text-[11px] avoid-break flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div>
+        <strong>BMP Tutors Analytics Platform</strong> &bull; Generated from Master Database (107,723 Educators)
+      </div>
+      <div class="font-mono">
+        Report Generated: September 2026 &bull; Page 1 of Complete Dossier
+      </div>
+    </footer>
+
+  </main>
+
+  <script>
+    // Disable Chart.js animation for instant print rendering
+    Chart.defaults.animation = false;
+    Chart.defaults.font.family = 'Inter, sans-serif';
+
+    async function initReport() {
+      try {
+        const [chartsRes, statesRes] = await Promise.all([
+          fetch('/api/charts'),
+          fetch('/api/map/states')
+        ]);
+
+        const chartsData = await chartsRes.json();
+        const statesData = await statesRes.json();
+
+        // 1. Render States Table (All 37 States)
+        renderStatesTable(statesData);
+
+        // 1B. Render District Tables with Executive State Profiles on Top
+        initDistrictReport(statesData);
+
+        // 2. Render Table 2 (Gender)
+        renderGenderTable(chartsData);
+
+        // 3. Render Table 2.8 (Fees by Level)
+        renderFeeTable(chartsData.table2_8);
+
+        // 4. Render Figures 1 & 3
+        renderFigure1(chartsData.figure1);
+        renderFigure3(chartsData.figure3);
+
+        // 5. Render Core Charts
+        renderCoreCharts(chartsData);
+
+        // Signal ready for headless print to PDF
+        window.__REPORT_READY = true;
+        console.log('Report fully initialized and ready.');
+
+      } catch (err) {
+        console.error('Error rendering report:', err);
+      }
+    }
+
+    function renderStatesTable(states) {
+      const tbody = document.getElementById('states-table-body');
+      const tfoot = document.getElementById('states-table-foot');
+      if (!tbody || !tfoot) return;
+
+      let totalCount = 0;
+      let totalActive = 0;
+      let weightedFeeSum = 0;
+      let weightedFeeN = 0;
+      let weightedOnlineSum = 0;
+
+      let rowsHtml = '';
+      states.forEach((s, idx) => {
+        totalCount += s.tutor_count;
+        totalActive += s.active_count;
+        if (s.avg_fee) {
+          weightedFeeSum += s.avg_fee * s.tutor_count;
+          weightedFeeN += s.tutor_count;
+        }
+        weightedOnlineSum += s.online_pct * s.tutor_count;
+
+        const pctShare = (s.tutor_count / 107723 * 100).toFixed(2);
+        const rankBadge = idx < 3 
+          ? `<span class="inline-block w-5 h-5 rounded-full bg-amber-500 text-white font-bold text-[10px] text-center leading-5">${idx + 1}</span>`
+          : idx + 1;
+
+        rowsHtml += `
+          <tr class="hover:bg-slate-50 transition-colors">
+            <td class="py-1.5 px-2 text-center font-mono font-semibold">${rankBadge}</td>
+            <td class="py-1.5 px-3 font-semibold text-slate-900">${s.state}</td>
+            <td class="py-1.5 px-3 text-slate-600">${s.region || 'Other'}</td>
+            <td class="py-1.5 px-3 text-right font-mono font-bold text-slate-900">${s.tutor_count.toLocaleString()}</td>
+            <td class="py-1.5 px-3 text-right font-mono text-slate-700">${pctShare}%</td>
+            <td class="py-1.5 px-3 text-right font-mono font-bold text-emerald-900">${s.avg_fee ? '₹' + Math.round(s.avg_fee) : '—'}</td>
+            <td class="py-1.5 px-3 text-right font-mono text-blue-900">${s.online_pct}%</td>
+            <td class="py-1.5 px-3 text-right font-mono text-slate-700">${s.active_count.toLocaleString()}</td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = rowsHtml;
+
+      const natAvgFee = weightedFeeN > 0 ? Math.round(weightedFeeSum / weightedFeeN) : 657;
+      const natOnlinePct = (weightedOnlineSum / totalCount).toFixed(1);
+
+      tfoot.innerHTML = `
+        <tr>
+          <td colspan="3" class="py-2.5 px-3 font-bold uppercase tracking-wider text-slate-900">Total / All-India Average</td>
+          <td class="py-2.5 px-3 text-right font-mono font-bold text-indigo-950">${totalCount.toLocaleString()}</td>
+          <td class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">100.00%</td>
+          <td class="py-2.5 px-3 text-right font-mono font-bold text-emerald-950">₹${natAvgFee}</td>
+          <td class="py-2.5 px-3 text-right font-mono font-bold text-blue-950">${natOnlinePct}%</td>
+          <td class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">${totalActive.toLocaleString()}</td>
+        </tr>
+      `;
+    }
+
+    let reportStatesCache = [];
+    function initDistrictReport(states) {
+      reportStatesCache = states;
+      const sel = document.getElementById('report-district-state-select');
+      if (!sel) return;
+      sel.innerHTML = '';
+      states.forEach((s, idx) => {
+        const opt = document.createElement('option');
+        opt.value = s.state;
+        opt.textContent = `${idx + 1}. ${s.state} (${s.tutor_count.toLocaleString()} tutors)`;
+        sel.appendChild(opt);
+      });
+      if (states.length > 0) {
+        renderReportDistrictTable(states[0].state);
+      }
+    }
+
+    async function renderReportDistrictTable(stateName) {
+      const box = document.getElementById('report-state-profile-box');
+      const tbody = document.getElementById('report-district-table-body');
+      const tfoot = document.getElementById('report-district-table-foot');
+      if (!box || !tbody || !tfoot) return;
+
+      const st = reportStatesCache.find(s => s.state.toLowerCase() === stateName.toLowerCase()) || {
+        state: stateName,
+        tutor_count: 0,
+        avg_fee: 0,
+        online_pct: 0,
+        active_count: 0,
+        region: 'Other'
+      };
+
+      const stRank = reportStatesCache.findIndex(s => s.state.toLowerCase() === stateName.toLowerCase()) + 1;
+      const pctShare = (st.tutor_count / 107723 * 100).toFixed(2);
+      const actPct = st.tutor_count > 0 ? (st.active_count / st.tutor_count * 100).toFixed(1) : '0.0';
+
+      box.innerHTML = `
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-200 pb-2 mb-2 gap-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-indigo-700">Executive Summary & State Profile: ${escapeHtml(st.state.toUpperCase())}</span>
+          <span class="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-indigo-100 text-indigo-800">Pan-India Rank: #${stRank} of 36</span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-xs">
+          <div><span class="text-slate-500 block text-[10px] uppercase font-semibold">Total Tutors</span><b class="text-slate-900 font-mono text-sm">${st.tutor_count.toLocaleString()}</b> <span class="text-[10px] text-slate-500">(${pctShare}%)</span></div>
+          <div><span class="text-slate-500 block text-[10px] uppercase font-semibold">Avg Hourly Rate</span><b class="text-slate-900 font-mono text-sm">₹${st.avg_fee ? Math.round(st.avg_fee) : 0}</b> <span class="text-[10px] text-slate-500">/hr</span></div>
+          <div><span class="text-slate-500 block text-[10px] uppercase font-semibold">Online Adoption</span><b class="text-blue-700 font-mono text-sm">${st.online_pct}%</b></div>
+          <div><span class="text-slate-500 block text-[10px] uppercase font-semibold">Active Engagement</span><b class="text-emerald-700 font-mono text-sm">${st.active_count.toLocaleString()}</b> <span class="text-[10px] text-emerald-600">(${actPct}%)</span></div>
+          <div><span class="text-slate-500 block text-[10px] uppercase font-semibold">Zonal Region</span><b class="text-slate-800 font-medium text-sm">${escapeHtml(st.region || 'Other')} Zone</b></div>
+        </div>
+      `;
+
+      const slug = stateName.toLowerCase().replace(/ /g, '_').replace(/&/g, 'and').replace(/\//g, '_').replace(/[()-]/g, '');
+      const imgElem = document.getElementById('report-state-diagram-img');
+      const titleSpan = document.getElementById('report-diagram-title-state');
+      if (imgElem) imgElem.src = `/static/images/state_maps/${slug}.png`;
+      if (titleSpan) titleSpan.textContent = stateName;
+
+      tbody.innerHTML = '<tr><td colspan="6" class="py-4 text-center text-slate-400">Loading district census...</td></tr>';
+
+      try {
+        const res = await fetch(\`/api/geojson/districts?state=\${encodeURIComponent(stateName)}\`);
+        const geo = await res.json();
+        const feats = geo.features || [];
+        feats.sort((a, b) => (b.properties.tutor_count || 0) - (a.properties.tutor_count || 0));
+
+        if (feats.length === 0) {
+          tbody.innerHTML = \`<tr><td colspan="6" class="py-3 text-center text-slate-400">No district breakdown available for \${escapeHtml(stateName)}</td></tr>\`;
+          tfoot.innerHTML = '';
+          return;
+        }
+
+        let bHtml = '';
+        feats.forEach((f, idx) => {
+          const p = f.properties;
+          const dCnt = p.tutor_count || 0;
+          const dShare = st.tutor_count > 0 ? ((dCnt / st.tutor_count) * 100).toFixed(1) + '%' : '0.0%';
+          const dFee = p.avg_fee ? '₹' + Math.round(p.avg_fee) : '—';
+          const dOnline = p.online_pct ? p.online_pct.toFixed(1) + '%' : '0.0%';
+
+          bHtml += \`
+            <tr class="hover:bg-slate-50">
+              <td class="py-2 px-2 text-center font-mono text-slate-400">\${idx + 1}</td>
+              <td class="py-2 px-3 font-medium text-slate-900">\${escapeHtml(p.district)}</td>
+              <td class="py-2 px-3 text-right font-mono font-bold \${dCnt > 0 ? 'text-indigo-950' : 'text-slate-400'}">\${dCnt.toLocaleString()}</td>
+              <td class="py-2 px-3 text-right font-mono text-slate-600">\${dShare}</td>
+              <td class="py-2 px-3 text-right font-mono text-slate-800">\${dFee}</td>
+              <td class="py-2 px-3 text-right font-mono text-slate-600">\${dOnline}</td>
+            </tr>
+          \`;
+        });
+        tbody.innerHTML = bHtml;
+
+        tfoot.innerHTML = \`
+          <tr>
+            <td class="py-2 px-2 text-center">—</td>
+            <td class="py-2 px-3 uppercase tracking-wider">\${escapeHtml(st.state)} Total</td>
+            <td class="py-2 px-3 text-right font-mono font-bold">\${st.tutor_count.toLocaleString()}</td>
+            <td class="py-2 px-3 text-right font-mono">100.0%</td>
+            <td class="py-2 px-3 text-right font-mono">₹\${st.avg_fee ? Math.round(st.avg_fee) : 0}</td>
+            <td class="py-2 px-3 text-right font-mono">\${st.online_pct}%</td>
+          </tr>
+        \`;
+      } catch (e) {
+        tbody.innerHTML = \`<tr><td colspan="6" class="py-3 text-center text-rose-500">Error loading districts for \${escapeHtml(stateName)}</td></tr>\`;
+      }
+    }
+
+    function renderGenderTable(chartsData) {
+      const tbody = document.getElementById('report-gender-body');
+      const tfoot = document.getElementById('report-gender-foot');
+      if (!tbody || !tfoot) return;
+
+      const labels = {
+        'Science': 'Natural sciences & mathematics (biology, chemistry, physics, mathematics)',
+        'Languages': 'Foreign & modern languages (English, Hindi, Tamil, French, Arabic, etc.)',
+        'Coding': 'Computer science & programming (Python, Java, web development, AI/ML, SQL)',
+        'Arts': 'History, geography, social sciences & humanities',
+        'Commerce': 'Commerce, economics & business studies (accounting, finance)',
+        'Misc/ECA': 'Creative arts, music, yoga & extracurricular skills',
+        'All Subjects': 'General elementary & primary school foundation (all subjects)'
+      };
+
+      let rowsHtml = '';
+      chartsData.gender_by_category.forEach(r => {
+        rowsHtml += `
+          <tr class="hover:bg-slate-50">
+            <td class="py-2 px-3 font-medium text-slate-900">${labels[r.subject] || r.subject}</td>
+            <td class="py-2 px-3 text-right font-mono font-bold text-blue-900">${r.m_pct}%</td>
+            <td class="py-2 px-3 text-right font-mono font-bold text-rose-900">${r.f_pct}%</td>
+            <td class="py-2 px-3 text-right font-mono font-bold text-slate-700">${r.n.toLocaleString()}</td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = rowsHtml;
+
+      const tot = chartsData.gender_total || { m_pct: 41, f_pct: 59, n: 106552 };
+      tfoot.innerHTML = `
+        <tr class="border-t-2 border-b-2 border-slate-900 bg-slate-100 font-bold text-slate-900">
+          <td class="py-2 px-3 uppercase tracking-wider">Total</td>
+          <td class="py-2 px-3 text-right font-mono font-bold text-blue-950">${tot.m_pct}%</td>
+          <td class="py-2 px-3 text-right font-mono font-bold text-rose-950">${tot.f_pct}%</td>
+          <td class="py-2 px-3 text-right font-mono font-bold text-slate-900">${tot.n.toLocaleString()}</td>
+        </tr>
+      `;
+    }
+
+    function renderFeeTable(t28) {
+      if (!t28) return;
+      const thead = document.getElementById('report-fee-head');
+      const tbody = document.getElementById('report-fee-body');
+      const mbody = document.getElementById('report-matrix-body');
+      if (!thead || !tbody || !mbody) return;
+
+      const levelsDef = [
+        { key: 'Primary', label: 'Primary & Middle (Class 1–8)' },
+        { key: 'Secondary', label: 'Secondary (Class 9–10)' },
+        { key: 'SeniorSec', label: 'Senior Secondary (Class 11–12)' },
+        { key: 'HigherEd', label: 'Higher Education (College)' }
+      ];
+
+      thead.innerHTML = `
+        <tr class="border-t-2 border-b border-slate-900 bg-slate-50 text-[11px] font-bold text-slate-800 uppercase tracking-wider">
+          <th rowspan="2" class="py-2 px-3 border-r border-slate-200">Region / Zone</th>
+          ${levelsDef.map(l => `<th colspan="2" class="py-2 px-2 text-center border-r border-slate-200">${l.label}</th>`).join('')}
+        </tr>
+        <tr class="border-b border-slate-900 bg-slate-50 text-[10px] font-semibold text-slate-700 uppercase">
+          ${levelsDef.map(() => `
+            <th class="py-1 px-2 text-right">Maths</th>
+            <th class="py-1 px-2 text-right border-r border-slate-200">English</th>
+          `).join('')}
+        </tr>
+      `;
+
+      let bHtml = '';
+      t28.regions_order.forEach(reg => {
+        const isNat = reg === 'Nationwide';
+        const rowClass = isNat ? 'font-bold bg-slate-100 border-b-2 border-slate-900' : 'hover:bg-slate-50';
+        let cells = `<td class="py-2 px-3 ${isNat ? 'font-bold text-indigo-950' : 'font-medium'} border-r border-slate-200">${isNat ? 'Nationwide (All India)' : reg + ' Zone'}</td>`;
+
+        levelsDef.forEach(l => {
+          const m = t28.data[reg]?.[l.key]?.Maths || { fee: 0, n: 0 };
+          const e = t28.data[reg]?.[l.key]?.English || { fee: 0, n: 0 };
+          cells += `
+            <td class="py-2 px-2 text-right font-mono">${m.n > 0 ? `₹${m.fee} <span class="text-[10px] text-slate-400">(n=${m.n})</span>` : '—'}</td>
+            <td class="py-2 px-2 text-right font-mono border-r border-slate-200">${e.n > 0 ? `₹${e.fee} <span class="text-[10px] text-slate-400">(n=${e.n})</span>` : '—'}</td>
+          `;
+        });
+        bHtml += `<tr class="${rowClass}">${cells}</tr>`;
+      });
+      tbody.innerHTML = bHtml;
+
+      // Matrix Body
+      let mHtml = '';
+      t28.matrix.forEach(r => {
+        mHtml += `
+          <tr class="hover:bg-slate-50">
+            <td class="py-2 px-3 font-semibold text-slate-900">${r.subject_name}</td>
+            <td class="py-2 px-3 text-right font-mono">₹${r.levels.Primary.fee} <span class="text-[10px] text-slate-400">(n=${r.levels.Primary.n.toLocaleString()})</span></td>
+            <td class="py-2 px-3 text-right font-mono">₹${r.levels.Secondary.fee} <span class="text-[10px] text-slate-400">(n=${r.levels.Secondary.n.toLocaleString()})</span></td>
+            <td class="py-2 px-3 text-right font-mono">₹${r.levels.SeniorSec.fee} <span class="text-[10px] text-slate-400">(n=${r.levels.SeniorSec.n.toLocaleString()})</span></td>
+            <td class="py-2 px-3 text-right font-mono">₹${r.levels.HigherEd.fee} <span class="text-[10px] text-slate-400">(n=${r.levels.HigherEd.n.toLocaleString()})</span></td>
+            <td class="py-2 px-3 text-right font-mono font-bold text-emerald-900 bg-slate-100/60">₹${r.overall_fee.toLocaleString()}</td>
+            <td class="py-2 px-3 text-right font-mono font-bold text-slate-700">${r.total_n.toLocaleString()}</td>
+          </tr>
+        `;
+      });
+      mbody.innerHTML = mHtml;
+    }
+
+    function renderFigure1(fig1) {
+      if (!fig1) return;
+      new Chart(document.getElementById('report-chart-fig1'), {
+        type: 'bar',
+        data: {
+          labels: fig1.macro.map(m => m.name),
+          datasets: [{
+            data: fig1.macro.map(m => m.count),
+            backgroundColor: '#475569',
+            borderColor: '#334155',
+            borderWidth: 1,
+            borderRadius: 3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, ticks: { font: { size: 9 } } },
+            x: { ticks: { font: { size: 8 }, maxRotation: 25 } }
+          }
+        }
+      });
+    }
+
+    function renderFigure3(fig3) {
+      if (!fig3) return;
+      new Chart(document.getElementById('report-chart-fig3'), {
+        type: 'line',
+        data: {
+          labels: fig3.labels.map(y => `${y}y`),
+          datasets: [{
+            label: 'Total Tutors',
+            data: fig3.total,
+            borderColor: '#4f46e5',
+            backgroundColor: 'rgba(79, 70, 229, 0.08)',
+            fill: true,
+            tension: 0.35,
+            borderWidth: 2,
+            pointRadius: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, ticks: { font: { size: 9 } } },
+            x: { ticks: { font: { size: 8 }, maxTicksLimit: 12 } }
+          }
+        }
+      });
+    }
+
+    function renderCoreCharts(d) {
+      // 1. Subject categories
+      new Chart(document.getElementById('c-sub-cats'), {
+        type: 'bar',
+        data: {
+          labels: d.subject_categories.map(s => s.subject_category),
+          datasets: [{ data: d.subject_categories.map(s => s.count), backgroundColor: '#6366f1', borderRadius: 4 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+      });
+
+      // 2. Levels
+      new Chart(document.getElementById('c-levels'), {
+        type: 'bar',
+        data: {
+          labels: d.levels.map(l => l.level_category),
+          datasets: [{ data: d.levels.map(l => l.count), backgroundColor: '#9333ea', borderRadius: 4 }]
+        },
+        options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+      });
+
+      // 3. Qualifications
+      new Chart(document.getElementById('c-quals'), {
+        type: 'doughnut',
+        data: {
+          labels: d.qualifications.map(q => q.highest_qualification),
+          datasets: [{ data: d.qualifications.map(q => q.count), backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#64748b'] }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 9 } } } } }
+      });
+
+      // 4. Seniority
+      new Chart(document.getElementById('c-seniority'), {
+        type: 'doughnut',
+        data: {
+          labels: d.seniority_tiers.map(s => s.seniority_tier),
+          datasets: [{ data: d.seniority_tiers.map(s => s.count), backgroundColor: ['#f59e0b', '#3b82f6', '#8b5cf6', '#10b981'] }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 9 } } } } }
+      });
+
+      // 5. Fee by category
+      new Chart(document.getElementById('c-fee-cat'), {
+        type: 'bar',
+        data: {
+          labels: d.fee_by_category.map(f => f.subject_category),
+          datasets: [{ data: d.fee_by_category.map(f => f.avg_fee), backgroundColor: '#10b981', borderRadius: 4 }]
+        },
+        options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+      });
+
+      // 6. Competitive exams
+      new Chart(document.getElementById('c-exams'), {
+        type: 'bar',
+        data: {
+          labels: d.exams.map(e => e.competitive_exam),
+          datasets: [{ data: d.exams.map(e => e.count), backgroundColor: '#f43f5e', borderRadius: 4 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+      });
+
+      // 7. Regions
+      new Chart(document.getElementById('c-regions'), {
+        type: 'bar',
+        data: {
+          labels: d.regions.map(r => r.region),
+          datasets: [{ data: d.regions.map(r => r.count), backgroundColor: '#0d9488', borderRadius: 4 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', initReport);
+  </script>
+</body>
+</html>
