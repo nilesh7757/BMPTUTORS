@@ -944,7 +944,11 @@ async def api_download_visual_analytics_docx(request):
         filename="BMP_Tutors_Visual_Analytics_Report.docx"
     )
 
+async def healthz(request):
+    return JSONResponse({"status": "ok"})
+
 routes = [
+    Route("/healthz", healthz),
     Route("/", index),
     Route("/report", report_view),
     Route("/api/stats", api_stats),

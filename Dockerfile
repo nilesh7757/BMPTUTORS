@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Install system utilities
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    sqlite3 \
+    sqlite3 gzip \
     && rm -rf /var/lib/apt/lists/*
 
 # Install python requirements
@@ -13,7 +13,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code and assets
 COPY app/ ./app/
-COPY cleaned_tutors_data.db .
+COPY cleaned_tutors_data.db.gz .
+RUN gzip -d -k cleaned_tutors_data.db.gz
 COPY BMP_Tutors_Cleaned_Master.xlsx .
 COPY BMP_Tutors_Verified_Active_Master.xlsx .
 COPY BMP_Tutors_Visual_Analytics_Report.docx .
