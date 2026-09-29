@@ -1,20 +1,32 @@
 import sqlite3
 import json
 import os
+import sys
 import io
 import uvicorn
 import xlsxwriter
+
+APP_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(APP_DIR)
+if APP_DIR not in sys.path:
+    sys.path.insert(0, APP_DIR)
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
 from starlette.applications import Starlette
 from starlette.responses import JSONResponse, HTMLResponse, Response, FileResponse
 from starlette.routing import Route, Mount
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 from starlette.staticfiles import StaticFiles
-from geo_coords import STATE_COORDINATES, CITY_COORDINATES
-from geo_service import get_enriched_states_geojson, get_enriched_districts_geojson
 
-APP_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(APP_DIR)
+try:
+    from app.geo_coords import STATE_COORDINATES, CITY_COORDINATES
+    from app.geo_service import get_enriched_states_geojson, get_enriched_districts_geojson
+except ImportError:
+    from geo_coords import STATE_COORDINATES, CITY_COORDINATES
+    from geo_service import get_enriched_states_geojson, get_enriched_districts_geojson
+
 DB_PATH = os.getenv("DB_PATH", os.path.join(PROJECT_ROOT, "cleaned_tutors_data.db"))
 
 # Automatically decompress database if deployed with db.gz

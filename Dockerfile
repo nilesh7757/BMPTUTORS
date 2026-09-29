@@ -23,6 +23,7 @@ COPY extracted_images/ ./extracted_images/
 
 # Default port for Hugging Face Spaces is 7860; Render / Koyeb uses $PORT
 ENV PORT=7860
+ENV PYTHONPATH="/app:/app/app:${PYTHONPATH}"
 EXPOSE 7860
 
 # Launch server
