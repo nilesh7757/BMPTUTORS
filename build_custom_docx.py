@@ -70,6 +70,14 @@ def set_table_borders(table, color="CBD5E1", sz="4", val="single"):
         tblPr[0].append(borders)
 
 # -------------------------------------------------------------
+# XML Escaping Helper for Chart Strings
+# -------------------------------------------------------------
+def escape_xml(s):
+    if s is None:
+        return ""
+    return str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;").replace("'", "&apos;")
+
+# -------------------------------------------------------------
 # Native DrawingML Chart Builder
 # -------------------------------------------------------------
 class NativeChartBuilder:
@@ -81,7 +89,7 @@ class NativeChartBuilder:
         self.chart_counter += 1
         c_num = self.chart_counter
 
-        # 1. Create openpyxl Excel workbook
+        # 1. Create openpyxl Excel workbook (stores raw unescaped values in Excel)
         wb = openpyxl.Workbook()
         ws = wb.active
         ws.title = "Sheet1"
@@ -96,9 +104,11 @@ class NativeChartBuilder:
         excel_uri = PackURI(f"/word/embeddings/Microsoft_Excel_Worksheet{c_num}.xlsx")
         excel_part = Part(excel_uri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", blob=excel_bytes)
 
-        # 2. Build Chart XML
-        cat_pts = ''.join(f'<c:pt idx="{i}"><c:v>{c}</c:v></c:pt>' for i, c in enumerate(categories))
+        # 2. Build Chart XML (with XML escaping)
+        cat_pts = ''.join(f'<c:pt idx="{i}"><c:v>{escape_xml(c)}</c:v></c:pt>' for i, c in enumerate(categories))
         val_pts = ''.join(f'<c:pt idx="{i}"><c:v>{v}</c:v></c:pt>' for i, v in enumerate(values))
+        title_esc = escape_xml(title)
+        series_esc = escape_xml(series_name)
 
         chart_xml = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <c:chartSpace xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart"
@@ -116,7 +126,7 @@ class NativeChartBuilder:
           <a:p>
             <a:r>
               <a:rPr b="1" sz="1100"/>
-              <a:t>{title}</a:t>
+              <a:t>{title_esc}</a:t>
             </a:r>
           </a:p>
         </c:rich>
@@ -137,7 +147,7 @@ class NativeChartBuilder:
               <c:f>Sheet1!$B$1</c:f>
               <c:strCache>
                 <c:ptCount val="1"/>
-                <c:pt idx="0"><c:v>{series_name}</c:v></c:pt>
+                <c:pt idx="0"><c:v>{series_esc}</c:v></c:pt>
               </c:strCache>
             </c:strRef>
           </c:tx>
@@ -214,11 +224,13 @@ class NativeChartBuilder:
         r._r.append(drawing_elm)
         return p
 
-    def add_bar_or_col_chart(self, title, categories, values, series_name="Tutors", is_horizontal=False, width_in=6.2, height_in=3.6, is_currency=False):
+    def add_bar_or_col_chart(self, title, categories, values, series_name="Tutors", 
+                             is_horizontal=False, width_in=6.2, height_in=3.6, is_currency=False,
+                             x_axis_title=None, y_axis_title=None):
         self.chart_counter += 1
         c_num = self.chart_counter
 
-        # 1. Create openpyxl Excel workbook
+        # 1. Create openpyxl Excel workbook (stores raw unescaped values in Excel)
         wb = openpyxl.Workbook()
         ws = wb.active
         ws.title = "Sheet1"
@@ -233,12 +245,72 @@ class NativeChartBuilder:
         excel_uri = PackURI(f"/word/embeddings/Microsoft_Excel_Worksheet{c_num}.xlsx")
         excel_part = Part(excel_uri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", blob=excel_bytes)
 
-        cat_pts = ''.join(f'<c:pt idx="{i}"><c:v>{c}</c:v></c:pt>' for i, c in enumerate(categories))
+        # 2. Build Chart XML (with XML escaping)
+        cat_pts = ''.join(f'<c:pt idx="{i}"><c:v>{escape_xml(c)}</c:v></c:pt>' for i, c in enumerate(categories))
         val_pts = ''.join(f'<c:pt idx="{i}"><c:v>{v}</c:v></c:pt>' for i, v in enumerate(values))
         bar_dir = "bar" if is_horizontal else "col"
         ax_cat_id = 100000 + c_num * 10 + 1
         ax_val_id = 100000 + c_num * 10 + 2
         fmt = "₹#,##0" if is_currency else "#,##0"
+
+        title_esc = escape_xml(title)
+        series_esc = escape_xml(series_name)
+
+        # Map X and Y axis titles to DrawingML catAx and valAx:
+        # In vertical column chart (is_horizontal=False):
+        #   catAx is on the bottom = X-axis
+        #   valAx is on the left = Y-axis
+        # In horizontal bar chart (is_horizontal=True):
+        #   catAx is on the left = Y-axis
+        #   valAx is on the bottom = X-axis
+        if is_horizontal:
+            cat_title_text = y_axis_title
+            val_title_text = x_axis_title
+        else:
+            cat_title_text = x_axis_title
+            val_title_text = y_axis_title
+
+        cat_title_xml = f"""
+        <c:title>
+          <c:tx>
+            <c:rich>
+              <a:bodyPr/>
+              <a:lstStyle/>
+              <a:p>
+                <a:pPr>
+                  <a:defRPr sz="900" b="1"/>
+                </a:pPr>
+                <a:r>
+                  <a:rPr b="1" sz="900"/>
+                  <a:t>{escape_xml(cat_title_text)}</a:t>
+                </a:r>
+              </a:p>
+            </c:rich>
+          </c:tx>
+          <c:layout/>
+          <c:overlay val="0"/>
+        </c:title>""" if cat_title_text else ""
+
+        val_title_xml = f"""
+        <c:title>
+          <c:tx>
+            <c:rich>
+              <a:bodyPr/>
+              <a:lstStyle/>
+              <a:p>
+                <a:pPr>
+                  <a:defRPr sz="900" b="1"/>
+                </a:pPr>
+                <a:r>
+                  <a:rPr b="1" sz="900"/>
+                  <a:t>{escape_xml(val_title_text)}</a:t>
+                </a:r>
+              </a:p>
+            </c:rich>
+          </c:tx>
+          <c:layout/>
+          <c:overlay val="0"/>
+        </c:title>""" if val_title_text else ""
 
         chart_xml = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <c:chartSpace xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart"
@@ -256,7 +328,7 @@ class NativeChartBuilder:
           <a:p>
             <a:r>
               <a:rPr b="1" sz="1100"/>
-              <a:t>{title}</a:t>
+              <a:t>{title_esc}</a:t>
             </a:r>
           </a:p>
         </c:rich>
@@ -279,7 +351,7 @@ class NativeChartBuilder:
               <c:f>Sheet1!$B$1</c:f>
               <c:strCache>
                 <c:ptCount val="1"/>
-                <c:pt idx="0"><c:v>{series_name}</c:v></c:pt>
+                <c:pt idx="0"><c:v>{series_esc}</c:v></c:pt>
               </c:strCache>
             </c:strRef>
           </c:tx>
@@ -320,7 +392,7 @@ class NativeChartBuilder:
         <c:axId val="{ax_cat_id}"/>
         <c:scaling><c:orientation val="minMax"/></c:scaling>
         <c:delete val="0"/>
-        <c:axPos val="{'l' if is_horizontal else 'b'}"/>
+        <c:axPos val="{'l' if is_horizontal else 'b'}"/>{cat_title_xml}
         <c:tickLblPos val="nextTo"/>
         <c:crossAx val="{ax_val_id}"/>
         <c:crosses val="autoZero"/>
@@ -333,7 +405,7 @@ class NativeChartBuilder:
         <c:scaling><c:orientation val="minMax"/></c:scaling>
         <c:delete val="0"/>
         <c:axPos val="{'b' if is_horizontal else 'l'}"/>
-        <c:majorGridlines/>
+        <c:majorGridlines/>{val_title_xml}
         <c:tickLblPos val="nextTo"/>
         <c:crossAx val="{ax_cat_id}"/>
         <c:crosses val="autoZero"/>
@@ -603,7 +675,9 @@ def build_report():
         series_name="Tutor Count",
         is_horizontal=False,
         width_in=5.8,
-        height_in=3.4
+        height_in=3.4,
+        x_axis_title="Gender Category",
+        y_axis_title="Number of Tutors"
     )
 
     # Editable Table
@@ -674,7 +748,9 @@ def build_report():
         series_name="Offerings",
         is_horizontal=False,
         width_in=6.2,
-        height_in=3.4
+        height_in=3.4,
+        x_axis_title="Academic Discipline Stream",
+        y_axis_title="Total Course Offerings"
     )
 
     doc.add_paragraph().paragraph_format.space_after = Pt(4)
@@ -687,7 +763,9 @@ def build_report():
         series_name="Offerings",
         is_horizontal=True,
         width_in=6.2,
-        height_in=3.8
+        height_in=3.8,
+        x_axis_title="Total Course Offerings",
+        y_axis_title="Subject Name"
     )
 
     # Editable Table 3A
@@ -955,7 +1033,9 @@ def build_report():
         series_name="Tutors",
         is_horizontal=False,
         width_in=6.2,
-        height_in=3.4
+        height_in=3.4,
+        x_axis_title="Number of Subjects Taught (Breadth)",
+        y_axis_title="Number of Tutors"
     )
 
     doc.add_paragraph().paragraph_format.space_after = Pt(6)
@@ -1041,7 +1121,9 @@ def build_report():
         series_name="Tutors",
         is_horizontal=False,
         width_in=6.2,
-        height_in=3.4
+        height_in=3.4,
+        x_axis_title="Years of Teaching Experience",
+        y_axis_title="Number of Tutors"
     )
 
     # Editable Table
@@ -1116,7 +1198,9 @@ def build_report():
         is_horizontal=False,
         width_in=6.2,
         height_in=3.4,
-        is_currency=True
+        is_currency=True,
+        x_axis_title="State / Union Territory",
+        y_axis_title="Average Hourly Fee (₹ / hr)"
     )
 
     # Editable Table
@@ -1257,7 +1341,9 @@ def build_report():
         series_name="Tutor Count",
         is_horizontal=True,
         width_in=6.2,
-        height_in=3.6
+        height_in=3.6,
+        x_axis_title="Number of Tutors",
+        y_axis_title="Primary Occupation / Background"
     )
 
     # Editable Table
