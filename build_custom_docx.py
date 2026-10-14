@@ -1524,11 +1524,11 @@ def build_report():
     r6_note.font.color.rgb = COLOR_MUTED
 
     # ---------------------------------------------------------
-    # SECTION 7: OCCUPATIONS & PROFESSIONAL BACKGROUNDS (TABLE 3)
+    # SECTION 7: OCCUPATIONS & PROFESSIONAL BACKGROUNDS (TABLE 7)
     # ---------------------------------------------------------
     doc.add_page_break()
     h7 = doc.add_heading(level=1)
-    r7 = h7.add_run("7. Tutors' Day Jobs & Professional Backgrounds (Table 3)")
+    r7 = h7.add_run("7. Professional Landscapes: Full-Time Teachers vs. Non-Teaching Side Professions (Table 7)")
     r7.font.name = "Arial"
     r7.font.size = Pt(14)
     r7.font.color.rgb = COLOR_TITLE
@@ -1536,17 +1536,19 @@ def build_report():
     p7 = doc.add_paragraph()
     p7.paragraph_format.space_after = Pt(6)
     p7.add_run(
-        "Who are private tutors when they are not teaching? "
-        "While 27.2% identify primarily as professional online educators and 15.0% as full-time independent private tutors, "
-        "a huge proportion teach alongside another career: "
-        "over 26,000 tutors are university scholars and college students; "
-        "over 6,600 are college professors and university lecturers; "
-        "and over 4,200 are working software engineers, data scientists, and IT professionals who mentor students after work hours and on weekends."
+        "Who are private tutors when they are not teaching? A critical question for educational researchers and parents is whether "
+        "private tutoring is practiced solely by career school teachers, or whether working professionals in other industries participate. "
+        "Our verified census of 107,716 tutors reveals that India's private tutoring market functions as a dynamic dual ecosystem:\n"
+        "• 65.3% (70,321 Tutors) are Career Educators & Academicians: Professionals whose primary vocation is teaching, including independent tutors, "
+        "full-time digital educators, school staff teachers, college professors, and competitive coaching faculty.\n"
+        "• 34.7% (37,395 Tutors) are Non-Teaching Working Professionals & Scholars: Individuals whose primary daytime occupation is outside school teaching—such as "
+        "university research scholars, working software engineers, medical doctors, chartered accountants, and core industrial engineers who tutor in the evenings and weekends.\n"
+        "Below is the native column chart summarizing the dominant background categories, followed by the complete verified structural matrix."
     )
 
     # Native Horizontal Bar Chart
     builder.add_bar_or_col_chart(
-        "Figure 6: Primary Occupations & Professional Backgrounds of Tutors",
+        "Figure 6: Primary Occupations & Professional Backgrounds of Tutors (N = 107,716)",
         ["Online Educator", "College Student / Scholar", "Independent Tutor", "College Faculty", "Early-Career Teacher", "Software Engineer / IT", "Senior Private Educator", "School Teacher"],
         [29349, 26061, 16188, 6672, 5821, 4267, 4080, 3704],
         series_name="Tutor Count",
@@ -1557,51 +1559,224 @@ def build_report():
         y_axis_title="Primary Occupation / Background"
     )
 
-    # Editable Table
-    t7 = doc.add_table(rows=9, cols=5)
+    doc.add_paragraph().paragraph_format.space_after = Pt(8)
+
+    # Sub-heading for Table 7
+    h7_tbl = doc.add_heading(level=2)
+    r7_tbl = h7_tbl.add_run("Table 7: Comprehensive Structural Matrix of Full-Time Educators vs. Non-Teaching Day-Job Tutors")
+    r7_tbl.font.size = Pt(11.5)
+    r7_tbl.font.bold = True
+    r7_tbl.font.color.rgb = COLOR_PRIMARY
+
+    p7_tbl_desc = doc.add_paragraph()
+    p7_tbl_desc.paragraph_format.space_after = Pt(6)
+    p7_tbl_desc.add_run(
+        "The matrix below classifies all 107,716 verified educators into career teachers vs. non-teaching professionals, "
+        "reporting exact headcounts, market shares, hourly pricing benchmarks (mean and median), online adoption rates, and primary curricular specialties."
+    )
+
+    # Table 7: 8 Columns
+    # 1 Header + 1 Banner A + 8 Rows + 1 Subtotal A + 1 Banner B + 11 Rows + 1 Subtotal B + 1 Total = 25 Rows
+    t7 = doc.add_table(rows=25, cols=8)
     t7.alignment = WD_TABLE_ALIGNMENT.CENTER
     set_table_borders(t7, color="CBD5E1", sz="4")
-    headers_t7 = ["Occupation Category", "Typical Background", "Tutors (N)", "Share (%)", "Avg Fee (₹/hr)"]
-    widths_t7 = [Inches(2.0), Inches(2.2), Inches(1.0), Inches(0.9), Inches(1.1)]
+    headers_t7 = [
+        "Professional Profile & Background",
+        "Career Category",
+        "Tutors (N)",
+        "Share (%)",
+        "Avg Fee",
+        "Median Fee",
+        "Online (%)",
+        "Key Specializations & Core Subjects"
+    ]
+    widths_t7 = [Inches(1.70), Inches(0.95), Inches(0.65), Inches(0.50), Inches(0.55), Inches(0.55), Inches(0.55), Inches(1.45)]
 
     for c_idx, h_text in enumerate(headers_t7):
         c = t7.cell(0, c_idx)
         c.width = widths_t7[c_idx]
-        set_cell_background(c, CLR_PRIMARY_HEX)
-        set_cell_margins(c, top=80, bottom=80, left=90, right=90)
+        set_cell_background(c, "0F172A")
+        set_cell_margins(c, top=80, bottom=80, left=50, right=50)
         p = c.paragraphs[0]
-        p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 2 else WD_ALIGN_PARAGRAPH.LEFT
+        p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx in [2, 3, 4, 5, 6] else WD_ALIGN_PARAGRAPH.LEFT
         run = p.add_run(h_text)
         run.font.bold = True
-        run.font.size = Pt(8.5)
+        run.font.size = Pt(7.5)
         run.font.color.rgb = RGBColor(255, 255, 255)
 
-    data_t7 = [
-        ("Professional Online Educator", "Full-time digital tutors & course instructors", "29,349", "27.2%", "₹860"),
-        ("College Student / Researcher", "University scholars, PhD & Master's candidates", "26,061", "24.2%", "₹680"),
-        ("Independent Private Tutor", "Dedicated offline & neighborhood tutors", "16,188", "15.0%", "₹750"),
-        ("College / University Faculty", "Assistant professors, lecturers & senior academicians", "6,672", "6.2%", "₹1,250"),
-        ("Early-Career Educator", "Fresh B.Ed graduates & trainee teachers", "5,821", "5.4%", "₹620"),
-        ("Software Engineer / IT", "Working tech professionals, coders & analysts", "4,267", "4.0%", "₹1,150"),
-        ("Senior Private Educator", "Master teachers with 10+ years private practice", "4,080", "3.8%", "₹1,350"),
-        ("School Educator (Teacher)", "Regular primary & secondary school staff", "3,704", "3.4%", "₹780"),
+    teaching_rows = [
+        ("Professional Online Educator", "Full-Time Online Educator", "29,349", "27.2%", "₹943", "₹725", "98.5%", "K-12 STEM, English, Coding & Exam Prep"),
+        ("Independent Private Tutor", "Full-Time Independent Tutor", "16,188", "15.0%", "₹722", "₹500", "95.4%", "K-10 All Subjects, Maths, Science Foundations"),
+        ("College / University Faculty", "Higher Education Faculty", "6,672", "6.2%", "₹1,044", "₹750", "98.2%", "Advanced Degree STEM, Calculus, University Physics"),
+        ("Early-Career Educator", "Trainee / Junior Teacher", "5,821", "5.4%", "₹638", "₹450", "74.7%", "Primary & Middle School Basics, Language Fluency"),
+        ("Senior Private Educator", "Master Educator (10+ Yrs)", "4,080", "3.8%", "₹798", "₹600", "91.9%", "Board Exam Derivations, Senior Physics & Maths"),
+        ("School Educator (Teacher)", "Regular School Staff Teacher", "3,704", "3.4%", "₹819", "₹650", "97.6%", "CBSE / ICSE School Syllabus, Chemistry & EVS"),
+        ("Competitive Exam Specialist", "Entrance Coaching Specialist", "2,413", "2.2%", "₹1,043", "₹750", "97.0%", "IIT JEE Advanced, NEET, Olympiads, Quant"),
+        ("Private / Home Tutor", "Neighborhood Home Tutor", "2,094", "1.9%", "₹682", "₹450", "88.7%", "In-Person Mentoring, Middle School Homework Help"),
     ]
 
-    for r_idx, row_vals in enumerate(data_t7, start=1):
-        bg = "FFFFFF" if r_idx % 2 != 0 else CLR_BG_LIGHT
-        for c_idx, val in enumerate(row_vals):
-            c = t7.cell(r_idx, c_idx)
+    non_teaching_rows = [
+        ("University & College Scholar", "Enrolled University Scholar", "26,061", "24.2%", "₹767", "₹550", "96.1%", "Mathematics, Physics, Chemistry, Peer Mentoring"),
+        ("Software Engineer & IT Pro", "Working Tech Professional", "4,267", "4.0%", "₹1,051", "₹750", "98.5%", "Python, Java, Web Dev, DSA, AI/ML, Databases"),
+        ("Medical & Healthcare Pro", "Doctor / MBBS / Clinician", "1,862", "1.7%", "₹928", "₹750", "98.7%", "NEET UG Biology, Human Physiology, Anatomy"),
+        ("Corporate Finance, CA & Banking", "Chartered Accountant / Banker", "1,767", "1.6%", "₹1,099", "₹800", "97.7%", "Accountancy, Financial Mgmt, CA Foundation, Tax"),
+        ("Freelancer & Solopreneur", "Independent Consultant / Owner", "994", "0.9%", "₹1,183", "₹950", "98.2%", "Spoken English, Digital Skills, Business Consulting"),
+        ("Industry Consultant / Manager", "Corporate Consultant / HR", "833", "0.8%", "₹1,037", "₹750", "98.8%", "SQL, Data Analytics, Soft Skills, Applied Maths"),
+        ("Core Industrial Engineer", "Mech / Civil / Electrical Engg", "642", "0.6%", "₹972", "₹750", "96.4%", "Engineering Mechanics, AutoCAD, Applied Physics"),
+        ("Creative Arts, Design & Media", "Designer / Writer / Media Artist", "423", "0.4%", "₹906", "₹700", "98.1%", "Creative Writing, English Fluency, Graphic Design"),
+        ("Legal & Civil Services Aspirant", "Lawyer / UPSC Aspirant", "407", "0.4%", "₹809", "₹600", "96.1%", "Political Science, Constitutional Law, History"),
+        ("Homemaker & Home Educator", "Educated Homemaker", "100", "0.1%", "₹582", "₹400", "96.0%", "Early Childhood, Classes 1–5 All Subjects, Phonics"),
+        ("Student Tutor / Peer Mentor", "Junior / High School Student", "39", "0.04%", "₹601", "₹438", "94.9%", "Peer-to-Peer Foundations, Junior Science & Maths"),
+    ]
+
+    current_r = 1
+
+    # Part A Banner
+    for c in t7.rows[current_r].cells:
+        set_cell_background(c, "1E3A8A")
+    banner_a = t7.cell(current_r, 0).merge(t7.cell(current_r, 7))
+    set_cell_margins(banner_a, top=60, bottom=60, left=60, right=60)
+    p_ba = banner_a.paragraphs[0]
+    r_ba = p_ba.add_run("PART A: TEACHING & ACADEMIC PROFESSIONS (Full-Time Career Educators — 70,321 Tutors, 65.3% of Market)")
+    r_ba.font.bold = True
+    r_ba.font.size = Pt(8.0)
+    r_ba.font.color.rgb = RGBColor(255, 255, 255)
+    current_r += 1
+
+    # Part A Rows
+    for r_idx, r_vals in enumerate(teaching_rows):
+        bg = "FFFFFF" if r_idx % 2 == 0 else "F8FAFC"
+        for c_idx, val in enumerate(r_vals):
+            c = t7.cell(current_r, c_idx)
             c.width = widths_t7[c_idx]
             set_cell_background(c, bg)
-            set_cell_margins(c, top=65, bottom=65, left=90, right=90)
+            set_cell_margins(c, top=55, bottom=55, left=50, right=50)
             p = c.paragraphs[0]
-            p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 2 else WD_ALIGN_PARAGRAPH.LEFT
+            p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx in [2, 3, 4, 5, 6] else WD_ALIGN_PARAGRAPH.LEFT
             r = p.add_run(val)
-            r.font.size = Pt(8.5)
+            r.font.size = Pt(7.5)
             if c_idx == 0:
                 r.font.bold = True
+            elif c_idx in [4, 5]:
+                r.font.bold = True
+                r.font.color.rgb = RGBColor(15, 118, 110)
+        current_r += 1
 
-    doc.add_paragraph().paragraph_format.space_after = Pt(12)
+    # Part A Subtotal
+    sub_a_vals = [
+        "Subtotal: Career Teaching Professionals",
+        "Full-Time Teaching",
+        "70,321",
+        "65.3%",
+        "₹864",
+        "₹650",
+        "95.2%",
+        "Comprehensive K-12, Boards & Higher Ed Curricula"
+    ]
+    for c_idx, val in enumerate(sub_a_vals):
+        c = t7.cell(current_r, c_idx)
+        c.width = widths_t7[c_idx]
+        set_cell_background(c, "EEF2FF")
+        set_cell_margins(c, top=65, bottom=65, left=50, right=50)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx in [2, 3, 4, 5, 6] else WD_ALIGN_PARAGRAPH.LEFT
+        r = p.add_run(val)
+        r.font.bold = True
+        r.font.size = Pt(7.5)
+        r.font.color.rgb = RGBColor(30, 58, 138)
+    current_r += 1
+
+    # Part B Banner
+    for c in t7.rows[current_r].cells:
+        set_cell_background(c, "0F766E")
+    banner_b = t7.cell(current_r, 0).merge(t7.cell(current_r, 7))
+    set_cell_margins(banner_b, top=60, bottom=60, left=60, right=60)
+    p_bb = banner_b.paragraphs[0]
+    r_bb = p_bb.add_run("PART B: NON-TEACHING PROFESSIONS & SCHOLARS (Tutoring Alongside Another Career — 37,395 Tutors, 34.7% of Market)")
+    r_bb.font.bold = True
+    r_bb.font.size = Pt(8.0)
+    r_bb.font.color.rgb = RGBColor(255, 255, 255)
+    current_r += 1
+
+    # Part B Rows
+    for r_idx, r_vals in enumerate(non_teaching_rows):
+        bg = "FFFFFF" if r_idx % 2 == 0 else "F8FAFC"
+        for c_idx, val in enumerate(r_vals):
+            c = t7.cell(current_r, c_idx)
+            c.width = widths_t7[c_idx]
+            set_cell_background(c, bg)
+            set_cell_margins(c, top=55, bottom=55, left=50, right=50)
+            p = c.paragraphs[0]
+            p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx in [2, 3, 4, 5, 6] else WD_ALIGN_PARAGRAPH.LEFT
+            r = p.add_run(val)
+            r.font.size = Pt(7.5)
+            if c_idx == 0:
+                r.font.bold = True
+            elif c_idx in [4, 5]:
+                r.font.bold = True
+                r.font.color.rgb = RGBColor(15, 118, 110)
+        current_r += 1
+
+    # Part B Subtotal
+    sub_b_vals = [
+        "Subtotal: Non-Teaching Day-Job Tutors",
+        "Side-Career / Part-Time",
+        "37,395",
+        "34.7%",
+        "₹849",
+        "₹625",
+        "96.7%",
+        "Applied Industry Skills, STEM & Entrance Mentoring"
+    ]
+    for c_idx, val in enumerate(sub_b_vals):
+        c = t7.cell(current_r, c_idx)
+        c.width = widths_t7[c_idx]
+        set_cell_background(c, "F0FDF4")
+        set_cell_margins(c, top=65, bottom=65, left=50, right=50)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx in [2, 3, 4, 5, 6] else WD_ALIGN_PARAGRAPH.LEFT
+        r = p.add_run(val)
+        r.font.bold = True
+        r.font.size = Pt(7.5)
+        r.font.color.rgb = RGBColor(6, 95, 70)
+    current_r += 1
+
+    # National Total Row
+    tot_vals = [
+        "National Total (All Verified Tutors)",
+        "All Verified Profiles",
+        "107,716",
+        "100.0%",
+        "₹859",
+        "₹650",
+        "95.7%",
+        "Complete Pan-India Tutoring Ecosystem"
+    ]
+    for c_idx, val in enumerate(tot_vals):
+        c = t7.cell(current_r, c_idx)
+        c.width = widths_t7[c_idx]
+        set_cell_background(c, "0F172A")
+        set_cell_margins(c, top=70, bottom=70, left=50, right=50)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx in [2, 3, 4, 5, 6] else WD_ALIGN_PARAGRAPH.LEFT
+        r = p.add_run(val)
+        r.font.bold = True
+        r.font.size = Pt(8.0)
+        r.font.color.rgb = RGBColor(255, 255, 255)
+
+    p7_note = doc.add_paragraph()
+    p7_note.paragraph_format.space_before = Pt(6)
+    p7_note.paragraph_format.space_after = Pt(12)
+    r7_note = p7_note.add_run(
+        "Key Analytical Insights:\n"
+        "1. The 65.3% / 34.7% Dual Ecosystem: Nearly two-thirds of tutors are dedicated career educators, while more than one-third teach alongside another profession or university degree.\n"
+        "2. Industry Pricing Premium: Working professionals in IT (₹1,051/hr), Corporate Finance/CAs (₹1,099/hr), and Freelance Consultants (₹1,183/hr) command higher average fees than regular school staff (₹819/hr) and independent tutors (₹722/hr), demonstrating that hands-on industry expertise commands a measurable pricing premium in the tutoring market.\n"
+        "3. University Students as the STEM Engine: College students and research scholars (26,061 tutors, 24.2%) form the largest single group tutoring on the side, providing accessible entry pricing (₹550/hr median) that makes mathematics and science tuition affordable across Tier-2 and Tier-3 cities.\n"
+        "4. High Digital Fluency: Both groups exhibit exceptional online adoption (95.2% for full-time teachers, 96.7% for non-teaching professionals), showing that modern tutoring in India is overwhelmingly digital."
+    )
+    r7_note.font.size = Pt(8.5)
+    r7_note.font.italic = True
+    r7_note.font.color.rgb = COLOR_MUTED
 
     # ---------------------------------------------------------
     # SECTION 8: ALL-INDIA GEOGRAPHIC DISTRIBUTION & DISTRICT DIRECTORY
