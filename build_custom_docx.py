@@ -680,7 +680,13 @@ def build_report():
         y_axis_title="Number of Tutors"
     )
 
-    # Editable Table
+    # Table 2A: Overall Gender Breakdown
+    h2a = doc.add_heading(level=2)
+    r2a = h2a.add_run("Table 2A: National Gender Overview (Overall Headcount & Participation)")
+    r2a.font.size = Pt(11)
+    r2a.font.bold = True
+    r2a.font.color.rgb = COLOR_PRIMARY
+
     t2 = doc.add_table(rows=4, cols=5)
     t2.alignment = WD_TABLE_ALIGNMENT.CENTER
     set_table_borders(t2, color="CBD5E1", sz="4")
@@ -718,6 +724,190 @@ def build_report():
             r.font.size = Pt(8.5)
             if c_idx == 0:
                 r.font.bold = True
+
+    doc.add_paragraph().paragraph_format.space_after = Pt(10)
+
+    # ---------------------------------------------------------
+    # TABLE 2B: GENDER DISTRIBUTION BY EDUCATIONAL DEGREE
+    # ---------------------------------------------------------
+    h2b = doc.add_heading(level=2)
+    r2b = h2b.add_run("Table 2B: Gender Distribution Across Educational Degrees (PhD, M.Tech, B.Tech, etc.)")
+    r2b.font.size = Pt(11)
+    r2b.font.bold = True
+    r2b.font.color.rgb = COLOR_PRIMARY
+
+    p2b = doc.add_paragraph()
+    p2b.paragraph_format.space_after = Pt(6)
+    p2b.add_run(
+        "Private tutoring demographics show marked differences across specific academic qualifications. "
+        "Women represent a clear majority in the arts, pure sciences, and school teacher education: Master of Arts (70.5% female), "
+        "Master of Science (65.1% female), and Bachelor of Education (79.8% female). "
+        "In contrast, technical engineering fields feature a male majority: Bachelor of Technology (63.5% male) and Master of Technology (56.2% male). "
+        "At the highest doctoral tier (Doctorate / PhD), gender representation is virtually balanced at 51.2% female and 48.8% male."
+    )
+
+    query_deg = """
+        SELECT 
+            CASE 
+                WHEN highest_qualification = 'Doctorate' OR lower(education_raw) LIKE '%phd%' OR lower(education_raw) LIKE '%doctorate%' THEN 'Doctorate / PhD'
+                WHEN lower(education_raw) LIKE '%m.tech%' OR lower(education_raw) LIKE '%mtech%' OR lower(education_raw) LIKE '%m.e.%' OR lower(education_raw) LIKE '%m.e %' THEN 'Master of Technology (M.Tech / M.E.)'
+                WHEN lower(education_raw) LIKE '%b.tech%' OR lower(education_raw) LIKE '%btech%' OR lower(education_raw) LIKE '%b.e.%' OR lower(education_raw) LIKE '%b.e %' THEN 'Bachelor of Technology (B.Tech / B.E.)'
+                WHEN lower(education_raw) LIKE '%m.sc%' OR lower(education_raw) LIKE '%msc%' THEN 'Master of Science (M.Sc)'
+                WHEN lower(education_raw) LIKE '%b.sc%' OR lower(education_raw) LIKE '%bsc%' THEN 'Bachelor of Science (B.Sc)'
+                WHEN lower(education_raw) LIKE '%m.a%' OR lower(education_raw) LIKE '%ma %' THEN 'Master of Arts (M.A.)'
+                WHEN lower(education_raw) LIKE '%b.a%' OR lower(education_raw) LIKE '%ba %' THEN 'Bachelor of Arts (B.A.)'
+                WHEN lower(education_raw) LIKE '%b.ed%' OR lower(education_raw) LIKE '%bed%' THEN 'Bachelor of Education (B.Ed)'
+                WHEN lower(education_raw) LIKE '%b.com%' OR lower(education_raw) LIKE '%bcom%' THEN 'Bachelor of Commerce (B.Com)'
+                WHEN lower(education_raw) LIKE '%mba%' OR lower(education_raw) LIKE '%pgdm%' THEN 'Management (MBA / PGDM)'
+                WHEN lower(education_raw) LIKE '%m.com%' OR lower(education_raw) LIKE '%mcom%' THEN 'Master of Commerce (M.Com)'
+                ELSE 'Other Qualifications / Schooling'
+            END as degree_name,
+            COUNT(*) as total,
+            SUM(CASE WHEN gender = 'Female' THEN 1 ELSE 0 END) as female_cnt,
+            ROUND(SUM(CASE WHEN gender = 'Female' THEN 1.0 ELSE 0 END) * 100.0 / COUNT(*), 1) as female_pct,
+            SUM(CASE WHEN gender = 'Male' THEN 1 ELSE 0 END) as male_cnt,
+            ROUND(SUM(CASE WHEN gender = 'Male' THEN 1.0 ELSE 0 END) * 100.0 / COUNT(*), 1) as male_pct,
+            ROUND(SUM(CASE WHEN gender = 'Female' THEN 1.0 ELSE 0 END) / NULLIF(SUM(CASE WHEN gender = 'Male' THEN 1.0 ELSE 0 END), 0), 2) as ratio_fm
+        FROM teachers
+        GROUP BY degree_name
+        ORDER BY total DESC
+    """
+    rows_deg = cur.execute(query_deg).fetchall()
+
+    t2b = doc.add_table(rows=len(rows_deg) + 2, cols=7)
+    t2b.alignment = WD_TABLE_ALIGNMENT.CENTER
+    set_table_borders(t2b, color="CBD5E1", sz="4")
+    headers_t2b = ["Degree / Qualification Level", "Tutors (N)", "Female (N)", "Female (%)", "Male (N)", "Male (%)", "Ratio (F : M)"]
+    widths_t2b = [Inches(2.2), Inches(0.8), Inches(0.8), Inches(0.7), Inches(0.8), Inches(0.7), Inches(0.9)]
+
+    for c_idx, h_text in enumerate(headers_t2b):
+        c = t2b.cell(0, c_idx)
+        c.width = widths_t2b[c_idx]
+        set_cell_background(c, CLR_PRIMARY_HEX)
+        set_cell_margins(c, top=80, bottom=80, left=80, right=80)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 1 else WD_ALIGN_PARAGRAPH.LEFT
+        run = p.add_run(h_text)
+        run.font.bold = True
+        run.font.size = Pt(8)
+        run.font.color.rgb = RGBColor(255, 255, 255)
+
+    for r_idx, r in enumerate(rows_deg, start=1):
+        deg_name, total_n, f_cnt, f_pct, m_cnt, m_pct, r_fm = r
+        ratio_str = f"{r_fm:.2f} : 1" if r_fm else "—"
+        row_vals = [deg_name, f"{total_n:,}", f"{f_cnt:,}", f"{f_pct:.1f}%", f"{m_cnt:,}", f"{m_pct:.1f}%", ratio_str]
+        bg = "FFFFFF" if r_idx % 2 != 0 else CLR_BG_LIGHT
+        for c_idx, val in enumerate(row_vals):
+            c = t2b.cell(r_idx, c_idx)
+            c.width = widths_t2b[c_idx]
+            set_cell_background(c, bg)
+            set_cell_margins(c, top=60, bottom=60, left=80, right=80)
+            p = c.paragraphs[0]
+            p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 1 else WD_ALIGN_PARAGRAPH.LEFT
+            r_run = p.add_run(val)
+            r_run.font.size = Pt(8)
+            if c_idx == 0:
+                r_run.font.bold = True
+
+    # Total Row for Table 2B
+    tot_row_idx = len(rows_deg) + 1
+    tot_vals_2b = ["National Total (All Educators)", "107,716", "62,466", "58.0%", "43,964", "40.8%", "1.42 : 1"]
+    for c_idx, val in enumerate(tot_vals_2b):
+        c = t2b.cell(tot_row_idx, c_idx)
+        c.width = widths_t2b[c_idx]
+        set_cell_background(c, "E2E8F0")
+        set_cell_margins(c, top=70, bottom=70, left=80, right=80)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 1 else WD_ALIGN_PARAGRAPH.LEFT
+        r_run = p.add_run(val)
+        r_run.font.size = Pt(8)
+        r_run.font.bold = True
+
+    doc.add_paragraph().paragraph_format.space_after = Pt(10)
+
+    # ---------------------------------------------------------
+    # TABLE 2C: STATE-BY-STATE GENDER RATIO (ALL 36 STATES & UTS)
+    # ---------------------------------------------------------
+    h2c = doc.add_heading(level=2)
+    r2c = h2c.add_run("Table 2C: State-by-State Gender Breakdown & Male-to-Female Ratios (All 36 States & UTs)")
+    r2c.font.size = Pt(11)
+    r2c.font.bold = True
+    r2c.font.color.rgb = COLOR_PRIMARY
+
+    p2c = doc.add_paragraph()
+    p2c.paragraph_format.space_after = Pt(6)
+    p2c.add_run(
+        "Regional geography heavily influences tutor gender demographics across India. "
+        "Southern states have the highest proportion of female tutors, led by Kerala (78.0% female, 3.55 to 1 ratio), "
+        "Tamil Nadu (73.0% female, 2.70 to 1), and Puducherry (72.8% female). Punjab also has a very high female proportion (68.4%). "
+        "In contrast, several northern and eastern states show a male majority among tutors: Bihar leads the country in male tutor proportion at 72.6% male (0.38 to 1 ratio), "
+        "followed by Jammu & Kashmir (63.2% male), Jharkhand (61.1% male), Tripura (59.1% male), and Rajasthan (56.8% male)."
+    )
+
+    query_state_gender = """
+        SELECT 
+            state,
+            count(*) as total,
+            sum(case when gender = 'Female' then 1 else 0 end) as female_cnt,
+            round(sum(case when gender = 'Female' then 1.0 else 0 end) * 100.0 / count(*), 1) as female_pct,
+            sum(case when gender = 'Male' then 1 else 0 end) as male_cnt,
+            round(sum(case when gender = 'Male' then 1.0 else 0 end) * 100.0 / count(*), 1) as male_pct,
+            round(sum(case when gender = 'Female' then 1.0 else 0 end) / nullif(sum(case when gender = 'Male' then 1.0 else 0 end), 0), 2) as ratio_fm
+        FROM teachers
+        WHERE state != 'Other / International' AND state != 'Not Specified'
+        GROUP BY state
+        ORDER BY total DESC
+    """
+    rows_state_gender = cur.execute(query_state_gender).fetchall()
+
+    t2c = doc.add_table(rows=len(rows_state_gender) + 2, cols=8)
+    t2c.alignment = WD_TABLE_ALIGNMENT.CENTER
+    set_table_borders(t2c, color="CBD5E1", sz="4")
+    headers_t2c = ["Rank", "State / Union Territory", "Total Tutors", "Female (N)", "Female (%)", "Male (N)", "Male (%)", "Ratio (F : M)"]
+    widths_t2c = [Inches(0.5), Inches(1.9), Inches(0.9), Inches(0.7), Inches(0.7), Inches(0.7), Inches(0.7), Inches(0.8)]
+
+    for c_idx, h_text in enumerate(headers_t2c):
+        c = t2c.cell(0, c_idx)
+        c.width = widths_t2c[c_idx]
+        set_cell_background(c, CLR_PRIMARY_HEX)
+        set_cell_margins(c, top=80, bottom=80, left=70, right=70)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 2 else (WD_ALIGN_PARAGRAPH.CENTER if c_idx == 0 else WD_ALIGN_PARAGRAPH.LEFT)
+        run = p.add_run(h_text)
+        run.font.bold = True
+        run.font.size = Pt(8)
+        run.font.color.rgb = RGBColor(255, 255, 255)
+
+    for r_idx, r in enumerate(rows_state_gender, start=1):
+        st_name, total_n, f_cnt, f_pct, m_cnt, m_pct, r_fm = r
+        ratio_str = f"{r_fm:.2f} : 1" if r_fm is not None else "—"
+        row_vals = [str(r_idx), st_name, f"{total_n:,}", f"{f_cnt:,}", f"{f_pct:.1f}%", f"{m_cnt:,}", f"{m_pct:.1f}%", ratio_str]
+        bg = "FFFFFF" if r_idx % 2 != 0 else CLR_BG_LIGHT
+        for c_idx, val in enumerate(row_vals):
+            c = t2c.cell(r_idx, c_idx)
+            c.width = widths_t2c[c_idx]
+            set_cell_background(c, bg)
+            set_cell_margins(c, top=55, bottom=55, left=70, right=70)
+            p = c.paragraphs[0]
+            p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 2 else (WD_ALIGN_PARAGRAPH.CENTER if c_idx == 0 else WD_ALIGN_PARAGRAPH.LEFT)
+            r_run = p.add_run(val)
+            r_run.font.size = Pt(8)
+            if c_idx == 1:
+                r_run.font.bold = True
+
+    # Total Row for Table 2C
+    tot_row_idx_c = len(rows_state_gender) + 1
+    tot_vals_2c = ["—", "National Total (36 States & UTs)", "106,338", "61,757", "58.1%", "43,450", "40.9%", "1.42 : 1"]
+    for c_idx, val in enumerate(tot_vals_2c):
+        c = t2c.cell(tot_row_idx_c, c_idx)
+        c.width = widths_t2c[c_idx]
+        set_cell_background(c, "E2E8F0")
+        set_cell_margins(c, top=70, bottom=70, left=70, right=70)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 2 else (WD_ALIGN_PARAGRAPH.CENTER if c_idx == 0 else WD_ALIGN_PARAGRAPH.LEFT)
+        r_run = p.add_run(val)
+        r_run.font.size = Pt(8)
+        r_run.font.bold = True
 
     doc.add_paragraph().paragraph_format.space_after = Pt(12)
 
@@ -1529,19 +1719,20 @@ def build_report():
                     'district': p.get('district', 'Unknown'),
                     'tutors': cnt,
                     'avg_fee': p.get('avg_fee', 0),
-                    'online_pct': p.get('online_pct', 0.0)
+                    'female_pct': p.get('female_pct', 0.0),
+                    'male_pct': p.get('male_pct', 0.0)
                 })
 
     all_districts.sort(key=lambda x: x['tutors'], reverse=True)
 
     # Render Table 8B (Top 25)
     top_25 = all_districts[:25]
-    t_top25 = doc.add_table(rows=len(top_25) + 1, cols=6)
+    t_top25 = doc.add_table(rows=len(top_25) + 1, cols=7)
     t_top25.alignment = WD_TABLE_ALIGNMENT.CENTER
     set_table_borders(t_top25, color="CBD5E1", sz="4")
 
-    headers_d = ["Rank", "District / Hub", "State / Territory", "Tutors (N)", "Avg Fee (₹/hr)", "Online (%)"]
-    widths_d = [Inches(0.6), Inches(2.2), Inches(1.8), Inches(1.0), Inches(1.0), Inches(0.8)]
+    headers_d = ["Rank", "District / Hub", "State / Territory", "Tutors (N)", "Avg Fee (₹/hr)", "Female (%)", "Male (%)"]
+    widths_d = [Inches(0.5), Inches(1.9), Inches(1.7), Inches(0.8), Inches(0.8), Inches(0.6), Inches(0.6)]
 
     for c_idx, h_text in enumerate(headers_d):
         c = t_top25.cell(0, c_idx)
@@ -1563,7 +1754,8 @@ def build_report():
             d['state'],
             f"{d['tutors']:,}",
             fee_str,
-            f"{d['online_pct']:.1f}%"
+            f"{d['female_pct']:.1f}%",
+            f"{d['male_pct']:.1f}%"
         ]
         bg = "FFFFFF" if r_idx % 2 != 0 else CLR_BG_LIGHT
         for c_idx, val in enumerate(row_vals):
@@ -1595,7 +1787,7 @@ def build_report():
         "Districts are sorted nationally by total tutor volume, providing the complete grassroots breakdown for academic and market research."
     )
 
-    t_dist_all = doc.add_table(rows=1, cols=6)
+    t_dist_all = doc.add_table(rows=1, cols=7)
     t_dist_all.alignment = WD_TABLE_ALIGNMENT.CENTER
     set_table_borders(t_dist_all, color="CBD5E1", sz="3")
 
@@ -1621,7 +1813,8 @@ def build_report():
             d['state'],
             f"{d['tutors']:,}",
             fee_str,
-            f"{d['online_pct']:.1f}%"
+            f"{d['female_pct']:.1f}%",
+            f"{d['male_pct']:.1f}%"
         ]
         bg = "FFFFFF" if r_idx % 2 != 0 else CLR_BG_LIGHT
         for c_idx, val in enumerate(row_vals):

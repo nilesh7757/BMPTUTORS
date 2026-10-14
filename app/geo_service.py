@@ -312,7 +312,9 @@ def get_enriched_districts_geojson(target_state):
             SELECT 
                 city, count(*) as tutor_count,
                 round(avg(case when hourly_fee_avg between 50 and 5000 then hourly_fee_avg end), 1) as avg_fee,
-                round(avg(teaches_online) * 100, 1) as online_pct
+                round(avg(teaches_online) * 100, 1) as online_pct,
+                sum(case when gender = 'Female' then 1 else 0 end) as female_cnt,
+                sum(case when gender = 'Male' then 1 else 0 end) as male_cnt
             FROM teachers
             WHERE state LIKE '%Andaman%' AND city IS NOT NULL AND city != ''
             GROUP BY city
@@ -322,7 +324,9 @@ def get_enriched_districts_geojson(target_state):
             SELECT 
                 city, count(*) as tutor_count,
                 round(avg(case when hourly_fee_avg between 50 and 5000 then hourly_fee_avg end), 1) as avg_fee,
-                round(avg(teaches_online) * 100, 1) as online_pct
+                round(avg(teaches_online) * 100, 1) as online_pct,
+                sum(case when gender = 'Female' then 1 else 0 end) as female_cnt,
+                sum(case when gender = 'Male' then 1 else 0 end) as male_cnt
             FROM teachers
             WHERE state IN ('Dadra and Nagar Haveli', 'Daman and Diu') AND city IS NOT NULL AND city != ''
             GROUP BY city
@@ -332,7 +336,9 @@ def get_enriched_districts_geojson(target_state):
             SELECT 
                 city, count(*) as tutor_count,
                 round(avg(case when hourly_fee_avg between 50 and 5000 then hourly_fee_avg end), 1) as avg_fee,
-                round(avg(teaches_online) * 100, 1) as online_pct
+                round(avg(teaches_online) * 100, 1) as online_pct,
+                sum(case when gender = 'Female' then 1 else 0 end) as female_cnt,
+                sum(case when gender = 'Male' then 1 else 0 end) as male_cnt
             FROM teachers
             WHERE state = ? AND city IS NOT NULL AND city != ''
             GROUP BY city
@@ -371,7 +377,7 @@ def get_enriched_districts_geojson(target_state):
             break
             
     # Assign every single city row to a district
-    dist_buckets = {d: {"tutors": 0, "fees": [], "online": []} for d in district_names}
+    dist_buckets = {d: {"tutors": 0, "fees": [], "online": [], "females": 0, "males": 0} for d in district_names}
     
     # Identify default/dominant district for unassigned towns
     default_district = district_names[0]
@@ -386,6 +392,8 @@ def get_enriched_districts_geojson(target_state):
         cnt = r["tutor_count"]
         fee = r["avg_fee"]
         online = r["online_pct"]
+        females = r["female_cnt"]
+        males = r["male_cnt"]
         
         assigned = None
         # 1. Alias dictionary
@@ -408,6 +416,8 @@ def get_enriched_districts_geojson(target_state):
             assigned = default_district
             
         dist_buckets[assigned]["tutors"] += cnt
+        dist_buckets[assigned]["females"] += females
+        dist_buckets[assigned]["males"] += males
         if fee:
             dist_buckets[assigned]["fees"].append((fee, cnt))
         if online is not None:
@@ -417,18 +427,26 @@ def get_enriched_districts_geojson(target_state):
     for feature in matched_features:
         dt_name = feature.get("properties", {}).get("NAME_2", "")
         dt_lower = dt_name.lower().strip()
-        b = dist_buckets.get(dt_lower, {"tutors": 0, "fees": [], "online": []})
+        b = dist_buckets.get(dt_lower, {"tutors": 0, "fees": [], "online": [], "females": 0, "males": 0})
         
         t_cnt = b["tutors"]
         t_fee = round(sum(f*c for f,c in b["fees"]) / sum(c for f,c in b["fees"]), 1) if b["fees"] else 0
         t_online = round(sum(o*c for o,c in b["online"]) / sum(c for f,c in b["online"]), 1) if b["online"] else 0
+        t_fem = b["females"]
+        t_mal = b["males"]
+        fem_pct = round(t_fem * 100.0 / t_cnt, 1) if t_cnt > 0 else 0.0
+        mal_pct = round(t_mal * 100.0 / t_cnt, 1) if t_cnt > 0 else 0.0
         
         feature["properties"].update({
             "district": dt_name,
             "state": target_norm,
             "tutor_count": t_cnt,
             "avg_fee": t_fee,
-            "online_pct": t_online
+            "online_pct": t_online,
+            "female_count": t_fem,
+            "male_count": t_mal,
+            "female_pct": fem_pct,
+            "male_pct": mal_pct
         })
         
     return {
