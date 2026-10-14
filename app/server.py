@@ -107,6 +107,51 @@ async def api_filters(request):
     }
     return JSONResponse(_FILTERS_CACHE)
 
+def get_sort_clause(params):
+    sort_by_raw = params.get("sort_by", params.get("sort", "")).strip().lower()
+    sort_order_raw = params.get("sort_order", params.get("order", "")).strip().lower()
+
+    if "_" in sort_by_raw and not sort_order_raw:
+        parts = sort_by_raw.rsplit("_", 1)
+        if parts[1] in ("asc", "desc"):
+            sort_by = parts[0]
+            sort_order = parts[1]
+        else:
+            sort_by = sort_by_raw
+            sort_order = "asc"
+    else:
+        sort_by = sort_by_raw
+        sort_order = sort_order_raw if sort_order_raw in ("asc", "desc") else ""
+
+    if not sort_order:
+        if sort_by in ("fee", "fees", "rate"):
+            sort_order = "asc"
+        elif sort_by in ("exp", "experience", "years", "education", "qualification", "degree"):
+            sort_order = "desc"
+        else:
+            sort_order = "asc"
+
+    direction = sort_order.upper()
+
+    if sort_by == "name":
+        return f"CASE WHEN t.teacher_name GLOB '[A-Za-z]*' THEN 0 WHEN t.teacher_name IS NULL OR t.teacher_name = '' THEN 2 ELSE 1 END, t.teacher_name {direction}", "name", sort_order
+    elif sort_by in ("fee", "fees", "rate"):
+        return f"t.hourly_fee_avg IS NULL, t.hourly_fee_avg {direction}", "fee", sort_order
+    elif sort_by in ("education", "qualification", "degree"):
+        case_expr = f"""CASE t.highest_qualification 
+            WHEN 'Advanced (PhD/Doctorate)' THEN 4 
+            WHEN 'Postgraduate (PG)' THEN 3 
+            WHEN 'Undergraduate (UG)' THEN 2 
+            WHEN 'Less than UG' THEN 1 
+            ELSE 0 END {direction}, t.highest_qualification {direction}"""
+        return case_expr, "education", sort_order
+    elif sort_by in ("experience", "exp", "years"):
+        return f"t.total_teaching_exp_years IS NULL, t.total_teaching_exp_years {direction}", "experience", sort_order
+    elif sort_by in ("id", "tutor_id"):
+        return f"t.rowid {direction}", "id", sort_order
+    else:
+        return "t.rowid ASC", "default", "asc"
+
 async def api_tutors(request):
     params = request.query_params
     page = int(params.get("page", 1))
@@ -211,6 +256,8 @@ async def api_tutors(request):
             _TOTAL_TUTORS_COUNT = cur.execute("SELECT count(*) FROM teachers").fetchone()[0]
         total_count = _TOTAL_TUTORS_COUNT
     
+    order_clause, active_sort_by, active_sort_order = get_sort_clause(params)
+
     # Fetch paginated rows
     query = f"""
     SELECT 
@@ -220,7 +267,7 @@ async def api_tutors(request):
         t.teaches_online, t.hourly_fee_avg, t.is_active, t.occupation
     FROM teachers t
     {where_sql}
-    ORDER BY t.rowid ASC
+    ORDER BY {order_clause}
     LIMIT ? OFFSET ?
     """
     rows = cur.execute(query, args + [page_size, offset]).fetchall()
@@ -261,6 +308,8 @@ async def api_tutors(request):
         "page_size": page_size,
         "total_count": total_count,
         "total_pages": (total_count + page_size - 1) // page_size if page_size else 1,
+        "sort_by": active_sort_by,
+        "sort_order": active_sort_order,
         "items": results
     })
 
@@ -817,6 +866,7 @@ async def api_download_filtered_excel(request):
             media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
 
+    order_clause, _, _ = get_sort_clause(params)
     where_sql = "WHERE " + " AND ".join(where_clauses)
     conn = get_db()
     cur = conn.cursor()
@@ -857,7 +907,7 @@ async def api_download_filtered_excel(request):
         COALESCE(t.last_login_date, '') as last_login
     FROM teachers t
     {where_sql}
-    ORDER BY t.rowid ASC
+    ORDER BY {order_clause}
     LIMIT 50000
     """
     rows = cur.execute(query, args).fetchall()
