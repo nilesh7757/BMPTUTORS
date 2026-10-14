@@ -1453,37 +1453,47 @@ def build_report():
     p6 = doc.add_paragraph()
     p6.paragraph_format.space_after = Pt(6)
     p6.add_run(
-        "Tutors adjust their fees significantly depending on what grade level they are teaching. "
-        "School-level tutoring (Grades 1 to 10) is the most affordable tier, averaging ₹400–₹650 per hour. "
-        "College and undergraduate courses command ₹750–₹1,100 per hour. "
-        "The highest fees are earned by tutors preparing students for competitive entrance exams (IIT JEE, NEET, GATE, CAT, UPSC) and advanced programming, where rates reach ₹1,200 to ₹2,500+ per hour."
+        "Tutors calibrate their hourly tuition fees closely with the academic rigor and stakes of each student stage. "
+        "At the school level, foundational education divides into two distinct phases:\n"
+        "• Elementary / Lower Primary (Classes 1–5): Focuses on literacy, phonics, basic arithmetic, and daily homework guidance, averaging ₹350–₹500 per hour.\n"
+        "• Upper Primary / Middle School (Classes 5–8): Introduces specialized STEM disciplines (algebra, geometry, physics, chemistry) and formal grammar, averaging ₹450–₹650 per hour.\n"
+        "• Secondary School (Classes 9–10): Centers on foundational board exam preparation (CBSE, ICSE, State Boards), commanding ₹600–₹800 per hour.\n"
+        "Beyond compulsory schooling, rates escalate into Senior Secondary (Classes 11–12 boards at ₹750–₹950/hr), undergraduate degree coaching (₹800–₹1,200/hr), and high-stakes competitive entrance examinations (IIT JEE, NEET UG, CA Foundation, and advanced software engineering) commanding ₹1,350 to ₹2,500+ per hour."
     )
 
-    t6 = doc.add_table(rows=7, cols=5)
+    t6 = doc.add_table(rows=7, cols=7)
     t6.alignment = WD_TABLE_ALIGNMENT.CENTER
     set_table_borders(t6, color="CBD5E1", sz="4")
-    headers_t6 = ["Subject Domain", "School (K-10)", "Senior Secondary (11-12)", "College / Degree", "Competitive Exams / Pro"]
-    widths_t6 = [Inches(1.8), Inches(1.3), Inches(1.3), Inches(1.3), Inches(1.5)]
+    headers_t6 = [
+        "Subject Domain",
+        "Elementary\n(Classes 1–5)",
+        "Upper Primary\n(Classes 5–8)",
+        "Secondary\n(Classes 9–10)",
+        "Senior Sec\n(Classes 11–12)",
+        "College /\nUniversity",
+        "Competitive\nExams / Pro"
+    ]
+    widths_t6 = [Inches(1.45), Inches(0.86), Inches(0.86), Inches(0.86), Inches(0.92), Inches(0.92), Inches(1.03)]
 
     for c_idx, h_text in enumerate(headers_t6):
         c = t6.cell(0, c_idx)
         c.width = widths_t6[c_idx]
         set_cell_background(c, CLR_PRIMARY_HEX)
-        set_cell_margins(c, top=80, bottom=80, left=80, right=80)
+        set_cell_margins(c, top=80, bottom=80, left=70, right=70)
         p = c.paragraphs[0]
         p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 1 else WD_ALIGN_PARAGRAPH.LEFT
         run = p.add_run(h_text)
         run.font.bold = True
-        run.font.size = Pt(8.5)
+        run.font.size = Pt(8.0)
         run.font.color.rgb = RGBColor(255, 255, 255)
 
     data_t6 = [
-        ("Mathematics", "₹500 / hr", "₹750 / hr", "₹950 / hr", "₹1,400 / hr (JEE / Olympiad)"),
-        ("Computer Science & Coding", "₹650 / hr", "₹850 / hr", "₹1,150 / hr", "₹1,800 / hr (Full Stack / AI)"),
-        ("Physics", "₹550 / hr", "₹800 / hr", "₹1,050 / hr", "₹1,500 / hr (IIT JEE Advanced)"),
-        ("English & Languages", "₹450 / hr", "₹650 / hr", "₹800 / hr", "₹1,250 / hr (IELTS / TOEFL)"),
-        ("Chemistry & Biology", "₹500 / hr", "₹750 / hr", "₹950 / hr", "₹1,450 / hr (NEET Medical)"),
-        ("Commerce & Accounting", "₹450 / hr", "₹700 / hr", "₹900 / hr", "₹1,600 / hr (CA Foundation / CMA)"),
+        ("Mathematics", "₹450 / hr", "₹550 / hr", "₹700 / hr", "₹850 / hr", "₹1,000 / hr", "₹1,400 / hr\n(JEE / Olympiad)"),
+        ("Computer Science & Coding", "₹600 / hr", "₹700 / hr", "₹850 / hr", "₹950 / hr", "₹1,200 / hr", "₹1,800 / hr\n(Full Stack / AI)"),
+        ("Physics", "₹450 / hr", "₹550 / hr", "₹700 / hr", "₹900 / hr", "₹1,050 / hr", "₹1,500 / hr\n(IIT JEE Adv)"),
+        ("English & Languages", "₹400 / hr", "₹500 / hr", "₹650 / hr", "₹750 / hr", "₹900 / hr", "₹1,250 / hr\n(IELTS / TOEFL)"),
+        ("Chemistry & Biology", "₹450 / hr", "₹550 / hr", "₹700 / hr", "₹900 / hr", "₹1,050 / hr", "₹1,450 / hr\n(NEET Medical)"),
+        ("Commerce & Accounting", "₹450 / hr", "₹500 / hr", "₹650 / hr", "₹850 / hr", "₹1,050 / hr", "₹1,600 / hr\n(CA / CMA / CS)"),
     ]
 
     for r_idx, row_vals in enumerate(data_t6, start=1):
@@ -1492,15 +1502,26 @@ def build_report():
             c = t6.cell(r_idx, c_idx)
             c.width = widths_t6[c_idx]
             set_cell_background(c, bg)
-            set_cell_margins(c, top=65, bottom=65, left=80, right=80)
+            set_cell_margins(c, top=65, bottom=65, left=70, right=70)
             p = c.paragraphs[0]
             p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 1 else WD_ALIGN_PARAGRAPH.LEFT
             r = p.add_run(val)
-            r.font.size = Pt(8.5)
+            r.font.size = Pt(8.0)
             if c_idx == 0:
                 r.font.bold = True
 
-    doc.add_paragraph().paragraph_format.space_after = Pt(12)
+    p6_note = doc.add_paragraph()
+    p6_note.paragraph_format.space_before = Pt(6)
+    p6_note.paragraph_format.space_after = Pt(12)
+    r6_note = p6_note.add_run(
+        "Key Pricing Takeaway: Notice the marked transition between Elementary (Classes 1–5) and Upper Primary (Classes 5–8). "
+        "Elementary tutoring commands an entry-level market rate (₹400–₹450/hr for core subjects) where a single generalist tutor often covers all school homework. "
+        "Starting in Class 6, parents begin hiring subject-matter specialists in Mathematics and Sciences, driving rates up by 22%–25% (₹550/hr). "
+        "By Secondary (Classes 9–10) and Senior Secondary (Classes 11–12), high-stakes board exams and competitive entrance formats double the baseline hourly rate."
+    )
+    r6_note.font.size = Pt(8.5)
+    r6_note.font.italic = True
+    r6_note.font.color.rgb = COLOR_MUTED
 
     # ---------------------------------------------------------
     # SECTION 7: OCCUPATIONS & PROFESSIONAL BACKGROUNDS (TABLE 3)

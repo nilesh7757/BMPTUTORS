@@ -294,7 +294,8 @@
           <thead>
             <tr class="border-t-2 border-b-2 border-slate-900 bg-slate-50 text-[11px] font-bold text-slate-900 uppercase tracking-wider">
               <th class="py-2 px-3">Subject Discipline</th>
-              <th class="py-2 px-3 text-right">Primary & Middle (Class 1–8)</th>
+              <th class="py-2 px-3 text-right">Elementary (Class 1–5)</th>
+              <th class="py-2 px-3 text-right">Upper Primary (Class 5–8)</th>
               <th class="py-2 px-3 text-right">Secondary (Class 9–10)</th>
               <th class="py-2 px-3 text-right">Senior Secondary (Class 11–12)</th>
               <th class="py-2 px-3 text-right">Higher Education (College)</th>
@@ -307,7 +308,7 @@
           </tbody>
         </table>
         <p class="text-[10px] text-slate-500 italic pt-1 border-t border-slate-200">
-          <strong>Notes:</strong> Excludes fees &lt; ₹50 or &gt; ₹5,000/hr. Level mapping: Primary & Middle (Class 1–8), Secondary (Class 9–10), Senior Secondary (Class 11–12 / Boards / JEE / NEET), Higher Education (College / University).
+          <strong>Notes:</strong> Excludes fees &lt; ₹50 or &gt; ₹5,000/hr. Level mapping: Elementary (Class 1–5), Upper Primary / Middle (Class 5–8), Secondary (Class 9–10), Senior Secondary (Class 11–12 / Boards / JEE / NEET), Higher Education (College / University).
         </p>
       </div>
 
@@ -684,7 +685,8 @@
       if (!thead || !tbody || !mbody) return;
 
       const levelsDef = [
-        { key: 'Primary', label: 'Primary & Middle (Class 1–8)' },
+        { key: 'Elementary', label: 'Elementary (Class 1–5)' },
+        { key: 'UpperPrimary', label: 'Upper Primary (Class 5–8)' },
         { key: 'Secondary', label: 'Secondary (Class 9–10)' },
         { key: 'SeniorSec', label: 'Senior Secondary (Class 11–12)' },
         { key: 'HigherEd', label: 'Higher Education (College)' }
@@ -724,13 +726,19 @@
       // Matrix Body
       let mHtml = '';
       t28.matrix.forEach(r => {
+        const elem = r.levels.Elementary || { fee: 0, n: 0 };
+        const uprim = r.levels.UpperPrimary || { fee: 0, n: 0 };
+        const sec = r.levels.Secondary || { fee: 0, n: 0 };
+        const srsec = r.levels.SeniorSec || { fee: 0, n: 0 };
+        const higher = r.levels.HigherEd || { fee: 0, n: 0 };
         mHtml += `
           <tr class="hover:bg-slate-50">
             <td class="py-2 px-3 font-semibold text-slate-900">${r.subject_name}</td>
-            <td class="py-2 px-3 text-right font-mono">₹${r.levels.Primary.fee} <span class="text-[10px] text-slate-400">(n=${r.levels.Primary.n.toLocaleString()})</span></td>
-            <td class="py-2 px-3 text-right font-mono">₹${r.levels.Secondary.fee} <span class="text-[10px] text-slate-400">(n=${r.levels.Secondary.n.toLocaleString()})</span></td>
-            <td class="py-2 px-3 text-right font-mono">₹${r.levels.SeniorSec.fee} <span class="text-[10px] text-slate-400">(n=${r.levels.SeniorSec.n.toLocaleString()})</span></td>
-            <td class="py-2 px-3 text-right font-mono">₹${r.levels.HigherEd.fee} <span class="text-[10px] text-slate-400">(n=${r.levels.HigherEd.n.toLocaleString()})</span></td>
+            <td class="py-2 px-3 text-right font-mono">${elem.n > 0 ? `₹${elem.fee} <span class="text-[10px] text-slate-400">(n=${elem.n.toLocaleString()})</span>` : '—'}</td>
+            <td class="py-2 px-3 text-right font-mono">${uprim.n > 0 ? `₹${uprim.fee} <span class="text-[10px] text-slate-400">(n=${uprim.n.toLocaleString()})</span>` : '—'}</td>
+            <td class="py-2 px-3 text-right font-mono">${sec.n > 0 ? `₹${sec.fee} <span class="text-[10px] text-slate-400">(n=${sec.n.toLocaleString()})</span>` : '—'}</td>
+            <td class="py-2 px-3 text-right font-mono">${srsec.n > 0 ? `₹${srsec.fee} <span class="text-[10px] text-slate-400">(n=${srsec.n.toLocaleString()})</span>` : '—'}</td>
+            <td class="py-2 px-3 text-right font-mono">${higher.n > 0 ? `₹${higher.fee} <span class="text-[10px] text-slate-400">(n=${higher.n.toLocaleString()})</span>` : '—'}</td>
             <td class="py-2 px-3 text-right font-mono font-bold text-emerald-900 bg-slate-100/60">₹${r.overall_fee.toLocaleString()}</td>
             <td class="py-2 px-3 text-right font-mono font-bold text-slate-700">${r.total_n.toLocaleString()}</td>
           </tr>

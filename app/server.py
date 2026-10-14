@@ -551,7 +551,8 @@ async def api_charts(request):
                 ELSE 'Other'
             END as subj,
             CASE 
-                WHEN ts.level_category IN ('Primary (Class 1–5)', 'Middle School (Class 6–8)', 'Pre-Primary (Early Childhood / KG)') THEN 'Primary'
+                WHEN ts.level_category IN ('Primary (Class 1–5)', 'Pre-Primary (Early Childhood / KG)') THEN 'Elementary'
+                WHEN ts.level_category = 'Middle School (Class 6–8)' THEN 'UpperPrimary'
                 WHEN ts.level_category LIKE 'Secondary (Class 9–10%' THEN 'Secondary'
                 WHEN ts.level_category LIKE 'Senior Secondary%' THEN 'SeniorSec'
                 WHEN ts.level_category LIKE 'Higher Education%' OR ts.level_category LIKE 'Professional%' THEN 'HigherEd'
@@ -577,7 +578,8 @@ async def api_charts(request):
                 ELSE 'Other'
             END as subj,
             CASE 
-                WHEN ts.level_category IN ('Primary (Class 1–5)', 'Middle School (Class 6–8)', 'Pre-Primary (Early Childhood / KG)') THEN 'Primary'
+                WHEN ts.level_category IN ('Primary (Class 1–5)', 'Pre-Primary (Early Childhood / KG)') THEN 'Elementary'
+                WHEN ts.level_category = 'Middle School (Class 6–8)' THEN 'UpperPrimary'
                 WHEN ts.level_category LIKE 'Secondary (Class 9–10%' THEN 'Secondary'
                 WHEN ts.level_category LIKE 'Senior Secondary%' THEN 'SeniorSec'
                 WHEN ts.level_category LIKE 'Higher Education%' OR ts.level_category LIKE 'Professional%' THEN 'HigherEd'
@@ -612,7 +614,7 @@ async def api_charts(request):
         ('Coding', 'Computer Science & Coding'),
         ('Languages', 'Other Languages (Hindi/Regional)')
     ]
-    levels_keys = ['Primary', 'Secondary', 'SeniorSec', 'HigherEd']
+    levels_keys = ['Elementary', 'UpperPrimary', 'Secondary', 'SeniorSec', 'HigherEd']
 
     for s_key, s_label in subjects_order:
         row = {'subject_key': s_key, 'subject_name': s_label, 'levels': {}}

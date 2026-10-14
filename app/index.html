@@ -2231,7 +2231,8 @@
       if (!thead || !tbody) return;
 
       const levelsDef = [
-        { key: 'Primary', label: 'Primary & Middle (Class 1–8)', short: 'Primary' },
+        { key: 'Elementary', label: 'Elementary (Class 1–5)', short: 'Elem (1-5)' },
+        { key: 'UpperPrimary', label: 'Upper Primary (Class 5–8)', short: 'Mid (5-8)' },
         { key: 'Secondary', label: 'Secondary (Class 9–10)', short: 'Secondary' },
         { key: 'SeniorSec', label: 'Senior Secondary (Class 11–12)', short: 'Senior Sec.' },
         { key: 'HigherEd', label: 'Higher Education (College)', short: 'Higher Ed' }
@@ -2330,7 +2331,8 @@
         thead.innerHTML = `
           <tr class="border-t-2 border-b-2 border-slate-900 bg-slate-50 text-[11px] font-bold text-slate-800 uppercase tracking-wider">
             <th class="py-2.5 px-3">Tutoring Subject Discipline</th>
-            <th class="py-2.5 px-3 text-right">Primary & Middle (Class 1–8)</th>
+            <th class="py-2.5 px-3 text-right">Elementary (Class 1–5)</th>
+            <th class="py-2.5 px-3 text-right">Upper Primary (Class 5–8)</th>
             <th class="py-2.5 px-3 text-right">Secondary (Class 9–10)</th>
             <th class="py-2.5 px-3 text-right">Senior Secondary (Class 11–12)</th>
             <th class="py-2.5 px-3 text-right">Higher Education (College)</th>
@@ -2341,24 +2343,28 @@
 
         let bodyHtml = '';
         data.matrix.forEach(r => {
+          const elem = r.levels.Elementary || { fee: 0, n: 0 };
+          const uprim = r.levels.UpperPrimary || { fee: 0, n: 0 };
+          const sec = r.levels.Secondary || { fee: 0, n: 0 };
+          const srsec = r.levels.SeniorSec || { fee: 0, n: 0 };
+          const higher = r.levels.HigherEd || { fee: 0, n: 0 };
           bodyHtml += `
             <tr class="hover:bg-slate-50 transition-colors">
               <td class="py-2.5 px-3 font-semibold text-slate-900">${r.subject_name}</td>
               <td class="py-2.5 px-3 text-right font-mono">
-                <span class="font-bold text-slate-900">₹${r.levels.Primary.fee}</span>
-                <span class="text-[10px] text-slate-400 ml-1">(n=${r.levels.Primary.n.toLocaleString()})</span>
+                ${elem.n > 0 ? `<span class="font-bold text-slate-900">₹${elem.fee}</span><span class="text-[10px] text-slate-400 ml-1">(n=${elem.n.toLocaleString()})</span>` : '<span class="text-slate-300">-</span>'}
               </td>
               <td class="py-2.5 px-3 text-right font-mono">
-                <span class="font-bold text-slate-900">₹${r.levels.Secondary.fee}</span>
-                <span class="text-[10px] text-slate-400 ml-1">(n=${r.levels.Secondary.n.toLocaleString()})</span>
+                ${uprim.n > 0 ? `<span class="font-bold text-slate-900">₹${uprim.fee}</span><span class="text-[10px] text-slate-400 ml-1">(n=${uprim.n.toLocaleString()})</span>` : '<span class="text-slate-300">-</span>'}
               </td>
               <td class="py-2.5 px-3 text-right font-mono">
-                <span class="font-bold text-slate-900">₹${r.levels.SeniorSec.fee}</span>
-                <span class="text-[10px] text-slate-400 ml-1">(n=${r.levels.SeniorSec.n.toLocaleString()})</span>
+                ${sec.n > 0 ? `<span class="font-bold text-slate-900">₹${sec.fee}</span><span class="text-[10px] text-slate-400 ml-1">(n=${sec.n.toLocaleString()})</span>` : '<span class="text-slate-300">-</span>'}
               </td>
               <td class="py-2.5 px-3 text-right font-mono">
-                <span class="font-bold text-slate-900">₹${r.levels.HigherEd.fee}</span>
-                <span class="text-[10px] text-slate-400 ml-1">(n=${r.levels.HigherEd.n.toLocaleString()})</span>
+                ${srsec.n > 0 ? `<span class="font-bold text-slate-900">₹${srsec.fee}</span><span class="text-[10px] text-slate-400 ml-1">(n=${srsec.n.toLocaleString()})</span>` : '<span class="text-slate-300">-</span>'}
+              </td>
+              <td class="py-2.5 px-3 text-right font-mono">
+                ${higher.n > 0 ? `<span class="font-bold text-slate-900">₹${higher.fee}</span><span class="text-[10px] text-slate-400 ml-1">(n=${higher.n.toLocaleString()})</span>` : '<span class="text-slate-300">-</span>'}
               </td>
               <td class="py-2.5 px-3 text-right font-mono font-bold text-emerald-900 bg-emerald-50/40">
                 ₹${r.overall_fee.toLocaleString()}
@@ -2380,11 +2386,11 @@
       let text = "Table 2.8 Mean prices for one hour of tuition by level\n";
 
       if (currentFeeMode === 'math_english') {
-        text += "Region\tPrimary Maths\tn\tPrimary English\tn\tSecondary Maths\tn\tSecondary English\tn\tSenior Sec Maths\tn\tSenior Sec English\tn\tHigher Ed Maths\tn\tHigher Ed English\tn\n";
+        text += "Region\tElem (1-5) Maths\tn\tElem (1-5) English\tn\tUpper Prim (5-8) Maths\tn\tUpper Prim (5-8) English\tn\tSecondary Maths\tn\tSecondary English\tn\tSenior Sec Maths\tn\tSenior Sec English\tn\tHigher Ed Maths\tn\tHigher Ed English\tn\n";
         data.regions_order.forEach(reg => {
           const regLabel = reg === 'Nationwide' ? 'Nationwide' : `${reg} Zone`;
           let line = [regLabel];
-          ['Primary', 'Secondary', 'SeniorSec', 'HigherEd'].forEach(l => {
+          ['Elementary', 'UpperPrimary', 'Secondary', 'SeniorSec', 'HigherEd'].forEach(l => {
             const m = data.data[reg]?.[l]?.Maths || { fee: '', n: '' };
             const e = data.data[reg]?.[l]?.English || { fee: '', n: '' };
             line.push(m.fee, m.n, e.fee, e.n);
@@ -2392,9 +2398,14 @@
           text += line.join("\t") + "\n";
         });
       } else if (currentFeeMode === 'matrix') {
-        text += "Subject\tPrimary & Middle (₹)\tn\tSecondary (₹)\tn\tSenior Secondary (₹)\tn\tHigher Ed (₹)\tn\tOverall Fee (₹)\tTotal N\n";
+        text += "Subject\tElementary (1-5) (₹)\tn\tUpper Primary (5-8) (₹)\tn\tSecondary (₹)\tn\tSenior Secondary (₹)\tn\tHigher Ed (₹)\tn\tOverall Fee (₹)\tTotal N\n";
         data.matrix.forEach(r => {
-          text += `${r.subject_name}\t${r.levels.Primary.fee}\t${r.levels.Primary.n}\t${r.levels.Secondary.fee}\t${r.levels.Secondary.n}\t${r.levels.SeniorSec.fee}\t${r.levels.SeniorSec.n}\t${r.levels.HigherEd.fee}\t${r.levels.HigherEd.n}\t${r.overall_fee}\t${r.total_n}\n`;
+          const elem = r.levels.Elementary || { fee: 0, n: 0 };
+          const uprim = r.levels.UpperPrimary || { fee: 0, n: 0 };
+          const sec = r.levels.Secondary || { fee: 0, n: 0 };
+          const srsec = r.levels.SeniorSec || { fee: 0, n: 0 };
+          const higher = r.levels.HigherEd || { fee: 0, n: 0 };
+          text += `${r.subject_name}\t${elem.fee}\t${elem.n}\t${uprim.fee}\t${uprim.n}\t${sec.fee}\t${sec.n}\t${srsec.fee}\t${srsec.n}\t${higher.fee}\t${higher.n}\t${r.overall_fee}\t${r.total_n}\n`;
         });
       }
 
