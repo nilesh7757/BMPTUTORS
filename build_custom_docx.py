@@ -32,6 +32,8 @@ from geo_service import get_enriched_districts_geojson, get_state_metrics
 DB_PATH = os.path.join(PROJECT_ROOT, "cleaned_tutors_data.db")
 OUTPUT_DOCX = os.path.join(PROJECT_ROOT, "BMP_Tutors_Visual_Analytics_Report.docx")
 INDIA_MAP_PATH = os.path.join(PROJECT_ROOT, "extracted_images", "maps", "india_all_states_labeled_dashboard.png")
+VENN_SCHOOL_PATH = os.path.join(PROJECT_ROOT, "extracted_images", "charts", "venn_school_trio.png")
+VENN_STEM_PATH = os.path.join(PROJECT_ROOT, "extracted_images", "charts", "venn_stem_trio.png")
 
 # -------------------------------------------------------------
 # XML Formatting Helpers for Tables & Cells
@@ -688,7 +690,13 @@ def build_report():
         height_in=3.8
     )
 
-    # Editable Table
+    # Editable Table 3A
+    h3a = doc.add_heading(level=2)
+    r3a = h3a.add_run("Table 3A: Top 10 Most Popular Individual Subjects Across India")
+    r3a.font.size = Pt(11)
+    r3a.font.bold = True
+    r3a.font.color.rgb = COLOR_PRIMARY
+
     t3 = doc.add_table(rows=11, cols=5)
     t3.alignment = WD_TABLE_ALIGNMENT.CENTER
     set_table_borders(t3, color="CBD5E1", sz="4")
@@ -725,6 +733,276 @@ def build_report():
         for c_idx, val in enumerate(row_vals):
             c = t3.cell(r_idx, c_idx)
             c.width = widths_t3[c_idx]
+            set_cell_background(c, bg)
+            set_cell_margins(c, top=65, bottom=65, left=90, right=90)
+            p = c.paragraphs[0]
+            p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 3 else (WD_ALIGN_PARAGRAPH.CENTER if c_idx == 0 else WD_ALIGN_PARAGRAPH.LEFT)
+            r = p.add_run(val)
+            r.font.size = Pt(8.5)
+            if c_idx == 1:
+                r.font.bold = True
+
+    doc.add_paragraph().paragraph_format.space_after = Pt(10)
+
+    # ---------------------------------------------------------
+    # SECTION 3B: SUBJECT INTERSECTIONS & VENN DIAGRAMS
+    # ---------------------------------------------------------
+    h3_venn = doc.add_heading(level=2)
+    r3_venn = h3_venn.add_run("Subject Intersections: Venn Diagrams of Overlapping Teaching Patterns")
+    r3_venn.font.size = Pt(12)
+    r3_venn.font.bold = True
+    r3_venn.font.color.rgb = COLOR_PRIMARY
+
+    p_venn_intro = doc.add_paragraph()
+    p_venn_intro.paragraph_format.space_after = Pt(6)
+    p_venn_intro.add_run(
+        "Private educators in India rarely teach only a single subject in isolation. Over 71.3% of tutors register multiple subjects to offer comprehensive tutoring packages to families. "
+        "To understand how subjects overlap in real tutoring practices, we analyzed two primary academic clusters using 3-set Venn diagrams (Core School Trio and Senior STEM Trio), "
+        "followed by an analysis of multi-subject breadth across India's Top 5 subjects."
+    )
+
+    # Sub-heading: Core School Trio
+    h3_sch = doc.add_heading(level=3)
+    r3_sch = h3_sch.add_run("A. Core School Curriculum Trio: Mathematics, General Science & English (N = 58,046 Tutors)")
+    r3_sch.font.size = Pt(10.5)
+    r3_sch.font.bold = True
+    r3_sch.font.color.rgb = COLOR_PRIMARY
+
+    p_sch_desc = doc.add_paragraph()
+    p_sch_desc.paragraph_format.space_after = Pt(6)
+    p_sch_desc.add_run(
+        "At the primary and middle school level (Classes 1–10), Mathematics, General Science, and English form the foundation of student tutoring demand. "
+        "A total of 58,046 unique tutors teach at least one of these three subjects:\n"
+        "• All Three Core Subjects (Maths + Science + English): 5,511 tutors (9.5%) provide a complete all-in-one general school tutoring service covering both quantitative and language foundations.\n"
+        "• Maths & Science Duo: 7,403 tutors (12.8%) focus specifically on the foundational STEM combination without language tutoring.\n"
+        "• Maths & English Duo: 5,323 tutors (9.2%) offer numeracy and literacy support together.\n"
+        "• Science & English Duo: 3,387 tutors (5.8%) combine experimental science with English.\n"
+        "• Solo Subject Specialists: 19,326 tutors (33.3%) teach exclusively Mathematics, 10,170 (17.5%) teach exclusively English, and 6,926 (11.9%) teach exclusively General Science."
+    )
+
+    # Venn Diagram 1: School Trio Image
+    if os.path.exists(VENN_SCHOOL_PATH):
+        p_v1 = doc.add_paragraph()
+        p_v1.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p_v1.paragraph_format.space_before = Pt(6)
+        p_v1.paragraph_format.space_after = Pt(2)
+        r_v1 = p_v1.add_run()
+        r_v1.add_picture(VENN_SCHOOL_PATH, width=Inches(5.0))
+
+        cap_v1 = doc.add_paragraph()
+        cap_v1.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        cap_v1.paragraph_format.space_before = Pt(2)
+        cap_v1.paragraph_format.space_after = Pt(8)
+        rc_v1 = cap_v1.add_run("Figure 3C: Venn Diagram — Core School Trio: Mathematics, General Science & English (N = 58,046 Tutors)")
+        rc_v1.font.size = Pt(8.5)
+        rc_v1.font.italic = True
+        rc_v1.font.color.rgb = COLOR_MUTED
+
+    # Table 3B: School Trio Overlap Breakdown
+    t3b = doc.add_table(rows=9, cols=4)
+    t3b.alignment = WD_TABLE_ALIGNMENT.CENTER
+    set_table_borders(t3b, color="CBD5E1", sz="4")
+    headers_t3b = ["Intersection Region", "Subject Composition", "Unique Tutors (N)", "Share of Trio (%)"]
+    widths_t3b = [Inches(2.1), Inches(2.4), Inches(1.2), Inches(1.1)]
+
+    for c_idx, h_text in enumerate(headers_t3b):
+        c = t3b.cell(0, c_idx)
+        c.width = widths_t3b[c_idx]
+        set_cell_background(c, CLR_PRIMARY_HEX)
+        set_cell_margins(c, top=80, bottom=80, left=90, right=90)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 2 else WD_ALIGN_PARAGRAPH.LEFT
+        run = p.add_run(h_text)
+        run.font.bold = True
+        run.font.size = Pt(8.5)
+        run.font.color.rgb = RGBColor(255, 255, 255)
+
+    data_t3b = [
+        ("Mathematics Only", "Only Mathematics", "19,326", "33.3%"),
+        ("English Only", "Only English", "10,170", "17.5%"),
+        ("Science (General) Only", "Only General Science", "6,926", "11.9%"),
+        ("Mathematics + Science", "Maths & Science (no English)", "7,403", "12.8%"),
+        ("Mathematics + English", "Maths & English (no Science)", "5,323", "9.2%"),
+        ("Science + English", "Science & English (no Maths)", "3,387", "5.8%"),
+        ("All Three Subjects (Trio)", "Mathematics + Science + English", "5,511", "9.5%"),
+        ("Total Unique Tutors in Trio", "At least 1 of the 3 subjects", "58,046", "100.0%"),
+    ]
+
+    for r_idx, row_vals in enumerate(data_t3b, start=1):
+        is_tot = (r_idx == len(data_t3b))
+        bg = "E2E8F0" if is_tot else ("FFFFFF" if r_idx % 2 != 0 else CLR_BG_LIGHT)
+        for c_idx, val in enumerate(row_vals):
+            c = t3b.cell(r_idx, c_idx)
+            c.width = widths_t3b[c_idx]
+            set_cell_background(c, bg)
+            set_cell_margins(c, top=65, bottom=65, left=90, right=90)
+            p = c.paragraphs[0]
+            p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 2 else WD_ALIGN_PARAGRAPH.LEFT
+            r = p.add_run(val)
+            r.font.size = Pt(8.5)
+            if is_tot or c_idx == 0:
+                r.font.bold = True
+
+    doc.add_paragraph().paragraph_format.space_after = Pt(12)
+
+    # Sub-heading: Senior STEM Trio
+    h3_stem = doc.add_heading(level=3)
+    r3_stem = h3_stem.add_run("B. Senior STEM Secondary Trio: Mathematics, Physics & Chemistry (N = 46,937 Tutors)")
+    r3_stem.font.size = Pt(10.5)
+    r3_stem.font.bold = True
+    r3_stem.font.color.rgb = COLOR_PRIMARY
+
+    p_stem_desc = doc.add_paragraph()
+    p_stem_desc.paragraph_format.space_after = Pt(6)
+    p_stem_desc.add_run(
+        "For higher secondary students (Classes 11–12) and engineering entrance exam candidates (JEE / State CETs), "
+        "the PCM trio (Physics, Chemistry, Mathematics) represents the core competitive coaching market. "
+        "A total of 46,937 verified tutors teach within this cluster:\n"
+        "• Complete PCM Package (Maths + Physics + Chemistry): 2,906 tutors (6.2%) teach all three core entrance exam subjects.\n"
+        "• Maths & Physics Duo: 6,139 tutors (13.1%) combine mathematical problem-solving with classical physics, the most common secondary STEM duo.\n"
+        "• Physics & Chemistry Duo: 1,545 tutors (3.3%) cover physical and chemical sciences together without pure mathematics.\n"
+        "• Maths & Chemistry Duo: 1,175 tutors (2.5%) combine mathematical theory with chemistry.\n"
+        "• Solo Subject Specialists: Mathematics alone dominates with 27,343 tutors (58.3%), reflecting deep specialization in advanced calculus and coordinate geometry. Physics specialists account for 4,139 tutors (8.8%), and Chemistry specialists for 3,690 tutors (7.9%)."
+    )
+
+    # Venn Diagram 2: STEM Trio Image
+    if os.path.exists(VENN_STEM_PATH):
+        p_v2 = doc.add_paragraph()
+        p_v2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p_v2.paragraph_format.space_before = Pt(6)
+        p_v2.paragraph_format.space_after = Pt(2)
+        r_v2 = p_v2.add_run()
+        r_v2.add_picture(VENN_STEM_PATH, width=Inches(5.0))
+
+        cap_v2 = doc.add_paragraph()
+        cap_v2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        cap_v2.paragraph_format.space_before = Pt(2)
+        cap_v2.paragraph_format.space_after = Pt(8)
+        rc_v2 = cap_v2.add_run("Figure 3D: Venn Diagram — Senior STEM Trio: Mathematics, Physics & Chemistry (N = 46,937 Tutors)")
+        rc_v2.font.size = Pt(8.5)
+        rc_v2.font.italic = True
+        rc_v2.font.color.rgb = COLOR_MUTED
+
+    # Table 3C: Senior STEM Trio Overlap Breakdown
+    t3c = doc.add_table(rows=9, cols=4)
+    t3c.alignment = WD_TABLE_ALIGNMENT.CENTER
+    set_table_borders(t3c, color="CBD5E1", sz="4")
+    headers_t3c = ["Intersection Region", "Subject Composition", "Unique Tutors (N)", "Share of STEM Trio (%)"]
+    widths_t3c = [Inches(2.1), Inches(2.4), Inches(1.2), Inches(1.1)]
+
+    for c_idx, h_text in enumerate(headers_t3c):
+        c = t3c.cell(0, c_idx)
+        c.width = widths_t3c[c_idx]
+        set_cell_background(c, CLR_PRIMARY_HEX)
+        set_cell_margins(c, top=80, bottom=80, left=90, right=90)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 2 else WD_ALIGN_PARAGRAPH.LEFT
+        run = p.add_run(h_text)
+        run.font.bold = True
+        run.font.size = Pt(8.5)
+        run.font.color.rgb = RGBColor(255, 255, 255)
+
+    data_t3c = [
+        ("Mathematics Only", "Only Mathematics", "27,343", "58.3%"),
+        ("Mathematics + Physics", "Maths & Physics (no Chemistry)", "6,139", "13.1%"),
+        ("Physics Only", "Only Physics", "4,139", "8.8%"),
+        ("Chemistry Only", "Only Chemistry", "3,690", "7.9%"),
+        ("All Three Subjects (PCM Trio)", "Mathematics, Physics & Chemistry", "2,906", "6.2%"),
+        ("Physics + Chemistry", "Physics & Chemistry (no Maths)", "1,545", "3.3%"),
+        ("Mathematics + Chemistry", "Maths & Chemistry (no Physics)", "1,175", "2.5%"),
+        ("Total Unique Tutors in STEM Trio", "At least 1 of the 3 subjects", "46,937", "100.0%"),
+    ]
+
+    for r_idx, row_vals in enumerate(data_t3c, start=1):
+        is_tot = (r_idx == len(data_t3c))
+        bg = "E2E8F0" if is_tot else ("FFFFFF" if r_idx % 2 != 0 else CLR_BG_LIGHT)
+        for c_idx, val in enumerate(row_vals):
+            c = t3c.cell(r_idx, c_idx)
+            c.width = widths_t3c[c_idx]
+            set_cell_background(c, bg)
+            set_cell_margins(c, top=65, bottom=65, left=90, right=90)
+            p = c.paragraphs[0]
+            p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 2 else WD_ALIGN_PARAGRAPH.LEFT
+            r = p.add_run(val)
+            r.font.size = Pt(8.5)
+            if is_tot or c_idx == 0:
+                r.font.bold = True
+
+    doc.add_paragraph().paragraph_format.space_after = Pt(12)
+
+    # Sub-heading: Top 5 Breadth & Subject Bundles
+    h3_bth = doc.add_heading(level=3)
+    r3_bth = h3_bth.add_run("C. Multi-Subject Breadth Across Top 5 Subjects & Common Bundles")
+    r3_bth.font.size = Pt(10.5)
+    r3_bth.font.bold = True
+    r3_bth.font.color.rgb = COLOR_PRIMARY
+
+    p_bth_desc = doc.add_paragraph()
+    p_bth_desc.paragraph_format.space_after = Pt(6)
+    p_bth_desc.add_run(
+        "Across all 65,077 tutors who teach at least one of India's five largest subjects (Mathematics, English, Science, Physics, Chemistry), "
+        "how many subjects do individual educators take on? "
+        "While 52.2% (33,998 tutors) focus on a single core specialty, nearly half (47.8%) offer multiple subjects: "
+        "30.5% teach 2 subjects, 14.8% teach 3 subjects, 2.2% teach 4 subjects, and 179 educators (0.3%) teach all 5 top subjects simultaneously. "
+        "Below is the fully editable column chart showing this multi-subject breadth, followed by the 10 most common subject bundles in India."
+    )
+
+    # Native Column Chart: Multi-Subject Breadth
+    builder.add_bar_or_col_chart(
+        "Figure 3E: Subject Teaching Breadth Across Top 5 Subjects (N = 65,077 Tutors)",
+        ["1 Subject", "2 Subjects", "3 Subjects", "4 Subjects", "All 5 Subjects"],
+        [33998, 19818, 9631, 1451, 179],
+        series_name="Tutors",
+        is_horizontal=False,
+        width_in=6.2,
+        height_in=3.4
+    )
+
+    doc.add_paragraph().paragraph_format.space_after = Pt(6)
+
+    # Table 3D: Top 10 Multi-Subject Bundles
+    h3d = doc.add_heading(level=4)
+    r3d = h3d.add_run("Table 3D: Top 10 Most Common Multi-Subject Combinations (Subject Bundles Across India)")
+    r3d.font.size = Pt(9.5)
+    r3d.font.bold = True
+    r3d.font.color.rgb = COLOR_PRIMARY
+
+    t3d = doc.add_table(rows=11, cols=5)
+    t3d.alignment = WD_TABLE_ALIGNMENT.CENTER
+    set_table_borders(t3d, color="CBD5E1", sz="4")
+    headers_t3d = ["Rank", "Subject Bundle Combination", "Subject Stream Category", "Tutors Offering (N)", "Share of Multi-Subject (%)"]
+    widths_t3d = [Inches(0.6), Inches(2.4), Inches(1.9), Inches(1.0), Inches(0.9)]
+
+    for c_idx, h_text in enumerate(headers_t3d):
+        c = t3d.cell(0, c_idx)
+        c.width = widths_t3d[c_idx]
+        set_cell_background(c, CLR_PRIMARY_HEX)
+        set_cell_margins(c, top=80, bottom=80, left=90, right=90)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 3 else (WD_ALIGN_PARAGRAPH.CENTER if c_idx == 0 else WD_ALIGN_PARAGRAPH.LEFT)
+        run = p.add_run(h_text)
+        run.font.bold = True
+        run.font.size = Pt(8.5)
+        run.font.color.rgb = RGBColor(255, 255, 255)
+
+    data_t3d = [
+        ("1", "Mathematics + Science (General)", "Foundational School STEM", "2,519", "3.3%"),
+        ("2", "Mathematics + Physics", "Physical & Mathematical Sciences", "2,135", "2.8%"),
+        ("3", "English + Mathematics + Science (General)", "All-in-One School Bundle", "1,165", "1.5%"),
+        ("4", "English + Mathematics", "Literacy & Numeracy Core", "932", "1.2%"),
+        ("5", "Chemistry + Mathematics + Physics", "Senior Secondary PCM Trio", "909", "1.2%"),
+        ("6", "English + Science (General)", "Language & General Sciences", "657", "0.9%") ,
+        ("7", "English + Hindi + Mathematics + Science", "Comprehensive Primary / Middle Bundle", "591", "0.8%"),
+        ("8", "Mathematics + Physics + Science (General)", "Expanded School & Senior Physics", "522", "0.7%"),
+        ("9", "Biology & Life Sciences + Chemistry", "Medical / PCB Foundation", "517", "0.7%"),
+        ("10", "Biology & Life Sciences + Science (General)", "Life Sciences Specialist Bundle", "496", "0.6%"),
+    ]
+
+    for r_idx, row_vals in enumerate(data_t3d, start=1):
+        bg = "FFFFFF" if r_idx % 2 != 0 else CLR_BG_LIGHT
+        for c_idx, val in enumerate(row_vals):
+            c = t3d.cell(r_idx, c_idx)
+            c.width = widths_t3d[c_idx]
             set_cell_background(c, bg)
             set_cell_margins(c, top=65, bottom=65, left=90, right=90)
             p = c.paragraphs[0]
