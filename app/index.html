@@ -1570,8 +1570,6 @@
 
       </div>
 
-    </div>
-
   </main>
 
   <!-- TUTOR DETAIL SLIDE-OVER DRAWER MODAL -->
@@ -1716,6 +1714,10 @@
     let feePredictorInitialized = false;
     let currentSelectedTier = 'Tier 1 (Metro)';
     let feeDebounceTimer = null;
+    let bioStudioInitialized = false;
+    let currentBioTab = 'parent';
+    let currentBioData = null;
+    let bioDebounceTimer = null;
     let currentSortBy = 'default';
     let currentSortOrder = 'asc';
     let searchDebounceTimer = null;
@@ -2047,25 +2049,27 @@
 
     // Switch Tabs
     function switchTab(tabId) {
-      document.getElementById('tab-explorer').classList.add('hidden');
-      document.getElementById('tab-analytics').classList.add('hidden');
-      document.getElementById('tab-fee-ai').classList.add('hidden');
-      document.getElementById('tab-schema').classList.add('hidden');
+      const tabs = ['explorer', 'analytics', 'fee-ai', 'bio-ai', 'schema'];
+      
+      tabs.forEach(t => {
+        const el = document.getElementById(`tab-${t}`);
+        if (el) el.classList.add('hidden');
+        
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (btn) {
+          btn.className = "px-4 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-700/60 flex items-center gap-2";
+        }
+      });
 
-      const idleClass = "px-4 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-700/60 flex items-center gap-2";
       const activeClass = "px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-indigo-600 text-white shadow-xs flex items-center gap-2";
 
-      document.getElementById('tab-btn-explorer').className = idleClass;
-      document.getElementById('tab-btn-analytics').className = idleClass;
-      document.getElementById('tab-btn-fee-ai').className = idleClass;
-      document.getElementById('tab-btn-schema').className = idleClass;
+      const activeEl = document.getElementById(`tab-${tabId}`);
+      if (activeEl) activeEl.classList.remove('hidden');
 
-      if (tabId === 'explorer') {
-        document.getElementById('tab-explorer').classList.remove('hidden');
-        document.getElementById('tab-btn-explorer').className = activeClass;
-      } else if (tabId === 'analytics') {
-        document.getElementById('tab-analytics').classList.remove('hidden');
-        document.getElementById('tab-btn-analytics').className = activeClass;
+      const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+      if (activeBtn) activeBtn.className = activeClass;
+
+      if (tabId === 'analytics') {
         if (!chartsInitialized) {
           loadCharts();
           chartsInitialized = true;
@@ -2074,15 +2078,15 @@
           initOrUpdateMaps();
         }, 150);
       } else if (tabId === 'fee-ai') {
-        document.getElementById('tab-fee-ai').classList.remove('hidden');
-        document.getElementById('tab-btn-fee-ai').className = activeClass;
         if (!feePredictorInitialized) {
           initFeePredictor();
           feePredictorInitialized = true;
         }
-      } else if (tabId === 'schema') {
-        document.getElementById('tab-schema').classList.remove('hidden');
-        document.getElementById('tab-btn-schema').className = activeClass;
+      } else if (tabId === 'bio-ai') {
+        if (!bioStudioInitialized) {
+          initBioStudio();
+          bioStudioInitialized = true;
+        }
       }
     }
 
