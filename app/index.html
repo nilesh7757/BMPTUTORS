@@ -1321,6 +1321,10 @@
                 <i class="fa-solid fa-pen-nib"></i>
               </span>
               <span class="text-xs font-bold uppercase tracking-wider text-emerald-300 font-mono">Profile Intelligence & NLP</span>
+              <span id="bio-engine-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-mono font-bold flex items-center gap-1.5 ml-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                Gemini 2.5 Flash Connected
+              </span>
             </div>
             <h2 class="text-xl md:text-2xl font-black tracking-tight text-white">AI Profile Studio & Bio Optimizer</h2>
             <p class="text-xs md:text-sm text-slate-300 max-w-2xl leading-relaxed">
@@ -1438,7 +1442,7 @@
 
             <!-- Generate Action Button -->
             <div class="pt-2">
-              <button type="button" onclick="triggerGenerateBio()"
+              <button type="button" id="btn-generate-bio" onclick="triggerGenerateBio()"
                 class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 transition-all shadow-sm flex items-center justify-center gap-2 ring-1 ring-teal-400/30">
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
                 <span>Generate Optimized Profiles Now</span>
@@ -3812,6 +3816,14 @@
     }
 
     async function triggerGenerateBio() {
+      const genBtn = document.getElementById('btn-generate-bio');
+      let origBtnHtml = "";
+      if (genBtn) {
+        origBtnHtml = genBtn.innerHTML;
+        genBtn.disabled = true;
+        genBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Crafting Bespoke Bio with Gemini AI...</span>`;
+      }
+
       try {
         const name = document.getElementById('bio-input-name')?.value || "Tutor";
         const exp = document.getElementById('bio-input-exp')?.value || "5";
@@ -3839,10 +3851,27 @@
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         currentBioData = await res.json();
 
+        // Update badge
+        const engineBadge = document.getElementById('bio-engine-badge');
+        if (engineBadge) {
+          if (currentBioData.ai_powered) {
+            engineBadge.className = "px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-mono font-bold flex items-center gap-1.5 ml-2";
+            engineBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Gemini 2.5 Flash GenAI`;
+          } else {
+            engineBadge.className = "px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30 text-[10px] font-mono font-bold flex items-center gap-1.5 ml-2";
+            engineBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Procedural Engine`;
+          }
+        }
+
         // Render current active tab
         renderBioTabContent(currentBioTab);
       } catch (err) {
         console.error("Bio generation error:", err);
+      } finally {
+        if (genBtn) {
+          genBtn.disabled = false;
+          genBtn.innerHTML = origBtnHtml;
+        }
       }
     }
 

@@ -1067,7 +1067,8 @@ async def api_generate_bio(request):
             teaching_style=data.get("teaching_style", "Concept-First & Visual Learning"),
             languages=data.get("languages", "English & Hindi"),
             achievements=data.get("achievements", "Helped 200+ students score 90%+ in board exams"),
-            usp=data.get("usp", "Personalized doubt-clearing sessions & weekly mock tests")
+            usp=data.get("usp", "Personalized doubt-clearing sessions & weekly mock tests"),
+            api_key=data.get("api_key")
         )
         return JSONResponse(result)
     except Exception as e:

@@ -11,3 +11,5 @@ finalSKAoutput.xlsx
 ProjectTracker.xlsx
 tutors.db
 .~lock.*
+.env
+.env.*
