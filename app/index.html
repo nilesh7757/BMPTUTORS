@@ -73,6 +73,10 @@
           <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
           <span>AI Fee Estimator</span>
         </button>
+        <button id="tab-btn-bio-ai" onclick="switchTab('bio-ai')" class="px-4 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-700/60 flex items-center gap-2">
+          <i class="fa-solid fa-pen-fancy text-emerald-400"></i>
+          <span>AI Bio Studio</span>
+        </button>
         <button id="tab-btn-schema" onclick="switchTab('schema')" class="px-4 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-700/60 flex items-center gap-2">
           <i class="fa-solid fa-layer-group"></i>
           <span>Schema & Exports</span>
@@ -158,6 +162,7 @@
         <button onclick="switchTab('explorer')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center bg-indigo-600 text-white">Directory</button>
         <button onclick="switchTab('analytics')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Analytics</button>
         <button onclick="switchTab('fee-ai')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Fee AI</button>
+        <button onclick="switchTab('bio-ai')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Bio AI</button>
         <button onclick="switchTab('schema')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Schema</button>
       </nav>
     </div>
@@ -1293,6 +1298,270 @@
               <div id="ai-recommendations-container" class="space-y-2">
                 <!-- Dynamically populated via JS -->
               </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- TAB 5: AI PROFILE STUDIO & BIO OPTIMIZER -->
+    <div id="tab-bio-ai" class="hidden flex-col gap-6">
+      
+      <!-- Executive Banner -->
+      <div class="bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 p-6 md:p-8 rounded-2xl shadow-md border border-teal-900/50 text-white relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="space-y-2">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-lg bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 flex items-center justify-center text-sm">
+                <i class="fa-solid fa-pen-nib"></i>
+              </span>
+              <span class="text-xs font-bold uppercase tracking-wider text-emerald-300 font-mono">Profile Intelligence & NLP</span>
+            </div>
+            <h2 class="text-xl md:text-2xl font-black tracking-tight text-white">AI Profile Studio & Bio Optimizer</h2>
+            <p class="text-xs md:text-sm text-slate-300 max-w-2xl leading-relaxed">
+              Generate dual-audience profile descriptions tailored specifically for <strong class="text-white">Parents</strong> (results & discipline) and <strong class="text-white">Students</strong> (concept clarity & patience), plus audit your bio for conversion strength.
+            </p>
+          </div>
+          
+          <div class="flex flex-wrap md:flex-col gap-2 shrink-0">
+            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2">
+              <i class="fa-solid fa-users text-teal-400 text-xs"></i>
+              <span class="text-[11px] font-mono text-slate-200">Dual-Audience Targeting</span>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2">
+              <i class="fa-solid fa-clipboard-check text-emerald-400 text-xs"></i>
+              <span class="text-[11px] font-mono text-slate-200">Live 100-Pt Conversion Audit</span>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2">
+              <i class="fa-solid fa-bolt text-amber-400 text-xs"></i>
+              <span class="text-[11px] font-mono text-slate-200">High-CTR Search Headlines</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main 2-Column Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- LEFT: Profile Customization Builder (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col gap-5">
+          <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80 space-y-4">
+            
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-user-gear text-teal-600"></i>
+                <span>Tutor Profile Builder</span>
+              </h3>
+              <span class="text-[11px] text-slate-400">Customized Output</span>
+            </div>
+
+            <!-- Name & Experience -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="sm:col-span-2 space-y-1">
+                <label class="font-bold text-slate-700 text-xs">Your Full Name</label>
+                <input type="text" id="bio-input-name" value="Ramesh Sharma" placeholder="e.g. Ramesh Sharma"
+                  class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500" />
+              </div>
+              <div class="space-y-1">
+                <label class="font-bold text-slate-700 text-xs">Experience</label>
+                <div class="relative">
+                  <input type="number" id="bio-input-exp" value="6" min="0" max="35"
+                    class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500" />
+                  <span class="absolute right-2.5 top-2 text-[10px] text-slate-400 font-bold">Yrs</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Subject & Level -->
+            <div class="space-y-1">
+              <label class="font-bold text-slate-700 text-xs">Primary Subject(s)</label>
+              <input type="text" id="bio-input-subj" value="Mathematics & Physics" placeholder="e.g. Mathematics & Physics"
+                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500" />
+            </div>
+
+            <div class="space-y-1">
+              <label class="font-bold text-slate-700 text-xs">Target Student Level / Board</label>
+              <select id="bio-input-level"
+                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500">
+                <option value="Class 9–10 (CBSE/ICSE)" selected>Class 9–10 (CBSE & ICSE Boards)</option>
+                <option value="Class 11–12 (JEE & NEET Entrance)">Class 11–12 (JEE & NEET Entrance)</option>
+                <option value="Class 11–12 (CBSE & ISC Boards)">Class 11–12 (CBSE & ISC Boards)</option>
+                <option value="Primary & Middle School (Class 1–8)">Primary & Middle School (Class 1–8)</option>
+                <option value="College & University STEM">College & University STEM / Engineering</option>
+                <option value="Professional Coding & Web Dev">Professional Coding & Web Development</option>
+              </select>
+            </div>
+
+            <!-- Qualification -->
+            <div class="space-y-1">
+              <label class="font-bold text-slate-700 text-xs">Highest Qualification & Institution</label>
+              <input type="text" id="bio-input-qual" value="M.Sc in Mathematics, Delhi University" placeholder="e.g. M.Sc Mathematics, Delhi University"
+                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500" />
+            </div>
+
+            <!-- Teaching Philosophy -->
+            <div class="space-y-1">
+              <label class="font-bold text-slate-700 text-xs">Teaching Philosophy & Style</label>
+              <select id="bio-input-style"
+                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500">
+                <option value="Concept-First & Visual Mental Models" selected>Concept-First & Visual Mental Models</option>
+                <option value="Problem-Solving Speed & Exam Shortcuts">Problem-Solving Speed & Exam Shortcuts</option>
+                <option value="Patient, Encouraging & Friendly for Beginners">Patient, Encouraging & Friendly for Beginners</option>
+                <option value="Practical Hands-On & Real-World Examples">Practical Hands-On & Real-World Examples</option>
+                <option value="Rigorous Syllabus Completion & Revision Drills">Rigorous Syllabus Completion & Revision Drills</option>
+              </select>
+            </div>
+
+            <!-- Achievements & USP -->
+            <div class="space-y-1">
+              <label class="font-bold text-slate-700 text-xs">Key Academic Track Record / Achievements</label>
+              <input type="text" id="bio-input-achieve" value="Helped 300+ students score 95%+ in board exams" placeholder="e.g. 95%+ board success rate, 300+ students guided"
+                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500" />
+            </div>
+
+            <div class="space-y-1">
+              <label class="font-bold text-slate-700 text-xs">Unique Selling Proposition (USP)</label>
+              <input type="text" id="bio-input-usp" value="Personalized study notes, weekly mock tests & 24/7 doubt resolution" placeholder="e.g. Free trial session, weekly mock tests"
+                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500" />
+            </div>
+
+            <div class="space-y-1">
+              <label class="font-bold text-slate-700 text-xs">Languages of Instruction</label>
+              <input type="text" id="bio-input-lang" value="English & Hindi" placeholder="e.g. English & Hindi"
+                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500" />
+            </div>
+
+            <!-- Generate Action Button -->
+            <div class="pt-2">
+              <button type="button" onclick="triggerGenerateBio()"
+                class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 transition-all shadow-sm flex items-center justify-center gap-2 ring-1 ring-teal-400/30">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span>Generate Optimized Profiles Now</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RIGHT: Generated Output & Real-Time Analyzer (7 cols) -->
+        <div class="lg:col-span-7 flex flex-col gap-5">
+          
+          <div class="bg-white p-6 md:p-7 rounded-2xl shadow-xs border border-slate-200/80 space-y-5">
+            
+            <!-- Output Sub-Navigation Tabs -->
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3 flex-wrap gap-2">
+              <div class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl text-xs font-semibold">
+                <button type="button" id="bio-tab-parent-btn" onclick="switchBioSubTab('parent')"
+                  class="px-3 py-1.5 rounded-lg bg-white text-slate-900 shadow-2xs font-bold transition-all flex items-center gap-1.5">
+                  <i class="fa-solid fa-user-tie text-indigo-600"></i>
+                  <span>Parent-Facing Bio</span>
+                </button>
+                <button type="button" id="bio-tab-student-btn" onclick="switchBioSubTab('student')"
+                  class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1.5">
+                  <i class="fa-solid fa-graduation-cap text-teal-600"></i>
+                  <span>Student-Facing Bio</span>
+                </button>
+                <button type="button" id="bio-tab-headlines-btn" onclick="switchBioSubTab('headlines')"
+                  class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1.5">
+                  <i class="fa-solid fa-bolt text-amber-500"></i>
+                  <span>Search Headlines</span>
+                </button>
+                <button type="button" id="bio-tab-audit-btn" onclick="switchBioSubTab('audit')"
+                  class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1.5">
+                  <i class="fa-solid fa-stethoscope text-emerald-600"></i>
+                  <span>Strength Auditor</span>
+                </button>
+              </div>
+
+              <!-- Copy Button -->
+              <button type="button" id="btn-copy-bio" onclick="copyCurrentBioText()"
+                class="px-3 py-1.5 rounded-xl text-xs font-bold text-teal-700 bg-teal-50 hover:bg-teal-100 border border-teal-200/60 transition-all flex items-center gap-1.5">
+                <i class="fa-solid fa-copy text-xs"></i>
+                <span id="copy-btn-text">Copy Bio</span>
+              </button>
+            </div>
+
+            <!-- View 1 & 2: Bio Text Container (Parent / Student) -->
+            <div id="bio-content-text-view" class="space-y-4">
+              <div class="relative">
+                <textarea id="bio-output-textarea" rows="12" oninput="onBioTextareaInput()"
+                  class="w-full text-xs font-medium text-slate-800 bg-slate-50/70 border border-slate-200 rounded-xl p-4 leading-relaxed focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 custom-scrollbar font-sans select-all"></textarea>
+              </div>
+
+              <div class="flex items-center justify-between text-xs text-slate-500 font-mono pt-1">
+                <div class="flex items-center gap-3">
+                  <span>Words: <strong id="bio-word-count" class="text-slate-800">0</strong></span>
+                  <span>Characters: <strong id="bio-char-count" class="text-slate-800">0</strong></span>
+                </div>
+                <span class="text-[11px] text-teal-600 font-semibold font-sans">Editable in real time</span>
+              </div>
+            </div>
+
+            <!-- View 3: Headlines List View -->
+            <div id="bio-content-headlines-view" class="hidden space-y-3">
+              <div class="p-3.5 bg-amber-50/60 rounded-xl border border-amber-200/60 text-xs text-amber-900">
+                <i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i>
+                <span>Use these concise <strong>one-liners</strong> as your profile hookline or tagline on marketplace listings to maximize student click-through rate.</span>
+              </div>
+              <div id="bio-headlines-list" class="space-y-2.5">
+                <!-- Dynamically populated via JS -->
+              </div>
+            </div>
+
+            <!-- Live Profile Strength Audit Card -->
+            <div class="p-5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-4">
+              
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200/60 pb-3">
+                <div class="flex items-center gap-3">
+                  <div id="bio-score-badge" class="w-12 h-12 rounded-xl bg-emerald-600 text-white font-mono font-black text-lg flex items-center justify-center shadow-xs">
+                    100
+                  </div>
+                  <div>
+                    <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Profile Conversion Strength</span>
+                    <span id="bio-grade-label" class="text-xs font-bold text-emerald-700 block mt-0.5">Excellent (High Conversion)</span>
+                  </div>
+                </div>
+
+                <div class="text-xs font-mono text-slate-500 sm:text-right">
+                  <span class="block">Algorithmic Heuristics</span>
+                  <span class="text-[10px] text-emerald-600 font-bold font-sans">Marketplace Ready</span>
+                </div>
+              </div>
+
+              <!-- 5-Point Health Checklist Grid -->
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs font-medium" id="bio-checklist-grid">
+                <div id="check-cred" class="p-2 rounded-lg bg-white border border-slate-200 flex items-center gap-2 text-emerald-700">
+                  <i class="fa-solid fa-circle-check text-emerald-500 shrink-0"></i>
+                  <span class="truncate">Qualifications</span>
+                </div>
+                <div id="check-exp" class="p-2 rounded-lg bg-white border border-slate-200 flex items-center gap-2 text-emerald-700">
+                  <i class="fa-solid fa-circle-check text-emerald-500 shrink-0"></i>
+                  <span class="truncate">Years Experience</span>
+                </div>
+                <div id="check-subj" class="p-2 rounded-lg bg-white border border-slate-200 flex items-center gap-2 text-emerald-700">
+                  <i class="fa-solid fa-circle-check text-emerald-500 shrink-0"></i>
+                  <span class="truncate">Subject & Level</span>
+                </div>
+                <div id="check-method" class="p-2 rounded-lg bg-white border border-slate-200 flex items-center gap-2 text-emerald-700">
+                  <i class="fa-solid fa-circle-check text-emerald-500 shrink-0"></i>
+                  <span class="truncate">Methodology / Style</span>
+                </div>
+                <div id="check-cta" class="p-2 rounded-lg bg-white border border-slate-200 flex items-center gap-2 text-emerald-700 sm:col-span-2">
+                  <i class="fa-solid fa-circle-check text-emerald-500 shrink-0"></i>
+                  <span class="truncate">Call-to-Action (Book Demo)</span>
+                </div>
+              </div>
+
+              <!-- Suggestions List -->
+              <div id="bio-suggestions-container" class="space-y-1.5 pt-1">
+                <!-- Dynamically populated via JS -->
+              </div>
+
             </div>
 
           </div>
@@ -3529,6 +3798,248 @@
           </div>
         `).join('');
       }
+    }
+
+    // =========================================================================
+    // AI PROFILE STUDIO & BIO OPTIMIZER
+    // =========================================================================
+    function initBioStudio() {
+      triggerGenerateBio();
+    }
+
+    async function triggerGenerateBio() {
+      try {
+        const name = document.getElementById('bio-input-name')?.value || "Tutor";
+        const exp = document.getElementById('bio-input-exp')?.value || "5";
+        const subj = document.getElementById('bio-input-subj')?.value || "Mathematics & Science";
+        const level = document.getElementById('bio-input-level')?.value || "Class 9–10 (CBSE/ICSE)";
+        const qual = document.getElementById('bio-input-qual')?.value || "Master of Science (M.Sc)";
+        const style = document.getElementById('bio-input-style')?.value || "Concept-First & Visual Mental Models";
+        const achieve = document.getElementById('bio-input-achieve')?.value || "Helped 200+ students score 90%+ in board exams";
+        const usp = document.getElementById('bio-input-usp')?.value || "Personalized study notes, weekly mock tests & doubt clearing";
+        const lang = document.getElementById('bio-input-lang')?.value || "English & Hindi";
+
+        const params = new URLSearchParams({
+          teacher_name: name,
+          subjects: subj,
+          target_level: level,
+          qualification: qual,
+          experience_years: exp,
+          teaching_style: style,
+          achievements: achieve,
+          usp: usp,
+          languages: lang
+        });
+
+        const res = await fetch(`/api/generate-bio?${params.toString()}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        currentBioData = await res.json();
+
+        // Render current active tab
+        renderBioTabContent(currentBioTab);
+      } catch (err) {
+        console.error("Bio generation error:", err);
+      }
+    }
+
+    function switchBioSubTab(tab) {
+      currentBioTab = tab;
+      
+      const tabs = ['parent', 'student', 'headlines', 'audit'];
+      const activeBtnClass = "px-3 py-1.5 rounded-lg bg-white text-slate-900 shadow-2xs font-bold transition-all flex items-center gap-1.5";
+      const inactiveBtnClass = "px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1.5";
+
+      tabs.forEach(t => {
+        const btn = document.getElementById(`bio-tab-${t}-btn`);
+        if (btn) btn.className = (t === tab) ? activeBtnClass : inactiveBtnClass;
+      });
+
+      renderBioTabContent(tab);
+    }
+
+    function renderBioTabContent(tab) {
+      if (!currentBioData) return;
+
+      const textView = document.getElementById('bio-content-text-view');
+      const headlinesView = document.getElementById('bio-content-headlines-view');
+      const textarea = document.getElementById('bio-output-textarea');
+      const copyBtn = document.getElementById('btn-copy-bio');
+
+      if (tab === 'headlines') {
+        if (textView) textView.classList.add('hidden');
+        if (headlinesView) headlinesView.classList.remove('hidden');
+        if (copyBtn) copyBtn.classList.add('hidden');
+
+        const listContainer = document.getElementById('bio-headlines-list');
+        if (listContainer && currentBioData.headlines) {
+          listContainer.innerHTML = currentBioData.headlines.map((hl, idx) => `
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-slate-100/60 transition-all flex items-center justify-between gap-3">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <span class="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-700 font-bold font-mono text-xs flex items-center justify-center shrink-0">
+                  ${idx + 1}
+                </span>
+                <span class="text-xs font-semibold text-slate-800 leading-snug">${escapeHtml(hl)}</span>
+              </div>
+              <button onclick="copySingleText('${escapeHtml(hl).replace(/'/g, "\\'")}', this)"
+                class="px-2.5 py-1 rounded-lg text-xs font-bold text-teal-700 bg-teal-50 hover:bg-teal-100 border border-teal-200 transition-colors shrink-0 flex items-center gap-1">
+                <i class="fa-solid fa-copy text-[10px]"></i>
+                <span>Copy</span>
+              </button>
+            </div>
+          `).join('');
+        }
+      } else {
+        if (textView) textView.classList.remove('hidden');
+        if (headlinesView) headlinesView.classList.add('hidden');
+        if (copyBtn) copyBtn.classList.remove('hidden');
+
+        let textToDisplay = "";
+        if (tab === 'parent') {
+          textToDisplay = currentBioData.bio_parent || "";
+        } else if (tab === 'student') {
+          textToDisplay = currentBioData.bio_student || "";
+        } else if (tab === 'audit') {
+          textToDisplay = textarea ? textarea.value : (currentBioData.bio_parent || "");
+        }
+
+        if (textarea) {
+          textarea.value = textToDisplay;
+          updateBioCounts(textToDisplay);
+          analyzeBioText(textToDisplay);
+        }
+      }
+    }
+
+    function onBioTextareaInput() {
+      const textarea = document.getElementById('bio-output-textarea');
+      if (!textarea) return;
+      const text = textarea.value;
+      updateBioCounts(text);
+
+      clearTimeout(bioDebounceTimer);
+      bioDebounceTimer = setTimeout(() => {
+        analyzeBioText(text);
+      }, 200);
+    }
+
+    function updateBioCounts(text) {
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      const chars = text.length;
+
+      const wcEl = document.getElementById('bio-word-count');
+      const ccEl = document.getElementById('bio-char-count');
+      if (wcEl) wcEl.textContent = words.toLocaleString();
+      if (ccEl) ccEl.textContent = chars.toLocaleString();
+    }
+
+    async function analyzeBioText(text) {
+      try {
+        if (!text || !text.trim()) return;
+        const res = await fetch('/api/analyze-bio', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: text })
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        renderBioAuditResults(data);
+      } catch (err) {
+        console.error("Bio analysis error:", err);
+      }
+    }
+
+    function renderBioAuditResults(data) {
+      // 1. Score Badge & Grade
+      const scoreBadge = document.getElementById('bio-score-badge');
+      const gradeLabel = document.getElementById('bio-grade-label');
+      
+      if (scoreBadge) {
+        scoreBadge.textContent = data.score;
+        if (data.score >= 85) {
+          scoreBadge.className = "w-12 h-12 rounded-xl bg-emerald-600 text-white font-mono font-black text-lg flex items-center justify-center shadow-xs ring-2 ring-emerald-400/30";
+        } else if (data.score >= 65) {
+          scoreBadge.className = "w-12 h-12 rounded-xl bg-teal-600 text-white font-mono font-black text-lg flex items-center justify-center shadow-xs ring-2 ring-teal-400/30";
+        } else if (data.score >= 45) {
+          scoreBadge.className = "w-12 h-12 rounded-xl bg-amber-500 text-white font-mono font-black text-lg flex items-center justify-center shadow-xs ring-2 ring-amber-300/30";
+        } else {
+          scoreBadge.className = "w-12 h-12 rounded-xl bg-rose-500 text-white font-mono font-black text-lg flex items-center justify-center shadow-xs ring-2 ring-rose-300/30";
+        }
+      }
+
+      if (gradeLabel) {
+        gradeLabel.textContent = data.grade;
+        if (data.score >= 85) gradeLabel.className = "text-xs font-bold text-emerald-700 block mt-0.5";
+        else if (data.score >= 65) gradeLabel.className = "text-xs font-bold text-teal-700 block mt-0.5";
+        else if (data.score >= 45) gradeLabel.className = "text-xs font-bold text-amber-700 block mt-0.5";
+        else gradeLabel.className = "text-xs font-bold text-rose-700 block mt-0.5";
+      }
+
+      // 2. Checklist Items
+      const checks = data.checks || {};
+      updateCheckItem('check-cred', checks.has_credentials, "Qualifications Stated");
+      updateCheckItem('check-exp', checks.has_experience, "Years Experience");
+      updateCheckItem('check-subj', checks.has_subject, "Subject & Level");
+      updateCheckItem('check-method', checks.has_methodology, "Teaching Style");
+      updateCheckItem('check-cta', checks.has_cta, "Call-to-Action (Demo/Book)");
+
+      // 3. Suggestions List
+      const sugContainer = document.getElementById('bio-suggestions-container');
+      if (sugContainer) {
+        if (data.suggestions && data.suggestions.length > 0) {
+          sugContainer.innerHTML = data.suggestions.map(sug => `
+            <div class="p-2.5 rounded-lg bg-teal-50/60 border border-teal-100 text-[11px] text-teal-900 flex items-start gap-2">
+              <i class="fa-solid fa-sparkles text-teal-600 mt-0.5 shrink-0 text-xs"></i>
+              <span class="leading-relaxed font-medium">${escapeHtml(sug)}</span>
+            </div>
+          `).join('');
+        } else {
+          sugContainer.innerHTML = `
+            <div class="p-2.5 rounded-lg bg-emerald-50 text-[11px] text-emerald-900 border border-emerald-100 flex items-center gap-2 font-medium">
+              <i class="fa-solid fa-circle-check text-emerald-600 text-xs"></i>
+              <span>All conversion indicators optimal! Your profile is ready for maximum student inquiries.</span>
+            </div>
+          `;
+        }
+      }
+    }
+
+    function updateCheckItem(elementId, passed, label) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      if (passed) {
+        el.className = "p-2 rounded-lg bg-emerald-50/80 border border-emerald-200/70 flex items-center gap-2 text-emerald-800 font-medium";
+        el.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 shrink-0"></i><span class="truncate">${escapeHtml(label)}</span>`;
+      } else {
+        el.className = "p-2 rounded-lg bg-slate-100 border border-slate-200 flex items-center gap-2 text-slate-400 font-normal";
+        el.innerHTML = `<i class="fa-regular fa-circle text-slate-400 shrink-0"></i><span class="truncate">${escapeHtml(label)}</span>`;
+      }
+    }
+
+    function copyCurrentBioText() {
+      const textarea = document.getElementById('bio-output-textarea');
+      const btnText = document.getElementById('copy-btn-text');
+      if (!textarea || !textarea.value) return;
+
+      navigator.clipboard.writeText(textarea.value).then(() => {
+        if (btnText) {
+          const original = btnText.textContent;
+          btnText.textContent = "Copied!";
+          setTimeout(() => { btnText.textContent = original; }, 2000);
+        }
+      }).catch(err => {
+        console.error("Clipboard copy failed:", err);
+      });
+    }
+
+    function copySingleText(text, btnElement) {
+      navigator.clipboard.writeText(text).then(() => {
+        const span = btnElement.querySelector('span');
+        if (span) {
+          const orig = span.textContent;
+          span.textContent = "Copied!";
+          setTimeout(() => { span.textContent = orig; }, 1800);
+        }
+      });
     }
   
   </script>

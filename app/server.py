@@ -29,10 +29,12 @@ try:
     from app.geo_coords import STATE_COORDINATES, CITY_COORDINATES
     from app.geo_service import get_enriched_states_geojson, get_enriched_districts_geojson
     from app.fee_service import predict_fee
+    from app.bio_service import generate_profile_bio, analyze_profile_bio
 except ImportError:
     from geo_coords import STATE_COORDINATES, CITY_COORDINATES
     from geo_service import get_enriched_states_geojson, get_enriched_districts_geojson
     from fee_service import predict_fee
+    from bio_service import generate_profile_bio, analyze_profile_bio
 
 DB_PATH = os.getenv("DB_PATH", os.path.join(PROJECT_ROOT, "cleaned_tutors_data.db"))
 
@@ -1049,6 +1051,41 @@ async def api_predict_fee(request):
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=500)
 
+async def api_generate_bio(request):
+    try:
+        if request.method == "POST":
+            data = await request.json()
+        else:
+            data = dict(request.query_params)
+            
+        result = generate_profile_bio(
+            teacher_name=data.get("teacher_name", "Tutor"),
+            subjects=data.get("subjects", "Mathematics & Science"),
+            target_level=data.get("target_level", "Class 9–10 (CBSE/ICSE)"),
+            qualification=data.get("qualification", "Master of Science (M.Sc)"),
+            experience_years=int(data.get("experience_years", 5)),
+            teaching_style=data.get("teaching_style", "Concept-First & Visual Learning"),
+            languages=data.get("languages", "English & Hindi"),
+            achievements=data.get("achievements", "Helped 200+ students score 90%+ in board exams"),
+            usp=data.get("usp", "Personalized doubt-clearing sessions & weekly mock tests")
+        )
+        return JSONResponse(result)
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+async def api_analyze_bio(request):
+    try:
+        if request.method == "POST":
+            data = await request.json()
+        else:
+            data = dict(request.query_params)
+            
+        text = data.get("text", "")
+        result = analyze_profile_bio(text)
+        return JSONResponse(result)
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+
 async def healthz(request):
     return JSONResponse({"status": "ok"})
 
@@ -1059,6 +1096,8 @@ routes = [
     Route("/api/stats", api_stats),
     Route("/api/filters", api_filters),
     Route("/api/predict-fee", api_predict_fee, methods=["GET", "POST"]),
+    Route("/api/generate-bio", api_generate_bio, methods=["GET", "POST"]),
+    Route("/api/analyze-bio", api_analyze_bio, methods=["GET", "POST"]),
     Route("/api/tutors", api_tutors),
     Route("/api/tutors/{tutor_id}", api_tutor_detail),
     Route("/api/charts", api_charts),
