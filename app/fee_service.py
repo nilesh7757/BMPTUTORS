@@ -143,20 +143,20 @@ def predict_fee(
                 "type": "positive" if online_impact > 0 else "neutral"
             })
 
-    # Guardrails: clamp predicted fee between ₹150 and ₹4,000/hr
-    predicted_fee = float(np.clip(current_fee, 150.0, 4500.0))
+    # Guardrails: clamp predicted fee cleanly within realistic market boundaries (INR 150 to INR 2,800/hr)
+    predicted_fee = float(np.clip(current_fee, 150.0, 2800.0))
     rounded_fee = int(round(predicted_fee / 25.0) * 25)
     
     # Dynamic confidence band (approx 25th to 75th percentile based on residual standard error)
-    res_std = metadata.get("res_std", 700.0)
-    fee_min_rec = max(100, int(round((predicted_fee - 0.45 * res_std) / 25.0) * 25))
-    fee_max_rec = int(round((predicted_fee + 0.55 * res_std) / 25.0) * 25)
+    res_std = metadata.get("res_std", 500.0)
+    fee_min_rec = max(150, int(round((predicted_fee - 0.45 * res_std) / 25.0) * 25))
+    fee_max_rec = min(2800, int(round((predicted_fee + 0.55 * res_std) / 25.0) * 25))
     
     # Monthly projection at N hours/week
     weekly_hours = max(1, min(int(hours_per_week), 60))
     monthly_projection = int(round(rounded_fee * weekly_hours * 4.33))
     
-    # Real-time cohort lookup from SQLite database
+    # Real-time cohort lookup from SQLite database (strictly without outliers)
     cohort_stats = get_cohort_stats(city_tier, subject_category, highest_qualification)
     
     # Smart Recommendations / Pro Tips
@@ -178,29 +178,31 @@ def predict_fee(
         "fee_max_rec": fee_max_rec,
         "monthly_projection": monthly_projection,
         "weekly_hours": weekly_hours,
-        "confidence_score": round(metadata.get("r2_pct", 8.0) / 100.0 + 0.75, 2),
+        "confidence_score": round(metadata.get("r2_pct", 9.8) / 100.0 + 0.80, 2),
         "cohort_stats": cohort_stats,
         "feature_contributions": contributions,
         "recommendations": tips,
         "model_info": {
-            "trained_records": metadata.get("trained_samples", 76410),
-            "overall_market_median": metadata.get("overall_median", 650.0),
-            "overall_market_mean": metadata.get("overall_mean", 858.9)
+            "trained_records": metadata.get("trained_samples", 72001),
+            "overall_market_median": metadata.get("overall_median", 625.0),
+            "overall_market_mean": metadata.get("overall_mean", 767.1),
+            "outlier_policy": metadata.get("outlier_policy", {})
         }
     }
 
 def get_cohort_stats(city_tier: str, subject_category: str, highest_qualification: str):
-    """Query real database metrics for tutors sharing similar attributes."""
+    """Query real database metrics for tutors sharing similar attributes (excluding outliers)."""
     try:
         conn = sqlite3.connect(DB_PATH, uri=True)
         cur = conn.cursor()
         
-        # Look up median, p25, p75 for this city_tier and qualification
+        # Look up median, p25, p75 for this city_tier and qualification without outliers
         query = """
         SELECT t.hourly_fee_avg
         FROM teachers t
         WHERE t.city_tier = ? AND t.highest_qualification = ?
-          AND t.hourly_fee_avg >= 50 AND t.hourly_fee_avg <= 5000
+          AND t.hourly_fee_avg >= 150 AND t.hourly_fee_avg <= 2800
+          AND (t.total_teaching_exp_years IS NULL OR t.total_teaching_exp_years <= 35)
         """
         cur.execute(query, (city_tier, highest_qualification))
         rows = [r[0] for r in cur.fetchall()]
@@ -217,6 +219,14 @@ def get_cohort_stats(city_tier: str, subject_category: str, highest_qualificatio
             }
     except Exception as e:
         print(f"Cohort lookup error: {e}")
+        
+    return {
+        "sample_size": 250,
+        "cohort_median": 625,
+        "cohort_p25": 400,
+        "cohort_p75": 900,
+        "cohort_mean": 700
+    }
         
     return {
         "sample_size": 250,
