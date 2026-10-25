@@ -24,7 +24,7 @@
       font-size: 10px;
       font-weight: 700;
       color: #0f172a;
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.94);
       border: 1px solid rgba(15, 23, 42, 0.15);
       padding: 1px 4px;
       border-radius: 4px;
@@ -44,7 +44,7 @@
       
       <!-- Brand & Title -->
       <div class="flex items-center gap-3 shrink-0">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-500 shadow-md flex items-center justify-center font-bold text-lg text-white ring-1 ring-white/20">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-violet-500 shadow-md flex items-center justify-center font-bold text-lg text-white ring-1 ring-white/20">
           <i class="fa-solid fa-graduation-cap"></i>
         </div>
         <div>
@@ -60,31 +60,31 @@
       </div>
 
       <!-- Segmented Navigation Controller -->
-      <nav class="hidden md:flex items-center bg-slate-800/80 p-1 rounded-xl ring-1 ring-white/10 shadow-inner">
-        <button id="tab-btn-explorer" onclick="switchTab('explorer')" class="px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-indigo-600 text-white shadow-xs flex items-center gap-2">
+      <nav class="hidden md:flex items-center bg-slate-800/80 p-1 rounded-xl ring-1 ring-white/10 shadow-inner space-x-1">
+        <button id="tab-btn-explorer" onclick="switchTab('explorer')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-indigo-600 text-white shadow-xs flex items-center gap-2">
           <i class="fa-solid fa-table-cells-large"></i>
           <span>Tutors Directory</span>
         </button>
-        <button id="tab-btn-analytics" onclick="switchTab('analytics')" class="px-4 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-700/60 flex items-center gap-2">
+        <button id="tab-btn-analytics" onclick="switchTab('analytics')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-2">
           <i class="fa-solid fa-chart-column"></i>
           <span>Visual Analytics</span>
         </button>
-        <button id="tab-btn-fee-ai" onclick="switchTab('fee-ai')" class="px-4 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-700/60 flex items-center gap-2">
+        <button id="tab-btn-fee-ai" onclick="switchTab('fee-ai')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-2">
           <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
           <span>AI Fee Estimator</span>
         </button>
-        <button id="tab-btn-bio-ai" onclick="switchTab('bio-ai')" class="px-4 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-700/60 flex items-center gap-2">
+        <button id="tab-btn-bio-ai" onclick="switchTab('bio-ai')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-2">
           <i class="fa-solid fa-pen-fancy text-emerald-400"></i>
           <span>AI Bio Studio</span>
         </button>
-        <button id="tab-btn-schema" onclick="switchTab('schema')" class="px-4 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-700/60 flex items-center gap-2">
+        <button id="tab-btn-schema" onclick="switchTab('schema')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-2">
           <i class="fa-solid fa-layer-group"></i>
           <span>Schema & Exports</span>
         </button>
       </nav>
 
-      <!-- Consolidated Action: Export Menu + Academic Report Link -->
-      <div class="flex items-center gap-2 shrink-0">
+      <!-- Consolidated Actions: Export Dropdown + Academic Report Link -->
+      <div class="flex items-center gap-2.5 shrink-0">
         <a href="/report" target="_blank" class="hidden sm:inline-flex px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 hover:border-slate-600 transition-all items-center gap-1.5 shadow-2xs">
           <i class="fa-solid fa-file-invoice text-indigo-400"></i>
           <span>Academic Report</span>
@@ -158,18 +158,18 @@
 
     <!-- Mobile Segmented Controller -->
     <div class="flex md:hidden px-4 pb-3 border-t border-slate-800/80 pt-2">
-      <nav class="flex w-full bg-slate-800/80 p-1 rounded-xl ring-1 ring-white/10">
-        <button onclick="switchTab('explorer')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center bg-indigo-600 text-white">Directory</button>
-        <button onclick="switchTab('analytics')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Analytics</button>
-        <button onclick="switchTab('fee-ai')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Fee AI</button>
-        <button onclick="switchTab('bio-ai')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Bio AI</button>
-        <button onclick="switchTab('schema')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Schema</button>
+      <nav class="flex w-full bg-slate-800/80 p-1 rounded-xl ring-1 ring-white/10 space-x-1">
+        <button id="tab-mobile-btn-explorer" onclick="switchTab('explorer')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center bg-indigo-600 text-white shadow-xs">Directory</button>
+        <button id="tab-mobile-btn-analytics" onclick="switchTab('analytics')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Analytics</button>
+        <button id="tab-mobile-btn-fee-ai" onclick="switchTab('fee-ai')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Fee AI</button>
+        <button id="tab-mobile-btn-bio-ai" onclick="switchTab('bio-ai')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Bio AI</button>
+        <button id="tab-mobile-btn-schema" onclick="switchTab('schema')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Schema</button>
       </nav>
     </div>
   </header>
 
-  <!-- METRIC SUMMARY KPI CARDS -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 w-full">
+  <!-- MACRO METRIC SUMMARY KPI CARDS (Contextual for Directory & Analytics) -->
+  <section id="global-kpi-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 w-full">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       
       <!-- Card 1: Unique Tutors -->
@@ -184,7 +184,7 @@
               <span>100% Normalized Star Schema</span>
             </p>
           </div>
-          <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
             <i class="fa-solid fa-users"></i>
           </div>
         </div>
@@ -202,7 +202,7 @@
               <span>3.7 Subjects per Educator</span>
             </p>
           </div>
-          <div class="w-12 h-12 rounded-2xl bg-violet-50 text-violet-600 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
+          <div class="w-12 h-12 rounded-2xl bg-violet-50 text-violet-600 ring-1 ring-violet-100 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
             <i class="fa-solid fa-book-open"></i>
           </div>
         </div>
@@ -220,7 +220,7 @@
               <span>Outlier-Trimmed Mean (₹50-₹5k)</span>
             </p>
           </div>
-          <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
             <i class="fa-solid fa-indian-rupee-sign"></i>
           </div>
         </div>
@@ -238,7 +238,7 @@
               <span>71.2% URL Verified Active Rate</span>
             </p>
           </div>
-          <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
+          <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 ring-1 ring-amber-100 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
             <i class="fa-solid fa-user-check"></i>
           </div>
         </div>
@@ -250,28 +250,28 @@
   <!-- MAIN TAB CONTENT AREA -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1 flex flex-col">
 
-    <!-- TAB 1: EXPLORER -->
+    <!-- TAB 1: EXPLORER (DIRECTORY) -->
     <div id="tab-explorer" class="flex flex-col lg:flex-row gap-6 flex-1">
       
       <!-- SIDEBAR FACETED FILTERS -->
       <aside class="w-full lg:w-72 bg-white p-5 rounded-2xl shadow-xs border border-slate-200/80 flex-shrink-0 flex flex-col gap-3.5">
         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
           <div class="flex items-center gap-2">
-            <div class="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs">
+            <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100 flex items-center justify-center text-xs">
               <i class="fa-solid fa-filter"></i>
             </div>
             <h2 class="font-bold text-slate-900 text-sm">Filter Tutors</h2>
           </div>
           <button id="btn-reset-filters" onclick="resetFilters()" class="text-xs text-slate-400 hover:text-indigo-600 font-semibold flex items-center gap-1 transition-colors cursor-pointer">
-            <i class="fa-solid fa-rotate-left text-[10px]"></i> Reset
+            <i class="fa-solid fa-rotate-left text-[10px]"></i> Reset All
           </button>
         </div>
 
         <!-- Search input with Instant Debounce and Clear Button -->
         <div>
-          <label for="filter-search" class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Search</label>
+          <label for="filter-search" class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Quick Search</label>
           <div class="relative">
-            <input type="text" id="filter-search" oninput="onSearchInput(this.value)" onkeydown="if(event.key==='Enter') applyFilters()" placeholder="Name, ID (T1), city, headline..." class="w-full pl-8 pr-7 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs" />
+            <input type="text" id="filter-search" oninput="onSearchInput(this.value)" onkeydown="if(event.key==='Enter') applyFilters()" placeholder="Name, ID (e.g. T1), city, headline..." class="w-full pl-8 pr-7 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white transition-all shadow-2xs" />
             <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
             <button id="btn-clear-search" onclick="clearSearch()" class="hidden absolute right-2.5 top-2 text-slate-400 hover:text-slate-600 text-xs">
               <i class="fa-solid fa-circle-xmark"></i>
@@ -282,7 +282,7 @@
         <!-- Primary Core Filter 1: Subject Category -->
         <div>
           <label for="filter-subject-category" class="block text-xs font-semibold text-slate-700 mb-1">Subject Domain</label>
-          <select id="filter-subject-category" onchange="applyFilters()" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs cursor-pointer">
+          <select id="filter-subject-category" onchange="applyFilters()" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white transition-all shadow-2xs cursor-pointer">
             <option value="">All Disciplines</option>
           </select>
         </div>
@@ -290,7 +290,7 @@
         <!-- Primary Core Filter 2: State / UT -->
         <div>
           <label for="filter-state" class="block text-xs font-semibold text-slate-700 mb-1">State / Territory</label>
-          <select id="filter-state" onchange="applyFilters()" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs cursor-pointer">
+          <select id="filter-state" onchange="applyFilters()" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white transition-all shadow-2xs cursor-pointer">
             <option value="">All States & UTs</option>
           </select>
         </div>
@@ -298,7 +298,7 @@
         <!-- Primary Core Filter 3: Education Level -->
         <div>
           <label for="filter-qualification" class="block text-xs font-semibold text-slate-700 mb-1">Education Level</label>
-          <select id="filter-qualification" onchange="applyFilters()" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs cursor-pointer">
+          <select id="filter-qualification" onchange="applyFilters()" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white transition-all shadow-2xs cursor-pointer">
             <option value="">All Qualifications</option>
           </select>
         </div>
@@ -308,7 +308,7 @@
           <button id="btn-toggle-more-filters" type="button" onclick="toggleMoreFilters()" class="w-full py-2 px-3 text-xs font-semibold text-slate-600 hover:text-indigo-600 bg-slate-50 hover:bg-slate-100/70 border border-slate-200/80 rounded-xl flex items-center justify-between transition-colors shadow-2xs">
             <span class="flex items-center gap-1.5">
               <i class="fa-solid fa-sliders text-indigo-500 text-[10px]"></i>
-              <span>More Filters</span>
+              <span>Advanced Filters</span>
             </span>
             <span class="flex items-center gap-1.5">
               <span id="more-filters-badge" class="hidden px-1.5 py-0.2 rounded-full bg-indigo-100 text-indigo-700 text-[10px] font-bold font-mono">0</span>
@@ -902,113 +902,7 @@
       </div>
     </div>
 
-    <!-- TAB 3: SCHEMA & EXPORTS -->
-    <div id="tab-schema" class="hidden flex-col gap-6">
-      <div class="bg-white p-8 rounded-2xl shadow-xs border border-slate-200/80">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl">
-            <i class="fa-solid fa-network-wired"></i>
-          </div>
-          <div>
-            <h3 class="text-lg font-bold text-slate-900 tracking-tight">Relational Star Schema & Bridge Architecture</h3>
-            <p class="text-xs text-slate-500">Zero data redundancy, zero wide sparsity, relational 3NF production standard</p>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-          <div class="p-5 rounded-xl bg-slate-50 border border-slate-200/80">
-            <div class="flex items-center justify-between mb-3">
-              <span class="font-bold text-sm text-slate-800 flex items-center gap-2">
-                <i class="fa-solid fa-table-list text-blue-600"></i> Table: `teachers` (Master Dimension)
-              </span>
-              <span class="text-xs bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full font-mono font-bold">107,723 rows</span>
-            </div>
-            <p class="text-xs text-slate-600 mb-3 leading-relaxed">Stores educator profile attributes exactly once, preventing repeating text contamination across subjects.</p>
-            <ul class="text-xs space-y-1 font-mono text-slate-700 bg-white p-3 rounded-lg border border-slate-200/80">
-              <li>• <span class="text-indigo-600 font-bold">tutor_id</span> (PK: 'T1'..'T107723')</li>
-              <li>• teacher_name, hookline, description</li>
-              <li>• state, region, city, city_tier, location_raw</li>
-              <li>• gender, works_as</li>
-              <li>• <span class="text-emerald-700 font-bold">occupation</span> (100% classified domain)</li>
-              <li>• experience_role, seniority_tier, total_teaching_exp_years</li>
-              <li>• highest_qualification, has_education_degree</li>
-              <li>• hourly_fee_min, hourly_fee_max, hourly_fee_avg</li>
-              <li>• teaches_online, teaches_at_student_home, can_travel</li>
-            </ul>
-          </div>
-
-          <div class="p-5 rounded-xl bg-slate-50 border border-slate-200/80">
-            <div class="flex items-center justify-between mb-3">
-              <span class="font-bold text-sm text-slate-800 flex items-center gap-2">
-                <i class="fa-solid fa-diagram-project text-indigo-600"></i> Table: `teacher_subjects` (Relational Bridge)
-              </span>
-              <span class="text-xs bg-indigo-100 text-indigo-800 px-2.5 py-0.5 rounded-full font-mono font-bold">403,353 rows</span>
-            </div>
-            <p class="text-xs text-slate-600 mb-3 leading-relaxed">Narrow junction table mapping each tutor to their specific subject disciplines, grade levels, and competitive tests.</p>
-            <ul class="text-xs space-y-1 font-mono text-slate-700 bg-white p-3 rounded-lg border border-slate-200/80">
-              <li>• bridge_id (PK: Auto increment)</li>
-              <li>• <span class="text-indigo-600 font-bold">tutor_id</span> (FK: References teachers.tutor_id)</li>
-              <li>• canonical_subject (Standardized subject name)</li>
-              <li>• subject_category (Science, Coding, Languages...)</li>
-              <li>• level_category (Secondary, Sr Secondary, College...)</li>
-              <li>• competitive_exam (JEE, NEET, IELTS, UPSC...)</li>
-              <li>• raw_subject_string (Original uncleaned text token)</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="mt-8 border-t border-slate-200 pt-6">
-          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
-            <div>
-              <h4 class="font-bold text-slate-900 text-sm">Direct Deliverable Downloads & Export Formats</h4>
-              <p class="text-xs text-slate-500">All data exported in open standard formats with 100% original and cleaned attributes</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <a href="/api/download/active-master-excel" download="BMP_Tutors_Verified_Active_Master.xlsx" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-2">
-                <i class="fa-solid fa-user-check text-sm text-blue-200"></i> Download Active Only Excel (.xlsx)
-              </a>
-              <a href="/api/download/master-excel" download="BMP_Tutors_Cleaned_Master.xlsx" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-2">
-                <i class="fa-solid fa-file-excel text-sm text-emerald-200"></i> Download Complete Master (.xlsx)
-              </a>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            <div class="p-3.5 bg-blue-50/70 border border-blue-200/80 rounded-xl text-xs">
-              <span class="font-bold text-blue-900 block flex items-center justify-between">
-                <span><i class="fa-solid fa-user-check mr-1 text-blue-600"></i> Active Only Excel:</span>
-                <span class="px-1.5 py-0.5 rounded bg-blue-200/70 text-blue-800 text-[10px] font-mono font-bold">58 MB</span>
-              </span>
-              <a href="/api/download/active-master-excel" download="BMP_Tutors_Verified_Active_Master.xlsx" class="font-mono text-blue-700 hover:underline text-[11px] block mt-1 truncate">BMP_Tutors_Verified_Active_Master.xlsx</a>
-              <p class="text-[10px] text-blue-700 mt-1">76,705 Verified Active Tutors &bull; 100% Opening URLs</p>
-            </div>
-            <div class="p-3.5 bg-emerald-50/70 border border-emerald-200/80 rounded-xl text-xs">
-              <span class="font-bold text-emerald-900 block flex items-center justify-between">
-                <span><i class="fa-solid fa-file-excel mr-1 text-emerald-600"></i> Complete Master:</span>
-                <span class="px-1.5 py-0.5 rounded bg-emerald-200/70 text-emerald-800 text-[10px] font-mono font-bold">79 MB</span>
-              </span>
-              <a href="/api/download/master-excel" download="BMP_Tutors_Cleaned_Master.xlsx" class="font-mono text-emerald-700 hover:underline text-[11px] block mt-1 truncate">BMP_Tutors_Cleaned_Master.xlsx</a>
-              <p class="text-[10px] text-emerald-700 mt-1">All 107k Tutors (Active + Inactive)</p>
-            </div>
-            <div class="p-3.5 bg-slate-100 rounded-xl text-xs border border-slate-200">
-              <span class="font-semibold text-slate-800 block">SQLite Database:</span>
-              <span class="font-mono text-slate-600 select-all text-[11px] block mt-1">cleaned_tutors_data.db (302 MB)</span>
-              <p class="text-[10px] text-slate-500 mt-1">Indexed 3NF relational schema</p>
-            </div>
-            <div class="p-3.5 bg-slate-100 rounded-xl text-xs border border-slate-200">
-              <span class="font-semibold text-slate-800 block">Cleaned CSVs:</span>
-              <span class="font-mono text-slate-600 select-all text-[11px] block mt-1">cleaned_teachers.csv (128 MB)<br/>cleaned_teacher_subjects.csv (26 MB)</span>
-            </div>
-            <div class="p-3.5 bg-slate-100 rounded-xl text-xs border border-slate-200">
-              <span class="font-semibold text-slate-800 block">Fast Parquet Files:</span>
-              <span class="font-mono text-slate-600 select-all text-[11px] block mt-1">cleaned_teachers.parquet (57 MB)<br/>cleaned_teacher_subjects.parquet (3.3 MB)</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 4: AI FEE PREDICTOR & FAIR PRICING ENGINE -->
+    <!-- TAB 3: AI FEE PREDICTOR & FAIR PRICING ENGINE -->
     <div id="tab-fee-ai" class="hidden flex-col gap-6">
       
       <!-- Executive Banner -->
@@ -1017,7 +911,7 @@
         <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div class="space-y-2">
             <div class="flex items-center gap-2.5">
-              <span class="w-8 h-8 rounded-lg bg-amber-400/20 text-amber-300 border border-amber-400/30 flex items-center justify-center text-sm">
+              <span class="w-8 h-8 rounded-lg bg-amber-400/20 text-amber-300 border border-amber-400/30 flex items-center justify-center text-sm shadow-xs">
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
               </span>
               <span class="text-xs font-bold uppercase tracking-wider text-amber-300 font-mono">Marketplace Machine Learning</span>
@@ -1029,15 +923,15 @@
           </div>
           
           <div class="flex flex-wrap md:flex-col gap-2 shrink-0">
-            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2">
+            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-2xs">
               <i class="fa-solid fa-filter-circle-xmark text-emerald-400 text-xs"></i>
               <span class="text-[11px] font-mono text-slate-200"><strong class="text-white">72,001</strong> Outlier-Free Tutors</span>
             </div>
-            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2">
+            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-2xs">
               <i class="fa-solid fa-chart-line text-indigo-400 text-xs"></i>
               <span class="text-[11px] font-mono text-slate-200">Tukey IQR + Ridge L2</span>
             </div>
-            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2">
+            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-2xs">
               <i class="fa-solid fa-bullseye text-amber-400 text-xs"></i>
               <span class="text-[11px] font-mono text-slate-200">Real-Time Cohort Median</span>
             </div>
@@ -1235,7 +1129,7 @@
                 <span id="ai-monthly-earning" class="text-2xl md:text-3xl font-black font-mono tracking-tight block mt-0.5">₹55,250</span>
                 <span class="text-[11px] text-emerald-100/90 block">Based on <span id="ai-monthly-hours-label" class="font-bold">15 hours/week</span> (approx. 65 hours/month)</span>
               </div>
-              <div class="bg-white/20 backdrop-blur-sm px-3.5 py-2 rounded-xl text-center shrink-0 border border-white/20">
+              <div class="bg-white/20 backdrop-blur-sm px-3.5 py-2 rounded-xl text-center shrink-0 border border-white/20 shadow-2xs">
                 <span class="text-[10px] text-emerald-100 uppercase tracking-wider block font-bold">Annualized Potential</span>
                 <span id="ai-annual-earning" class="text-sm font-bold font-mono">₹6.63 Lakhs / yr</span>
               </div>
@@ -1308,7 +1202,7 @@
 
     </div>
 
-    <!-- TAB 5: AI PROFILE STUDIO & BIO OPTIMIZER -->
+    <!-- TAB 4: AI PROFILE STUDIO & BIO OPTIMIZER -->
     <div id="tab-bio-ai" class="hidden flex-col gap-6">
       
       <!-- Executive Banner -->
@@ -1317,7 +1211,7 @@
         <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div class="space-y-2">
             <div class="flex items-center gap-2.5">
-              <span class="w-8 h-8 rounded-lg bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 flex items-center justify-center text-sm">
+              <span class="w-8 h-8 rounded-lg bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 flex items-center justify-center text-sm shadow-xs">
                 <i class="fa-solid fa-pen-nib"></i>
               </span>
               <span class="text-xs font-bold uppercase tracking-wider text-emerald-300 font-mono">Profile Intelligence & NLP</span>
@@ -1333,15 +1227,15 @@
           </div>
           
           <div class="flex flex-wrap md:flex-col gap-2 shrink-0">
-            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2">
+            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-2xs">
               <i class="fa-solid fa-users text-teal-400 text-xs"></i>
               <span class="text-[11px] font-mono text-slate-200">Dual-Audience Targeting</span>
             </div>
-            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2">
+            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-2xs">
               <i class="fa-solid fa-clipboard-check text-emerald-400 text-xs"></i>
               <span class="text-[11px] font-mono text-slate-200">Live 100-Pt Conversion Audit</span>
             </div>
-            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2">
+            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-2xs">
               <i class="fa-solid fa-bolt text-amber-400 text-xs"></i>
               <span class="text-[11px] font-mono text-slate-200">High-CTR Search Headlines</span>
             </div>
@@ -1369,13 +1263,13 @@
               <div class="sm:col-span-2 space-y-1">
                 <label class="font-bold text-slate-700 text-xs">Your Full Name</label>
                 <input type="text" id="bio-input-name" value="Ramesh Sharma" placeholder="e.g. Ramesh Sharma"
-                  class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500" />
+                  class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 shadow-2xs" />
               </div>
               <div class="space-y-1">
                 <label class="font-bold text-slate-700 text-xs">Experience</label>
                 <div class="relative">
                   <input type="number" id="bio-input-exp" value="6" min="0" max="35"
-                    class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500" />
+                    class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 shadow-2xs" />
                   <span class="absolute right-2.5 top-2 text-[10px] text-slate-400 font-bold">Yrs</span>
                 </div>
               </div>
@@ -1385,13 +1279,13 @@
             <div class="space-y-1">
               <label class="font-bold text-slate-700 text-xs">Primary Subject(s)</label>
               <input type="text" id="bio-input-subj" value="Mathematics & Physics" placeholder="e.g. Mathematics & Physics"
-                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500" />
+                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 shadow-2xs" />
             </div>
 
             <div class="space-y-1">
               <label class="font-bold text-slate-700 text-xs">Target Student Level / Board</label>
               <select id="bio-input-level"
-                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500">
+                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 shadow-2xs">
                 <option value="Class 9–10 (CBSE/ICSE)" selected>Class 9–10 (CBSE & ICSE Boards)</option>
                 <option value="Class 11–12 (JEE & NEET Entrance)">Class 11–12 (JEE & NEET Entrance)</option>
                 <option value="Class 11–12 (CBSE & ISC Boards)">Class 11–12 (CBSE & ISC Boards)</option>
@@ -1405,14 +1299,14 @@
             <div class="space-y-1">
               <label class="font-bold text-slate-700 text-xs">Highest Qualification & Institution</label>
               <input type="text" id="bio-input-qual" value="M.Sc in Mathematics, Delhi University" placeholder="e.g. M.Sc Mathematics, Delhi University"
-                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500" />
+                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 shadow-2xs" />
             </div>
 
             <!-- Teaching Philosophy -->
             <div class="space-y-1">
               <label class="font-bold text-slate-700 text-xs">Teaching Philosophy & Style</label>
               <select id="bio-input-style"
-                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500">
+                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 shadow-2xs">
                 <option value="Concept-First & Visual Mental Models" selected>Concept-First & Visual Mental Models</option>
                 <option value="Problem-Solving Speed & Exam Shortcuts">Problem-Solving Speed & Exam Shortcuts</option>
                 <option value="Patient, Encouraging & Friendly for Beginners">Patient, Encouraging & Friendly for Beginners</option>
@@ -1425,25 +1319,25 @@
             <div class="space-y-1">
               <label class="font-bold text-slate-700 text-xs">Key Academic Track Record / Achievements</label>
               <input type="text" id="bio-input-achieve" value="Helped 300+ students score 95%+ in board exams" placeholder="e.g. 95%+ board success rate, 300+ students guided"
-                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500" />
+                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 shadow-2xs" />
             </div>
 
             <div class="space-y-1">
               <label class="font-bold text-slate-700 text-xs">Unique Selling Proposition (USP)</label>
               <input type="text" id="bio-input-usp" value="Personalized study notes, weekly mock tests & 24/7 doubt resolution" placeholder="e.g. Free trial session, weekly mock tests"
-                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500" />
+                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 shadow-2xs" />
             </div>
 
             <div class="space-y-1">
               <label class="font-bold text-slate-700 text-xs">Languages of Instruction</label>
               <input type="text" id="bio-input-lang" value="English & Hindi" placeholder="e.g. English & Hindi"
-                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500" />
+                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 shadow-2xs" />
             </div>
 
             <!-- Generate Action Button -->
             <div class="pt-2">
               <button type="button" id="btn-generate-bio" onclick="triggerGenerateBio()"
-                class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 transition-all shadow-sm flex items-center justify-center gap-2 ring-1 ring-teal-400/30">
+                class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 transition-all shadow-sm flex items-center justify-center gap-2 ring-1 ring-teal-400/30 active:scale-[0.98]">
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
                 <span>Generate Optimized Profiles Now</span>
               </button>
@@ -1484,7 +1378,7 @@
 
               <!-- Copy Button -->
               <button type="button" id="btn-copy-bio" onclick="copyCurrentBioText()"
-                class="px-3 py-1.5 rounded-xl text-xs font-bold text-teal-700 bg-teal-50 hover:bg-teal-100 border border-teal-200/60 transition-all flex items-center gap-1.5">
+                class="px-3 py-1.5 rounded-xl text-xs font-bold text-teal-700 bg-teal-50 hover:bg-teal-100 border border-teal-200/60 transition-all flex items-center gap-1.5 shadow-2xs">
                 <i class="fa-solid fa-copy text-xs"></i>
                 <span id="copy-btn-text">Copy Bio</span>
               </button>
@@ -1494,7 +1388,7 @@
             <div id="bio-content-text-view" class="space-y-4">
               <div class="relative">
                 <textarea id="bio-output-textarea" rows="12" oninput="onBioTextareaInput()"
-                  class="w-full text-xs font-medium text-slate-800 bg-slate-50/70 border border-slate-200 rounded-xl p-4 leading-relaxed focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 custom-scrollbar font-sans select-all"></textarea>
+                  class="w-full text-xs font-medium text-slate-800 bg-slate-50/70 border border-slate-200 rounded-xl p-4 leading-relaxed focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 custom-scrollbar font-sans select-all shadow-2xs"></textarea>
               </div>
 
               <div class="flex items-center justify-between text-xs text-slate-500 font-mono pt-1">
@@ -1539,23 +1433,23 @@
 
               <!-- 5-Point Health Checklist Grid -->
               <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs font-medium" id="bio-checklist-grid">
-                <div id="check-cred" class="p-2 rounded-lg bg-white border border-slate-200 flex items-center gap-2 text-emerald-700">
+                <div id="check-cred" class="p-2 rounded-lg bg-white border border-slate-200 flex items-center gap-2 text-emerald-700 shadow-2xs">
                   <i class="fa-solid fa-circle-check text-emerald-500 shrink-0"></i>
                   <span class="truncate">Qualifications</span>
                 </div>
-                <div id="check-exp" class="p-2 rounded-lg bg-white border border-slate-200 flex items-center gap-2 text-emerald-700">
+                <div id="check-exp" class="p-2 rounded-lg bg-white border border-slate-200 flex items-center gap-2 text-emerald-700 shadow-2xs">
                   <i class="fa-solid fa-circle-check text-emerald-500 shrink-0"></i>
                   <span class="truncate">Years Experience</span>
                 </div>
-                <div id="check-subj" class="p-2 rounded-lg bg-white border border-slate-200 flex items-center gap-2 text-emerald-700">
+                <div id="check-subj" class="p-2 rounded-lg bg-white border border-slate-200 flex items-center gap-2 text-emerald-700 shadow-2xs">
                   <i class="fa-solid fa-circle-check text-emerald-500 shrink-0"></i>
                   <span class="truncate">Subject & Level</span>
                 </div>
-                <div id="check-method" class="p-2 rounded-lg bg-white border border-slate-200 flex items-center gap-2 text-emerald-700">
+                <div id="check-method" class="p-2 rounded-lg bg-white border border-slate-200 flex items-center gap-2 text-emerald-700 shadow-2xs">
                   <i class="fa-solid fa-circle-check text-emerald-500 shrink-0"></i>
                   <span class="truncate">Methodology / Style</span>
                 </div>
-                <div id="check-cta" class="p-2 rounded-lg bg-white border border-slate-200 flex items-center gap-2 text-emerald-700 sm:col-span-2">
+                <div id="check-cta" class="p-2 rounded-lg bg-white border border-slate-200 flex items-center gap-2 text-emerald-700 sm:col-span-2 shadow-2xs">
                   <i class="fa-solid fa-circle-check text-emerald-500 shrink-0"></i>
                   <span class="truncate">Call-to-Action (Book Demo)</span>
                 </div>
@@ -1573,6 +1467,114 @@
         </div>
 
       </div>
+
+    </div>
+
+    <!-- TAB 3: SCHEMA & EXPORTS -->
+    <div id="tab-schema" class="hidden flex-col gap-6">
+      <div class="bg-white p-8 rounded-2xl shadow-xs border border-slate-200/80">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl">
+            <i class="fa-solid fa-network-wired"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-slate-900 tracking-tight">Relational Star Schema & Bridge Architecture</h3>
+            <p class="text-xs text-slate-500">Zero data redundancy, zero wide sparsity, relational 3NF production standard</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div class="p-5 rounded-xl bg-slate-50 border border-slate-200/80">
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-bold text-sm text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-table-list text-blue-600"></i> Table: `teachers` (Master Dimension)
+              </span>
+              <span class="text-xs bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full font-mono font-bold">107,723 rows</span>
+            </div>
+            <p class="text-xs text-slate-600 mb-3 leading-relaxed">Stores educator profile attributes exactly once, preventing repeating text contamination across subjects.</p>
+            <ul class="text-xs space-y-1 font-mono text-slate-700 bg-white p-3 rounded-lg border border-slate-200/80">
+              <li>• <span class="text-indigo-600 font-bold">tutor_id</span> (PK: 'T1'..'T107723')</li>
+              <li>• teacher_name, hookline, description</li>
+              <li>• state, region, city, city_tier, location_raw</li>
+              <li>• gender, works_as</li>
+              <li>• <span class="text-emerald-700 font-bold">occupation</span> (100% classified domain)</li>
+              <li>• experience_role, seniority_tier, total_teaching_exp_years</li>
+              <li>• highest_qualification, has_education_degree</li>
+              <li>• hourly_fee_min, hourly_fee_max, hourly_fee_avg</li>
+              <li>• teaches_online, teaches_at_student_home, can_travel</li>
+            </ul>
+          </div>
+
+          <div class="p-5 rounded-xl bg-slate-50 border border-slate-200/80">
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-bold text-sm text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-diagram-project text-indigo-600"></i> Table: `teacher_subjects` (Relational Bridge)
+              </span>
+              <span class="text-xs bg-indigo-100 text-indigo-800 px-2.5 py-0.5 rounded-full font-mono font-bold">403,353 rows</span>
+            </div>
+            <p class="text-xs text-slate-600 mb-3 leading-relaxed">Narrow junction table mapping each tutor to their specific subject disciplines, grade levels, and competitive tests.</p>
+            <ul class="text-xs space-y-1 font-mono text-slate-700 bg-white p-3 rounded-lg border border-slate-200/80">
+              <li>• bridge_id (PK: Auto increment)</li>
+              <li>• <span class="text-indigo-600 font-bold">tutor_id</span> (FK: References teachers.tutor_id)</li>
+              <li>• canonical_subject (Standardized subject name)</li>
+              <li>• subject_category (Science, Coding, Languages...)</li>
+              <li>• level_category (Secondary, Sr Secondary, College...)</li>
+              <li>• competitive_exam (JEE, NEET, IELTS, UPSC...)</li>
+              <li>• raw_subject_string (Original uncleaned text token)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mt-8 border-t border-slate-200 pt-6">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+            <div>
+              <h4 class="font-bold text-slate-900 text-sm">Direct Deliverable Downloads & Export Formats</h4>
+              <p class="text-xs text-slate-500">All data exported in open standard formats with 100% original and cleaned attributes</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <a href="/api/download/active-master-excel" download="BMP_Tutors_Verified_Active_Master.xlsx" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-2">
+                <i class="fa-solid fa-user-check text-sm text-blue-200"></i> Download Active Only Excel (.xlsx)
+              </a>
+              <a href="/api/download/master-excel" download="BMP_Tutors_Cleaned_Master.xlsx" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-2">
+                <i class="fa-solid fa-file-excel text-sm text-emerald-200"></i> Download Complete Master (.xlsx)
+              </a>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div class="p-3.5 bg-blue-50/70 border border-blue-200/80 rounded-xl text-xs">
+              <span class="font-bold text-blue-900 block flex items-center justify-between">
+                <span><i class="fa-solid fa-user-check mr-1 text-blue-600"></i> Active Only Excel:</span>
+                <span class="px-1.5 py-0.5 rounded bg-blue-200/70 text-blue-800 text-[10px] font-mono font-bold">58 MB</span>
+              </span>
+              <a href="/api/download/active-master-excel" download="BMP_Tutors_Verified_Active_Master.xlsx" class="font-mono text-blue-700 hover:underline text-[11px] block mt-1 truncate">BMP_Tutors_Verified_Active_Master.xlsx</a>
+              <p class="text-[10px] text-blue-700 mt-1">76,705 Verified Active Tutors &bull; 100% Opening URLs</p>
+            </div>
+            <div class="p-3.5 bg-emerald-50/70 border border-emerald-200/80 rounded-xl text-xs">
+              <span class="font-bold text-emerald-900 block flex items-center justify-between">
+                <span><i class="fa-solid fa-file-excel mr-1 text-emerald-600"></i> Complete Master:</span>
+                <span class="px-1.5 py-0.5 rounded bg-emerald-200/70 text-emerald-800 text-[10px] font-mono font-bold">79 MB</span>
+              </span>
+              <a href="/api/download/master-excel" download="BMP_Tutors_Cleaned_Master.xlsx" class="font-mono text-emerald-700 hover:underline text-[11px] block mt-1 truncate">BMP_Tutors_Cleaned_Master.xlsx</a>
+              <p class="text-[10px] text-emerald-700 mt-1">All 107k Tutors (Active + Inactive)</p>
+            </div>
+            <div class="p-3.5 bg-slate-100 rounded-xl text-xs border border-slate-200">
+              <span class="font-semibold text-slate-800 block">SQLite Database:</span>
+              <span class="font-mono text-slate-600 select-all text-[11px] block mt-1">cleaned_tutors_data.db (302 MB)</span>
+              <p class="text-[10px] text-slate-500 mt-1">Indexed 3NF relational schema</p>
+            </div>
+            <div class="p-3.5 bg-slate-100 rounded-xl text-xs border border-slate-200">
+              <span class="font-semibold text-slate-800 block">Cleaned CSVs:</span>
+              <span class="font-mono text-slate-600 select-all text-[11px] block mt-1">cleaned_teachers.csv (128 MB)<br/>cleaned_teacher_subjects.csv (26 MB)</span>
+            </div>
+            <div class="p-3.5 bg-slate-100 rounded-xl text-xs border border-slate-200">
+              <span class="font-semibold text-slate-800 block">Fast Parquet Files:</span>
+              <span class="font-mono text-slate-600 select-all text-[11px] block mt-1">cleaned_teachers.parquet (57 MB)<br/>cleaned_teacher_subjects.parquet (3.3 MB)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </main>
 
@@ -1709,7 +1711,7 @@
     </div>
   </footer>
 
-  <script>
+<script>
 
     let currentPage = 1;
     let totalPages = 1;
@@ -2061,17 +2063,35 @@
         
         const btn = document.getElementById(`tab-btn-${t}`);
         if (btn) {
-          btn.className = "px-4 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-700/60 flex items-center gap-2";
+          btn.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-2";
+        }
+        const mBtn = document.getElementById(`tab-mobile-btn-${t}`);
+        if (mBtn) {
+          mBtn.className = "flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300 hover:text-white transition-all";
         }
       });
 
-      const activeClass = "px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-indigo-600 text-white shadow-xs flex items-center gap-2";
+      const activeClass = "px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-indigo-600 text-white shadow-xs flex items-center gap-2";
+      const activeMobileClass = "flex-1 py-1.5 rounded-lg text-xs font-semibold text-center bg-indigo-600 text-white shadow-xs";
 
       const activeEl = document.getElementById(`tab-${tabId}`);
       if (activeEl) activeEl.classList.remove('hidden');
 
       const activeBtn = document.getElementById(`tab-btn-${tabId}`);
       if (activeBtn) activeBtn.className = activeClass;
+
+      const activeMobileBtn = document.getElementById(`tab-mobile-btn-${tabId}`);
+      if (activeMobileBtn) activeMobileBtn.className = activeMobileClass;
+
+      // Intelligently toggle macro KPI metrics: show for Directory & Analytics, keep AI workspaces clean & focused
+      const kpiSection = document.getElementById('global-kpi-section');
+      if (kpiSection) {
+        if (tabId === 'explorer' || tabId === 'analytics') {
+          kpiSection.classList.remove('hidden');
+        } else {
+          kpiSection.classList.add('hidden');
+        }
+      }
 
       if (tabId === 'analytics') {
         if (!chartsInitialized) {
@@ -4078,3 +4098,4 @@
   </script>
 </body>
 </html>
+
