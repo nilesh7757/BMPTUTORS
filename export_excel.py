@@ -3,14 +3,14 @@ import xlsxwriter
 import time
 import os
 
-DB_PATH = "/home/nilesh7757/BMPTUTORS1/cleaned_tutors_data.db"
+DB_PATH = "file:/home/nilesh7757/BMPTUTORS1/cleaned_tutors_data.db?immutable=1"
 OUTPUT_EXCEL = "/home/nilesh7757/BMPTUTORS1/BMP_Tutors_Cleaned_Master.xlsx"
 
 def generate_master_excel():
     start_time = time.time()
-    print(f"Generating Complete 3-Sheet Master Excel file: {OUTPUT_EXCEL}")
+    print(f"Generating Complete 2-Sheet Master Excel file: {OUTPUT_EXCEL}")
     
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, uri=True)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
@@ -59,10 +59,10 @@ def generate_master_excel():
     })
 
     # =========================================================================
-    # SHEET 1: All Tutors Master Cleaned (107,723 rows)
+    # SHEET 1: Teachers (107,716 verified educator rows)
     # =========================================================================
-    print("Writing Sheet 1: Tutors_Master_Cleaned...")
-    ws1 = wb.add_worksheet('Tutors_Master_Cleaned')
+    print("Writing Sheet 1: Teachers...")
+    ws1 = wb.add_worksheet('Teachers')
     
     headers1 = [
         "Tutor ID",
@@ -222,13 +222,13 @@ def generate_master_excel():
         if row_idx % 25000 == 1:
             print(f"  Written {row_idx-1:,} tutors... ({time.time()-t1:.1f}s)")
             
-    print(f"Sheet 1 complete ({row_idx-1:,} rows) in {time.time()-t1:.2f}s")
+    print(f"Sheet 1 (Teachers) complete ({row_idx-1:,} rows) in {time.time()-t1:.2f}s")
 
     # =========================================================================
-    # SHEET 2: Teacher_Subjects_Bridge (403,353 rows)
+    # SHEET 2: Subjects (403,353 classified bridge rows)
     # =========================================================================
-    print("Writing Sheet 2: Teacher_Subjects_Bridge...")
-    ws2 = wb.add_worksheet('Teacher_Subjects_Bridge')
+    print("Writing Sheet 2: Subjects...")
+    ws2 = wb.add_worksheet('Subjects')
     
     headers2 = [
         "Bridge ID",
@@ -280,39 +280,14 @@ def generate_master_excel():
         if row_idx2 % 100000 == 1:
             print(f"  Written {row_idx2-1:,} bridge links... ({time.time()-t2:.1f}s)")
             
-    print(f"Sheet 2 complete ({row_idx2-1:,} rows) in {time.time()-t2:.2f}s")
+    print(f"Sheet 2 (Subjects) complete ({row_idx2-1:,} rows) in {time.time()-t2:.2f}s")
 
-    # =========================================================================
-    # SHEET 3: Data_Dictionary & Summary
-    # =========================================================================
-    print("Writing Sheet 3: Data_Dictionary...")
-    ws3 = wb.add_worksheet('Data_Dictionary')
-    dict_header_fmt = wb.add_format({'bold': True, 'bg_color': '#475569', 'font_color': '#FFFFFF', 'font_size': 11})
-    
-    ws3.write_row(0, 0, ["Dataset Summary Metric", "Value", "Notes / Description"], dict_header_fmt)
-    
-    summary_metrics = [
-        ("Total Unique Tutors", "107,723", "De-duplicated across scraped (76,706) and not scraped (31,017)"),
-        ("Total Bridge Records", "403,353", "100% classified subject-level relationships"),
-        ("Validation Active Tutors", "76,706 (71.2%)", "Verified active profile URLs"),
-        ("Validation Inactive Tutors", "31,017 (28.8%)", "URLs that returned inactive or 404"),
-        ("Average Hourly Fee", "INR 848.4 / hr", "Trimmed mean between INR 50 and INR 5,000 / hr"),
-        ("Pedagogical Seniority Tiers", "4 Standard Tiers", "Master Educator (10+ Yrs), Experienced Practitioner (2-5 Yrs), Senior Specialist (5-10 Yrs), Early-Career (<2 Yrs)"),
-        ("Target Educational Levels", "11 Canonical Levels", "100% concrete educational stages (0 'Skill Levels' / 0 'Not Specified')"),
-        ("City Tiers", "Tier 1 (Metro), Tier 2 (Urban), Tier 3 (Semi-Urban / Rural)", "Standardized against 48 major urban agglomerations in India"),
-        ("Occupational Classification", "100% Comprehensive Coverage", "19 Professional Domains: Software & IT, Medicine, Finance & CA, Engineering, Research Scholars, School Teachers, Faculty, etc."),
-        ("Generated At", time.strftime("%Y-%m-%d %H:%M:%S"), "Exported directly from relational SQLite clean star schema")
-    ]
-    
-    for r_i, (m, v, n) in enumerate(summary_metrics, start=1):
-        ws3.write_row(r_i, 0, [m, v, n])
-        
     print("Closing workbook and finalizing compression...")
     wb.close()
     conn.close()
     
     file_size_mb = os.path.getsize(OUTPUT_EXCEL) / (1024 * 1024)
-    print(f"Master Excel file successfully generated: {OUTPUT_EXCEL} ({file_size_mb:.2f} MB)")
+    print(f"Master 2-Sheet Excel file successfully generated: {OUTPUT_EXCEL} ({file_size_mb:.2f} MB)")
     print(f"Total time elapsed: {time.time()-start_time:.2f}s")
 
 if __name__ == "__main__":
