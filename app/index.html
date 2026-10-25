@@ -69,6 +69,10 @@
           <i class="fa-solid fa-chart-column"></i>
           <span>Visual Analytics</span>
         </button>
+        <button id="tab-btn-fee-ai" onclick="switchTab('fee-ai')" class="px-4 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-700/60 flex items-center gap-2">
+          <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
+          <span>AI Fee Estimator</span>
+        </button>
         <button id="tab-btn-schema" onclick="switchTab('schema')" class="px-4 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-700/60 flex items-center gap-2">
           <i class="fa-solid fa-layer-group"></i>
           <span>Schema & Exports</span>
@@ -153,6 +157,7 @@
       <nav class="flex w-full bg-slate-800/80 p-1 rounded-xl ring-1 ring-white/10">
         <button onclick="switchTab('explorer')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center bg-indigo-600 text-white">Directory</button>
         <button onclick="switchTab('analytics')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Analytics</button>
+        <button onclick="switchTab('fee-ai')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Fee AI</button>
         <button onclick="switchTab('schema')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Schema</button>
       </nav>
     </div>
@@ -998,6 +1003,306 @@
       </div>
     </div>
 
+    <!-- TAB 4: AI FEE PREDICTOR & FAIR PRICING ENGINE -->
+    <div id="tab-fee-ai" class="hidden flex-col gap-6">
+      
+      <!-- Executive Banner -->
+      <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 p-6 md:p-8 rounded-2xl shadow-md border border-indigo-900/50 text-white relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="space-y-2">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-lg bg-amber-400/20 text-amber-300 border border-amber-400/30 flex items-center justify-center text-sm">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+              </span>
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-300 font-mono">Marketplace Machine Learning</span>
+            </div>
+            <h2 class="text-xl md:text-2xl font-black tracking-tight text-white">Smart Fee Prediction & Pricing Engine</h2>
+            <p class="text-xs md:text-sm text-slate-300 max-w-2xl leading-relaxed">
+              Trained on <span class="font-bold text-white font-mono">76,410 verified real tutor profiles</span> across all 36 States & UTs. Get instant data-backed fair market hourly fees, confidence intervals, and cohort benchmarking.
+            </p>
+          </div>
+          
+          <div class="flex flex-wrap md:flex-col gap-2 shrink-0">
+            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2">
+              <i class="fa-solid fa-database text-emerald-400 text-xs"></i>
+              <span class="text-[11px] font-mono text-slate-200"><strong class="text-white">76,410</strong> Verified Rates</span>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2">
+              <i class="fa-solid fa-chart-line text-indigo-400 text-xs"></i>
+              <span class="text-[11px] font-mono text-slate-200">Ridge Regularized L2</span>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2">
+              <i class="fa-solid fa-bullseye text-amber-400 text-xs"></i>
+              <span class="text-[11px] font-mono text-slate-200">Real-Time Cohort Median</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main 2-Column Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- LEFT: Controls & Form Inputs (5 Cols) -->
+        <div class="lg:col-span-5 flex flex-col gap-5">
+          <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80 space-y-5">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-sliders text-indigo-600"></i>
+                <span>Tutor Profile Parameters</span>
+              </h3>
+              <span class="text-[11px] text-slate-400">Live Auto-Updating</span>
+            </div>
+
+            <!-- Teaching Experience Slider -->
+            <div class="space-y-2">
+              <div class="flex justify-between items-center text-xs">
+                <label class="font-bold text-slate-700">Total Teaching Experience</label>
+                <span id="ai-exp-badge" class="px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-bold font-mono text-xs border border-indigo-200/60">
+                  5 Years
+                </span>
+              </div>
+              <input type="range" id="ai-exp-slider" min="0" max="25" step="1" value="5" oninput="onFeeParamChange()"
+                class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" />
+              <div class="flex justify-between text-[10px] text-slate-400 font-medium font-mono">
+                <span>0 Yrs (Fresh)</span>
+                <span id="ai-seniority-tag" class="text-indigo-600 font-bold">Experienced (2–5 Yrs)</span>
+                <span>25+ Yrs (Master)</span>
+              </div>
+            </div>
+
+            <!-- City Tier -->
+            <div class="space-y-1.5">
+              <label class="font-bold text-slate-700 text-xs block">Location & Market Tier</label>
+              <div class="grid grid-cols-3 gap-2">
+                <button type="button" onclick="selectTier('Tier 1 (Metro)')" id="tier-btn-1"
+                  class="tier-select-btn px-2.5 py-2 rounded-xl text-xs font-bold text-center border transition-all bg-indigo-50 border-indigo-300 text-indigo-800 shadow-2xs">
+                  <span class="block">Tier 1</span>
+                  <span class="text-[10px] font-normal text-slate-500">Metro Hubs</span>
+                </button>
+                <button type="button" onclick="selectTier('Tier 2 (Urban)')" id="tier-btn-2"
+                  class="tier-select-btn px-2.5 py-2 rounded-xl text-xs font-bold text-center border transition-all bg-white border-slate-200 text-slate-700 hover:bg-slate-50">
+                  <span class="block">Tier 2</span>
+                  <span class="text-[10px] font-normal text-slate-500">Urban Cities</span>
+                </button>
+                <button type="button" onclick="selectTier('Tier 3 / Semi-Urban')" id="tier-btn-3"
+                  class="tier-select-btn px-2.5 py-2 rounded-xl text-xs font-bold text-center border transition-all bg-white border-slate-200 text-slate-700 hover:bg-slate-50">
+                  <span class="block">Tier 3</span>
+                  <span class="text-[10px] font-normal text-slate-500">Semi-Urban</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Qualification & Degree -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="space-y-1.5">
+                <label class="font-bold text-slate-700 text-xs">Highest Education</label>
+                <select id="ai-qual-select" onchange="onFeeParamChange()"
+                  class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                  <option value="Advanced (PhD/Doctorate)">PhD / Doctorate</option>
+                  <option value="Postgraduate (PG)" selected>Master's / PG</option>
+                  <option value="Undergraduate (UG)">Bachelor's / UG</option>
+                  <option value="Less than UG">Diploma / Less than UG</option>
+                </select>
+              </div>
+
+              <div class="space-y-1.5">
+                <label class="font-bold text-slate-700 text-xs">Subject Domain</label>
+                <select id="ai-subj-select" onchange="onFeeParamChange()"
+                  class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                  <option value="Science" selected>Science & Mathematics</option>
+                  <option value="Coding">Coding & Computer Science</option>
+                  <option value="Commerce">Commerce & Economics</option>
+                  <option value="Languages">Languages & English</option>
+                  <option value="Arts">Arts & Humanities</option>
+                  <option value="Misc/ECA">Music, Chess & ECA</option>
+                  <option value="All Subjects">General All-Subjects (K-8)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Target Educational Level -->
+            <div class="space-y-1.5">
+              <label class="font-bold text-slate-700 text-xs">Target Student Level</label>
+              <select id="ai-level-select" onchange="onFeeParamChange()"
+                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                <option value="Senior Secondary (Class 11–12 / JEE / NEET)">Senior Secondary (Class 11–12 / JEE / NEET)</option>
+                <option value="Higher Education (College / University)">Higher Education (College / University)</option>
+                <option value="Senior Secondary (Class 11–12 / Boards)" selected>Senior Secondary (Class 11–12 / Boards)</option>
+                <option value="Secondary (Class 9–10 / IGCSE / ICSE)">Secondary (Class 9–10 / IGCSE / ICSE)</option>
+                <option value="Middle School (Class 6–8)">Middle School (Class 6–8)</option>
+                <option value="Primary (Class 1–5)">Primary (Class 1–5)</option>
+                <option value="Professional & Industry Upskilling">Professional & Industry Upskilling</option>
+              </select>
+            </div>
+
+            <!-- Professional Background (Occupation) -->
+            <div class="space-y-1.5">
+              <label class="font-bold text-slate-700 text-xs">Primary Profession / Occupation</label>
+              <select id="ai-occ-select" onchange="onFeeParamChange()"
+                class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                <option value="School Educator (Teacher)">School Educator (Teacher)</option>
+                <option value="College / University Faculty">College / University Faculty</option>
+                <option value="Software Engineer & IT Professional">Software Engineer & IT Professional</option>
+                <option value="Competitive Exam Coaching Specialist">Competitive Exam Coaching Specialist</option>
+                <option value="Corporate, Finance & Chartered Accountant">Corporate, Finance & Chartered Accountant</option>
+                <option value="Medical, Healthcare & Pharma Professional">Medical, Healthcare & Pharma Professional</option>
+                <option value="Independent Private Tutor" selected>Independent Private Tutor</option>
+                <option value="University & College Student / Researcher">University & College Student / Researcher</option>
+                <option value="Professional Online Educator">Professional Online Educator</option>
+              </select>
+            </div>
+
+            <!-- Teaching Options & Modes -->
+            <div class="space-y-2 pt-2 border-t border-slate-100">
+              <label class="font-bold text-slate-700 text-xs block">Delivery Modes & Certifications</label>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <label class="flex items-center gap-2 p-2 rounded-xl border border-slate-200 bg-slate-50/50 cursor-pointer hover:bg-slate-50 transition-colors">
+                  <input type="checkbox" id="ai-mode-online" checked onchange="onFeeParamChange()" class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300" />
+                  <span class="font-medium text-slate-700">Teaches Online</span>
+                </label>
+
+                <label class="flex items-center gap-2 p-2 rounded-xl border border-slate-200 bg-slate-50/50 cursor-pointer hover:bg-slate-50 transition-colors">
+                  <input type="checkbox" id="ai-mode-home" onchange="onFeeParamChange()" class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300" />
+                  <span class="font-medium text-slate-700">Home Visits</span>
+                </label>
+
+                <label class="flex items-center gap-2 p-2 rounded-xl border border-slate-200 bg-slate-50/50 cursor-pointer hover:bg-slate-50 transition-colors sm:col-span-2">
+                  <input type="checkbox" id="ai-bed-cert" onchange="onFeeParamChange()" class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300" />
+                  <span class="font-medium text-slate-700">Has B.Ed / M.Ed Education Degree</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Weekly Teaching Hours Commitment -->
+            <div class="space-y-2 pt-2 border-t border-slate-100">
+              <div class="flex justify-between items-center text-xs">
+                <label class="font-bold text-slate-700">Planned Teaching Commitment</label>
+                <span id="ai-hours-badge" class="px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 font-bold font-mono text-xs border border-emerald-200/60">
+                  15 Hours / Week
+                </span>
+              </div>
+              <input type="range" id="ai-hours-slider" min="4" max="40" step="2" value="15" oninput="onFeeParamChange()"
+                class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600" />
+              <div class="flex justify-between text-[10px] text-slate-400 font-medium font-mono">
+                <span>Part-Time (4h)</span>
+                <span>Balanced (15h)</span>
+                <span>Full-Time (40h)</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RIGHT: Live Predictions, Breakdown & Cohorts (7 Cols) -->
+        <div class="lg:col-span-7 flex flex-col gap-5">
+          
+          <!-- Hero Prediction Card -->
+          <div class="bg-white p-6 md:p-7 rounded-2xl shadow-xs border border-slate-200/80 space-y-6">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+              <div>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100">
+                  Recommended Market Rate
+                </span>
+                <div class="flex items-baseline gap-2 mt-2">
+                  <span id="ai-pred-fee" class="text-4xl md:text-5xl font-black text-slate-900 font-mono tracking-tight">₹850</span>
+                  <span class="text-slate-500 text-sm font-semibold">/ hour</span>
+                </div>
+              </div>
+
+              <!-- Confidence Band -->
+              <div class="bg-slate-50 border border-slate-200/80 p-3 rounded-xl sm:text-right shrink-0">
+                <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Suggested Market Range</span>
+                <span id="ai-range-badge" class="font-mono text-sm font-bold text-slate-800 block mt-0.5">₹700 – ₹1,050 / hr</span>
+                <div class="flex items-center gap-1.5 text-[10px] text-emerald-600 font-semibold mt-1 sm:justify-end">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span>Optimal Demand Sweet Spot</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Earning Potential Projection Bar -->
+            <div class="bg-gradient-to-r from-emerald-500 to-teal-600 p-4 md:p-5 rounded-xl text-white shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div>
+                <span class="text-xs text-emerald-100 font-medium block">Estimated Monthly Earning Potential</span>
+                <span id="ai-monthly-earning" class="text-2xl md:text-3xl font-black font-mono tracking-tight block mt-0.5">₹55,250</span>
+                <span class="text-[11px] text-emerald-100/90 block">Based on <span id="ai-monthly-hours-label" class="font-bold">15 hours/week</span> (approx. 65 hours/month)</span>
+              </div>
+              <div class="bg-white/20 backdrop-blur-sm px-3.5 py-2 rounded-xl text-center shrink-0 border border-white/20">
+                <span class="text-[10px] text-emerald-100 uppercase tracking-wider block font-bold">Annualized Potential</span>
+                <span id="ai-annual-earning" class="text-sm font-bold font-mono">₹6.63 Lakhs / yr</span>
+              </div>
+            </div>
+
+            <!-- Explainable Feature Attributions (Why this rate?) -->
+            <div class="space-y-3 pt-1">
+              <div class="flex items-center justify-between">
+                <h4 class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                  <i class="fa-solid fa-chart-simple text-indigo-500"></i>
+                  <span>Pricing Drivers Attribution (Explainable ML)</span>
+                </h4>
+                <span class="text-[10px] text-slate-400 font-mono">Additive Ridge Weights</span>
+              </div>
+              
+              <div id="ai-contributions-container" class="space-y-2 max-h-56 overflow-y-auto custom-scrollbar pr-1">
+                <!-- Dynamically populated via JS -->
+              </div>
+            </div>
+
+            <!-- Real Database Market Cohort Benchmark -->
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-3">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <i class="fa-solid fa-users-viewfinder text-blue-600 text-xs"></i>
+                  <span class="text-xs font-bold text-slate-800">Actual Market Cohort in Database</span>
+                </div>
+                <span id="ai-cohort-count" class="text-[10px] font-mono font-bold bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
+                  1,420 Verified Tutors
+                </span>
+              </div>
+
+              <!-- Percentile Markers Grid -->
+              <div class="grid grid-cols-4 gap-2 pt-1 text-center font-mono">
+                <div class="p-2 bg-white rounded-lg border border-slate-200/70">
+                  <span class="text-[9px] uppercase tracking-wider text-slate-400 block font-sans font-semibold">25th %ile</span>
+                  <span id="ai-cohort-p25" class="text-xs font-bold text-slate-700">₹650</span>
+                </div>
+                <div class="p-2 bg-indigo-50 rounded-lg border border-indigo-200/80 ring-1 ring-indigo-300/40">
+                  <span class="text-[9px] uppercase tracking-wider text-indigo-600 block font-sans font-bold">Median</span>
+                  <span id="ai-cohort-median" class="text-xs font-black text-indigo-900">₹800</span>
+                </div>
+                <div class="p-2 bg-white rounded-lg border border-slate-200/70">
+                  <span class="text-[9px] uppercase tracking-wider text-slate-400 block font-sans font-semibold">75th %ile</span>
+                  <span id="ai-cohort-p75" class="text-xs font-bold text-slate-700">₹1,100</span>
+                </div>
+                <div class="p-2 bg-white rounded-lg border border-slate-200/70">
+                  <span class="text-[9px] uppercase tracking-wider text-slate-400 block font-sans font-semibold">Average</span>
+                  <span id="ai-cohort-mean" class="text-xs font-bold text-slate-700">₹895</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Strategic Optimization Tips -->
+            <div class="border-t border-slate-100 pt-4 space-y-2">
+              <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                <i class="fa-solid fa-lightbulb text-amber-500"></i>
+                <span>Actionable Rate Optimization Recommendations</span>
+              </span>
+              <div id="ai-recommendations-container" class="space-y-2">
+                <!-- Dynamically populated via JS -->
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
   </main>
 
   <!-- TUTOR DETAIL SLIDE-OVER DRAWER MODAL -->
@@ -1139,6 +1444,9 @@
     let totalPages = 1;
     let pageSize = 25;
     let chartsInitialized = false;
+    let feePredictorInitialized = false;
+    let currentSelectedTier = 'Tier 1 (Metro)';
+    let feeDebounceTimer = null;
     let currentSortBy = 'default';
     let currentSortOrder = 'asc';
     let searchDebounceTimer = null;
@@ -1472,18 +1780,23 @@
     function switchTab(tabId) {
       document.getElementById('tab-explorer').classList.add('hidden');
       document.getElementById('tab-analytics').classList.add('hidden');
+      document.getElementById('tab-fee-ai').classList.add('hidden');
       document.getElementById('tab-schema').classList.add('hidden');
 
-      document.getElementById('tab-btn-explorer').className = "px-4 py-2 rounded-lg text-sm font-medium transition-all text-indigo-200 hover:text-white hover:bg-indigo-800/50 flex items-center gap-2";
-      document.getElementById('tab-btn-analytics').className = "px-4 py-2 rounded-lg text-sm font-medium transition-all text-indigo-200 hover:text-white hover:bg-indigo-800/50 flex items-center gap-2";
-      document.getElementById('tab-btn-schema').className = "px-4 py-2 rounded-lg text-sm font-medium transition-all text-indigo-200 hover:text-white hover:bg-indigo-800/50 flex items-center gap-2";
+      const idleClass = "px-4 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-700/60 flex items-center gap-2";
+      const activeClass = "px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-indigo-600 text-white shadow-xs flex items-center gap-2";
+
+      document.getElementById('tab-btn-explorer').className = idleClass;
+      document.getElementById('tab-btn-analytics').className = idleClass;
+      document.getElementById('tab-btn-fee-ai').className = idleClass;
+      document.getElementById('tab-btn-schema').className = idleClass;
 
       if (tabId === 'explorer') {
         document.getElementById('tab-explorer').classList.remove('hidden');
-        document.getElementById('tab-btn-explorer').className = "px-4 py-2 rounded-lg text-sm font-medium transition-all bg-indigo-600 text-white shadow-sm flex items-center gap-2";
+        document.getElementById('tab-btn-explorer').className = activeClass;
       } else if (tabId === 'analytics') {
         document.getElementById('tab-analytics').classList.remove('hidden');
-        document.getElementById('tab-btn-analytics').className = "px-4 py-2 rounded-lg text-sm font-medium transition-all bg-indigo-600 text-white shadow-sm flex items-center gap-2";
+        document.getElementById('tab-btn-analytics').className = activeClass;
         if (!chartsInitialized) {
           loadCharts();
           chartsInitialized = true;
@@ -1491,9 +1804,16 @@
         setTimeout(() => {
           initOrUpdateMaps();
         }, 150);
+      } else if (tabId === 'fee-ai') {
+        document.getElementById('tab-fee-ai').classList.remove('hidden');
+        document.getElementById('tab-btn-fee-ai').className = activeClass;
+        if (!feePredictorInitialized) {
+          initFeePredictor();
+          feePredictorInitialized = true;
+        }
       } else if (tabId === 'schema') {
         document.getElementById('tab-schema').classList.remove('hidden');
-        document.getElementById('tab-btn-schema').className = "px-4 py-2 rounded-lg text-sm font-medium transition-all bg-indigo-600 text-white shadow-sm flex items-center gap-2";
+        document.getElementById('tab-btn-schema').className = activeClass;
       }
     }
 
@@ -3021,6 +3341,194 @@
     function escapeHtml(str) {
       if (!str) return '';
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    // =========================================================================
+    // AI FEE PREDICTOR & FAIR PRICING ENGINE
+    // =========================================================================
+    function initFeePredictor() {
+      onFeeParamChange();
+    }
+
+    function selectTier(tier) {
+      currentSelectedTier = tier;
+      const activeClass = "tier-select-btn px-2.5 py-2 rounded-xl text-xs font-bold text-center border transition-all bg-indigo-50 border-indigo-300 text-indigo-800 shadow-2xs";
+      const inactiveClass = "tier-select-btn px-2.5 py-2 rounded-xl text-xs font-bold text-center border transition-all bg-white border-slate-200 text-slate-700 hover:bg-slate-50";
+
+      const btn1 = document.getElementById('tier-btn-1');
+      const btn2 = document.getElementById('tier-btn-2');
+      const btn3 = document.getElementById('tier-btn-3');
+
+      if (btn1) btn1.className = tier === 'Tier 1 (Metro)' ? activeClass : inactiveClass;
+      if (btn2) btn2.className = tier === 'Tier 2 (Urban)' ? activeClass : inactiveClass;
+      if (btn3) btn3.className = tier === 'Tier 3 / Semi-Urban' ? activeClass : inactiveClass;
+
+      onFeeParamChange();
+    }
+
+    function onFeeParamChange() {
+      // 1. Update Experience Slider Label
+      const expSlider = document.getElementById('ai-exp-slider');
+      const expBadge = document.getElementById('ai-exp-badge');
+      const seniorityTag = document.getElementById('ai-seniority-tag');
+
+      if (expSlider && expBadge) {
+        const val = parseInt(expSlider.value, 10);
+        expBadge.textContent = `${val} Years`;
+
+        if (seniorityTag) {
+          if (val < 2) {
+            seniorityTag.textContent = "Early-Career (< 2 Yrs)";
+            seniorityTag.className = "text-sky-600 font-bold";
+          } else if (val <= 5) {
+            seniorityTag.textContent = "Experienced (2–5 Yrs)";
+            seniorityTag.className = "text-indigo-600 font-bold";
+          } else if (val <= 10) {
+            seniorityTag.textContent = "Senior Specialist (5–10 Yrs)";
+            seniorityTag.className = "text-purple-600 font-bold";
+          } else {
+            seniorityTag.textContent = "Master Educator (10+ Yrs / PhD)";
+            seniorityTag.className = "text-emerald-600 font-bold";
+          }
+        }
+      }
+
+      // 2. Update Hours Slider Label
+      const hoursSlider = document.getElementById('ai-hours-slider');
+      const hoursBadge = document.getElementById('ai-hours-badge');
+      const monthlyHoursLabel = document.getElementById('ai-monthly-hours-label');
+
+      if (hoursSlider && hoursBadge) {
+        const hVal = parseInt(hoursSlider.value, 10);
+        hoursBadge.textContent = `${hVal} Hours / Week`;
+        if (monthlyHoursLabel) {
+          monthlyHoursLabel.textContent = `${hVal} hours/week`;
+        }
+      }
+
+      // 3. Debounce API call
+      clearTimeout(feeDebounceTimer);
+      feeDebounceTimer = setTimeout(() => {
+        calculateFeePrediction();
+      }, 100);
+    }
+
+    async function calculateFeePrediction() {
+      try {
+        const expSlider = document.getElementById('ai-exp-slider');
+        const qualSelect = document.getElementById('ai-qual-select');
+        const subjSelect = document.getElementById('ai-subj-select');
+        const levelSelect = document.getElementById('ai-level-select');
+        const occSelect = document.getElementById('ai-occ-select');
+        const modeOnline = document.getElementById('ai-mode-online');
+        const modeHome = document.getElementById('ai-mode-home');
+        const bedCert = document.getElementById('ai-bed-cert');
+        const hoursSlider = document.getElementById('ai-hours-slider');
+
+        const params = new URLSearchParams({
+          exp_years: expSlider ? expSlider.value : "5",
+          city_tier: currentSelectedTier || "Tier 1 (Metro)",
+          highest_qualification: qualSelect ? qualSelect.value : "Postgraduate (PG)",
+          occupation: occSelect ? occSelect.value : "Independent Private Tutor",
+          subject_category: subjSelect ? subjSelect.value : "Science",
+          level_category: levelSelect ? levelSelect.value : "Senior Secondary (Class 11–12 / Boards)",
+          teaches_online: modeOnline && modeOnline.checked ? "1" : "0",
+          teaches_home: modeHome && modeHome.checked ? "1" : "0",
+          has_education_degree: bedCert && bedCert.checked ? "1" : "0",
+          hours_per_week: hoursSlider ? hoursSlider.value : "15"
+        });
+
+        const res = await fetch(`/api/predict-fee?${params.toString()}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        renderFeePredictionResults(data);
+      } catch (err) {
+        console.error("Fee prediction error:", err);
+      }
+    }
+
+    function renderFeePredictionResults(data) {
+      // 1. Fee Rate & Range
+      const predFeeEl = document.getElementById('ai-pred-fee');
+      if (predFeeEl) predFeeEl.textContent = `₹${data.predicted_fee.toLocaleString()}`;
+
+      const rangeBadge = document.getElementById('ai-range-badge');
+      if (rangeBadge) rangeBadge.textContent = `₹${data.fee_min_rec.toLocaleString()} – ₹${data.fee_max_rec.toLocaleString()} / hr`;
+
+      // 2. Monthly & Annual Projections
+      const monthlyEarning = document.getElementById('ai-monthly-earning');
+      if (monthlyEarning) monthlyEarning.textContent = `₹${data.monthly_projection.toLocaleString()}`;
+
+      const annualEarning = document.getElementById('ai-annual-earning');
+      if (annualEarning) {
+        const annualLakhs = (data.monthly_projection * 12 / 100000).toFixed(2);
+        annualEarning.textContent = `₹${annualLakhs} Lakhs / yr`;
+      }
+
+      // 3. Feature Contributions Breakdown (Why this rate?)
+      const contContainer = document.getElementById('ai-contributions-container');
+      if (contContainer && data.feature_contributions) {
+        const maxAbs = Math.max(...data.feature_contributions.map(c => Math.abs(c.impact)), 1);
+
+        contContainer.innerHTML = data.feature_contributions.map(c => {
+          const isPositive = c.impact > 0;
+          const isBase = c.type === 'base';
+          const sign = isBase ? '' : (isPositive ? '+' : '');
+          const badgeClass = isBase 
+            ? 'bg-slate-100 text-slate-800 border-slate-200' 
+            : (isPositive ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200');
+          const barColor = isBase ? 'bg-indigo-500' : (isPositive ? 'bg-emerald-500' : 'bg-rose-400');
+          const widthPct = Math.min(100, Math.max(8, Math.round((Math.abs(c.impact) / maxAbs) * 100)));
+
+          return `
+            <div class="flex items-center justify-between text-xs p-2 rounded-xl bg-slate-50 border border-slate-100 hover:bg-slate-100/60 transition-colors">
+              <div class="flex items-center gap-2.5 min-w-0 pr-2">
+                <span class="w-1.5 h-1.5 rounded-full ${barColor} shrink-0"></span>
+                <span class="font-medium text-slate-700 truncate">${escapeHtml(c.name)}</span>
+              </div>
+              <div class="flex items-center gap-2 shrink-0">
+                <div class="w-16 h-1.5 bg-slate-200 rounded-full overflow-hidden hidden sm:block">
+                  <div class="h-full ${barColor} rounded-full" style="width: ${widthPct}%"></div>
+                </div>
+                <span class="px-2 py-0.5 rounded-md font-mono font-bold text-[11px] border ${badgeClass}">
+                  ${sign}₹${Math.abs(c.impact).toLocaleString()}
+                </span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // 4. Cohort Stats
+      if (data.cohort_stats) {
+        const cs = data.cohort_stats;
+        const countEl = document.getElementById('ai-cohort-count');
+        if (countEl) countEl.textContent = `${cs.sample_size.toLocaleString()} Verified Tutors`;
+
+        const p25El = document.getElementById('ai-cohort-p25');
+        if (p25El) p25El.textContent = `₹${cs.cohort_p25.toLocaleString()}`;
+
+        const medEl = document.getElementById('ai-cohort-median');
+        if (medEl) medEl.textContent = `₹${cs.cohort_median.toLocaleString()}`;
+
+        const p75El = document.getElementById('ai-cohort-p75');
+        if (p75El) p75El.textContent = `₹${cs.cohort_p75.toLocaleString()}`;
+
+        const meanEl = document.getElementById('ai-cohort-mean');
+        if (meanEl) meanEl.textContent = `₹${cs.cohort_mean.toLocaleString()}`;
+      }
+
+      // 5. Recommendations
+      const tipsContainer = document.getElementById('ai-recommendations-container');
+      if (tipsContainer && data.recommendations) {
+        tipsContainer.innerHTML = data.recommendations.map(tip => `
+          <div class="p-3 rounded-xl bg-amber-50/70 border border-amber-200/60 text-xs text-amber-900 flex items-start gap-2.5">
+            <i class="fa-solid fa-circle-check text-amber-500 mt-0.5 shrink-0"></i>
+            <span class="leading-relaxed">${escapeHtml(tip)}</span>
+          </div>
+        `).join('');
+      }
     }
   
   </script>

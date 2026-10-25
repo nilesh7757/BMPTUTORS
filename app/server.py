@@ -3,6 +3,11 @@ import json
 import os
 import sys
 import io
+
+UV_PATH = "/home/nilesh7757/.cache/uv/archive-v0/b2_g7sKwC5mPN6Zp/lib/python3.13/site-packages"
+if os.path.exists(UV_PATH) and UV_PATH not in sys.path:
+    sys.path.insert(0, UV_PATH)
+
 import uvicorn
 import xlsxwriter
 
@@ -23,9 +28,11 @@ from starlette.staticfiles import StaticFiles
 try:
     from app.geo_coords import STATE_COORDINATES, CITY_COORDINATES
     from app.geo_service import get_enriched_states_geojson, get_enriched_districts_geojson
+    from app.fee_service import predict_fee
 except ImportError:
     from geo_coords import STATE_COORDINATES, CITY_COORDINATES
     from geo_service import get_enriched_states_geojson, get_enriched_districts_geojson
+    from fee_service import predict_fee
 
 DB_PATH = os.getenv("DB_PATH", os.path.join(PROJECT_ROOT, "cleaned_tutors_data.db"))
 
@@ -1008,6 +1015,40 @@ async def api_download_visual_analytics_docx(request):
         filename="BMP_Tutors_Visual_Analytics_Report.docx"
     )
 
+async def api_predict_fee(request):
+    try:
+        if request.method == "POST":
+            data = await request.json()
+        else:
+            data = dict(request.query_params)
+            
+        exp_years = float(data.get("exp_years", 3.0))
+        city_tier = data.get("city_tier", "Tier 1 (Metro)")
+        highest_qualification = data.get("highest_qualification", "Postgraduate (PG)")
+        has_education_degree = int(data.get("has_education_degree", 0))
+        occupation = data.get("occupation", "Independent Private Tutor")
+        subject_category = data.get("subject_category", "Science")
+        level_category = data.get("level_category", "Senior Secondary (Class 11–12 / Boards)")
+        teaches_online = int(data.get("teaches_online", 1))
+        teaches_home = int(data.get("teaches_home", 0))
+        hours_per_week = int(data.get("hours_per_week", 15))
+        
+        result = predict_fee(
+            exp_years=exp_years,
+            city_tier=city_tier,
+            highest_qualification=highest_qualification,
+            has_education_degree=has_education_degree,
+            occupation=occupation,
+            subject_category=subject_category,
+            level_category=level_category,
+            teaches_online=teaches_online,
+            teaches_home=teaches_home,
+            hours_per_week=hours_per_week
+        )
+        return JSONResponse(result)
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+
 async def healthz(request):
     return JSONResponse({"status": "ok"})
 
@@ -1017,6 +1058,7 @@ routes = [
     Route("/report", report_view),
     Route("/api/stats", api_stats),
     Route("/api/filters", api_filters),
+    Route("/api/predict-fee", api_predict_fee, methods=["GET", "POST"]),
     Route("/api/tutors", api_tutors),
     Route("/api/tutors/{tutor_id}", api_tutor_detail),
     Route("/api/charts", api_charts),
