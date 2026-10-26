@@ -570,7 +570,7 @@ def build_report():
     builder.add_pie_chart(
         "Figure 1: Highest Qualifications of Tutors (N = 107,723)",
         ["Undergraduate (UG)", "Postgraduate (PG)", "Less than UG", "Advanced (PhD)", "Not Specified"],
-        [61591, 32389, 7566, 4532, 1638],
+        [61595, 32391, 7567, 4532, 1638],
         series_name="Tutors"
     )
 
@@ -594,9 +594,9 @@ def build_report():
         run.font.color.rgb = RGBColor(255, 255, 255)
 
     data_t1 = [
-        ("Undergraduate (UG)", "B.Tech, B.E., B.Sc, B.Com, B.A, BCA", "61,591", "57.2%", "₹812"),
-        ("Postgraduate (PG)", "M.Sc, M.Tech, MBA, M.A, M.Com, MCA", "32,389", "30.1%", "₹915"),
-        ("Less than UG", "Diploma, 12th Pass, High School", "7,566", "7.0%", "₹690"),
+        ("Undergraduate (UG)", "B.Tech, B.E., B.Sc, B.Com, B.A, BCA", "61,595", "57.2%", "₹812"),
+        ("Postgraduate (PG)", "M.Sc, M.Tech, MBA, M.A, M.Com, MCA", "32,391", "30.1%", "₹915"),
+        ("Less than UG", "Diploma, 12th Pass, High School", "7,567", "7.0%", "₹690"),
         ("Advanced (PhD/Doctorate)", "Doctor of Philosophy, Post-Doc Scholars", "4,532", "4.2%", "₹1,180"),
         ("Not Specified", "Profile background not listed", "1,638", "1.5%", "₹750"),
     ]
@@ -636,7 +636,7 @@ def build_report():
     builder.add_bar_or_col_chart(
         "Figure 2: Gender Distribution of Registered Tutors",
         ["Female Tutors", "Male Tutors", "Not Specified"],
-        [62466, 43964, 1286],
+        [62470, 43967, 1286],
         series_name="Tutor Count",
         is_horizontal=False,
         width_in=5.8,
@@ -772,7 +772,7 @@ def build_report():
 
     # Total Row for Table 2B
     tot_row_idx = len(rows_deg) + 1
-    tot_vals_2b = ["National Total (All Educators)", "107,723", "62,466", "58.0%", "43,964", "40.8%", "1.42 : 1"]
+    tot_vals_2b = ["National Total (All Educators)", "107,723", "62,470", "58.0%", "43,967", "40.8%", "1.42 : 1"]
     for c_idx, val in enumerate(tot_vals_2b):
         c = t2b.cell(tot_row_idx, c_idx)
         c.width = widths_t2b[c_idx]
@@ -1235,7 +1235,7 @@ def build_report():
     builder.add_bar_or_col_chart(
         "Figure 4: Distribution of Teaching Experience Across Tutors",
         ["0 - 1 Yrs", "2 - 4 Yrs", "5 - 9 Yrs", "10 - 14 Yrs", "15 - 19 Yrs", "20+ Yrs"],
-        [26865, 33692, 24947, 11107, 5015, 6090],
+        [26867, 33694, 24948, 11109, 5015, 6090],
         series_name="Tutors",
         is_horizontal=False,
         width_in=6.2,
@@ -1264,12 +1264,12 @@ def build_report():
         run.font.color.rgb = RGBColor(255, 255, 255)
 
     data_t4 = [
-        ("0 - 1 Years (Beginner)", "College students & fresh graduates", "26,865", "24.9%", "₹650"),
-        ("2 - 4 Years (Early Career)", "Junior teachers & active private tutors", "33,692", "31.3%", "₹780"),
-        ("5 - 9 Years (Experienced)", "Mid-career school teachers & test-prep coaches", "24,947", "23.2%", "₹950"),
-        ("10 - 14 Years (Senior)", "Senior school faculty & subject specialists", "11,107", "10.3%", "₹1,150"),
+        ("0 - 1 Years (Beginner)", "College students & fresh graduates", "26,867", "24.9%", "₹650"),
+        ("2 - 4 Years (Early Career)", "Junior teachers & active private tutors", "33,694", "31.3%", "₹780"),
+        ("5 - 9 Years (Experienced)", "Mid-career school teachers & test-prep coaches", "24,948", "23.2%", "₹950"),
+        ("10 - 14 Years (Senior)", "Senior school faculty & subject specialists", "11,109", "10.3%", "₹1,150"),
         ("15 - 19 Years (Veteran)", "HODs, college lecturers & senior coaching heads", "5,015", "4.7%", "₹1,320"),
-        ("20+ Years (Master Educator)", "Retired professors, authors & master teachers", "6,090", "5.7%", "₹1,500"),
+        ("20+ Years (Master Educator)", "Retired professors, authors & master teachers", "6,090", "5.6%", "₹1,500"),
     ]
 
     for r_idx, row_vals in enumerate(data_t4, start=1):
@@ -1460,7 +1460,7 @@ def build_report():
     builder.add_bar_or_col_chart(
         "Figure 6: Primary Occupations & Professional Backgrounds of Tutors (N = 107,723)",
         ["Online Educator", "College Student / Scholar", "Independent Tutor", "College Faculty", "Early-Career Teacher", "Software Engineer / IT", "Senior Private Educator", "School Teacher"],
-        [29349, 26061, 16188, 6672, 5821, 4267, 4080, 3704],
+        [29349, 26061, 16192, 6673, 5821, 4267, 4080, 3705],
         series_name="Tutor Count",
         is_horizontal=True,
         width_in=6.2,
@@ -1515,11 +1515,11 @@ def build_report():
 
     teaching_rows = [
         ("Professional Online Educator", "Full-Time Online Educator", "29,349", "27.2%", "₹943", "₹725", "98.5%", "K-12 STEM, English, Coding & Exam Prep"),
-        ("Independent Private Tutor", "Full-Time Independent Tutor", "16,188", "15.0%", "₹722", "₹500", "95.4%", "K-10 All Subjects, Maths, Science Foundations"),
-        ("College / University Faculty", "Higher Education Faculty", "6,672", "6.2%", "₹1,044", "₹750", "98.2%", "Advanced Degree STEM, Calculus, University Physics"),
+        ("Independent Private Tutor", "Full-Time Independent Tutor", "16,192", "15.0%", "₹722", "₹500", "95.4%", "K-10 All Subjects, Maths, Science Foundations"),
+        ("College / University Faculty", "Higher Education Faculty", "6,673", "6.2%", "₹1,044", "₹750", "98.2%", "Advanced Degree STEM, Calculus, University Physics"),
         ("Early-Career Educator", "Trainee / Junior Teacher", "5,821", "5.4%", "₹638", "₹450", "74.7%", "Primary & Middle School Basics, Language Fluency"),
         ("Senior Private Educator", "Master Educator (10+ Yrs)", "4,080", "3.8%", "₹798", "₹600", "91.9%", "Board Exam Derivations, Senior Physics & Maths"),
-        ("School Educator (Teacher)", "Regular School Staff Teacher", "3,704", "3.4%", "₹819", "₹650", "97.6%", "CBSE / ICSE School Syllabus, Chemistry & EVS"),
+        ("School Educator (Teacher)", "Regular School Staff Teacher", "3,705", "3.4%", "₹819", "₹650", "97.6%", "CBSE / ICSE School Syllabus, Chemistry & EVS"),
         ("Competitive Exam Specialist", "Entrance Coaching Specialist", "2,413", "2.2%", "₹1,043", "₹750", "97.0%", "IIT JEE Advanced, NEET, Olympiads, Quant"),
         ("Private / Home Tutor", "Neighborhood Home Tutor", "2,094", "1.9%", "₹682", "₹450", "88.7%", "In-Person Mentoring, Middle School Homework Help"),
     ]
@@ -1530,7 +1530,7 @@ def build_report():
         ("Medical & Healthcare Pro", "Doctor / MBBS / Clinician", "1,862", "1.7%", "₹928", "₹750", "98.7%", "NEET UG Biology, Human Physiology, Anatomy"),
         ("Corporate Finance, CA & Banking", "Chartered Accountant / Banker", "1,767", "1.6%", "₹1,099", "₹800", "97.7%", "Accountancy, Financial Mgmt, CA Foundation, Tax"),
         ("Freelancer & Solopreneur", "Independent Consultant / Owner", "994", "0.9%", "₹1,183", "₹950", "98.2%", "Spoken English, Digital Skills, Business Consulting"),
-        ("Industry Consultant / Manager", "Corporate Consultant / HR", "833", "0.8%", "₹1,037", "₹750", "98.8%", "SQL, Data Analytics, Soft Skills, Applied Maths"),
+        ("Industry Consultant / Manager", "Corporate Consultant / HR", "834", "0.8%", "₹1,037", "₹750", "98.8%", "SQL, Data Analytics, Soft Skills, Applied Maths"),
         ("Core Industrial Engineer", "Mech / Civil / Electrical Engg", "642", "0.6%", "₹972", "₹750", "96.4%", "Engineering Mechanics, AutoCAD, Applied Physics"),
         ("Creative Arts, Design & Media", "Designer / Writer / Media Artist", "423", "0.4%", "₹906", "₹700", "98.1%", "Creative Writing, English Fluency, Graphic Design"),
         ("Legal & Civil Services Aspirant", "Lawyer / UPSC Aspirant", "407", "0.4%", "₹809", "₹600", "96.1%", "Political Science, Constitutional Law, History"),
@@ -1546,7 +1546,7 @@ def build_report():
     banner_a = t7.cell(current_r, 0).merge(t7.cell(current_r, 7))
     set_cell_margins(banner_a, top=60, bottom=60, left=60, right=60)
     p_ba = banner_a.paragraphs[0]
-    r_ba = p_ba.add_run("PART A: TEACHING & ACADEMIC PROFESSIONS (Full-Time Career Educators — 70,321 Tutors, 65.3% of Market)")
+    r_ba = p_ba.add_run("PART A: TEACHING & ACADEMIC PROFESSIONS (Full-Time Career Educators — 70,327 Tutors, 65.3% of Market)")
     r_ba.font.bold = True
     r_ba.font.size = Pt(8.0)
     r_ba.font.color.rgb = RGBColor(255, 255, 255)
@@ -1575,7 +1575,7 @@ def build_report():
     sub_a_vals = [
         "Subtotal: Career Teaching Professionals",
         "Full-Time Teaching",
-        "70,321",
+        "70,327",
         "65.3%",
         "₹864",
         "₹650",
@@ -1601,7 +1601,7 @@ def build_report():
     banner_b = t7.cell(current_r, 0).merge(t7.cell(current_r, 7))
     set_cell_margins(banner_b, top=60, bottom=60, left=60, right=60)
     p_bb = banner_b.paragraphs[0]
-    r_bb = p_bb.add_run("PART B: NON-TEACHING PROFESSIONS & SCHOLARS (Tutoring Alongside Another Career — 37,395 Tutors, 34.7% of Market)")
+    r_bb = p_bb.add_run("PART B: NON-TEACHING PROFESSIONS & SCHOLARS (Tutoring Alongside Another Career — 37,396 Tutors, 34.7% of Market)")
     r_bb.font.bold = True
     r_bb.font.size = Pt(8.0)
     r_bb.font.color.rgb = RGBColor(255, 255, 255)
@@ -1630,7 +1630,7 @@ def build_report():
     sub_b_vals = [
         "Subtotal: Non-Teaching Day-Job Tutors",
         "Side-Career / Part-Time",
-        "37,395",
+        "37,396",
         "34.7%",
         "₹849",
         "₹625",
