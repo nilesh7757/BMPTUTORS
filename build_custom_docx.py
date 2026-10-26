@@ -24,6 +24,13 @@ from docx.opc.packuri import PackURI
 from docx.opc.part import Part
 from docx.oxml import parse_xml, OxmlElement
 from docx.oxml.ns import nsdecls, qn
+from fractions import Fraction
+
+def format_integer_ratio(f_cnt, m_cnt, max_denom=10):
+    if not m_cnt or not f_cnt or m_cnt == 0 or f_cnt == 0:
+        return "—"
+    frac = Fraction(int(f_cnt), int(m_cnt)).limit_denominator(max_denom)
+    return f"{frac.numerator} : {frac.denominator}"
 
 PROJECT_ROOT = "/home/nilesh7757/BMPTUTORS1"
 sys.path.append(os.path.join(PROJECT_ROOT, "app"))
@@ -755,7 +762,7 @@ def build_report():
 
     for r_idx, r in enumerate(rows_deg, start=1):
         deg_name, total_n, f_cnt, f_pct, m_cnt, m_pct, r_fm = r
-        ratio_str = f"{r_fm:.2f} : 1" if r_fm else "—"
+        ratio_str = format_integer_ratio(f_cnt, m_cnt)
         row_vals = [deg_name, f"{total_n:,}", f"{f_cnt:,}", f"{f_pct:.1f}%", f"{m_cnt:,}", f"{m_pct:.1f}%", ratio_str]
         bg = "FFFFFF" if r_idx % 2 != 0 else CLR_BG_LIGHT
         for c_idx, val in enumerate(row_vals):
@@ -772,7 +779,7 @@ def build_report():
 
     # Total Row for Table 2B
     tot_row_idx = len(rows_deg) + 1
-    tot_vals_2b = ["National Total (All Educators)", "107,723", "62,470", "58.0%", "43,967", "40.8%", "1.42 : 1"]
+    tot_vals_2b = ["National Total (All Educators)", "107,723", "62,470", "58.0%", "43,967", "40.8%", "7 : 5"]
     for c_idx, val in enumerate(tot_vals_2b):
         c = t2b.cell(tot_row_idx, c_idx)
         c.width = widths_t2b[c_idx]
@@ -839,7 +846,7 @@ def build_report():
 
     for r_idx, r in enumerate(rows_state_gender, start=1):
         st_name, total_n, f_cnt, f_pct, m_cnt, m_pct, r_fm = r
-        ratio_str = f"{r_fm:.2f} : 1" if r_fm is not None else "—"
+        ratio_str = format_integer_ratio(f_cnt, m_cnt)
         row_vals = [str(r_idx), st_name, f"{total_n:,}", f"{f_cnt:,}", f"{f_pct:.1f}%", f"{m_cnt:,}", f"{m_pct:.1f}%", ratio_str]
         bg = "FFFFFF" if r_idx % 2 != 0 else CLR_BG_LIGHT
         for c_idx, val in enumerate(row_vals):
@@ -856,7 +863,7 @@ def build_report():
 
     # Total Row for Table 2C
     tot_row_idx_c = len(rows_state_gender) + 1
-    tot_vals_2c = ["—", "National Total (All 28 States)", "95,862", "56,847", "59.3%", "38,998", "40.7%", "1.46 : 1"]
+    tot_vals_2c = ["—", "National Total (All 28 States)", "95,862", "56,847", "59.3%", "38,998", "40.7%", "3 : 2"]
     for c_idx, val in enumerate(tot_vals_2c):
         c = t2c.cell(tot_row_idx_c, c_idx)
         c.width = widths_t2c[c_idx]
