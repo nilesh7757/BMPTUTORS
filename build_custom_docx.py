@@ -968,9 +968,9 @@ def build_report():
 
     # Native Column Chart: Broad Streams
     builder.add_bar_or_col_chart(
-        "Figure 3A: Broad Subject Streams Offered in India (N = 327,694)",
+        "Figure 3A: Broad Subject Streams Offered in India (N = 327,720)",
         ["Science & Math", "Languages", "Coding & Tech", "Extracurricular", "Arts & Humanities", "Commerce"],
-        [184288, 58248, 37778, 16311, 15991, 15078],
+        [184307, 58253, 37778, 16312, 15991, 15079],
         series_name="Offerings",
         is_horizontal=False,
         width_in=6.2,
@@ -985,7 +985,7 @@ def build_report():
     builder.add_bar_or_col_chart(
         "Figure 3B: Top 10 Most Popular Individual Subjects",
         ["Mathematics", "English", "Science", "Physics", "Biology", "Chemistry", "Hindi", "Computer Science", "Business Studies", "Tamil"],
-        [41983, 26644, 24639, 16974, 12735, 10846, 10157, 6475, 4820, 4454],
+        [41986, 26646, 24641, 16978, 12738, 10851, 10157, 6475, 4820, 4454],
         series_name="Offerings",
         is_horizontal=True,
         width_in=6.2,
@@ -1020,12 +1020,12 @@ def build_report():
         run.font.color.rgb = RGBColor(255, 255, 255)
 
     data_t3 = [
-        ("1", "Mathematics", "Science & Math", "41,983", "12.8%"),
-        ("2", "English (Grammar & Spoken)", "Languages & Linguistics", "26,644", "8.1%"),
-        ("3", "Science (General K-10)", "Science & Math", "24,639", "7.5%"),
-        ("4", "Physics", "Science & Math", "16,974", "5.2%"),
-        ("5", "Biology & Life Sciences", "Science & Math", "12,735", "3.9%"),
-        ("6", "Chemistry", "Science & Math", "10,846", "3.3%"),
+        ("1", "Mathematics", "Science & Math", "41,986", "12.8%"),
+        ("2", "English (Grammar & Spoken)", "Languages & Linguistics", "26,646", "8.1%"),
+        ("3", "Science (General K-10)", "Science & Math", "24,641", "7.5%"),
+        ("4", "Physics", "Science & Math", "16,978", "5.2%"),
+        ("5", "Biology & Life Sciences", "Science & Math", "12,738", "3.9%"),
+        ("6", "Chemistry", "Science & Math", "10,851", "3.3%"),
         ("7", "Hindi", "Languages & Linguistics", "10,157", "3.1%"),
         ("8", "Computer Science & Programming", "Computer Science & Tech", "6,475", "2.0%"),
         ("9", "Business Studies & Management", "Commerce & Finance", "4,820", "1.5%"),
