@@ -551,7 +551,7 @@ def build_report():
     p_ex.paragraph_format.space_after = Pt(8)
     p_ex.add_run(
         "This report analyzes verified data from 107,723 tutors across India. Key highlights:\n"
-        "• High Demand for STEM: Over 56% of subjects taught are Math and Science.\n"
+        "• High Demand for Science & Math: Over 56% of subjects taught are Science and Mathematics (STEM).\n"
         "• Geographic Clusters: Tamil Nadu, Kerala, Maharashtra, and Karnataka host over half of all tutors.\n"
         "• Well-Educated Tutors: Over 91% hold college degrees, with 34% holding a Master's or PhD.\n"
         "• Popular Side Profession: 24% of tutors are college students, and thousands are working IT engineers teaching part-time."
@@ -875,6 +875,79 @@ def build_report():
         r_run.font.size = Pt(8)
         r_run.font.bold = True
 
+    doc.add_paragraph().paragraph_format.space_after = Pt(10)
+
+    # ---------------------------------------------------------
+    # TABLE 2D: UNION TERRITORIES GENDER RATIO (ALL 8 UTS)
+    # ---------------------------------------------------------
+    h2d = doc.add_heading(level=2)
+    r2d = h2d.add_run("Table 2D: Union Territories Gender Breakdown & Ratios (All 8 Union Territories)")
+    r2d.font.size = Pt(11)
+    r2d.font.bold = True
+    r2d.font.color.rgb = COLOR_PRIMARY
+
+    p2d = doc.add_paragraph()
+    p2d.paragraph_format.space_after = Pt(6)
+    p2d.add_run(
+        "Here is the gender breakdown across India's 8 Union Territories. Delhi has the largest tutor population with an almost equal gender balance (51.5% female vs 48.5% male)."
+    )
+
+    t2d = doc.add_table(rows=10, cols=8)
+    t2d.alignment = WD_TABLE_ALIGNMENT.CENTER
+    set_table_borders(t2d, color="CBD5E1", sz="4")
+    headers_t2d = ["Rank", "Union Territory", "Total Tutors", "Female (N)", "Female (%)", "Male (N)", "Male (%)", "Ratio (F : M)"]
+    widths_t2d = [Inches(0.5), Inches(2.1), Inches(0.9), Inches(0.7), Inches(0.7), Inches(0.7), Inches(0.7), Inches(0.7)]
+
+    for c_idx, h_text in enumerate(headers_t2d):
+        c = t2d.cell(0, c_idx)
+        c.width = widths_t2d[c_idx]
+        set_cell_background(c, CLR_PRIMARY_HEX)
+        set_cell_margins(c, top=80, bottom=80, left=70, right=70)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 2 else (WD_ALIGN_PARAGRAPH.CENTER if c_idx == 0 else WD_ALIGN_PARAGRAPH.LEFT)
+        run = p.add_run(h_text)
+        run.font.bold = True
+        run.font.size = Pt(8)
+        run.font.color.rgb = RGBColor(255, 255, 255)
+
+    data_t2d = [
+        ("1", "Delhi", "8,600", "4,425", "51.5%", "4,174", "48.5%", "11 : 10"),
+        ("2", "Chandigarh", "1,066", "695", "65.2%", "371", "34.8%", "15 : 8"),
+        ("3", "Jammu and Kashmir", "408", "150", "36.8%", "258", "63.2%", "4 : 7"),
+        ("4", "Puducherry", "360", "262", "72.8%", "98", "27.2%", "8 : 3"),
+        ("5", "Andaman and Nicobar Islands", "24", "17", "70.8%", "7", "29.2%", "17 : 7"),
+        ("6", "Dadra & Nagar Haveli and Daman & Diu", "22", "10", "45.5%", "12", "54.5%", "5 : 6"),
+        ("7", "Lakshadweep", "3", "3", "100.0%", "0", "0.0%", "—"),
+        ("8", "Ladakh", "0", "0", "0.0%", "0", "0.0%", "—"),
+    ]
+
+    for r_idx, row_vals in enumerate(data_t2d, start=1):
+        bg = "FFFFFF" if r_idx % 2 != 0 else CLR_BG_LIGHT
+        for c_idx, val in enumerate(row_vals):
+            c = t2d.cell(r_idx, c_idx)
+            c.width = widths_t2d[c_idx]
+            set_cell_background(c, bg)
+            set_cell_margins(c, top=55, bottom=55, left=70, right=70)
+            p = c.paragraphs[0]
+            p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 2 else (WD_ALIGN_PARAGRAPH.CENTER if c_idx == 0 else WD_ALIGN_PARAGRAPH.LEFT)
+            r_run = p.add_run(val)
+            r_run.font.size = Pt(8)
+            if c_idx == 1:
+                r_run.font.bold = True
+
+    # Total Row for Table 2D
+    tot_vals_2d = ["—", "Total (All 8 Union Territories)", "10,483", "5,562", "53.1%", "4,920", "46.9%", "9 : 8"]
+    for c_idx, val in enumerate(tot_vals_2d):
+        c = t2d.cell(9, c_idx)
+        c.width = widths_t2d[c_idx]
+        set_cell_background(c, "E2E8F0")
+        set_cell_margins(c, top=70, bottom=70, left=70, right=70)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 2 else (WD_ALIGN_PARAGRAPH.CENTER if c_idx == 0 else WD_ALIGN_PARAGRAPH.LEFT)
+        r_run = p.add_run(val)
+        r_run.font.size = Pt(8)
+        r_run.font.bold = True
+
     doc.add_paragraph().paragraph_format.space_after = Pt(12)
 
     # ---------------------------------------------------------
@@ -890,13 +963,13 @@ def build_report():
     p3 = doc.add_paragraph()
     p3.paragraph_format.space_after = Pt(6)
     p3.add_run(
-        "Tutors teach an average of 3 subjects each (327,720 total subject links). Over half (56.2%) are School STEM subjects, followed by Languages (17.8%) and Computer Coding (11.5%)."
+        "Tutors teach an average of 3 subjects each (327,720 total subject links). Over half (56.2%) are School Science & Math subjects, followed by Languages (17.8%) and Computer Coding (11.5%)."
     )
 
     # Native Column Chart: Broad Streams
     builder.add_bar_or_col_chart(
         "Figure 3A: Broad Subject Streams Offered in India (N = 327,694)",
-        ["School & STEM", "Languages", "Coding & Tech", "Extracurricular", "Arts & Humanities", "Commerce"],
+        ["Science & Math", "Languages", "Coding & Tech", "Extracurricular", "Arts & Humanities", "Commerce"],
         [184288, 58248, 37778, 16311, 15991, 15078],
         series_name="Offerings",
         is_horizontal=False,
@@ -947,12 +1020,12 @@ def build_report():
         run.font.color.rgb = RGBColor(255, 255, 255)
 
     data_t3 = [
-        ("1", "Mathematics", "School & STEM", "41,983", "12.8%"),
+        ("1", "Mathematics", "Science & Math", "41,983", "12.8%"),
         ("2", "English (Grammar & Spoken)", "Languages & Linguistics", "26,644", "8.1%"),
-        ("3", "Science (General K-10)", "School & STEM", "24,639", "7.5%"),
-        ("4", "Physics", "School & STEM", "16,974", "5.2%"),
-        ("5", "Biology & Life Sciences", "School & STEM", "12,735", "3.9%"),
-        ("6", "Chemistry", "School & STEM", "10,846", "3.3%"),
+        ("3", "Science (General K-10)", "Science & Math", "24,639", "7.5%"),
+        ("4", "Physics", "Science & Math", "16,974", "5.2%"),
+        ("5", "Biology & Life Sciences", "Science & Math", "12,735", "3.9%"),
+        ("6", "Chemistry", "Science & Math", "10,846", "3.3%"),
         ("7", "Hindi", "Languages & Linguistics", "10,157", "3.1%"),
         ("8", "Computer Science & Programming", "Computer Science & Tech", "6,475", "2.0%"),
         ("9", "Business Studies & Management", "Commerce & Finance", "4,820", "1.5%"),
@@ -1065,9 +1138,9 @@ def build_report():
 
     doc.add_paragraph().paragraph_format.space_after = Pt(12)
 
-    # Sub-heading: Senior STEM Trio
+    # Sub-heading: Senior Science & Math Trio
     h3_stem = doc.add_heading(level=3)
-    r3_stem = h3_stem.add_run("B. Senior STEM Secondary Trio: Mathematics, Physics & Chemistry (N = 46,937 Tutors)")
+    r3_stem = h3_stem.add_run("B. Senior Science & Math Trio: Mathematics, Physics & Chemistry (N = 46,937 Tutors)")
     r3_stem.font.size = Pt(10.5)
     r3_stem.font.bold = True
     r3_stem.font.color.rgb = COLOR_PRIMARY
@@ -1075,13 +1148,13 @@ def build_report():
     p_stem_desc = doc.add_paragraph()
     p_stem_desc.paragraph_format.space_after = Pt(6)
     p_stem_desc.add_run(
-        "For higher secondary (Classes 11–12) and engineering entrance prep, Math, Physics, and Chemistry (PCM) dominate. Over 2,900 tutors teach all three, and 6,100 combine Math with Physics."
+        "For higher secondary (Classes 11–12) and engineering entrance prep, Math, Physics, and Chemistry dominate. Over 2,900 tutors teach all three together, and 6,100 combine Math with Physics."
     )
 
-    # Native Editable Chart: Figure 3D - Senior STEM Trio Overlap
+    # Native Editable Chart: Figure 3D - Senior Science & Math Trio Overlap
     builder.add_bar_or_col_chart(
-        "Figure 3D: Teaching Overlap — Senior STEM Trio: PCM (N = 46,937 Tutors)",
-        ["Math Only", "Math + Physics", "Physics Only", "Chemistry Only", "All 3 (PCM Trio)", "Physics + Chem", "Math + Chem"],
+        "Figure 3D: Teaching Overlap — Senior Science & Math Trio: Physics, Chemistry & Math (N = 46,937 Tutors)",
+        ["Math Only", "Math + Physics", "Physics Only", "Chemistry Only", "All 3 (Physics + Chemistry + Math)", "Physics + Chem", "Math + Chem"],
         [27343, 6139, 4139, 3690, 2906, 1545, 1175],
         series_name="Tutors",
         is_horizontal=True,
@@ -1093,11 +1166,11 @@ def build_report():
 
     doc.add_paragraph().paragraph_format.space_after = Pt(4)
 
-    # Table 3C: Senior STEM Trio Overlap Breakdown
+    # Table 3C: Senior Science & Math Trio Overlap Breakdown
     t3c = doc.add_table(rows=9, cols=4)
     t3c.alignment = WD_TABLE_ALIGNMENT.CENTER
     set_table_borders(t3c, color="CBD5E1", sz="4")
-    headers_t3c = ["Intersection Region", "Subject Composition", "Unique Tutors (N)", "Share of STEM Trio (%)"]
+    headers_t3c = ["Intersection Region", "Subject Composition", "Unique Tutors (N)", "Share of Science Trio (%)"]
     widths_t3c = [Inches(2.1), Inches(2.4), Inches(1.2), Inches(1.1)]
 
     for c_idx, h_text in enumerate(headers_t3c):
@@ -1117,10 +1190,10 @@ def build_report():
         ("Mathematics + Physics", "Maths & Physics (no Chemistry)", "6,139", "13.1%"),
         ("Physics Only", "Only Physics", "4,139", "8.8%"),
         ("Chemistry Only", "Only Chemistry", "3,690", "7.9%"),
-        ("All Three Subjects (PCM Trio)", "Mathematics, Physics & Chemistry", "2,906", "6.2%"),
+        ("All Three Subjects (Trio)", "Mathematics, Physics & Chemistry", "2,906", "6.2%"),
         ("Physics + Chemistry", "Physics & Chemistry (no Maths)", "1,545", "3.3%"),
         ("Mathematics + Chemistry", "Maths & Chemistry (no Physics)", "1,175", "2.5%"),
-        ("Total Unique Tutors in STEM Trio", "At least 1 of the 3 subjects", "46,937", "100.0%"),
+        ("Total Unique Tutors in Science Trio", "At least 1 of the 3 subjects", "46,937", "100.0%"),
     ]
 
     for r_idx, row_vals in enumerate(data_t3c, start=1):
@@ -1521,9 +1594,9 @@ def build_report():
         run.font.color.rgb = RGBColor(255, 255, 255)
 
     teaching_rows = [
-        ("Professional Online Educator", "Full-Time Online Educator", "29,349", "27.2%", "₹943", "₹725", "98.5%", "K-12 STEM, English, Coding & Exam Prep"),
+        ("Professional Online Educator", "Full-Time Online Educator", "29,349", "27.2%", "₹943", "₹725", "98.5%", "School Science & Math, English, Coding & Exam Prep"),
         ("Independent Private Tutor", "Full-Time Independent Tutor", "16,192", "15.0%", "₹722", "₹500", "95.4%", "K-10 All Subjects, Maths, Science Foundations"),
-        ("College / University Faculty", "Higher Education Faculty", "6,673", "6.2%", "₹1,044", "₹750", "98.2%", "Advanced Degree STEM, Calculus, University Physics"),
+        ("College / University Faculty", "Higher Education Faculty", "6,673", "6.2%", "₹1,044", "₹750", "98.2%", "College Science & Math, Calculus, University Physics"),
         ("Early-Career Educator", "Trainee / Junior Teacher", "5,821", "5.4%", "₹638", "₹450", "74.7%", "Primary & Middle School Basics, Language Fluency"),
         ("Senior Private Educator", "Master Educator (10+ Yrs)", "4,080", "3.8%", "₹798", "₹600", "91.9%", "Board Exam Derivations, Senior Physics & Maths"),
         ("School Educator (Teacher)", "Regular School Staff Teacher", "3,705", "3.4%", "₹819", "₹650", "97.6%", "CBSE / ICSE School Syllabus, Chemistry & EVS"),
@@ -1642,7 +1715,7 @@ def build_report():
         "₹849",
         "₹625",
         "96.7%",
-        "Applied Industry Skills, STEM & Entrance Mentoring"
+        "Applied Industry Skills, Science, Math & Entrance Mentoring"
     ]
     for c_idx, val in enumerate(sub_b_vals):
         c = t7.cell(current_r, c_idx)
