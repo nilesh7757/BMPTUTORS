@@ -73,7 +73,6 @@ def generate_master_excel():
         "Teacher Name",
         "Teacher Hookline",
         "Description (Bio)",
-        "Original Location",
         "Clean Location",
         "Clean City",
         "City Tier",
@@ -81,18 +80,15 @@ def generate_master_excel():
         "Region",
         "Clean Highest Qualification",
         "Has Education Degree (B.Ed/M.Ed)",
-        "Original Education",
         "Tutor Seniority Tier",
         "Clean Experience Role",
         "Occupation",
         "Total Teaching Exp (Yrs)",
         "Online Teaching Exp (Yrs)",
-        "Original Experience",
         "Hourly Fee Avg (INR)",
         "Hourly Fee Min (INR)",
         "Hourly Fee Max (INR)",
         "Fee Unit",
-        "Original Fee",
         "Teaches Online",
         "Teaches At Student Home",
         "Can Travel",
@@ -180,7 +176,6 @@ def generate_master_excel():
                 r['teacher_name'],
                 r['hookline'],
                 r['description'],
-                r['raw_loc'],
                 clean_loc,
                 r['city'],
                 r['city_tier'],
@@ -188,18 +183,15 @@ def generate_master_excel():
                 r['region'],
                 r['qual'],
                 r['has_edu_deg'],
-                r['raw_edu'],
                 r['seniority'],
                 r['exp_role'],
                 r['occupation'],
                 r['total_teaching_exp_years'],
                 r['online_teaching_exp_years'],
-                r['raw_exp'],
                 r['hourly_fee_avg'],
                 r['hourly_fee_min'],
                 r['hourly_fee_max'],
                 r['fee_unit'],
-                r['raw_fee'],
                 r['teaches_online'],
                 r['teaches_home'],
                 r['can_travel'],
@@ -237,8 +229,7 @@ def generate_master_excel():
         "Canonical Subject (Cleaned)",
         "Subject Category",
         "Target Educational Level (100% Classified)",
-        "Competitive Exam Coached",
-        "Original Raw Subject String"
+        "Competitive Exam Coached"
     ]
     ws2.write_row(0, 0, headers2, bridge_header_fmt)
 
@@ -271,8 +262,7 @@ def generate_master_excel():
                 r['canonical_subject'],
                 r['subject_category'],
                 r['level_category'],
-                r['competitive_exam'],
-                r['raw_subject_string']
+                r['competitive_exam']
             ]
             ws2.write_row(row_idx2, 0, row_data)
             row_idx2 += 1

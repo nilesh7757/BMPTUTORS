@@ -569,15 +569,11 @@ def build_report():
     p_ex.paragraph_format.line_spacing = 1.15
     p_ex.paragraph_format.space_after = Pt(8)
     p_ex.add_run(
-        "Private tutoring in India has evolved from an informal neighborhood activity into a massive, organized digital gig economy. "
-        "This report analyzes verified data from 107,723 tutors across all 36 States and Union Territories. "
-        "Here are the four biggest takeaways in plain language:\n\n"
-        "1. Math and Science dominate student demand: Over 56.2% of all courses offered are in STEM subjects (Mathematics, Physics, Chemistry, and School Science). "
-        "Competitive entrance exams (JEE, NEET) and board exams drive heavy hiring of specialized educators.\n"
-        "2. South and West India have the highest supply of tutors: Tamil Nadu, Kerala, Maharashtra, Karnataka, and Telangana together account for over 53% of all registered tutors. "
-        "Kerala and Tamil Nadu have very high tutor numbers, which keeps average hourly rates affordable (₹580–₹715/hr), while high-cost metros like Mumbai and Delhi see rates exceeding ₹1,000/hr.\n"
-        "3. Tutors are highly educated: Over 91.5% of tutors have a university education (57.2% hold Bachelor's degrees, 30.1% hold Master's degrees, and 4.2% hold Doctorates/PhDs).\n"
-        "4. Tutoring is a prime side occupation: More than 24% of tutors are active university research scholars or graduate students, and over 4,200 are working software engineers and IT professionals teaching on weekends."
+        "This report analyzes verified data from 107,723 tutors across India. Key highlights:\n"
+        "• High Demand for STEM: Over 56% of subjects taught are Math and Science.\n"
+        "• Geographic Clusters: Tamil Nadu, Kerala, Maharashtra, and Karnataka host over half of all tutors.\n"
+        "• Well-Educated Tutors: Over 91% hold college degrees, with 34% holding a Master's or PhD.\n"
+        "• Popular Side Profession: 24% of tutors are college students, and thousands are working IT engineers teaching part-time."
     )
 
     # ---------------------------------------------------------
@@ -593,10 +589,7 @@ def build_report():
     p1 = doc.add_paragraph()
     p1.paragraph_format.space_after = Pt(6)
     p1.add_run(
-        "Parents and students often wonder whether private tutors are qualified. "
-        "The data shows that 91.5% of tutors have completed university-level education. "
-        "The largest group (57.2%, 61,591 tutors) holds an Undergraduate degree (B.Tech, B.Sc, B.Com, B.A), followed by 30.1% (32,389 tutors) who hold Postgraduate Master's degrees (M.Sc, M.Tech, MBA, M.A). "
-        "Additionally, over 4,532 tutors hold an Advanced Doctorate or PhD."
+        "Most tutors are well-educated: 57.2% hold a Bachelor's degree, 30.1% hold a Master's degree, and 4.2% hold a PhD."
     )
 
     # Native Pie Chart
@@ -662,9 +655,7 @@ def build_report():
     p2 = doc.add_paragraph()
     p2.paragraph_format.space_after = Pt(6)
     p2.add_run(
-        "Women make up the majority of India's private tutoring workforce. "
-        "Female educators account for 58.0% (62,466 tutors), compared to 40.8% male educators (43,964 tutors). "
-        "The flexibility of online and home tuition enables many women graduates, working professionals, and mothers to generate substantial personal income on their own schedules."
+        "Women make up 58.0% of all tutors in India, while men account for 40.8%."
     )
 
     # Native Column Chart
@@ -739,11 +730,7 @@ def build_report():
     p2b = doc.add_paragraph()
     p2b.paragraph_format.space_after = Pt(6)
     p2b.add_run(
-        "Private tutoring demographics show marked differences across specific academic qualifications. "
-        "Women represent a clear majority in the arts, pure sciences, and school teacher education: Master of Arts (70.5% female), "
-        "Master of Science (65.1% female), and Bachelor of Education (79.8% female). "
-        "In contrast, technical engineering fields feature a male majority: Bachelor of Technology (63.5% male) and Master of Technology (56.2% male). "
-        "At the highest doctoral tier (Doctorate / PhD), gender representation is virtually balanced at 51.2% female and 48.8% male."
+        "Women lead in Arts (70.5%), Sciences (65.1%), and B.Ed degrees (79.8%). Men lead in Engineering fields like B.Tech (63.5%). At the PhD level, gender is nearly equal."
     )
 
     query_deg = """
@@ -837,11 +824,7 @@ def build_report():
     p2c = doc.add_paragraph()
     p2c.paragraph_format.space_after = Pt(6)
     p2c.add_run(
-        "Regional geography heavily influences tutor gender demographics across India's 28 states. "
-        "Southern states have the highest proportion of female tutors, led by Kerala (78.0% female, 3.55 to 1 ratio), "
-        "Tamil Nadu (73.0% female, 2.70 to 1), and Karnataka (64.2% female). Punjab also exhibits a strong female majority (68.4%). "
-        "In contrast, several northern and eastern states show a male majority among tutors: Bihar leads the nation in male tutor proportion at 72.6% male (0.38 to 1 ratio), "
-        "followed by Jharkhand (61.1% male), Tripura (59.1% male), and Rajasthan (56.8% male)."
+        "Southern states have the highest share of female tutors, led by Kerala (78.0%) and Tamil Nadu (73.0%). Northern states like Bihar (72.6% male) and Jharkhand (61.1% male) have more male tutors."
     )
 
     UT_EXCLUDE = "('Delhi', 'Chandigarh', 'Jammu and Kashmir', 'Puducherry', 'Andaman and Nicobar Islands', 'Dadra and Nagar Haveli', 'Daman and Diu', 'Lakshadweep', 'Ladakh', 'Other / International', 'Not Specified')"
@@ -926,10 +909,7 @@ def build_report():
     p3 = doc.add_paragraph()
     p3.paragraph_format.space_after = Pt(6)
     p3.add_run(
-        "Tutors in our study registered a combined total of 327,694 subject offerings (an average of 3.04 subjects per tutor). "
-        "School curriculum and STEM (Science, Technology, Engineering, and Math) make up more than half (56.2%) of all offerings. "
-        "Languages are second at 17.8%, driven by massive demand for Spoken English and regional Indian languages. "
-        "Computer science and coding is third at 11.5%, with strong growth in Python, Web Development, and data analysis."
+        "Tutors teach an average of 3 subjects each (327,720 total subject links). Over half (56.2%) are School STEM subjects, followed by Languages (17.8%) and Computer Coding (11.5%)."
     )
 
     # Native Column Chart: Broad Streams
@@ -1026,9 +1006,7 @@ def build_report():
     p_venn_intro = doc.add_paragraph()
     p_venn_intro.paragraph_format.space_after = Pt(6)
     p_venn_intro.add_run(
-        "Private educators in India rarely teach only a single subject in isolation. Over 71.3% of tutors register multiple subjects to offer comprehensive tutoring packages to families. "
-        "To understand how subjects overlap in real tutoring practices, we analyzed two primary academic clusters using 3-set Venn diagrams (Core School Trio and Senior STEM Trio), "
-        "followed by an analysis of multi-subject breadth across India's Top 5 subjects."
+        "Most tutors (71.3%) teach more than one subject. The diagrams below show how common subjects overlap in practice."
     )
 
     # Sub-heading: Core School Trio
@@ -1041,13 +1019,7 @@ def build_report():
     p_sch_desc = doc.add_paragraph()
     p_sch_desc.paragraph_format.space_after = Pt(6)
     p_sch_desc.add_run(
-        "At the primary and middle school level (Classes 1–10), Mathematics, General Science, and English form the foundation of student tutoring demand. "
-        "A total of 58,046 unique tutors teach at least one of these three subjects:\n"
-        "• All Three Core Subjects (Maths + Science + English): 5,511 tutors (9.5%) provide a complete all-in-one general school tutoring service covering both quantitative and language foundations.\n"
-        "• Maths & Science Duo: 7,403 tutors (12.8%) focus specifically on the foundational STEM combination without language tutoring.\n"
-        "• Maths & English Duo: 5,323 tutors (9.2%) offer numeracy and literacy support together.\n"
-        "• Science & English Duo: 3,387 tutors (5.8%) combine experimental science with English.\n"
-        "• Solo Subject Specialists: 19,326 tutors (33.3%) teach exclusively Mathematics, 10,170 (17.5%) teach exclusively English, and 6,926 (11.9%) teach exclusively General Science."
+        "For school students (Classes 1–10), Math, Science, and English are the most common subjects. Over 5,500 tutors teach all three together, while 7,400 combine Math and Science."
     )
 
     # Venn Diagram 1: School Trio Image
@@ -1125,14 +1097,7 @@ def build_report():
     p_stem_desc = doc.add_paragraph()
     p_stem_desc.paragraph_format.space_after = Pt(6)
     p_stem_desc.add_run(
-        "For higher secondary students (Classes 11–12) and engineering entrance exam candidates (JEE / State CETs), "
-        "the PCM trio (Physics, Chemistry, Mathematics) represents the core competitive coaching market. "
-        "A total of 46,937 verified tutors teach within this cluster:\n"
-        "• Complete PCM Package (Maths + Physics + Chemistry): 2,906 tutors (6.2%) teach all three core entrance exam subjects.\n"
-        "• Maths & Physics Duo: 6,139 tutors (13.1%) combine mathematical problem-solving with classical physics, the most common secondary STEM duo.\n"
-        "• Physics & Chemistry Duo: 1,545 tutors (3.3%) cover physical and chemical sciences together without pure mathematics.\n"
-        "• Maths & Chemistry Duo: 1,175 tutors (2.5%) combine mathematical theory with chemistry.\n"
-        "• Solo Subject Specialists: Mathematics alone dominates with 27,343 tutors (58.3%), reflecting deep specialization in advanced calculus and coordinate geometry. Physics specialists account for 4,139 tutors (8.8%), and Chemistry specialists for 3,690 tutors (7.9%)."
+        "For higher secondary (Classes 11–12) and engineering entrance prep, Math, Physics, and Chemistry (PCM) dominate. Over 2,900 tutors teach all three, and 6,100 combine Math with Physics."
     )
 
     # Venn Diagram 2: STEM Trio Image
@@ -1210,11 +1175,7 @@ def build_report():
     p_bth_desc = doc.add_paragraph()
     p_bth_desc.paragraph_format.space_after = Pt(6)
     p_bth_desc.add_run(
-        "Across all 65,077 tutors who teach at least one of India's five largest subjects (Mathematics, English, Science, Physics, Chemistry), "
-        "how many subjects do individual educators take on? "
-        "While 52.2% (33,998 tutors) focus on a single core specialty, nearly half (47.8%) offer multiple subjects: "
-        "30.5% teach 2 subjects, 14.8% teach 3 subjects, 2.2% teach 4 subjects, and 179 educators (0.3%) teach all 5 top subjects simultaneously. "
-        "Below is the fully editable column chart showing this multi-subject breadth, followed by the 10 most common subject bundles in India."
+        "Among tutors teaching the top 5 subjects, about half (52.2%) focus on one subject, 30.5% teach two, and 14.8% teach three."
     )
 
     # Native Column Chart: Multi-Subject Breadth
@@ -1299,10 +1260,7 @@ def build_report():
     p4 = doc.add_paragraph()
     p4.paragraph_format.space_after = Pt(6)
     p4.add_run(
-        "The tutoring market offers a healthy mix of young energetic mentors and seasoned classroom veterans. "
-        "About 24.9% of tutors are beginners (0–1 years), mostly bright college students helping younger school kids. "
-        "The largest segment (31.3%) is early-career educators with 2 to 4 years of teaching. "
-        "Meanwhile, experienced practitioners (5–9 years) make up 23.2%, and senior veterans with 10 to 20+ years make up over 20% of the market."
+        "About 25% of tutors are beginners (0–1 years), 31% have 2–4 years of experience, and over 20% are senior teachers with 10+ years."
     )
 
     # Native Column Chart
@@ -1375,10 +1333,7 @@ def build_report():
     p5 = doc.add_paragraph()
     p5.paragraph_format.space_after = Pt(6)
     p5.add_run(
-        "Tuition rates vary significantly based on location and cost of living. "
-        "The overall national average hourly rate is ₹859 / hour (mean) and ₹650 / hour (median) for standard market listings between ₹50 and ₹5,000/hr (N = 76,410). "
-        "Metropolitan economic hubs lead the nation in pricing: Maharashtra averages ₹1,039/hr, Haryana averages ₹1,026/hr, and Delhi averages ₹1,020/hr. "
-        "In contrast, states with massive tutor supply like Kerala (₹582/hr) and Tamil Nadu (₹713/hr) offer very competitive rates for parents."
+        "The national average tuition rate is ₹848 / hour. Metros like Maharashtra (₹1,039/hr) and Delhi (₹1,020/hr) have the highest rates, while Kerala (₹582/hr) is the most affordable due to high tutor supply."
     )
 
     # Native Column Chart: Fees Across Top States
@@ -1455,12 +1410,7 @@ def build_report():
     p6 = doc.add_paragraph()
     p6.paragraph_format.space_after = Pt(6)
     p6.add_run(
-        "Tutors calibrate their hourly tuition fees closely with the academic rigor and stakes of each student stage. "
-        "At the school level, foundational education divides into two distinct phases:\n"
-        "• Elementary / Lower Primary (Classes 1–5): Focuses on literacy, phonics, basic arithmetic, and daily homework guidance, averaging ₹350–₹500 per hour.\n"
-        "• Upper Primary / Middle School (Classes 5–8): Introduces specialized STEM disciplines (algebra, geometry, physics, chemistry) and formal grammar, averaging ₹450–₹650 per hour.\n"
-        "• Secondary School (Classes 9–10): Centers on foundational board exam preparation (CBSE, ICSE, State Boards), commanding ₹600–₹800 per hour.\n"
-        "Beyond compulsory schooling, rates escalate into Senior Secondary (Classes 11–12 boards at ₹750–₹950/hr), undergraduate degree coaching (₹800–₹1,200/hr), and high-stakes competitive entrance examinations (IIT JEE, NEET UG, CA Foundation, and advanced software engineering) commanding ₹1,350 to ₹2,500+ per hour."
+        "Fees increase as students advance to higher classes. Primary school tuition costs ₹400–₹500/hr, middle school is ₹550–₹700/hr, and competitive entrance coaching (JEE, NEET, CA) rises to ₹1,400–₹1,800/hr."
     )
 
     t6 = doc.add_table(rows=7, cols=7)
@@ -1516,10 +1466,7 @@ def build_report():
     p6_note.paragraph_format.space_before = Pt(6)
     p6_note.paragraph_format.space_after = Pt(12)
     r6_note = p6_note.add_run(
-        "Key Pricing Takeaway: Notice the marked transition between Elementary (Classes 1–5) and Upper Primary (Classes 5–8). "
-        "Elementary tutoring commands an entry-level market rate (₹400–₹450/hr for core subjects) where a single generalist tutor often covers all school homework. "
-        "Starting in Class 6, parents begin hiring subject-matter specialists in Mathematics and Sciences, driving rates up by 22%–25% (₹550/hr). "
-        "By Secondary (Classes 9–10) and Senior Secondary (Classes 11–12), high-stakes board exams and competitive entrance formats double the baseline hourly rate."
+        "Takeaway: Rates jump after Class 5 as parents switch from general homework helpers to dedicated subject specialists."
     )
     r6_note.font.size = Pt(8.5)
     r6_note.font.italic = True
@@ -1538,14 +1485,7 @@ def build_report():
     p7 = doc.add_paragraph()
     p7.paragraph_format.space_after = Pt(6)
     p7.add_run(
-        "Who are private tutors when they are not teaching? A critical question for educational researchers and parents is whether "
-        "private tutoring is practiced solely by career school teachers, or whether working professionals in other industries participate. "
-        "Our verified census of 107,723 tutors reveals that India's private tutoring market functions as a dynamic dual ecosystem:\n"
-        "• 65.3% (70,321 Tutors) are Career Educators & Academicians: Professionals whose primary vocation is teaching, including independent tutors, "
-        "full-time digital educators, school staff teachers, college professors, and competitive coaching faculty.\n"
-        "• 34.7% (37,395 Tutors) are Non-Teaching Working Professionals & Scholars: Individuals whose primary daytime occupation is outside school teaching—such as "
-        "university research scholars, working software engineers, medical doctors, chartered accountants, and core industrial engineers who tutor in the evenings and weekends.\n"
-        "Below is the native column chart summarizing the dominant background categories, followed by the complete verified structural matrix."
+        "Tutoring is split into two main groups: 65.3% are full-time teachers and private tutors, while 34.7% are college students, software engineers, doctors, and chartered accountants teaching on the side."
     )
 
     # Native Horizontal Bar Chart
@@ -1573,8 +1513,7 @@ def build_report():
     p7_tbl_desc = doc.add_paragraph()
     p7_tbl_desc.paragraph_format.space_after = Pt(6)
     p7_tbl_desc.add_run(
-        "The matrix below classifies all 107,723 verified educators into career teachers vs. non-teaching professionals, "
-        "reporting exact headcounts, market shares, hourly pricing benchmarks (mean and median), online adoption rates, and primary curricular specialties."
+        "Table 7 breaks down all 107,723 tutors by their day job, hourly fee, and online teaching percentage."
     )
 
     # Table 7: 8 Columns
@@ -1770,11 +1709,7 @@ def build_report():
     p7_note.paragraph_format.space_before = Pt(6)
     p7_note.paragraph_format.space_after = Pt(12)
     r7_note = p7_note.add_run(
-        "Key Analytical Insights:\n"
-        "1. The 65.3% / 34.7% Dual Ecosystem: Nearly two-thirds of tutors are dedicated career educators, while more than one-third teach alongside another profession or university degree.\n"
-        "2. Industry Pricing Premium: Working professionals in IT (₹1,051/hr), Corporate Finance/CAs (₹1,099/hr), and Freelance Consultants (₹1,183/hr) command higher average fees than regular school staff (₹819/hr) and independent tutors (₹722/hr), demonstrating that hands-on industry expertise commands a measurable pricing premium in the tutoring market.\n"
-        "3. University Students as the STEM Engine: College students and research scholars (26,061 tutors, 24.2%) form the largest single group tutoring on the side, providing accessible entry pricing (₹550/hr median) that makes mathematics and science tuition affordable across Tier-2 and Tier-3 cities.\n"
-        "4. High Digital Fluency: Both groups exhibit exceptional online adoption (95.2% for full-time teachers, 96.7% for non-teaching professionals), showing that modern tutoring in India is overwhelmingly digital."
+        "Takeaway: Over 26,000 tutors are college students, and over 4,200 are IT professionals teaching coding on weekends."
     )
     r7_note.font.size = Pt(8.5)
     r7_note.font.italic = True
@@ -1793,10 +1728,7 @@ def build_report():
     p8 = doc.add_paragraph()
     p8.paragraph_format.space_after = Pt(8)
     p8.add_run(
-        "Geographic concentration is one of the most distinctive features of India's private tutoring landscape. "
-        "Educators are heavily concentrated in southern and western states, as well as major metropolitan capitals. "
-        "Below is the complete All-India administrative map, followed by the National State Reference Table, "
-        "the Top 25 Metropolitan Districts, and the Complete All-India District Directory covering all 440+ mapped districts."
+        "Tutors are concentrated in southern and western states and major metro cities. Below is the state map, followed by the state rankings and district directory."
     )
 
     # 1. RESTORED ALL-INDIA MAP
@@ -1929,10 +1861,7 @@ def build_report():
     p_dall = doc.add_paragraph()
     p_dall.paragraph_format.space_after = Pt(6)
     p_dall.add_run(
-        f"This master directory catalogs all {len(all_districts)} mapped administrative districts in India that have verified active tutor representation. "
-        "While India possesses 596 mapped district polygons (and ~784-802 local revenue districts), exactly 440 districts exhibit commercial private tutoring presence, "
-        "with the remaining 156 rural and border districts having zero registered digital tutors. "
-        "Districts are sorted nationally by total tutor volume, providing the complete grassroots breakdown for academic and market research."
+        f"This directory lists all {len(all_districts)} active tutoring districts in India, ranked by total tutor count."
     )
 
     headers_d = ["Rank", "District / Hub", "State / Territory", "Tutors (N)", "Avg Fee (₹/hr)", "Female (%)", "Male (%)"]
@@ -1995,15 +1924,11 @@ def build_report():
     p9 = doc.add_paragraph()
     p9.paragraph_format.space_after = Pt(6)
     p9.add_run(
-        "To ensure high statistical accuracy, we audited every column in the dataset and fixed several common data-entry errors:\n\n"
-        "• Experience Outliers & Form Typos: A few tutors showed 60 to 70 years of experience. "
-        "When cross-referenced with their bios, we found clear self-contradicting typos (for example, one tutor entered 70 years on the dropdown, but wrote '12+ Years of Mentorship' in her bio). "
-        "Genuine senior professors (such as retired engineering and economics professors with 50+ genuine years) were verified and kept intact, while obvious typos were normalized.\n\n"
-        "• The ₹50 Crore Dummy Upper Fee Bug: On the registration portal, tutors who wished to indicate 'Fee Negotiable / No Upper Limit' entered dummy values like 999,999,999 or 100,000,000. "
-        "Taking the raw mathematical midpoint caused artificial hourly rates of ₹50 Crore per hour. "
-        "We filtered market fee analyses to realistic ranges (₹50 to ₹5,000/hr, N = 76,410) to calculate true market averages.\n\n"
-        "• Removing Duplicate Subject Rows: The subject bridge table was cleaned of 75,659 redundant duplicate entries, bringing total verified offerings to 327,694.\n\n"
-        "• Privacy & Name Cleansing: Any phone numbers or email addresses entered into the teacher name field were scrubbed to maintain clean persona records."
+        "Key data cleaning steps applied to the dataset:\n"
+        "• Fixed form typos in experience (e.g. users accidentally selecting 70 years).\n"
+        "• Removed dummy fee placeholders (like ₹99,999,999 entered for 'negotiable fee') to reflect realistic tuition rates (₹50–₹5,000/hr).\n"
+        "• Removed duplicate subject entries, leaving 327,720 clean subject links.\n"
+        "• Cleaned phone numbers and emails accidentally written in name fields."
     )
 
     # ---------------------------------------------------------
@@ -2019,11 +1944,11 @@ def build_report():
     p10 = doc.add_paragraph()
     p10.paragraph_format.space_after = Pt(6)
     p10.add_run(
-        "Because this document uses native Office OpenXML charts and tables, you can modify any part of it directly:\n\n"
-        "1. Changing Colors: Click on any chart. In Word's top ribbon, select the 'Chart Design' tab. Click 'Change Colors' to apply your preferred color theme (e.g., Monochrome Blues, Teals, Oranges, or Multicolor).\n"
-        "2. Editing Numbers & Labels: Right-click any chart and select 'Edit Data' (or 'Edit Data in Excel'). An embedded Excel spreadsheet will open, allowing you to update numbers, change labels, or add rows. The chart will update instantly.\n"
-        "3. Changing Chart Types: Right-click any chart and choose 'Change Chart Type...' to switch between Bar, Column, Line, Pie, or Doughnut formats.\n"
-        "4. Editing Tables: Click directly into any table cell to change text, modify numbers, or adjust column widths."
+        "All charts and tables in this report can be edited directly in Word:\n"
+        "• Edit Numbers: Right-click any chart and select 'Edit Data' to change numbers in Excel.\n"
+        "• Change Colors: Click any chart, go to 'Chart Design' at the top, and pick a color theme.\n"
+        "• Change Chart Type: Right-click any chart and select 'Change Chart Type' (e.g., Bar to Pie).\n"
+        "• Edit Tables: Click any table cell to type new values or change column sizes."
     )
 
     # Save document
