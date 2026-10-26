@@ -996,23 +996,20 @@ def build_report():
         "For school students (Classes 1–10), Math, Science, and English are the most common subjects. Over 5,500 tutors teach all three together, while 7,400 combine Math and Science."
     )
 
-    # Venn Diagram 1: School Trio Image
-    if os.path.exists(VENN_SCHOOL_PATH):
-        p_v1 = doc.add_paragraph()
-        p_v1.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        p_v1.paragraph_format.space_before = Pt(6)
-        p_v1.paragraph_format.space_after = Pt(2)
-        r_v1 = p_v1.add_run()
-        r_v1.add_picture(VENN_SCHOOL_PATH, width=Inches(5.0))
+    # Native Editable Chart: Figure 3C - School Trio Overlap
+    builder.add_bar_or_col_chart(
+        "Figure 3C: Teaching Overlap — Core School Trio (N = 58,046 Tutors)",
+        ["Math Only", "English Only", "Science Only", "Math + Science", "Math + English", "Science + English", "All 3 Subjects (Trio)"],
+        [19326, 10170, 6926, 7403, 5323, 3387, 5511],
+        series_name="Tutors",
+        is_horizontal=True,
+        width_in=6.2,
+        height_in=3.6,
+        x_axis_title="Number of Tutors",
+        y_axis_title="Subject Combination"
+    )
 
-        cap_v1 = doc.add_paragraph()
-        cap_v1.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        cap_v1.paragraph_format.space_before = Pt(2)
-        cap_v1.paragraph_format.space_after = Pt(8)
-        rc_v1 = cap_v1.add_run("Figure 3C: Venn Diagram — Core School Trio: Mathematics, General Science & English (N = 58,046 Tutors)")
-        rc_v1.font.size = Pt(8.5)
-        rc_v1.font.italic = True
-        rc_v1.font.color.rgb = COLOR_MUTED
+    doc.add_paragraph().paragraph_format.space_after = Pt(4)
 
     # Table 3B: School Trio Overlap Breakdown
     t3b = doc.add_table(rows=9, cols=4)
@@ -1074,23 +1071,20 @@ def build_report():
         "For higher secondary (Classes 11–12) and engineering entrance prep, Math, Physics, and Chemistry (PCM) dominate. Over 2,900 tutors teach all three, and 6,100 combine Math with Physics."
     )
 
-    # Venn Diagram 2: STEM Trio Image
-    if os.path.exists(VENN_STEM_PATH):
-        p_v2 = doc.add_paragraph()
-        p_v2.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        p_v2.paragraph_format.space_before = Pt(6)
-        p_v2.paragraph_format.space_after = Pt(2)
-        r_v2 = p_v2.add_run()
-        r_v2.add_picture(VENN_STEM_PATH, width=Inches(5.0))
+    # Native Editable Chart: Figure 3D - Senior STEM Trio Overlap
+    builder.add_bar_or_col_chart(
+        "Figure 3D: Teaching Overlap — Senior STEM Trio: PCM (N = 46,937 Tutors)",
+        ["Math Only", "Math + Physics", "Physics Only", "Chemistry Only", "All 3 (PCM Trio)", "Physics + Chem", "Math + Chem"],
+        [27343, 6139, 4139, 3690, 2906, 1545, 1175],
+        series_name="Tutors",
+        is_horizontal=True,
+        width_in=6.2,
+        height_in=3.6,
+        x_axis_title="Number of Tutors",
+        y_axis_title="Subject Combination"
+    )
 
-        cap_v2 = doc.add_paragraph()
-        cap_v2.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        cap_v2.paragraph_format.space_before = Pt(2)
-        cap_v2.paragraph_format.space_after = Pt(8)
-        rc_v2 = cap_v2.add_run("Figure 3D: Venn Diagram — Senior STEM Trio: Mathematics, Physics & Chemistry (N = 46,937 Tutors)")
-        rc_v2.font.size = Pt(8.5)
-        rc_v2.font.italic = True
-        rc_v2.font.color.rgb = COLOR_MUTED
+    doc.add_paragraph().paragraph_format.space_after = Pt(4)
 
     # Table 3C: Senior STEM Trio Overlap Breakdown
     t3c = doc.add_table(rows=9, cols=4)
