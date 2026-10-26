@@ -376,7 +376,7 @@ def create_companion_workbook():
         ws7.append(list(row))
 
     # Total
-    ws7.append(["NATIONAL TOTAL (All Verified Tutors)", "All Verified Profiles", 107716, 100.0, 859, 650, 95.7, "Complete Pan-India Tutoring Ecosystem"])
+    ws7.append(["NATIONAL TOTAL (All Verified Tutors)", "All Verified Profiles", 107723, 100.0, 859, 650, 95.7, "Complete Pan-India Tutoring Ecosystem"])
     format_table(ws7, 1, 8, align_right_cols=[3, 4, 5, 6, 7])
 
     # Save
