@@ -486,46 +486,20 @@ def build_report():
     # ---------------------------------------------------------
     title_p = doc.add_paragraph()
     title_p.paragraph_format.space_before = Pt(4)
-    title_p.paragraph_format.space_after = Pt(2)
+    title_p.paragraph_format.space_after = Pt(12)
     r_t = title_p.add_run("BMP Tutors — India Private Tutoring Market Report")
     r_t.font.name = "Arial"
     r_t.font.size = Pt(22)
     r_t.font.bold = True
     r_t.font.color.rgb = COLOR_TITLE
 
-    sub_p = doc.add_paragraph()
-    sub_p.paragraph_format.space_before = Pt(0)
-    sub_p.paragraph_format.space_after = Pt(12)
-    r_s = sub_p.add_run("A Complete Market Study of 107,723 Verified Educators Across All 36 States & Union Territories")
-    r_s.font.name = "Arial"
-    r_s.font.size = Pt(11)
-    r_s.font.color.rgb = COLOR_MUTED
-
-    # Editable Tip Banner
-    banner_tbl = doc.add_table(rows=1, cols=1)
-    banner_tbl.alignment = WD_TABLE_ALIGNMENT.CENTER
-    b_cell = banner_tbl.cell(0, 0)
-    set_cell_background(b_cell, "EEF2FF")
-    set_cell_margins(b_cell, top=100, bottom=100, left=150, right=150)
-    set_table_borders(banner_tbl, color="C7D2FE", sz="6")
-    bp = b_cell.paragraphs[0]
-    r_b = bp.add_run("💡 100% Native & Editable Document: ")
-    r_b.font.bold = True
-    r_b.font.size = Pt(9)
-    r_b.font.color.rgb = RGBColor(49, 46, 129)
-    r_b2 = bp.add_run("All charts and tables in this report are native Microsoft Office elements. You can click on any chart in Word to change colors (via the Chart Design tab), right-click to edit data in Excel, or change numbers and text directly in the tables.")
-    r_b2.font.size = Pt(8.5)
-    r_b2.font.color.rgb = RGBColor(30, 41, 59)
-
-    doc.add_paragraph().paragraph_format.space_after = Pt(8)
-
     # ---------------------------------------------------------
     # EXECUTIVE KPI DASHBOARD (STAT CARDS)
     # ---------------------------------------------------------
     kpi_cards = [
         {"lbl": "TOTAL EDUCATORS", "val": "107,723", "sub": "Verified Unique Tutors", "bg": "F0FDF4", "border": "BBF7D0", "txt": "15803D"},
-        {"lbl": "COURSE OFFERINGS", "val": "327,694", "sub": "3.04 Subjects / Tutor", "bg": "EFF6FF", "border": "BFDBFE", "txt": "1D4ED8"},
-        {"lbl": "BENCHMARK RATE", "val": "₹859 / hr", "sub": "Average Tuition Fee", "bg": "FAF5FF", "border": "E9D5FF", "txt": "7E22CE"},
+        {"lbl": "COURSE OFFERINGS", "val": "327,720", "sub": "3.04 Subjects / Tutor", "bg": "EFF6FF", "border": "BFDBFE", "txt": "1D4ED8"},
+        {"lbl": "BENCHMARK RATE", "val": "₹848 / hr", "sub": "Average Tuition Fee", "bg": "FAF5FF", "border": "E9D5FF", "txt": "7E22CE"},
         {"lbl": "ONLINE ADOPTION", "val": "95.6%", "sub": "102,992 Online Tutors", "bg": "FFFBEB", "border": "FDE68A", "txt": "B45309"},
     ]
     kpi_tbl = doc.add_table(rows=1, cols=4)
@@ -1929,26 +1903,6 @@ def build_report():
         "• Removed dummy fee placeholders (like ₹99,999,999 entered for 'negotiable fee') to reflect realistic tuition rates (₹50–₹5,000/hr).\n"
         "• Removed duplicate subject entries, leaving 327,720 clean subject links.\n"
         "• Cleaned phone numbers and emails accidentally written in name fields."
-    )
-
-    # ---------------------------------------------------------
-    # SECTION 10: USER GUIDE ON EDITING CHARTS IN WORD
-    # ---------------------------------------------------------
-    doc.add_paragraph().paragraph_format.space_after = Pt(8)
-    h10 = doc.add_heading(level=1)
-    r10 = h10.add_run("10. How to Edit Charts & Tables in Microsoft Word")
-    r10.font.name = "Arial"
-    r10.font.size = Pt(14)
-    r10.font.color.rgb = COLOR_TITLE
-
-    p10 = doc.add_paragraph()
-    p10.paragraph_format.space_after = Pt(6)
-    p10.add_run(
-        "All charts and tables in this report can be edited directly in Word:\n"
-        "• Edit Numbers: Right-click any chart and select 'Edit Data' to change numbers in Excel.\n"
-        "• Change Colors: Click any chart, go to 'Chart Design' at the top, and pick a color theme.\n"
-        "• Change Chart Type: Right-click any chart and select 'Change Chart Type' (e.g., Bar to Pie).\n"
-        "• Edit Tables: Click any table cell to type new values or change column sizes."
     )
 
     # Save document
