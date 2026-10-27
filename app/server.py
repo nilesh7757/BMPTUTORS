@@ -1,3 +1,4 @@
+from collections import Counter
 import sqlite3
 import json
 import os
@@ -364,7 +365,9 @@ async def api_charts(request):
     region = params.get("region", "").strip()
     mode = params.get("mode", "").strip()
     qualification = params.get("qualification", "").strip()
-    has_filter = bool(region or mode or qualification)
+    active_only = params.get("active_only", "").strip() or params.get("is_active", "").strip()
+    is_active_filter = active_only in ("1", "true", "active")
+    has_filter = bool(region or mode or qualification or is_active_filter)
 
     global _CHARTS_CACHE
     if not has_filter and _CHARTS_CACHE is not None:
@@ -385,6 +388,8 @@ async def api_charts(request):
         t_clauses.append("t.teaches_online = 1")
     elif mode == "offline":
         t_clauses.append("t.teaches_at_student_home = 1")
+    if is_active_filter:
+        t_clauses.append("t.is_active = 1")
 
     t_where = ("WHERE " + " AND ".join(t_clauses)) if t_clauses else ""
     t_and = (" AND " + " AND ".join(t_clauses)) if t_clauses else ""
@@ -698,9 +703,61 @@ async def api_charts(request):
     """, t_args).fetchall()
     occupations_data = [dict(r) for r in occupations_rows]
 
+    # Multilingual & Polyglot Demographics
+    cur.execute(f"""
+        SELECT t.speaks_languages 
+        FROM teachers t 
+        {t_where} AND t.speaks_languages IS NOT NULL AND t.speaks_languages != ''
+    """ if t_where else """
+        SELECT t.speaks_languages 
+        FROM teachers t 
+        WHERE t.speaks_languages IS NOT NULL AND t.speaks_languages != ''
+    """, t_args)
+    lang_counter = Counter()
+    for row in cur.fetchall():
+        if row[0]:
+            for lang in [x.strip() for x in row[0].split(',') if x.strip()]:
+                if not lang.startswith('Fee:') and not lang.startswith('English Editing'):
+                    lang_counter[lang] += 1
+    top_languages = [{"language": k, "count": v} for k, v in lang_counter.most_common(10)]
+
+    polyglot_rows = cur.execute(f"""
+        SELECT 
+            CASE 
+                WHEN t.num_languages = 1 THEN 'Monolingual (1 Lang)'
+                WHEN t.num_languages = 2 THEN 'Bilingual (2 Langs)'
+                WHEN t.num_languages = 3 THEN 'Trilingual (3 Langs)'
+                ELSE 'Polyglot (4+ Langs)'
+            END as tier,
+            count(*) as count,
+            round(avg(case when t.hourly_fee_avg between 50 and 5000 then t.hourly_fee_avg end), 0) as avg_fee
+        FROM teachers t
+        {t_where} AND t.num_languages > 0
+        GROUP BY tier
+        ORDER BY count DESC
+    """ if t_where else """
+        SELECT 
+            CASE 
+                WHEN t.num_languages = 1 THEN 'Monolingual (1 Lang)'
+                WHEN t.num_languages = 2 THEN 'Bilingual (2 Langs)'
+                WHEN t.num_languages = 3 THEN 'Trilingual (3 Langs)'
+                ELSE 'Polyglot (4+ Langs)'
+            END as tier,
+            count(*) as count,
+            round(avg(case when t.hourly_fee_avg between 50 and 5000 then t.hourly_fee_avg end), 0) as avg_fee
+        FROM teachers t
+        WHERE t.num_languages > 0
+        GROUP BY tier
+        ORDER BY count DESC
+    """, t_args).fetchall()
+    polyglot_data = [{"tier": r[0], "count": r[1], "avg_fee": r[2] or 0} for r in polyglot_rows]
+
     conn.close()
 
     payload = {
+        "active_only": is_active_filter,
+        "top_languages": top_languages,
+        "polyglot": polyglot_data,
         "occupations": occupations_data,
         "subject_categories": [dict(r) for r in sub_cats],
         "qualifications": [dict(r) for r in quals],
@@ -1081,18 +1138,22 @@ async def api_export_custom_docx(request):
         sub2 = data.get("sub2", "Science (General)")
         sub3 = data.get("sub3", "English")
 
+        scope = data.get("scope", "all")
+        active_only = (scope == "active") or bool(data.get("active_only", False))
+
         from build_custom_docx import generate_docx_report
         docx_bytes = generate_docx_report(
             selected_sections=sections,
-            venn_info={"sub1": sub1, "sub2": sub2, "sub3": sub3},
+            active_only=active_only,
             output_path=None
         )
 
+        fname = "BMP_Tutors_Verified_Active_Report.docx" if active_only else "BMP_Tutors_National_Master_Report.docx"
         return Response(
             content=docx_bytes,
             media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             headers={
-                "Content-Disposition": 'attachment; filename="BMP_Tutors_Custom_Analytics_Report.docx"'
+                "Content-Disposition": f'attachment; filename="{fname}"'
             }
         )
     except Exception as e:

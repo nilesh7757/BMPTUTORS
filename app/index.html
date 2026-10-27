@@ -510,7 +510,7 @@
         <div>
           <div class="flex items-center gap-2">
             <span class="px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-indigo-200/60">Empirical Research</span>
-            <span class="text-xs text-slate-400 font-mono">107,723 Tutors &bull; 327,720 Offerings &bull; 28 States &amp; 8 UTs</span>
+            <span id="analytics-scope-subtitle" class="text-xs text-slate-400 font-mono">107,723 Tutors &bull; 327,720 Offerings &bull; 28 States &amp; 8 UTs (National Master)</span>
           </div>
           <h2 class="text-xl font-extrabold text-slate-900 mt-1 flex items-center gap-2 tracking-tight">
             <i class="fa-solid fa-chart-line text-indigo-600"></i> Visual Analytics & National Market Dossier
@@ -518,14 +518,26 @@
           <p class="text-xs text-slate-500 mt-0.5">Empirical breakdown of private tutoring demand, hourly fee benchmarks, subject distributions, and district-level cartography.</p>
         </div>
 
-        <!-- Download & Export Actions -->
-        <div class="flex items-center gap-2 flex-wrap shrink-0">
-          <button onclick="openCustomWordModal()" class="px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white transition-all flex items-center gap-2 shadow-xs active:scale-[0.98]">
+        <!-- Scope Switcher & Actions -->
+        <div class="flex items-center gap-3 flex-wrap shrink-0">
+          <!-- Dataset Scope Toggle (All 107k vs Verified Active 76k) -->
+          <div class="bg-slate-100 p-1 rounded-xl flex items-center border border-slate-200 text-xs shadow-2xs">
+            <button id="btn-scope-all" onclick="setAnalyticsScope('all')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-blue-600 text-white shadow-2xs">
+              <i class="fa-solid fa-database text-[11px]"></i>
+              <span>All Tutors (107k)</span>
+            </button>
+            <button id="btn-scope-active" onclick="setAnalyticsScope('active')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900">
+              <i class="fa-solid fa-circle-check text-emerald-600 text-[11px]"></i>
+              <span>Verified Only (76k)</span>
+            </button>
+          </div>
+
+          <button onclick="openCustomWordModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white transition-all flex items-center gap-2 shadow-xs active:scale-[0.98]">
             <i class="fa-solid fa-file-word text-sm"></i>
-            <span>Custom Word Report (.docx)</span>
+            <span>Word Report (.docx)</span>
           </button>
-          <a href="/api/export/visual-analytics-pdf" download="BMP_Tutors_Visual_Analytics_Complete_Report.pdf" class="px-4 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white transition-all flex items-center gap-2 shadow-xs active:scale-[0.98]">
-            <i class="fa-solid fa-file-pdf text-sm"></i> Download PDF
+          <a href="/api/export/visual-analytics-pdf" download="BMP_Tutors_Visual_Analytics_Complete_Report.pdf" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white transition-all flex items-center gap-2 shadow-xs active:scale-[0.98]">
+            <i class="fa-solid fa-file-pdf text-sm"></i> <span>Download PDF</span>
           </a>
         </div>
       </div>
@@ -890,13 +902,72 @@
         </p>
       </div>
 
+      <!-- SECTION: LINGUISTIC & MULTILINGUAL DEMOGRAPHICS -->
+      <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80 space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-rose-200/60">Linguistic Diversity</span>
+              <span id="lang-sample-badge" class="text-xs text-slate-400 font-mono">N = 106,455 Stating Educators</span>
+            </div>
+            <h3 class="text-base font-bold text-slate-900 mt-1 flex items-center gap-2">
+              <i class="fa-solid fa-language text-rose-600"></i>
+              <span>Linguistic Diversity & Multilingual Demographics</span>
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">Top spoken tutoring languages across India and the pricing premium commanded by multilingual vs monolingual educators.</p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-medium text-slate-500">Polyglot Metric:</span>
+            <div class="bg-slate-100 p-1 rounded-xl flex items-center space-x-1 border border-slate-200 text-xs">
+              <button id="btn-poly-count" onclick="switchPolyglotChart('count')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all bg-rose-600 text-white shadow-2xs">Tutor Volume</button>
+              <button id="btn-poly-fee" onclick="switchPolyglotChart('fee')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900">Avg Fee (₹/hr)</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Card 1: Top 10 Spoken Languages -->
+          <div class="p-4 rounded-xl border border-slate-100 bg-slate-50/50 flex flex-col justify-between">
+            <div>
+              <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-chart-bar text-blue-600"></i>
+                <span>Top 10 Spoken Tutoring Languages</span>
+              </h4>
+              <p class="text-[11px] text-slate-500 mb-3">Absolute tutor volume by primary spoken language</p>
+            </div>
+            <div class="h-72 relative">
+              <canvas id="chart-languages"></canvas>
+            </div>
+          </div>
+
+          <!-- Card 2: Polyglot Scale -->
+          <div class="p-4 rounded-xl border border-slate-100 bg-slate-50/50 flex flex-col justify-between">
+            <div>
+              <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-cubes-stacked text-amber-600"></i>
+                <span>Polyglot Scale & Pricing Power</span>
+              </h4>
+              <p class="text-[11px] text-slate-500 mb-3">Monolingual, Bilingual, Trilingual, and Polyglot educators</p>
+            </div>
+            <div class="h-72 relative">
+              <canvas id="chart-polyglot"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-[11px] text-slate-500 italic pt-2 border-t border-slate-100">
+          <strong>Data Reconciliation:</strong> Multilingual breakdown based on 106,455 educators declaring spoken languages (46,201 bilingual [43.4%], 28,113 trilingual [26.4%], 24,259 monolingual [22.8%], 7,882 polyglot 4+ languages [7.4%]). Exactly 1,268 educators (1.2% of national total) with unstated spoken languages were omitted from this analysis.
+        </p>
+      </div>
+
       <!-- SECTION 6: CORE MARKET STRUCTURE CHARTS GRID -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
           <h3 class="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
             <i class="fa-solid fa-shapes text-indigo-600"></i> Subject Offerings Distribution
           </h3>
-          <p class="text-xs text-slate-500 mb-4">Total breakdown across 403,353 subject-tutor links</p>
+          <p class="text-xs text-slate-500 mb-4">Total breakdown across 327,720 cleaned verified subject offerings</p>
           <div class="h-64"><canvas id="chart-subjects"></canvas></div>
         </div>
 
@@ -1675,9 +1746,36 @@
       <!-- Modal Body -->
       <div class="p-6 max-h-[60vh] overflow-y-auto space-y-5 custom-scrollbar">
         
+        <!-- Selection Cohort Scope -->
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+          <label class="text-xs font-bold text-slate-800 uppercase tracking-wider block mb-2 font-mono">
+            1. Select Educator Cohort for Word Report:
+          </label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <label class="flex items-start gap-3 p-3 rounded-xl border border-blue-300 bg-blue-50/60 cursor-pointer transition-all hover:border-blue-400" id="label-docx-scope-all">
+              <input type="radio" name="docx-scope" value="all" checked class="mt-0.5 text-blue-600 focus:ring-blue-500">
+              <div>
+                <span class="font-bold text-slate-900 block text-xs flex items-center gap-1.5">
+                  <i class="fa-solid fa-database text-blue-600"></i> All 107,723 Educators
+                </span>
+                <span class="text-[11px] text-slate-500 block mt-0.5">Complete master dataset (76,706 active + 30,964 historical + 53 unstated)</span>
+              </div>
+            </label>
+            <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 bg-white cursor-pointer transition-all hover:border-emerald-300" id="label-docx-scope-active">
+              <input type="radio" name="docx-scope" value="active" class="mt-0.5 text-emerald-600 focus:ring-emerald-500">
+              <div>
+                <span class="font-bold text-slate-900 block text-xs flex items-center gap-1.5">
+                  <i class="fa-solid fa-circle-check text-emerald-600"></i> Verified Active Only (76,706)
+                </span>
+                <span class="text-[11px] text-slate-500 block mt-0.5">Strictly live-verified profiles with 100% active profile URLs</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
         <!-- Selection Controls -->
         <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-          <span class="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">Report Sections & Modules</span>
+          <span class="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">2. Select Report Sections & Modules</span>
           <div class="flex items-center gap-2">
             <button onclick="toggleDocxSections(true)" class="text-xs text-indigo-600 hover:text-indigo-800 font-bold">Select All</button>
             <span class="text-slate-300">&bull;</span>
@@ -1716,6 +1814,14 @@
             <div>
               <span class="font-bold text-slate-900 block">Subject Streams & Demand</span>
               <span class="text-[11px] text-slate-500">Figure 3A & 3B charts (macro categories & top 12 subjects)</span>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
+            <input type="checkbox" name="docx-section" value="multilingual" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+            <div>
+              <span class="font-bold text-slate-900 block">Linguistic Demographics</span>
+              <span class="text-[11px] text-slate-500">Top 10 spoken tutoring languages & polyglot pricing analysis</span>
             </div>
           </label>
 
@@ -2681,6 +2787,8 @@
         return;
       }
 
+      const scope = document.querySelector('input[name="docx-scope"]:checked')?.value || currentAnalyticsScope || 'all';
+
       if (btn) btn.disabled = true;
       if (spinner) spinner.classList.remove('hidden');
       if (btnText) btnText.textContent = 'Generating Native Word Document...';
@@ -2690,7 +2798,8 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            sections: sections
+            sections: sections,
+            scope: scope
           })
         });
 
@@ -2718,20 +2827,123 @@
       }
     }
 
-    // Chart.js Visualizations
+    // Global Scope & Polyglot State
+    let currentAnalyticsScope = 'all';
+    let currentPolyglotMetric = 'count';
+    window.currentChartsData = null;
+
+    function setAnalyticsScope(scope) {
+      currentAnalyticsScope = scope;
+      const btnAll = document.getElementById('btn-scope-all');
+      const btnAct = document.getElementById('btn-scope-active');
+      const sub = document.getElementById('analytics-scope-subtitle');
+      const langBadge = document.getElementById('lang-sample-badge');
+
+      if (scope === 'active') {
+        if (btnAct) btnAct.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-emerald-600 text-white shadow-2xs";
+        if (btnAll) btnAll.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900";
+        if (sub) sub.textContent = "76,706 Verified Active Tutors • 247,356 Offerings • 28 States & 8 UTs (100% Reachable Profiles)";
+        if (langBadge) langBadge.textContent = "N = 76,013 Active Stating Educators";
+
+        document.getElementById('stat-tutors').textContent = '76,706';
+        document.getElementById('stat-bridge').textContent = '247,356';
+      } else {
+        if (btnAll) btnAll.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-blue-600 text-white shadow-2xs";
+        if (btnAct) btnAct.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900";
+        if (sub) sub.textContent = "107,723 Tutors • 327,720 Offerings • 28 States & 8 UTs (National Master)";
+        if (langBadge) langBadge.textContent = "N = 106,455 Stating Educators";
+
+        document.getElementById('stat-tutors').textContent = '107,723';
+        document.getElementById('stat-bridge').textContent = '327,720';
+      }
+
+      loadCharts({ ...activeAnalyticsFilters, active_only: scope === 'active' ? '1' : '' });
+    }
+
+    function switchPolyglotChart(metric) {
+      currentPolyglotMetric = metric;
+      const btnCount = document.getElementById('btn-poly-count');
+      const btnFee = document.getElementById('btn-poly-fee');
+
+      if (metric === 'fee') {
+        if (btnFee) btnFee.className = "px-3 py-1 rounded-lg text-xs font-bold transition-all bg-rose-600 text-white shadow-2xs";
+        if (btnCount) btnCount.className = "px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900";
+      } else {
+        if (btnCount) btnCount.className = "px-3 py-1 rounded-lg text-xs font-bold transition-all bg-rose-600 text-white shadow-2xs";
+        if (btnFee) btnFee.className = "px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900";
+      }
+
+      if (window.currentChartsData && window.currentChartsData.polyglot) {
+        renderPolyglotCanvas(window.currentChartsData.polyglot);
+      }
+    }
+
+    function renderPolyglotCanvas(polyglotData) {
+      const el = document.getElementById('chart-polyglot');
+      if (!el) return;
+      const existing = Chart.getChart(el);
+      if (existing) existing.destroy();
+
+      const isFee = (currentPolyglotMetric === 'fee');
+      const labels = polyglotData.map(p => p.tier);
+      const values = polyglotData.map(p => isFee ? p.avg_fee : p.count);
+      const colors = isFee ? ['#10b981', '#06b6d4', '#f59e0b', '#8b5cf6'] : ['#0ea5e9', '#10b981', '#f59e0b', '#8b5cf6'];
+
+      new Chart(el, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: isFee ? 'Avg Rate (₹/hr)' : 'Tutor Count',
+            data: values,
+            backgroundColor: colors,
+            borderRadius: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => isFee ? ` ₹${ctx.parsed.y} / hr` : ` ${ctx.parsed.y.toLocaleString()} educators`
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: (val) => isFee ? '₹' + val : val.toLocaleString()
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Chart.js Visualizations (Colorful & Dynamic Scope Support)
     async function loadCharts(filterParams) {
       try {
         let url = '/api/charts';
-        if (filterParams && Object.keys(filterParams).length > 0) {
+        const mergedParams = { ...(filterParams || {}) };
+        if (currentAnalyticsScope === 'active' && !mergedParams.active_only) {
+          mergedParams.active_only = '1';
+        }
+
+        if (Object.keys(mergedParams).length > 0) {
           const q = new URLSearchParams();
-          if (filterParams.region) q.set('region', filterParams.region);
-          if (filterParams.mode) q.set('mode', filterParams.mode);
-          if (filterParams.qualification) q.set('qualification', filterParams.qualification);
+          if (mergedParams.region) q.set('region', mergedParams.region);
+          if (mergedParams.mode) q.set('mode', mergedParams.mode);
+          if (mergedParams.qualification) q.set('qualification', mergedParams.qualification);
+          if (mergedParams.active_only) q.set('active_only', mergedParams.active_only);
           const qs = q.toString();
           if (qs) url += '?' + qs;
         }
         const res = await fetch(url);
         const data = await res.json();
+        window.currentChartsData = data;
 
         // Helper to destroy existing chart on canvas
         function safeChart(canvasId, config) {
@@ -2742,7 +2954,10 @@
           return new Chart(el, config);
         }
 
-        // 1. Subjects Chart
+        // Vibrant Multi-Color Palette
+        const VIBRANT_PALETTE = ['#3b82f6', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6', '#06b6d4', '#f97316', '#14b8a6', '#6366f1', '#84cc16', '#f43f5e', '#a855f7'];
+
+        // 1. Subjects Chart (Vibrant Palette)
         safeChart('chart-subjects', {
           type: 'bar',
           data: {
@@ -2750,7 +2965,7 @@
             datasets: [{
               label: 'Subject Count',
               data: data.subject_categories.map(c => c.count),
-              backgroundColor: '#4f46e5',
+              backgroundColor: VIBRANT_PALETTE.slice(0, data.subject_categories.length),
               borderRadius: 6
             }]
           },
@@ -2761,7 +2976,7 @@
           }
         });
 
-        // 2. Qualifications Chart
+        // 2. Qualifications Chart (Vibrant Doughnut)
         safeChart('chart-qualifications', {
           type: 'doughnut',
           data: {
@@ -2778,7 +2993,7 @@
           }
         });
 
-        // 3. Regional Chart
+        // 3. Regional Chart (Vibrant Region Palette)
         safeChart('chart-regions', {
           type: 'bar',
           data: {
@@ -2786,7 +3001,7 @@
             datasets: [{
               label: 'Tutors',
               data: data.regions.map(r => r.count),
-              backgroundColor: '#0d9488',
+              backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6', '#06b6d4', '#64748b'],
               borderRadius: 6
             }]
           },
@@ -2797,7 +3012,7 @@
           }
         });
 
-        // 4. Fees by Subject Category
+        // 4. Fees by Subject Category (Vibrant Multi-Color Horizontal)
         safeChart('chart-fees', {
           type: 'bar',
           data: {
@@ -2805,7 +3020,7 @@
             datasets: [{
               label: 'Avg Hourly Fee (₹)',
               data: data.fee_by_category.map(f => f.avg_fee),
-              backgroundColor: '#10b981',
+              backgroundColor: ['#10b981', '#06b6d4', '#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', '#f97316', '#14b8a6', '#6366f1'],
               borderRadius: 6
             }]
           },
@@ -2817,7 +3032,7 @@
           }
         });
 
-        // 5. Target Levels Chart (100% classified)
+        // 5. Target Levels Chart (Vibrant Multi-Color Horizontal)
         if (data.levels && document.getElementById('chart-levels')) {
           safeChart('chart-levels', {
             type: 'bar',
@@ -2826,7 +3041,7 @@
               datasets: [{
                 label: 'Subject-Level Links',
                 data: data.levels.map(l => l.count),
-                backgroundColor: '#9333ea',
+                backgroundColor: ['#0ea5e9', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4'],
                 borderRadius: 6
               }]
             },
@@ -2839,7 +3054,7 @@
           });
         }
 
-        // 6. Seniority & Mastery Tiers Chart
+        // 6. Seniority & Mastery Tiers Chart (Vibrant Doughnut)
         if (data.seniority_tiers && document.getElementById('chart-seniority')) {
           safeChart('chart-seniority', {
             type: 'doughnut',
@@ -2858,7 +3073,7 @@
           });
         }
 
-        // 7. City Tiers Chart
+        // 7. City Tiers Chart (Vibrant Doughnut)
         if (data.city_tiers && document.getElementById('chart-city-tiers')) {
           safeChart('chart-city-tiers', {
             type: 'doughnut',
@@ -2877,7 +3092,7 @@
           });
         }
 
-        // 8. Competitive Exams
+        // 8. Competitive Exams (Vibrant Multi-Color Bars)
         safeChart('chart-exams', {
           type: 'bar',
           data: {
@@ -2885,7 +3100,7 @@
             datasets: [{
               label: 'Offerings',
               data: data.exams.map(e => e.count),
-              backgroundColor: '#f43f5e',
+              backgroundColor: ['#f43f5e', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#06b6d4', '#f97316', '#14b8a6', '#6366f1', '#eab308'],
               borderRadius: 6
             }]
           },
@@ -2895,6 +3110,48 @@
             plugins: { legend: { display: false } }
           }
         });
+
+        // 9. Top 10 Spoken Languages Chart (Vibrant Multi-Color Horizontal Bars)
+        if (data.top_languages && document.getElementById('chart-languages')) {
+          const LANG_COLORS = ['#3b82f6', '#f97316', '#10b981', '#06b6d4', '#8b5cf6', '#ec4899', '#eab308', '#14b8a6', '#6366f1', '#f43f5e'];
+          safeChart('chart-languages', {
+            type: 'bar',
+            data: {
+              labels: data.top_languages.map(l => l.language),
+              datasets: [{
+                label: 'Tutors Speaking Language',
+                data: data.top_languages.map(l => l.count),
+                backgroundColor: LANG_COLORS,
+                borderRadius: 6
+              }]
+            },
+            options: {
+              indexAxis: 'y',
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false },
+                tooltip: {
+                  callbacks: {
+                    label: (ctx) => ` ${ctx.parsed.x.toLocaleString()} educators`
+                  }
+                }
+              },
+              scales: {
+                x: {
+                  ticks: {
+                    callback: (val) => val >= 1000 ? (val / 1000) + 'k' : val
+                  }
+                }
+              }
+            }
+          });
+        }
+
+        // 10. Polyglot Scale Chart
+        if (data.polyglot && document.getElementById('chart-polyglot')) {
+          renderPolyglotCanvas(data.polyglot);
+        }
 
         // Store and render Academic Table 2: Gender Distribution
         window.dashboardCharts = data;
