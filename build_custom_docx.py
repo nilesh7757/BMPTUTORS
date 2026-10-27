@@ -1296,6 +1296,127 @@ def build_report():
     doc.add_paragraph().paragraph_format.space_after = Pt(12)
 
     # ---------------------------------------------------------
+    # Subsection 3E: UpSet Plot (Top 6 Overlaps)
+    # ---------------------------------------------------------
+    h3e = doc.add_heading(level=2)
+    r3e = h3e.add_run("E. UpSet Plot: Multi-Subject Overlaps Across Top 6 Subjects (N = 69,397 Tutors)")
+    r3e.font.size = Pt(11)
+    r3e.font.bold = True
+    r3e.font.color.rgb = COLOR_PRIMARY
+
+    p_upset = doc.add_paragraph()
+    p_upset.paragraph_format.space_after = Pt(8)
+    p_upset.paragraph_format.line_spacing = 1.15
+    r_upset = p_upset.add_run(
+        "While traditional diagrams can only show 2 or 3 overlapping subjects, an UpSet plot cleanly shows multi-subject overlaps across 6 or more subjects. "
+        "The column chart below displays the number of tutors offering each specific subject bundle, while the matrix table beneath indicates which subjects are included (●) or excluded (○) in that bundle. "
+        "Both the chart and the matrix table are 100% native and editable directly in Word."
+    )
+    r_upset.font.size = Pt(9.5)
+
+    # Native Column Chart: UpSet Bundle Sizes
+    builder.add_bar_or_col_chart(
+        "Figure 3F: UpSet Plot — Multi-Subject Bundle Sizes (N = 69,397 Tutors)",
+        [
+            "B1: Math Only",
+            "B2: English Only",
+            "B3: Math + Sci",
+            "B4: Sci Only",
+            "B5: Eng + Math + Sci",
+            "B6: Bio Only",
+            "B7: Math + Phys",
+            "B8: Eng + Math",
+            "B9: Eng + Sci",
+            "B10: Phys Only"
+        ],
+        [12741, 8672, 5374, 4758, 4643, 4315, 3573, 3570, 2814, 2578],
+        series_name="Tutors in Bundle",
+        is_horizontal=False,
+        width_in=6.2,
+        height_in=3.4,
+        x_axis_title="Top 10 Subject Bundles",
+        y_axis_title="Number of Tutors"
+    )
+
+    doc.add_paragraph().paragraph_format.space_after = Pt(6)
+
+    # Table 3E: UpSet Membership Matrix Table
+    ht3e = doc.add_heading(level=4)
+    rt3e = ht3e.add_run("Table 3E: UpSet Membership Matrix for Top 10 Subject Bundles (Top 6 Subjects)")
+    rt3e.font.size = Pt(9.5)
+    rt3e.font.bold = True
+    rt3e.font.color.rgb = COLOR_PRIMARY
+
+    t3e = doc.add_table(rows=7, cols=12)
+    t3e.alignment = WD_TABLE_ALIGNMENT.CENTER
+    set_table_borders(t3e, color="CBD5E1", sz="4")
+    headers_t3e = ["Subject Name", "Total", "B1\n12.7k", "B2\n8.7k", "B3\n5.4k", "B4\n4.8k", "B5\n4.6k", "B6\n4.3k", "B7\n3.6k", "B8\n3.6k", "B9\n2.8k", "B10\n2.6k"]
+    widths_t3e = [Inches(1.6), Inches(0.9)] + [Inches(0.37)] * 10
+
+    for c_idx, h_text in enumerate(headers_t3e):
+        c = t3e.cell(0, c_idx)
+        c.width = widths_t3e[c_idx]
+        set_cell_background(c, CLR_PRIMARY_HEX)
+        set_cell_margins(c, top=80, bottom=80, left=50, right=50)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx == 1 else (WD_ALIGN_PARAGRAPH.LEFT if c_idx == 0 else WD_ALIGN_PARAGRAPH.CENTER)
+        run = p.add_run(h_text)
+        run.font.bold = True
+        run.font.size = Pt(8.0)
+        run.font.color.rgb = RGBColor(255, 255, 255)
+
+    data_t3e = [
+        ("Mathematics", "37,566", ["●", "○", "●", "○", "●", "○", "●", "●", "○", "○"]),
+        ("English", "24,393", ["○", "●", "○", "○", "●", "○", "○", "●", "●", "○"]),
+        ("Science (General)", "23,229", ["○", "○", "●", "●", "●", "○", "○", "○", "●", "○"]),
+        ("Physics", "14,732", ["○", "○", "○", "○", "○", "○", "●", "○", "○", "●"]),
+        ("Biology & Life Sciences", "10,952", ["○", "○", "○", "○", "○", "●", "○", "○", "○", "○"]),
+        ("Chemistry", "9,319", ["○", "○", "○", "○", "○", "○", "○", "○", "○", "○"]),
+    ]
+
+    for r_idx, (subj, total, dots) in enumerate(data_t3e, start=1):
+        # Col 0: Subject Name
+        c0 = t3e.cell(r_idx, 0)
+        c0.width = widths_t3e[0]
+        set_cell_background(c0, "FFFFFF" if r_idx % 2 != 0 else CLR_BG_LIGHT)
+        set_cell_margins(c0, top=60, bottom=60, left=70, right=70)
+        p0 = c0.paragraphs[0]
+        p0.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        r0 = p0.add_run(subj)
+        r0.font.bold = True
+        r0.font.size = Pt(8.5)
+
+        # Col 1: Total
+        c1 = t3e.cell(r_idx, 1)
+        c1.width = widths_t3e[1]
+        set_cell_background(c1, "FFFFFF" if r_idx % 2 != 0 else CLR_BG_LIGHT)
+        set_cell_margins(c1, top=60, bottom=60, left=50, right=50)
+        p1 = c1.paragraphs[0]
+        p1.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+        r1 = p1.add_run(total)
+        r1.font.size = Pt(8.5)
+
+        # Cols 2..11: Matrix dots
+        for d_idx, dot in enumerate(dots, start=2):
+            cd = t3e.cell(r_idx, d_idx)
+            cd.width = widths_t3e[d_idx]
+            is_active = (dot == "●")
+            bg = "EEF2FF" if is_active else ("FFFFFF" if r_idx % 2 != 0 else CLR_BG_LIGHT)
+            set_cell_background(cd, bg)
+            set_cell_margins(cd, top=60, bottom=60, left=30, right=30)
+            pd = cd.paragraphs[0]
+            pd.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            rd = pd.add_run(dot)
+            rd.font.size = Pt(9.5)
+            if is_active:
+                rd.font.bold = True
+                rd.font.color.rgb = RGBColor(30, 58, 138)  # Deep Indigo #1E3A8A
+            else:
+                rd.font.color.rgb = RGBColor(148, 163, 184)  # Slate 400 #94A3B8
+
+    doc.add_paragraph().paragraph_format.space_after = Pt(12)
+
+    # ---------------------------------------------------------
     # SECTION 4: TUTOR EXPERIENCE (FIGURE 4 — COLUMN CHART & TABLE)
     # ---------------------------------------------------------
     doc.add_page_break()
