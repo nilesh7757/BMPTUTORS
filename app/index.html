@@ -738,7 +738,7 @@
             <div class="flex items-center gap-2">
               <span class="px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-purple-200/60">Professional Gig Economy</span>
               <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <i class="fa-solid fa-briefcase text-purple-600"></i> Non-Teaching & Side Occupations Landscape (N = 36,525)
+                <i class="fa-solid fa-briefcase text-purple-600"></i> <span id="occ-sample-title">Non-Teaching & Side Occupations Landscape (N = 36,525)</span>
               </h3>
             </div>
             <p class="text-xs text-slate-500 mt-1">Cross-disciplinary breakdown of 36,500+ tutors practicing an outside profession (IT, CA, Doctors, Research Scholars, Engineers).</p>
@@ -776,7 +776,7 @@
                 <button id="btn-fig1-top" onclick="switchFigure1('top')" class="px-2.5 py-0.5 rounded-md font-medium text-slate-600 hover:text-slate-900">Top 12 Disciplines</button>
               </div>
             </div>
-            <p class="text-xs text-slate-500 mt-0.5">Categorical volume of private tutoring offerings across India (N = 327,720 cleaned offerings).</p>
+            <p class="text-xs text-slate-500 mt-0.5" id="fig1-sample-subtitle">Categorical volume of private tutoring offerings across India (N = 327,720 cleaned offerings).</p>
           </div>
 
           <div class="h-72 my-4 relative">
@@ -967,7 +967,7 @@
           <h3 class="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
             <i class="fa-solid fa-shapes text-indigo-600"></i> Subject Offerings Distribution
           </h3>
-          <p class="text-xs text-slate-500 mb-4">Total breakdown across 327,720 cleaned verified subject offerings</p>
+          <p class="text-xs text-slate-500 mb-4" id="sec6-subjects-subtitle">Total breakdown across 327,720 cleaned verified subject offerings</p>
           <div class="h-64"><canvas id="chart-subjects"></canvas></div>
         </div>
 
@@ -2838,12 +2838,18 @@
       const btnAct = document.getElementById('btn-scope-active');
       const sub = document.getElementById('analytics-scope-subtitle');
       const langBadge = document.getElementById('lang-sample-badge');
+      const occSampleTitle = document.getElementById('occ-sample-title');
+      const fig1Subtitle = document.getElementById('fig1-sample-subtitle');
+      const sec6SubjectsSubtitle = document.getElementById('sec6-subjects-subtitle');
 
       if (scope === 'active') {
         if (btnAct) btnAct.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-emerald-600 text-white shadow-2xs";
         if (btnAll) btnAll.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900";
         if (sub) sub.textContent = "76,706 Verified Active Tutors • 247,356 Offerings • 28 States & 8 UTs (100% Reachable Profiles)";
         if (langBadge) langBadge.textContent = "N = 76,013 Active Stating Educators";
+        if (occSampleTitle) occSampleTitle.textContent = "Non-Teaching & Side Occupations Landscape (N = 26,488 Verified Active)";
+        if (fig1Subtitle) fig1Subtitle.textContent = "Categorical volume of private tutoring offerings across India (N = 247,356 active offerings).";
+        if (sec6SubjectsSubtitle) sec6SubjectsSubtitle.textContent = "Total breakdown across 247,356 verified active subject offerings";
 
         document.getElementById('stat-tutors').textContent = '76,706';
         document.getElementById('stat-bridge').textContent = '247,356';
@@ -2852,12 +2858,16 @@
         if (btnAct) btnAct.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900";
         if (sub) sub.textContent = "107,723 Tutors • 327,720 Offerings • 28 States & 8 UTs (National Master)";
         if (langBadge) langBadge.textContent = "N = 106,455 Stating Educators";
+        if (occSampleTitle) occSampleTitle.textContent = "Non-Teaching & Side Occupations Landscape (N = 36,525)";
+        if (fig1Subtitle) fig1Subtitle.textContent = "Categorical volume of private tutoring offerings across India (N = 327,720 cleaned offerings).";
+        if (sec6SubjectsSubtitle) sec6SubjectsSubtitle.textContent = "Total breakdown across 327,720 cleaned verified subject offerings";
 
         document.getElementById('stat-tutors').textContent = '107,723';
         document.getElementById('stat-bridge').textContent = '327,720';
       }
 
       loadCharts({ ...activeAnalyticsFilters, active_only: scope === 'active' ? '1' : '' });
+      loadGeoJSONData();
     }
 
     function switchPolyglotChart(metric) {
@@ -3846,7 +3856,8 @@
 
     async function loadGeoJSONData() {
       try {
-        const res = await fetch('/api/geojson/states');
+        const activeParam = (currentAnalyticsScope === 'active') ? '?active_only=1' : '';
+        const res = await fetch('/api/geojson/states' + activeParam);
         statesGeoDataCache = await res.json();
 
         // Populate State Dropdown
@@ -3982,7 +3993,8 @@
       tbody.innerHTML = '<tr><td colspan="4" class="py-8 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Loading district boundaries...</td></tr>';
 
       try {
-        const res = await fetch(`/api/geojson/districts?state=${encodeURIComponent(stateName)}`);
+        const activeParam = (currentAnalyticsScope === 'active') ? '&active_only=1' : '';
+        const res = await fetch(`/api/geojson/districts?state=${encodeURIComponent(stateName)}` + activeParam);
         currentDistrictGeoCache = await res.json();
 
         document.getElementById('city-count-badge').textContent = `${currentDistrictGeoCache.features.length} Districts`;

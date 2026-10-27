@@ -877,12 +877,16 @@ async def api_map_cities(request):
     return JSONResponse({"state": state, "center": state_center, "cities": result})
 
 async def api_geojson_states(request):
-    data = get_enriched_states_geojson()
+    active_only = request.query_params.get("active_only", "").strip() or request.query_params.get("is_active", "").strip()
+    is_active = active_only in ("1", "true", "active")
+    data = get_enriched_states_geojson(active_only=is_active)
     return JSONResponse(data)
 
 async def api_geojson_districts(request):
     state = request.query_params.get("state", "Karnataka").strip()
-    data = get_enriched_districts_geojson(state)
+    active_only = request.query_params.get("active_only", "").strip() or request.query_params.get("is_active", "").strip()
+    is_active = active_only in ("1", "true", "active")
+    data = get_enriched_districts_geojson(state, active_only=is_active)
     return JSONResponse(data)
 
 MASTER_EXCEL_PATH = os.path.join(PROJECT_ROOT, "BMP_Tutors_Cleaned_Master.xlsx")

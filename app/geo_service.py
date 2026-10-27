@@ -207,19 +207,20 @@ METRO_DISTRICT_ALIASES = {
     }
 }
 
-def get_state_metrics():
+def get_state_metrics(active_only=False):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
     
-    rows = cur.execute("""
+    where_active = "AND is_active = 1" if active_only else ""
+    rows = cur.execute(f"""
         SELECT 
             state, region, count(*) as tutor_count,
             round(avg(case when hourly_fee_avg between 50 and 5000 then hourly_fee_avg end), 1) as avg_fee,
             round(avg(teaches_online) * 100, 1) as online_pct,
             sum(case when is_active = 1 then 1 else 0 end) as active_count
         FROM teachers
-        WHERE state IS NOT NULL AND state NOT IN ('Other / International', 'Other', 'Not Specified')
+        WHERE state IS NOT NULL AND state NOT IN ('Other / International', 'Other', 'Not Specified') {where_active}
         GROUP BY state
     """).fetchall()
     
@@ -268,8 +269,8 @@ def get_state_metrics():
 
     return metrics
 
-def get_enriched_states_geojson():
-    metrics = get_state_metrics()
+def get_enriched_states_geojson(active_only=False):
+    metrics = get_state_metrics(active_only=active_only)
     with open(STATES_GEOJSON_PATH, "r", encoding="utf-8") as f:
         geo = json.load(f)
         
@@ -298,7 +299,7 @@ def get_enriched_states_geojson():
         
     return geo
 
-def get_enriched_districts_geojson(target_state):
+def get_enriched_districts_geojson(target_state, active_only=False):
     target_clean = target_state.strip()
     target_norm = normalize_state_name(target_clean)
     
@@ -306,9 +307,11 @@ def get_enriched_districts_geojson(target_state):
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
     
+    where_active = "AND is_active = 1" if active_only else ""
+    
     # Query city/district stats for this state (handling merged DNH/DD or standard states)
     if target_norm == "Andaman and Nicobar Islands":
-        city_rows = cur.execute("""
+        city_rows = cur.execute(f"""
             SELECT 
                 city, count(*) as tutor_count,
                 round(avg(case when hourly_fee_avg between 50 and 5000 then hourly_fee_avg end), 1) as avg_fee,
@@ -316,11 +319,11 @@ def get_enriched_districts_geojson(target_state):
                 sum(case when gender = 'Female' then 1 else 0 end) as female_cnt,
                 sum(case when gender = 'Male' then 1 else 0 end) as male_cnt
             FROM teachers
-            WHERE state LIKE '%Andaman%' AND city IS NOT NULL AND city != ''
+            WHERE state LIKE '%Andaman%' AND city IS NOT NULL AND city != '' {where_active}
             GROUP BY city
         """).fetchall()
     elif target_norm == "Dadra and Nagar Haveli and Daman and Diu":
-        city_rows = cur.execute("""
+        city_rows = cur.execute(f"""
             SELECT 
                 city, count(*) as tutor_count,
                 round(avg(case when hourly_fee_avg between 50 and 5000 then hourly_fee_avg end), 1) as avg_fee,
@@ -328,11 +331,11 @@ def get_enriched_districts_geojson(target_state):
                 sum(case when gender = 'Female' then 1 else 0 end) as female_cnt,
                 sum(case when gender = 'Male' then 1 else 0 end) as male_cnt
             FROM teachers
-            WHERE state IN ('Dadra and Nagar Haveli', 'Daman and Diu') AND city IS NOT NULL AND city != ''
+            WHERE state IN ('Dadra and Nagar Haveli', 'Daman and Diu') AND city IS NOT NULL AND city != '' {where_active}
             GROUP BY city
         """).fetchall()
     else:
-        city_rows = cur.execute("""
+        city_rows = cur.execute(f"""
             SELECT 
                 city, count(*) as tutor_count,
                 round(avg(case when hourly_fee_avg between 50 and 5000 then hourly_fee_avg end), 1) as avg_fee,
@@ -340,7 +343,7 @@ def get_enriched_districts_geojson(target_state):
                 sum(case when gender = 'Female' then 1 else 0 end) as female_cnt,
                 sum(case when gender = 'Male' then 1 else 0 end) as male_cnt
             FROM teachers
-            WHERE state = ? AND city IS NOT NULL AND city != ''
+            WHERE state = ? AND city IS NOT NULL AND city != '' {where_active}
             GROUP BY city
         """, [target_norm]).fetchall()
         
