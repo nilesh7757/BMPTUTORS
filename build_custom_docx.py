@@ -474,7 +474,7 @@ class NativeChartBuilder:
 # Document Generation Pipeline
 # -------------------------------------------------------------
 def generate_docx_report(selected_sections=None, venn_info=None, output_path=OUTPUT_DOCX):
-    ALL_SECTIONS = {"kpi", "qualifications", "gender", "subjects", "venn", "experience", "fees", "levels", "occupations", "geography", "audit"}
+    ALL_SECTIONS = {"kpi", "qualifications", "gender", "subjects", "venn", "experience", "fees", "levels", "occupations", "states", "geography", "audit"}
     if selected_sections is None:
         selected = ALL_SECTIONS
     else:
@@ -1869,6 +1869,120 @@ def generate_docx_report(selected_sections=None, venn_info=None, output_path=OUT
         r7_note.font.size = Pt(8.5)
         r7_note.font.italic = True
         r7_note.font.color.rgb = COLOR_MUTED
+
+        # ---------------------------------------------------------
+    if "states" in selected:
+        # ---------------------------------------------------------
+        # SECTION 7B: STATE COMPARISONS & CHARTS
+        # ---------------------------------------------------------
+        doc.add_page_break()
+        h_st = doc.add_heading(level=1)
+        r_st = h_st.add_run("State-Wise Market Intelligence & Top 15 State Comparisons")
+        r_st.font.name = "Arial"
+        r_st.font.size = Pt(14)
+        r_st.font.bold = True
+        r_st.font.color.rgb = COLOR_TITLE
+
+        p_st = doc.add_paragraph()
+        p_st.paragraph_format.space_after = Pt(8)
+        p_st.add_run(
+            "India's private tutoring supply is heavily concentrated: the top 15 states represent over 91.3% of all verified tutors nationwide (98,398 tutors). "
+            "Tamil Nadu, Kerala, Maharashtra, Karnataka, and Delhi form the top five largest tutor bases. Hourly rates show clear regional divergence: Maharashtra (₹1,039/hr), Haryana (₹1,026/hr), and Delhi (₹1,020/hr) command premium pricing, while southern states offer high volume at accessible rates (Kerala ₹582/hr, Tamil Nadu ₹713/hr)."
+        )
+
+        cur.execute("""
+            SELECT 
+                state, 
+                count(*) as count,
+                round(count(*) * 100.0 / 107723, 1) as share_pct,
+                round(avg(case when hourly_fee_avg between 50 and 5000 then hourly_fee_avg end), 0) as avg_fee,
+                round(sum(case when teaches_online = 1 then 1 else 0 end) * 100.0 / count(*), 1) as online_pct,
+                COALESCE(NULLIF(region, ''), 'Other') as region
+            FROM teachers
+            WHERE state IS NOT NULL AND state != '' AND state != 'Not Specified'
+            GROUP BY state
+            ORDER BY count DESC
+            LIMIT 15
+        """)
+        top_states_data = cur.fetchall()
+
+        st_names = [r[0] for r in top_states_data]
+        st_counts = [r[1] for r in top_states_data]
+        st_fees = [int(r[3]) if r[3] else 0 for r in top_states_data]
+
+        # Figure 6A: Top 15 States by Educator Volume (Horizontal Bar Chart)
+        builder.add_bar_or_col_chart(
+            "Figure 6A: Top 15 Indian States by Educator Volume (N = 98,398 Tutors)",
+            st_names,
+            st_counts,
+            series_name="Tutors",
+            is_horizontal=True,
+            width_in=6.2,
+            height_in=4.0,
+            x_axis_title="Number of Educators",
+            y_axis_title="State"
+        )
+
+        doc.add_paragraph().paragraph_format.space_after = Pt(8)
+
+        # Figure 6B: State Hourly Fee Benchmarks (Column Chart)
+        builder.add_bar_or_col_chart(
+            "Figure 6B: State-Wise Hourly Tuition Rate Benchmarks (₹ / hr)",
+            st_names,
+            st_fees,
+            series_name="Avg Hourly Fee (₹)",
+            is_horizontal=False,
+            width_in=6.2,
+            height_in=3.4,
+            is_currency=True,
+            x_axis_title="State",
+            y_axis_title="Average Fee (₹/hr)"
+        )
+
+        doc.add_paragraph().paragraph_format.space_after = Pt(8)
+
+        # Table: Top 15 States Benchmarking Matrix
+        t_st = doc.add_table(rows=len(top_states_data) + 1, cols=6)
+        t_st.alignment = WD_TABLE_ALIGNMENT.CENTER
+        set_table_borders(t_st, color="CBD5E1", sz="4")
+        headers_st = ["Rank", "State Name", "Geographic Zone", "Educator Pool (N)", "National Share (%)", "Benchmark Rate (₹/hr)"]
+        widths_st = [Inches(0.6), Inches(1.8), Inches(1.2), Inches(1.2), Inches(1.0), Inches(1.2)]
+
+        for c_idx, h_text in enumerate(headers_st):
+            c = t_st.cell(0, c_idx)
+            c.width = widths_st[c_idx]
+            set_cell_background(c, CLR_PRIMARY_HEX)
+            set_cell_margins(c, top=80, bottom=80, left=90, right=90)
+            p = c.paragraphs[0]
+            p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 3 else (WD_ALIGN_PARAGRAPH.CENTER if c_idx == 0 else WD_ALIGN_PARAGRAPH.LEFT)
+            run = p.add_run(h_text)
+            run.font.bold = True
+            run.font.size = Pt(8.5)
+            run.font.color.rgb = RGBColor(255, 255, 255)
+
+        for r_idx, r_val in enumerate(top_states_data, start=1):
+            bg = "FFFFFF" if r_idx % 2 != 0 else CLR_BG_LIGHT
+            row_vals = [
+                str(r_idx),
+                str(r_val[0]),
+                str(r_val[5]),
+                f"{r_val[1]:,}",
+                f"{r_val[2]}%",
+                f"₹{int(r_val[3]):,} / hr" if r_val[3] else "—"
+            ]
+            for c_idx, val in enumerate(row_vals):
+                c = t_st.cell(r_idx, c_idx)
+                c.width = widths_st[c_idx]
+                set_cell_background(c, bg)
+                set_cell_margins(c, top=65, bottom=65, left=90, right=90)
+                p = c.paragraphs[0]
+                p.alignment = WD_ALIGN_PARAGRAPH.RIGHT if c_idx >= 3 else (WD_ALIGN_PARAGRAPH.CENTER if c_idx == 0 else WD_ALIGN_PARAGRAPH.LEFT)
+                r = p.add_run(val)
+                r.font.size = Pt(8.5)
+                if c_idx == 1:
+                    r.font.bold = True
+
+        doc.add_paragraph().paragraph_format.space_after = Pt(12)
 
         # ---------------------------------------------------------
     if "geography" in selected:
