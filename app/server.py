@@ -1087,6 +1087,130 @@ async def api_analyze_bio(request):
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=500)
 
+_VENN_SUBJECTS_CACHE = None
+_VENN_CACHE = {}
+
+async def api_venn_subjects(request):
+    global _VENN_SUBJECTS_CACHE
+    if _VENN_SUBJECTS_CACHE is not None:
+        return JSONResponse(_VENN_SUBJECTS_CACHE)
+    
+    conn = get_db()
+    cur = conn.cursor()
+    rows = cur.execute("""
+        SELECT canonical_subject, COUNT(DISTINCT tutor_id) as tutor_count
+        FROM teacher_subjects
+        WHERE canonical_subject IS NOT NULL AND canonical_subject != ''
+        GROUP BY canonical_subject
+        HAVING tutor_count >= 15
+        ORDER BY tutor_count DESC
+    """).fetchall()
+    conn.close()
+    
+    result = [{"subject": r[0], "count": r[1]} for r in rows]
+    _VENN_SUBJECTS_CACHE = result
+    return JSONResponse(result)
+
+async def api_venn_diagram(request):
+    try:
+        if request.method == "POST":
+            data = await request.json()
+        else:
+            data = dict(request.query_params)
+            
+        sub1 = data.get("sub1", "Mathematics").strip()
+        sub2 = data.get("sub2", "Science (General)").strip()
+        sub3 = data.get("sub3", "English").strip()
+
+        cache_key = f"{sub1}|{sub2}|{sub3}"
+        if cache_key in _VENN_CACHE:
+            return JSONResponse(_VENN_CACHE[cache_key])
+
+        conn = get_db()
+        cur = conn.cursor()
+
+        def get_set(s):
+            if not s:
+                return set()
+            cur.execute("SELECT DISTINCT tutor_id FROM teacher_subjects WHERE canonical_subject = ?", (s,))
+            return {r[0] for r in cur.fetchall()}
+
+        s1 = get_set(sub1)
+        s2 = get_set(sub2)
+        s3 = get_set(sub3)
+
+        only_s1 = s1 - s2 - s3
+        only_s2 = s2 - s1 - s3
+        only_s3 = s3 - s1 - s2
+        s1_s2 = (s1 & s2) - s3
+        s2_s3 = (s2 & s3) - s1
+        s1_s3 = (s1 & s3) - s2
+        all_three = s1 & s2 & s3
+        union_all = s1 | s2 | s3
+
+        fee_map = {}
+        if union_all:
+            subjs = [s for s in [sub1, sub2, sub3] if s]
+            placeholders = ",".join(["?"] * len(subjs))
+            cur.execute(f"""
+                SELECT t.tutor_id, t.hourly_fee_avg 
+                FROM teachers t
+                JOIN teacher_subjects ts ON t.tutor_id = ts.tutor_id
+                WHERE ts.canonical_subject IN ({placeholders})
+                  AND t.hourly_fee_avg >= 50 AND t.hourly_fee_avg <= 5000
+            """, subjs)
+            fee_map = dict(cur.fetchall())
+        conn.close()
+
+        def calc_avg(t_set):
+            vals = [fee_map[t] for t in t_set if t in fee_map and fee_map[t] is not None]
+            return round(sum(vals) / len(vals)) if vals else None
+
+        tot = len(union_all) or 1
+        res = {
+            "subjects": {"s1": sub1, "s2": sub2, "s3": sub3},
+            "totals": {
+                "s1": len(s1), "s2": len(s2), "s3": len(s3), "union": len(union_all)
+            },
+            "counts": {
+                "only_s1": len(only_s1),
+                "only_s2": len(only_s2),
+                "only_s3": len(only_s3),
+                "s1_s2": len(s1_s2),
+                "s2_s3": len(s2_s3),
+                "s1_s3": len(s1_s3),
+                "all_three": len(all_three)
+            },
+            "pcts": {
+                "only_s1": round(len(only_s1) * 100.0 / tot, 1),
+                "only_s2": round(len(only_s2) * 100.0 / tot, 1),
+                "only_s3": round(len(only_s3) * 100.0 / tot, 1),
+                "s1_s2": round(len(s1_s2) * 100.0 / tot, 1),
+                "s2_s3": round(len(s2_s3) * 100.0 / tot, 1),
+                "s1_s3": round(len(s1_s3) * 100.0 / tot, 1),
+                "all_three": round(len(all_three) * 100.0 / tot, 1)
+            },
+            "fees": {
+                "s1": calc_avg(s1),
+                "s2": calc_avg(s2),
+                "s3": calc_avg(s3),
+                "only_s1": calc_avg(only_s1),
+                "only_s2": calc_avg(only_s2),
+                "only_s3": calc_avg(only_s3),
+                "s1_s2": calc_avg(s1_s2),
+                "s2_s3": calc_avg(s2_s3),
+                "s1_s3": calc_avg(s1_s3),
+                "all_three": calc_avg(all_three),
+                "union": calc_avg(union_all)
+            }
+        }
+        if len(_VENN_CACHE) > 100:
+            _VENN_CACHE.clear()
+        _VENN_CACHE[cache_key] = res
+        return JSONResponse(res)
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+
 async def healthz(request):
     return JSONResponse({"status": "ok"})
 
@@ -1096,6 +1220,8 @@ routes = [
     Route("/report", report_view),
     Route("/api/stats", api_stats),
     Route("/api/filters", api_filters),
+    Route("/api/venn/subjects", api_venn_subjects),
+    Route("/api/venn-diagram", api_venn_diagram, methods=["GET", "POST"]),
     Route("/api/predict-fee", api_predict_fee, methods=["GET", "POST"]),
     Route("/api/generate-bio", api_generate_bio, methods=["GET", "POST"]),
     Route("/api/analyze-bio", api_analyze_bio, methods=["GET", "POST"]),
