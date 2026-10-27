@@ -525,16 +525,10 @@
 
         <!-- Download & Export Actions -->
         <div class="flex items-center gap-2 flex-wrap shrink-0">
-          <a href="/report" target="_blank" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition-all flex items-center gap-1.5 shadow-2xs">
-            <i class="fa-solid fa-arrow-up-right-from-square text-slate-500"></i> Full Printable Dossier
-          </a>
-          <button onclick="openCustomWordModal()" class="px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white transition-all flex items-center gap-2 shadow-xs active:scale-[0.98]">
-            <i class="fa-solid fa-sliders text-sm"></i>
-            <span>Customize Word Report</span>
+          <button onclick="openCustomWordModal()" class="px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white transition-all flex items-center gap-2 shadow-xs active:scale-[0.98]">
+            <i class="fa-solid fa-file-word text-sm"></i>
+            <span>Custom Word Report (.docx)</span>
           </button>
-          <a href="/api/download/visual-analytics-docx" download="BMP_Tutors_Visual_Analytics_Report.docx" class="px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white transition-all flex items-center gap-2 shadow-xs active:scale-[0.98]">
-            <i class="fa-solid fa-file-word text-sm"></i> Download Word (.docx)
-          </a>
           <a href="/api/export/visual-analytics-pdf" download="BMP_Tutors_Visual_Analytics_Complete_Report.pdf" class="px-4 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white transition-all flex items-center gap-2 shadow-xs active:scale-[0.98]">
             <i class="fa-solid fa-file-pdf text-sm"></i> Download PDF
           </a>
