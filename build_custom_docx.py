@@ -474,7 +474,7 @@ class NativeChartBuilder:
 # Document Generation Pipeline
 # -------------------------------------------------------------
 def generate_docx_report(selected_sections=None, venn_info=None, output_path=OUTPUT_DOCX):
-    ALL_SECTIONS = {"kpi", "qualifications", "gender", "subjects", "venn", "experience", "fees", "levels", "occupations", "geography", "audit"}
+    ALL_SECTIONS = {"kpi", "qualifications", "gender", "subjects", "experience", "fees", "levels", "occupations", "geography", "audit"}
     if selected_sections is None:
         selected = ALL_SECTIONS
     else:
@@ -523,8 +523,8 @@ def generate_docx_report(selected_sections=None, venn_info=None, output_path=OUT
         # ---------------------------------------------------------
         kpi_cards = [
             {"lbl": "TOTAL EDUCATORS", "val": "107,723", "sub": "Verified Unique Tutors", "bg": "F0FDF4", "border": "BBF7D0", "txt": "15803D"},
-            {"lbl": "COURSE OFFERINGS", "val": "327,720", "sub": "3.04 Subjects / Tutor", "bg": "EFF6FF", "border": "BFDBFE", "txt": "1D4ED8"},
-            {"lbl": "BENCHMARK RATE", "val": "₹848 / hr", "sub": "Average Tuition Fee", "bg": "FAF5FF", "border": "E9D5FF", "txt": "7E22CE"},
+            {"lbl": "COURSE OFFERINGS", "val": "327,720", "sub": "3.08 Cleaned Subjects / Tutor", "bg": "EFF6FF", "border": "BFDBFE", "txt": "1D4ED8"},
+            {"lbl": "BENCHMARK RATE", "val": "₹848.4 / hr", "sub": "Outlier-Trimmed Mean", "bg": "FAF5FF", "border": "E9D5FF", "txt": "7E22CE"},
             {"lbl": "ONLINE ADOPTION", "val": "95.6%", "sub": "102,992 Online Tutors", "bg": "FFFBEB", "border": "FDE68A", "txt": "B45309"},
         ]
         kpi_tbl = doc.add_table(rows=1, cols=4)
@@ -2081,11 +2081,26 @@ def generate_docx_report(selected_sections=None, venn_info=None, output_path=OUT
         p9 = doc.add_paragraph()
         p9.paragraph_format.space_after = Pt(6)
         p9.add_run(
-            "Key data cleaning steps applied to the dataset:\n"
-            "• Fixed form typos in experience (e.g. users accidentally selecting 70 years).\n"
-            "• Removed dummy fee placeholders (like ₹99,999,999 entered for 'negotiable fee') to reflect realistic tuition rates (₹50–₹5,000/hr).\n"
-            "• Removed duplicate subject entries, leaving 327,720 clean subject links.\n"
-            "• Cleaned phone numbers and emails accidentally written in name fields."
+            "Comprehensive Data Audit & Outlier Reconciliation (N = 107,723 Total Registrations):\n\n"
+            "1. Verified Profile Status:\n"
+            "   • 76,706 active profiles (71.2%) verified with reachable live tutor URLs.\n"
+            "   • 30,964 inactive historical profiles (28.7%) retained in master database for longitudinal analytics.\n"
+            "   • 53 profiles (0.1%) with unstated status.\n\n"
+            "2. Hourly Tuition Rate Reconciliation (Mean: ₹848.4/hr):\n"
+            "   • 76,416 educators provided realistic hourly pricing between ₹50 and ₹5,000/hr.\n"
+            "   • 28,411 educators (26.4%) chose 'negotiable' or did not state a fixed rate and were excluded from benchmark averages.\n"
+            "   • 959 records listed unrealistic rates below ₹50/hr (mostly test inputs of ₹0, ₹1, or ₹10) and were excluded as bottom outliers.\n"
+            "   • 1,937 records listed unrealistic rates above ₹5,000/hr (placeholder values of ₹99,999 or ₹99,999,999) and were excluded as top outliers.\n\n"
+            "3. Teaching Experience Distribution (Median: 3.0 yrs, Mean: 4.6 yrs):\n"
+            "   • 105,890 educators stated realistic experience between 0 and 30 years.\n"
+            "   • 1,268 educators did not specify their teaching experience.\n"
+            "   • 565 records with extreme values (>30 years up to 75 years) were excluded as form outliers.\n\n"
+            "4. Subject Disciplines & Course Offerings (327,720 Verified Offerings):\n"
+            "   • 106,552 unique educators listed specific subject offerings (averaging 3.08 offerings per educator).\n"
+            "   • 1,171 educators registered as general private tutors without selecting specific subjects and were excluded from subject cross-tabulations.\n\n"
+            "5. Secondary & Non-Teaching Occupations:\n"
+            "   • 36,525 educators declared external corporate careers (Software Engineers, CA, Doctors, Research Scholars).\n"
+            "   • 71,198 educators are pure full-time private educators or did not specify an external profession."
         )
 
     conn.close()
