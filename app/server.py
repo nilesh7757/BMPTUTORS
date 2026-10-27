@@ -4,9 +4,14 @@ import os
 import sys
 import io
 
+try:
+    import lxml.etree
+except Exception:
+    pass
+
 UV_PATH = "/home/nilesh7757/.cache/uv/archive-v0/b2_g7sKwC5mPN6Zp/lib/python3.13/site-packages"
 if os.path.exists(UV_PATH) and UV_PATH not in sys.path:
-    sys.path.insert(0, UV_PATH)
+    sys.path.append(UV_PATH)
 
 import uvicorn
 import xlsxwriter
@@ -17,6 +22,11 @@ if APP_DIR not in sys.path:
     sys.path.insert(0, APP_DIR)
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
+
+try:
+    from build_custom_docx import generate_docx_report
+except ImportError:
+    generate_docx_report = None
 
 from starlette.applications import Starlette
 from starlette.responses import JSONResponse, HTMLResponse, Response, FileResponse
@@ -350,79 +360,106 @@ async def api_tutor_detail(request):
 _CHARTS_CACHE = None
 
 async def api_charts(request):
+    params = request.query_params
+    region = params.get("region", "").strip()
+    mode = params.get("mode", "").strip()
+    qualification = params.get("qualification", "").strip()
+    has_filter = bool(region or mode or qualification)
+
     global _CHARTS_CACHE
-    if _CHARTS_CACHE is not None:
+    if not has_filter and _CHARTS_CACHE is not None:
         return JSONResponse(_CHARTS_CACHE)
 
     conn = get_db()
     cur = conn.cursor()
-    
-    sub_cats = cur.execute("""
-        SELECT subject_category, count(*) as count
-        FROM teacher_subjects
-        GROUP BY subject_category
+
+    t_clauses = []
+    t_args = []
+    if region:
+        t_clauses.append("t.region = ?")
+        t_args.append(region)
+    if qualification:
+        t_clauses.append("t.highest_qualification = ?")
+        t_args.append(qualification)
+    if mode == "online":
+        t_clauses.append("t.teaches_online = 1")
+    elif mode == "offline":
+        t_clauses.append("t.teaches_at_student_home = 1")
+
+    t_where = ("WHERE " + " AND ".join(t_clauses)) if t_clauses else ""
+    t_and = (" AND " + " AND ".join(t_clauses)) if t_clauses else ""
+
+    sub_cats = cur.execute(f"""
+        SELECT ts.subject_category, count(*) as count
+        FROM teacher_subjects ts
+        JOIN teachers t ON ts.tutor_id = t.tutor_id
+        {t_where}
+        GROUP BY ts.subject_category
         ORDER BY count DESC
-    """).fetchall()
+    """, t_args).fetchall()
     
-    quals = cur.execute("""
-        SELECT highest_qualification, count(*) as count
-        FROM teachers
-        GROUP BY highest_qualification
+    quals = cur.execute(f"""
+        SELECT t.highest_qualification, count(*) as count
+        FROM teachers t
+        {t_where}
+        GROUP BY t.highest_qualification
         ORDER BY count DESC
-    """).fetchall()
+    """, t_args).fetchall()
     
-    regions = cur.execute("""
-        SELECT region, count(*) as count
-        FROM teachers
-        WHERE region IS NOT NULL
-        GROUP BY region
+    regions = cur.execute(f"""
+        SELECT t.region, count(*) as count
+        FROM teachers t
+        WHERE t.region IS NOT NULL {t_and}
+        GROUP BY t.region
         ORDER BY count DESC
-    """).fetchall()
+    """, t_args).fetchall()
     
-    exams = cur.execute("""
-        SELECT competitive_exam, count(*) as count
-        FROM teacher_subjects
-        WHERE competitive_exam IS NOT NULL
-        GROUP BY competitive_exam
+    exams = cur.execute(f"""
+        SELECT ts.competitive_exam, count(*) as count
+        FROM teacher_subjects ts
+        JOIN teachers t ON ts.tutor_id = t.tutor_id
+        WHERE ts.competitive_exam IS NOT NULL {t_and}
+        GROUP BY ts.competitive_exam
         ORDER BY count DESC
         LIMIT 10
-    """).fetchall()
+    """, t_args).fetchall()
     
-    levels = cur.execute("""
-        SELECT level_category, count(*) as count
-        FROM teacher_subjects
-        WHERE level_category IS NOT NULL AND level_category != 'Not Specified'
-        GROUP BY level_category
+    levels = cur.execute(f"""
+        SELECT ts.level_category, count(*) as count
+        FROM teacher_subjects ts
+        JOIN teachers t ON ts.tutor_id = t.tutor_id
+        WHERE ts.level_category IS NOT NULL AND ts.level_category != 'Not Specified' {t_and}
+        GROUP BY ts.level_category
         ORDER BY count DESC
-    """).fetchall()
+    """, t_args).fetchall()
 
-    city_tiers = cur.execute("""
-        SELECT city_tier, count(*) as count
-        FROM teachers
-        WHERE city_tier IS NOT NULL
-        GROUP BY city_tier
+    city_tiers = cur.execute(f"""
+        SELECT t.city_tier, count(*) as count
+        FROM teachers t
+        WHERE t.city_tier IS NOT NULL {t_and}
+        GROUP BY t.city_tier
         ORDER BY count DESC
-    """).fetchall()
+    """, t_args).fetchall()
 
-    fee_by_cat = cur.execute("""
+    fee_by_cat = cur.execute(f"""
         SELECT s.subject_category, round(avg(t.hourly_fee_avg), 1) as avg_fee
         FROM teacher_subjects s
         JOIN teachers t ON s.tutor_id = t.tutor_id
-        WHERE t.hourly_fee_avg IS NOT NULL AND t.hourly_fee_avg BETWEEN 50 AND 5000
+        WHERE t.hourly_fee_avg IS NOT NULL AND t.hourly_fee_avg BETWEEN 50 AND 5000 {t_and}
         GROUP BY s.subject_category
         ORDER BY avg_fee DESC
-    """).fetchall()
+    """, t_args).fetchall()
 
-    seniority_tiers = cur.execute("""
-        SELECT seniority_tier, count(*) as count
-        FROM teachers
-        WHERE seniority_tier IS NOT NULL
-        GROUP BY seniority_tier
+    seniority_tiers = cur.execute(f"""
+        SELECT t.seniority_tier, count(*) as count
+        FROM teachers t
+        WHERE t.seniority_tier IS NOT NULL {t_and}
+        GROUP BY t.seniority_tier
         ORDER BY count DESC
-    """).fetchall()
+    """, t_args).fetchall()
 
     # Gender distribution by broad category (Academic Table 2)
-    gender_cats_raw = cur.execute("""
+    gender_cats_raw = cur.execute(f"""
         SELECT 
             ts.subject_category as subject,
             COUNT(DISTINCT ts.tutor_id) as n,
@@ -430,9 +467,10 @@ async def api_charts(request):
             COUNT(DISTINCT CASE WHEN t.gender = 'Female' THEN ts.tutor_id END) as female
         FROM teacher_subjects ts
         JOIN teachers t ON ts.tutor_id = t.tutor_id
+        {t_where}
         GROUP BY ts.subject_category
         ORDER BY n DESC
-    """).fetchall()
+    """, t_args).fetchall()
     
     gender_by_category = []
     for r in gender_cats_raw:
@@ -449,7 +487,7 @@ async def api_charts(request):
         })
 
     # Gender distribution by top specific subjects
-    gender_subs_raw = cur.execute("""
+    gender_subs_raw = cur.execute(f"""
         SELECT 
             ts.canonical_subject as subject,
             COUNT(DISTINCT ts.tutor_id) as n,
@@ -457,11 +495,11 @@ async def api_charts(request):
             COUNT(DISTINCT CASE WHEN t.gender = 'Female' THEN ts.tutor_id END) as female
         FROM teacher_subjects ts
         JOIN teachers t ON ts.tutor_id = t.tutor_id
+        {t_where}
         GROUP BY ts.canonical_subject
-        HAVING n >= 2500
         ORDER BY n DESC
         LIMIT 15
-    """).fetchall()
+    """, t_args).fetchall()
     
     gender_by_subject = []
     for r in gender_subs_raw:
@@ -478,20 +516,21 @@ async def api_charts(request):
         })
 
     # Overall total row
-    tot_row = cur.execute("""
+    tot_row = cur.execute(f"""
         SELECT 
             COUNT(DISTINCT ts.tutor_id) as n,
             COUNT(DISTINCT CASE WHEN t.gender = 'Male' THEN ts.tutor_id END) as male,
             COUNT(DISTINCT CASE WHEN t.gender = 'Female' THEN ts.tutor_id END) as female
         FROM teacher_subjects ts
         JOIN teachers t ON ts.tutor_id = t.tutor_id
-    """).fetchone()
-    tot_m = tot_row['male']
-    tot_f = tot_row['female']
-    tot_valid = tot_m + tot_f
+        {t_where}
+    """, t_args).fetchone()
+    tot_m = tot_row['male'] if tot_row else 0
+    tot_f = tot_row['female'] if tot_row else 0
+    tot_valid = (tot_m or 0) + (tot_f or 0)
     gender_total = {
         "subject": "Total",
-        "n": tot_row['n'],
+        "n": tot_row['n'] if tot_row else 0,
         "m_pct": round(tot_m / tot_valid * 100) if tot_valid else 0,
         "f_pct": round(tot_f / tot_valid * 100) if tot_valid else 0,
         "male": tot_m,
@@ -501,45 +540,52 @@ async def api_charts(request):
     # -------------------------------------------------------------
     # 1. FIGURE 1: SUBJECTS DISTRIBUTION (MOSCOW STYLE DELIVERABLE)
     # -------------------------------------------------------------
-    macro_rows = cur.execute("""
+    macro_raw = cur.execute(f"""
         SELECT 
             CASE 
-                WHEN subject_category = 'Science' THEN 'School Curriculum & STEM Sciences'
-                WHEN subject_category = 'Languages' THEN 'Foreign & Indian Languages'
-                WHEN subject_category = 'Coding' THEN 'Computer Science, IT & Coding'
-                WHEN subject_category = 'Commerce' THEN 'Commerce, Finance & Management'
-                WHEN subject_category = 'Arts' THEN 'Social Sciences, Arts & Humanities'
+                WHEN ts.subject_category = 'Science' THEN 'School Curriculum & STEM Sciences'
+                WHEN ts.subject_category = 'Languages' THEN 'Foreign & Indian Languages'
+                WHEN ts.subject_category = 'Coding' THEN 'Computer Science, IT & Coding'
+                WHEN ts.subject_category = 'Commerce' THEN 'Commerce, Finance & Management'
+                WHEN ts.subject_category = 'Arts' THEN 'Social Sciences, Arts & Humanities'
                 ELSE 'Personal Development & ECA'
             END as name,
-            count(*) as count,
-            round(count(*) * 100.0 / 403353, 1) as pct
-        FROM teacher_subjects
+            count(*) as count
+        FROM teacher_subjects ts
+        JOIN teachers t ON ts.tutor_id = t.tutor_id
+        {t_where}
         GROUP BY name
         ORDER BY count DESC
-    """).fetchall()
+    """, t_args).fetchall()
+    
+    tot_macro = sum(r['count'] for r in macro_raw) or 1
+    macro_rows = [{"name": r['name'], "count": r['count'], "pct": round(r['count'] * 100.0 / tot_macro, 1)} for r in macro_raw]
 
-    top_sub_rows = cur.execute("""
-        SELECT canonical_subject as name, count(*) as count, round(count(*) * 100.0 / 403353, 1) as pct
-        FROM teacher_subjects
-        GROUP BY canonical_subject
+    top_sub_raw = cur.execute(f"""
+        SELECT ts.canonical_subject as name, count(*) as count
+        FROM teacher_subjects ts
+        JOIN teachers t ON ts.tutor_id = t.tutor_id
+        {t_where}
+        GROUP BY ts.canonical_subject
         ORDER BY count DESC
         LIMIT 12
-    """).fetchall()
+    """, t_args).fetchall()
+    top_sub_rows = [{"name": r['name'], "count": r['count'], "pct": round(r['count'] * 100.0 / tot_macro, 1)} for r in top_sub_raw]
 
     # -------------------------------------------------------------
     # 2. FIGURE 3: YEARS OF EXPERIENCE DISTRIBUTION (AGE PROXY)
     # -------------------------------------------------------------
-    exp_rows = cur.execute("""
+    exp_rows = cur.execute(f"""
         SELECT 
-            cast(round(total_teaching_exp_years) as integer) as exp,
+            cast(round(t.total_teaching_exp_years) as integer) as exp,
             count(*) as total,
-            sum(case when gender = 'Male' then 1 else 0 end) as male,
-            sum(case when gender = 'Female' then 1 else 0 end) as female
-        FROM teachers
-        WHERE total_teaching_exp_years IS NOT NULL AND total_teaching_exp_years >= 0 AND total_teaching_exp_years <= 30
+            sum(case when t.gender = 'Male' then 1 else 0 end) as male,
+            sum(case when t.gender = 'Female' then 1 else 0 end) as female
+        FROM teachers t
+        WHERE t.total_teaching_exp_years IS NOT NULL AND t.total_teaching_exp_years >= 0 AND t.total_teaching_exp_years <= 30 {t_and}
         GROUP BY exp
         ORDER BY exp ASC
-    """).fetchall()
+    """, t_args).fetchall()
 
     exp_labels = [r['exp'] for r in exp_rows]
     exp_total = [r['total'] for r in exp_rows]
@@ -547,9 +593,9 @@ async def api_charts(request):
     exp_female = [r['female'] for r in exp_rows]
 
     # -------------------------------------------------------------
-    # 3. TABLE 2.8: SUBJECT-WISE FEES BY LEVEL (DIRECT ACADEMIC DELIVERABLE)
+    # 3. TABLE 2.8: SUBJECT-WISE FEES BY LEVEL
     # -------------------------------------------------------------
-    raw_fees = cur.execute("""
+    raw_fees = cur.execute(f"""
         SELECT 
             CASE 
                 WHEN ts.canonical_subject = 'Mathematics' THEN 'Maths'
@@ -572,11 +618,11 @@ async def api_charts(request):
             round(avg(t.hourly_fee_avg), 0) as fee
         FROM teacher_subjects ts
         JOIN teachers t ON ts.tutor_id = t.tutor_id
-        WHERE t.hourly_fee_avg BETWEEN 50 AND 5000
+        WHERE t.hourly_fee_avg BETWEEN 50 AND 5000 {t_and}
         GROUP BY subj, lvl, reg
-    """).fetchall()
+    """, t_args).fetchall()
 
-    nat_fees = cur.execute("""
+    nat_fees = cur.execute(f"""
         SELECT 
             CASE 
                 WHEN ts.canonical_subject = 'Mathematics' THEN 'Maths'
@@ -598,9 +644,9 @@ async def api_charts(request):
             round(avg(t.hourly_fee_avg), 0) as fee
         FROM teacher_subjects ts
         JOIN teachers t ON ts.tutor_id = t.tutor_id
-        WHERE t.hourly_fee_avg BETWEEN 50 AND 5000
+        WHERE t.hourly_fee_avg BETWEEN 50 AND 5000 {t_and}
         GROUP BY subj, lvl
-    """).fetchall()
+    """, t_args).fetchall()
 
     table_data = {}
     for r in nat_fees:
@@ -639,22 +685,22 @@ async def api_charts(request):
         row['total_n'] = tot_n
         matrix_rows.append(row)
 
-    occupations_rows = cur.execute("""
+    occupations_rows = cur.execute(f"""
         SELECT 
-            occupation, 
+            t.occupation, 
             count(*) as count, 
-            round(avg(CASE WHEN hourly_fee_avg BETWEEN 50 AND 5000 THEN hourly_fee_avg END), 0) as avg_fee,
-            round(sum(case when teaches_online = 1 then 1 else 0 end) * 100.0 / count(*), 1) as online_pct
-        FROM teachers
-        WHERE occupation IS NOT NULL
-        GROUP BY occupation
+            round(avg(CASE WHEN t.hourly_fee_avg BETWEEN 50 AND 5000 THEN t.hourly_fee_avg END), 0) as avg_fee,
+            round(sum(case when t.teaches_online = 1 then 1 else 0 end) * 100.0 / count(*), 1) as online_pct
+        FROM teachers t
+        WHERE t.occupation IS NOT NULL {t_and}
+        GROUP BY t.occupation
         ORDER BY count DESC
-    """).fetchall()
+    """, t_args).fetchall()
     occupations_data = [dict(r) for r in occupations_rows]
 
     conn.close()
 
-    _CHARTS_CACHE = {
+    payload = {
         "occupations": occupations_data,
         "subject_categories": [dict(r) for r in sub_cats],
         "qualifications": [dict(r) for r in quals],
@@ -668,8 +714,8 @@ async def api_charts(request):
         "gender_by_subject": gender_by_subject,
         "gender_total": gender_total,
         "figure1": {
-            "macro": [dict(r) for r in macro_rows],
-            "top_subjects": [dict(r) for r in top_sub_rows]
+            "macro": macro_rows,
+            "top_subjects": top_sub_rows
         },
         "figure3": {
             "labels": exp_labels,
@@ -684,7 +730,7 @@ async def api_charts(request):
                 "under_3_pct": 47.3,
                 "under_5_pct": 64.2,
                 "over_10_pct": 16.5,
-                "total_tutors": 107723
+                "total_tutors": len(exp_total)
             }
         },
         "table2_8": {
@@ -694,7 +740,10 @@ async def api_charts(request):
         }
     }
 
-    return JSONResponse(_CHARTS_CACHE)
+    if not has_filter:
+        _CHARTS_CACHE = payload
+
+    return JSONResponse(payload)
 
 async def api_map_states(request):
     conn = get_db()
@@ -1017,6 +1066,40 @@ async def api_download_visual_analytics_docx(request):
         filename="BMP_Tutors_Visual_Analytics_Report.docx"
     )
 
+async def api_export_custom_docx(request):
+    try:
+        if request.method == "POST":
+            data = await request.json()
+        else:
+            data = dict(request.query_params)
+
+        sections = data.get("sections")
+        if isinstance(sections, str):
+            sections = [s.strip() for s in sections.split(",") if s.strip()]
+
+        sub1 = data.get("sub1", "Mathematics")
+        sub2 = data.get("sub2", "Science (General)")
+        sub3 = data.get("sub3", "English")
+
+        from build_custom_docx import generate_docx_report
+        docx_bytes = generate_docx_report(
+            selected_sections=sections,
+            venn_info={"sub1": sub1, "sub2": sub2, "sub3": sub3},
+            output_path=None
+        )
+
+        return Response(
+            content=docx_bytes,
+            media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            headers={
+                "Content-Disposition": 'attachment; filename="BMP_Tutors_Custom_Analytics_Report.docx"'
+            }
+        )
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return JSONResponse({"error": str(e)}, status_code=500)
+
 async def api_predict_fee(request):
     try:
         if request.method == "POST":
@@ -1238,6 +1321,7 @@ routes = [
     Route("/api/download/filtered-excel", api_download_filtered_excel),
     Route("/api/export/visual-analytics-pdf", api_export_visual_analytics_pdf),
     Route("/api/download/visual-analytics-docx", api_download_visual_analytics_docx),
+    Route("/api/export/custom-docx", api_export_custom_docx, methods=["GET", "POST"]),
     Mount("/static/images", StaticFiles(directory=os.path.join(PROJECT_ROOT, "extracted_images")), name="static_images"),
 ]
 

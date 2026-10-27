@@ -13,3 +13,4 @@ tutors.db
 .~lock.*
 .env
 .env.*
+scratch/
