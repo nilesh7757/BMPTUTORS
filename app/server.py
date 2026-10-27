@@ -458,22 +458,6 @@ async def api_charts(request):
         ORDER BY count DESC
     """, t_args).fetchall()
 
-    state_comparisons_raw = cur.execute(f"""
-        SELECT 
-            t.state,
-            COALESCE(NULLIF(t.region, ''), 'Other') as region,
-            count(*) as count,
-            round(count(*) * 100.0 / 107723, 1) as share_pct,
-            round(avg(case when t.hourly_fee_avg between 50 and 5000 then t.hourly_fee_avg end), 0) as avg_fee,
-            round(sum(case when t.teaches_online = 1 then 1 else 0 end) * 100.0 / count(*), 1) as online_pct
-        FROM teachers t
-        WHERE t.state IS NOT NULL AND t.state != '' AND t.state != 'Not Specified' {t_and}
-        GROUP BY t.state
-        ORDER BY count DESC
-        LIMIT 15
-    """, t_args).fetchall()
-    state_comparisons = [dict(r) for r in state_comparisons_raw]
-
     # Gender distribution by broad category (Academic Table 2)
     gender_cats_raw = cur.execute(f"""
         SELECT 
@@ -717,7 +701,6 @@ async def api_charts(request):
     conn.close()
 
     payload = {
-        "state_comparisons": state_comparisons,
         "occupations": occupations_data,
         "subject_categories": [dict(r) for r in sub_cats],
         "qualifications": [dict(r) for r in quals],
