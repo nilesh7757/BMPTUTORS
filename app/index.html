@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BMP Tutors - National Market Intelligence Platform</title>
+  <title>BMP Tutors — Verified Educators Analytics Platform</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -40,7 +40,7 @@
 
   <!-- TOP EXECUTIVE NAVIGATION BAR -->
   <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-40 transition-all shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+    <div class="w-full px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
       
       <!-- Brand & Title -->
       <div class="flex items-center gap-3 shrink-0">
@@ -48,14 +48,7 @@
           <i class="fa-solid fa-graduation-cap"></i>
         </div>
         <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-base font-extrabold tracking-tight text-white">BMP Tutors</h1>
-            <span class="px-2 py-0.5 rounded-full bg-slate-800 border border-slate-700/80 text-[10px] font-semibold text-emerald-400 flex items-center gap-1.5 font-mono">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              Live Data
-            </span>
-          </div>
-          <p class="text-[11px] text-slate-400 font-medium">National Market Intelligence & Analytics Platform</p>
+          <h1 class="text-xl font-black tracking-tight text-white">BMP Tutors</h1>
         </div>
       </div>
 
@@ -80,10 +73,6 @@
         <button id="tab-btn-bio-ai" onclick="switchTab('bio-ai')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-2">
           <i class="fa-solid fa-pen-fancy text-emerald-400"></i>
           <span>AI Bio Studio</span>
-        </button>
-        <button id="tab-btn-schema" onclick="switchTab('schema')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-2">
-          <i class="fa-solid fa-layer-group"></i>
-          <span>Schema & Exports</span>
         </button>
       </nav>
 
@@ -168,13 +157,12 @@
         <button id="tab-mobile-btn-venn" onclick="switchTab('venn')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Venn</button>
         <button id="tab-mobile-btn-fee-ai" onclick="switchTab('fee-ai')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Fee AI</button>
         <button id="tab-mobile-btn-bio-ai" onclick="switchTab('bio-ai')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Bio AI</button>
-        <button id="tab-mobile-btn-schema" onclick="switchTab('schema')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Schema</button>
       </nav>
     </div>
   </header>
 
   <!-- MACRO METRIC SUMMARY KPI CARDS (Contextual for Directory & Analytics) -->
-  <section id="global-kpi-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 w-full">
+  <section id="global-kpi-section" class="w-full px-4 sm:px-6 lg:px-8 pt-5">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       
       <!-- Card 1: Unique Tutors -->
@@ -186,7 +174,7 @@
             <h3 id="stat-tutors" class="text-3xl font-extrabold text-slate-900 mt-1 font-mono tracking-tight">107,723</h3>
             <p class="text-xs text-emerald-600 mt-1.5 font-medium flex items-center gap-1">
               <i class="fa-solid fa-circle-check text-[11px]"></i>
-              <span>100% Normalized Star Schema</span>
+              <span>100% Normalized Master Database</span>
             </p>
           </div>
           <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
@@ -200,11 +188,11 @@
         <div class="h-1 bg-violet-500 absolute top-0 left-0 right-0"></div>
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Subject-Grade Linkages</p>
-            <h3 id="stat-bridge" class="text-3xl font-extrabold text-slate-900 mt-1 font-mono tracking-tight">403,353</h3>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Subject Offerings</p>
+            <h3 id="stat-bridge" class="text-3xl font-extrabold text-slate-900 mt-1 font-mono tracking-tight">327,720</h3>
             <p class="text-xs text-violet-600 mt-1.5 font-medium flex items-center gap-1">
               <i class="fa-solid fa-diagram-project text-[11px]"></i>
-              <span>3.7 Subjects per Educator</span>
+              <span>3.04 Subjects per Educator</span>
             </p>
           </div>
           <div class="w-12 h-12 rounded-2xl bg-violet-50 text-violet-600 ring-1 ring-violet-100 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
@@ -219,7 +207,7 @@
         <div class="flex items-center justify-between">
           <div>
             <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Benchmark Hourly Rate</p>
-            <h3 id="stat-fee" class="text-3xl font-extrabold text-slate-900 mt-1 font-mono tracking-tight">₹416.4 <span class="text-base font-sans font-medium text-slate-500">/hr</span></h3>
+            <h3 id="stat-fee" class="text-3xl font-extrabold text-slate-900 mt-1 font-mono tracking-tight">₹848 <span class="text-base font-sans font-medium text-slate-500">/hr</span></h3>
             <p class="text-xs text-slate-500 mt-1.5 font-medium flex items-center gap-1">
               <i class="fa-solid fa-shield-halved text-emerald-600 text-[11px]"></i>
               <span>Outlier-Trimmed Mean (₹50-₹5k)</span>
@@ -236,11 +224,11 @@
         <div class="h-1 bg-amber-500 absolute top-0 left-0 right-0"></div>
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Live Active Profiles</p>
-            <h3 id="stat-active" class="text-3xl font-extrabold text-slate-900 mt-1 font-mono tracking-tight">76,706</h3>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Verified Profiles</p>
+            <h3 id="stat-active" class="text-3xl font-extrabold text-slate-900 mt-1 font-mono tracking-tight">107,723</h3>
             <p class="text-xs text-amber-600 mt-1.5 font-medium flex items-center gap-1">
               <i class="fa-solid fa-bolt text-[11px]"></i>
-              <span>71.2% URL Verified Active Rate</span>
+              <span>All 36 States &amp; Union Territories</span>
             </p>
           </div>
           <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 ring-1 ring-amber-100 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
@@ -253,13 +241,13 @@
   </section>
 
   <!-- MAIN TAB CONTENT AREA -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1 flex flex-col">
+  <main class="w-full px-4 sm:px-6 lg:px-8 py-5 flex-1 flex flex-col">
 
     <!-- TAB 1: EXPLORER (DIRECTORY) -->
     <div id="tab-explorer" class="flex flex-col lg:flex-row gap-6 flex-1">
       
       <!-- SIDEBAR FACETED FILTERS -->
-      <aside class="w-full lg:w-72 bg-white p-5 rounded-2xl shadow-xs border border-slate-200/80 flex-shrink-0 flex flex-col gap-3.5">
+      <aside class="w-full lg:w-80 bg-white p-5 rounded-2xl shadow-xs border border-slate-200/80 flex-shrink-0 flex flex-col gap-3.5">
         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
           <div class="flex items-center gap-2">
             <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100 flex items-center justify-center text-xs">
@@ -1739,112 +1727,6 @@
 
     </div>
 
-    <!-- TAB 3: SCHEMA & EXPORTS -->
-    <div id="tab-schema" class="hidden flex-col gap-6">
-      <div class="bg-white p-8 rounded-2xl shadow-xs border border-slate-200/80">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl">
-            <i class="fa-solid fa-network-wired"></i>
-          </div>
-          <div>
-            <h3 class="text-lg font-bold text-slate-900 tracking-tight">Relational Star Schema & Bridge Architecture</h3>
-            <p class="text-xs text-slate-500">Zero data redundancy, zero wide sparsity, relational 3NF production standard</p>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-          <div class="p-5 rounded-xl bg-slate-50 border border-slate-200/80">
-            <div class="flex items-center justify-between mb-3">
-              <span class="font-bold text-sm text-slate-800 flex items-center gap-2">
-                <i class="fa-solid fa-table-list text-blue-600"></i> Table: `teachers` (Master Dimension)
-              </span>
-              <span class="text-xs bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full font-mono font-bold">107,723 rows</span>
-            </div>
-            <p class="text-xs text-slate-600 mb-3 leading-relaxed">Stores educator profile attributes exactly once, preventing repeating text contamination across subjects.</p>
-            <ul class="text-xs space-y-1 font-mono text-slate-700 bg-white p-3 rounded-lg border border-slate-200/80">
-              <li>• <span class="text-indigo-600 font-bold">tutor_id</span> (PK: 'T1'..'T107723')</li>
-              <li>• teacher_name, hookline, description</li>
-              <li>• state, region, city, city_tier, location_raw</li>
-              <li>• gender, works_as</li>
-              <li>• <span class="text-emerald-700 font-bold">occupation</span> (100% classified domain)</li>
-              <li>• experience_role, seniority_tier, total_teaching_exp_years</li>
-              <li>• highest_qualification, has_education_degree</li>
-              <li>• hourly_fee_min, hourly_fee_max, hourly_fee_avg</li>
-              <li>• teaches_online, teaches_at_student_home, can_travel</li>
-            </ul>
-          </div>
-
-          <div class="p-5 rounded-xl bg-slate-50 border border-slate-200/80">
-            <div class="flex items-center justify-between mb-3">
-              <span class="font-bold text-sm text-slate-800 flex items-center gap-2">
-                <i class="fa-solid fa-diagram-project text-indigo-600"></i> Table: `teacher_subjects` (Relational Bridge)
-              </span>
-              <span class="text-xs bg-indigo-100 text-indigo-800 px-2.5 py-0.5 rounded-full font-mono font-bold">403,353 rows</span>
-            </div>
-            <p class="text-xs text-slate-600 mb-3 leading-relaxed">Narrow junction table mapping each tutor to their specific subject disciplines, grade levels, and competitive tests.</p>
-            <ul class="text-xs space-y-1 font-mono text-slate-700 bg-white p-3 rounded-lg border border-slate-200/80">
-              <li>• bridge_id (PK: Auto increment)</li>
-              <li>• <span class="text-indigo-600 font-bold">tutor_id</span> (FK: References teachers.tutor_id)</li>
-              <li>• canonical_subject (Standardized subject name)</li>
-              <li>• subject_category (Science, Coding, Languages...)</li>
-              <li>• level_category (Secondary, Sr Secondary, College...)</li>
-              <li>• competitive_exam (JEE, NEET, IELTS, UPSC...)</li>
-              <li>• raw_subject_string (Original uncleaned text token)</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="mt-8 border-t border-slate-200 pt-6">
-          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
-            <div>
-              <h4 class="font-bold text-slate-900 text-sm">Direct Deliverable Downloads & Export Formats</h4>
-              <p class="text-xs text-slate-500">All data exported in open standard formats with 100% original and cleaned attributes</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <a href="/api/download/active-master-excel" download="BMP_Tutors_Verified_Active_Master.xlsx" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-2">
-                <i class="fa-solid fa-user-check text-sm text-blue-200"></i> Download Active Only Excel (.xlsx)
-              </a>
-              <a href="/api/download/master-excel" download="BMP_Tutors_Cleaned_Master.xlsx" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-2">
-                <i class="fa-solid fa-file-excel text-sm text-emerald-200"></i> Download Complete Master (.xlsx)
-              </a>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            <div class="p-3.5 bg-blue-50/70 border border-blue-200/80 rounded-xl text-xs">
-              <span class="font-bold text-blue-900 block flex items-center justify-between">
-                <span><i class="fa-solid fa-user-check mr-1 text-blue-600"></i> Active Only Excel:</span>
-                <span class="px-1.5 py-0.5 rounded bg-blue-200/70 text-blue-800 text-[10px] font-mono font-bold">58 MB</span>
-              </span>
-              <a href="/api/download/active-master-excel" download="BMP_Tutors_Verified_Active_Master.xlsx" class="font-mono text-blue-700 hover:underline text-[11px] block mt-1 truncate">BMP_Tutors_Verified_Active_Master.xlsx</a>
-              <p class="text-[10px] text-blue-700 mt-1">76,705 Verified Active Tutors &bull; 100% Opening URLs</p>
-            </div>
-            <div class="p-3.5 bg-emerald-50/70 border border-emerald-200/80 rounded-xl text-xs">
-              <span class="font-bold text-emerald-900 block flex items-center justify-between">
-                <span><i class="fa-solid fa-file-excel mr-1 text-emerald-600"></i> Complete Master:</span>
-                <span class="px-1.5 py-0.5 rounded bg-emerald-200/70 text-emerald-800 text-[10px] font-mono font-bold">79 MB</span>
-              </span>
-              <a href="/api/download/master-excel" download="BMP_Tutors_Cleaned_Master.xlsx" class="font-mono text-emerald-700 hover:underline text-[11px] block mt-1 truncate">BMP_Tutors_Cleaned_Master.xlsx</a>
-              <p class="text-[10px] text-emerald-700 mt-1">All 107k Tutors (Active + Inactive)</p>
-            </div>
-            <div class="p-3.5 bg-slate-100 rounded-xl text-xs border border-slate-200">
-              <span class="font-semibold text-slate-800 block">SQLite Database:</span>
-              <span class="font-mono text-slate-600 select-all text-[11px] block mt-1">cleaned_tutors_data.db (302 MB)</span>
-              <p class="text-[10px] text-slate-500 mt-1">Indexed 3NF relational schema</p>
-            </div>
-            <div class="p-3.5 bg-slate-100 rounded-xl text-xs border border-slate-200">
-              <span class="font-semibold text-slate-800 block">Cleaned CSVs:</span>
-              <span class="font-mono text-slate-600 select-all text-[11px] block mt-1">cleaned_teachers.csv (128 MB)<br/>cleaned_teacher_subjects.csv (26 MB)</span>
-            </div>
-            <div class="p-3.5 bg-slate-100 rounded-xl text-xs border border-slate-200">
-              <span class="font-semibold text-slate-800 block">Fast Parquet Files:</span>
-              <span class="font-mono text-slate-600 select-all text-[11px] block mt-1">cleaned_teachers.parquet (57 MB)<br/>cleaned_teacher_subjects.parquet (3.3 MB)</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </main>
 
   <!-- TUTOR DETAIL SLIDE-OVER DRAWER MODAL -->
@@ -1971,7 +1853,7 @@
   </div>
 
   <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500 mt-auto">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+    <div class="w-full px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2">
       <p>BMP Tutors &bull; Empirical Market Intelligence & Geospatial Analytics &bull; September 2026</p>
       <div class="flex items-center space-x-4">
         <a href="/report" target="_blank" class="hover:text-indigo-600 transition-colors">Academic Report</a>
@@ -2324,7 +2206,7 @@
 
     // Switch Tabs
     function switchTab(tabId) {
-      const tabs = ['explorer', 'analytics', 'venn', 'fee-ai', 'bio-ai', 'schema'];
+      const tabs = ['explorer', 'analytics', 'venn', 'fee-ai', 'bio-ai'];
       
       tabs.forEach(t => {
         const el = document.getElementById(`tab-${t}`);
