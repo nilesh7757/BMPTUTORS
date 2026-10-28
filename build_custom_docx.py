@@ -42,11 +42,33 @@ def format_integer_ratio(f_cnt, m_cnt, max_denom=10):
     frac = Fraction(int(f_cnt), int(m_cnt)).limit_denominator(max_denom)
     return f"{frac.numerator} : {frac.denominator}"
 
-PROJECT_ROOT = "/home/nilesh7757/BMPTUTORS1"
-sys.path.append(os.path.join(PROJECT_ROOT, "app"))
-from geo_service import get_enriched_districts_geojson, get_state_metrics
+PROJECT_ROOT = os.getenv("PROJECT_ROOT", os.path.dirname(os.path.abspath(__file__)))
+if os.path.join(PROJECT_ROOT, "app") not in sys.path:
+    sys.path.insert(0, os.path.join(PROJECT_ROOT, "app"))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 
-DB_PATH = os.path.join(PROJECT_ROOT, "cleaned_tutors_data.db")
+try:
+    from app.geo_service import get_enriched_districts_geojson, get_state_metrics
+except ImportError:
+    try:
+        from geo_service import get_enriched_districts_geojson, get_state_metrics
+    except ImportError:
+        get_enriched_districts_geojson = None
+        get_state_metrics = None
+
+DB_PATH = os.getenv("DB_PATH", os.path.join(PROJECT_ROOT, "cleaned_tutors_data.db"))
+
+# Automatically decompress database if deployed with db.gz
+if (not os.path.exists(DB_PATH) or os.path.getsize(DB_PATH) == 0) and os.path.exists(DB_PATH + ".gz"):
+    import gzip
+    import shutil
+    print(f"Decompressing database {DB_PATH}.gz for custom docx generator...")
+    tmp_db = DB_PATH + ".tmp"
+    with gzip.open(DB_PATH + ".gz", "rb") as f_in, open(tmp_db, "wb") as f_out:
+        shutil.copyfileobj(f_in, f_out)
+    os.replace(tmp_db, DB_PATH)
+    print("Database ready.")
 OUTPUT_DOCX = os.path.join(PROJECT_ROOT, "BMP_Tutors_Visual_Analytics_Report.docx")
 INDIA_MAP_PATH = os.path.join(PROJECT_ROOT, "extracted_images", "maps", "india_all_states_labeled_dashboard.png")
 VENN_SCHOOL_PATH = os.path.join(PROJECT_ROOT, "extracted_images", "charts", "venn_school_trio.png")
@@ -473,7 +495,7 @@ class NativeChartBuilder:
 # -------------------------------------------------------------
 # Document Generation Pipeline
 # -------------------------------------------------------------
-def generate_docx_report(selected_sections=None, active_only=False, venn_info=None, output_path=OUTPUT_DOCX):
+def generate_docx_report(selected_sections=None, active_only=False, venn_info=None, output_path=OUTPUT_DOCX, db_path=None):
     ALL_SECTIONS = {"kpi", "qualifications", "gender", "subjects", "multilingual", "experience", "fees", "levels", "occupations", "geography", "audit"}
     if selected_sections is None:
         selected = ALL_SECTIONS
@@ -482,7 +504,8 @@ def generate_docx_report(selected_sections=None, active_only=False, venn_info=No
         if len(selected) > 0 and "kpi" not in selected:
             selected.add("kpi")
     print("Connecting to database and verifying figures...")
-    conn = sqlite3.connect(DB_PATH)
+    actual_db = db_path or DB_PATH
+    conn = sqlite3.connect(actual_db)
     cur = conn.cursor()
 
     doc = Document()

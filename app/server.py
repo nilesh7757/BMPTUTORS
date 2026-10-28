@@ -1151,7 +1151,8 @@ async def api_export_custom_docx(request):
         docx_bytes = generate_docx_report(
             selected_sections=sections,
             active_only=active_only,
-            output_path=None
+            output_path=None,
+            db_path=DB_PATH
         )
 
         fname = "BMP_Tutors_Verified_Active_Report.docx" if active_only else "BMP_Tutors_National_Master_Report.docx"
