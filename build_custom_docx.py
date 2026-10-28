@@ -473,8 +473,8 @@ class NativeChartBuilder:
 # -------------------------------------------------------------
 # Document Generation Pipeline
 # -------------------------------------------------------------
-def generate_docx_report(selected_sections=None, venn_info=None, output_path=OUTPUT_DOCX):
-    ALL_SECTIONS = {"kpi", "qualifications", "gender", "subjects", "experience", "fees", "levels", "occupations", "geography", "audit"}
+def generate_docx_report(selected_sections=None, active_only=False, venn_info=None, output_path=OUTPUT_DOCX):
+    ALL_SECTIONS = {"kpi", "qualifications", "gender", "subjects", "multilingual", "experience", "fees", "levels", "occupations", "geography", "audit"}
     if selected_sections is None:
         selected = ALL_SECTIONS
     else:

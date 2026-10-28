@@ -50,12 +50,14 @@ except ImportError:
 DB_PATH = os.getenv("DB_PATH", os.path.join(PROJECT_ROOT, "cleaned_tutors_data.db"))
 
 # Automatically decompress database if deployed with db.gz
-if not os.path.exists(DB_PATH) and os.path.exists(DB_PATH + ".gz"):
+if (not os.path.exists(DB_PATH) or os.path.getsize(DB_PATH) == 0) and os.path.exists(DB_PATH + ".gz"):
     import gzip
     import shutil
     print(f"Decompressing database {DB_PATH}.gz ...")
-    with gzip.open(DB_PATH + ".gz", "rb") as f_in, open(DB_PATH, "wb") as f_out:
+    tmp_db = DB_PATH + ".tmp"
+    with gzip.open(DB_PATH + ".gz", "rb") as f_in, open(tmp_db, "wb") as f_out:
         shutil.copyfileobj(f_in, f_out)
+    os.replace(tmp_db, DB_PATH)
     print("Database ready.")
 
 def get_db():
@@ -1395,4 +1397,4 @@ app = Starlette(debug=True, routes=routes)
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8080))
     print(f"Starting Tutor Data Dashboard on port {port} ...")
-    uvicorn.run("server:app", host="0.0.0.0", port=port, log_level="info")
+    uvicorn.run(app, host="0.0.0.0", port=port, log_level="info")
