@@ -539,7 +539,7 @@
             </button>
             <button id="btn-scope-active" onclick="setAnalyticsScope('active')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900">
               <i class="fa-solid fa-circle-check text-emerald-600 text-[11px]"></i>
-              <span>Verified Only (76k)</span>
+              <span>Scraped Cohort (76k)</span>
             </button>
           </div>
 
@@ -1823,24 +1823,18 @@
       <!-- Drawer Scrollable Content -->
       <div class="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar text-sm">
         
-        <!-- Live Platform Status Management Toolbar -->
-        <div class="p-3.5 bg-slate-900 rounded-xl border border-slate-800 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
-          <div>
-            <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider font-mono block">TeacherOn Verification Status</span>
-            <span id="modal-status-text" class="text-xs font-semibold text-slate-200">Verified Active on TeacherOn</span>
+        <!-- TeacherOn Verification Status Banner (Read-Only) -->
+        <div id="modal-status-container" class="p-3.5 rounded-xl border flex items-center justify-between gap-3 shadow-2xs bg-slate-50 border-slate-200">
+          <div class="flex items-center gap-3">
+            <span id="modal-status-icon" class="w-8 h-8 rounded-lg flex items-center justify-center text-sm shrink-0 bg-emerald-100 text-emerald-700">
+              <i class="fa-solid fa-circle-check"></i>
+            </span>
+            <div>
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-mono block">TeacherOn Verification Status</span>
+              <span id="modal-status-text" class="text-xs font-bold text-slate-800">Verified Active on TeacherOn</span>
+            </div>
           </div>
-          <div class="flex items-center gap-1.5 shrink-0">
-            <span class="text-[10px] text-slate-400 font-mono mr-1">Update:</span>
-            <button onclick="setTutorStatus(1, 'Verified Active on TeacherOn')" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition-all active:scale-95 flex items-center gap-1 shadow-2xs cursor-pointer" title="Mark as verified active on TeacherOn">
-              <i class="fa-solid fa-check text-[10px]"></i> Active
-            </button>
-            <button onclick="setTutorStatus(0, 'Inactive on TeacherOn (Dormant Single Registration)')" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-600 hover:bg-amber-500 text-white transition-all active:scale-95 flex items-center gap-1 shadow-2xs cursor-pointer" title="Mark as dormant/inactive on TeacherOn">
-              <i class="fa-solid fa-pause text-[10px]"></i> Inactive
-            </button>
-            <button onclick="setTutorStatus(0, 'No Profile on TeacherOn (404/Removed)')" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white transition-all active:scale-95 flex items-center gap-1 shadow-2xs cursor-pointer" title="Mark as profile removed or 404">
-              <i class="fa-solid fa-xmark text-[10px]"></i> No Profile
-            </button>
-          </div>
+          <span id="modal-status-pill" class="px-2.5 py-1 rounded-lg text-[10px] font-bold font-mono uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300">Active</span>
         </div>
 
         <!-- Headline / Hookline -->
@@ -2643,27 +2637,6 @@
     // Modal Details
         let currentModalTutorId = null;
 
-    async function setTutorStatus(isActive, reason) {
-      if (!currentModalTutorId) return;
-      try {
-        const res = await fetch(`/api/tutors/${currentModalTutorId}/status`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ is_active: isActive, validation_reason: reason })
-        });
-        const data = await res.json();
-        if (data.success) {
-          await viewTutorDetails(currentModalTutorId);
-          loadTutors();
-          loadStats();
-        } else {
-          alert('Error: ' + (data.error || 'Failed to update'));
-        }
-      } catch (err) {
-        alert('Failed to update status: ' + err.message);
-      }
-    }
-
     async function viewTutorDetails(tutorId) {
       try {
         const res = await fetch(`/api/tutors/${tutorId}`);
@@ -2672,23 +2645,61 @@
         // 1. Header & ID
         document.getElementById('modal-tutor-id').textContent = t.tutor_id;
         currentModalTutorId = t.tutor_id;
-        const statusText = document.getElementById('modal-status-text');
-        if (statusText) {
-          statusText.textContent = t.validation_reason || (t.is_active ? 'Verified Active on TeacherOn' : 'Inactive');
-        }
         document.getElementById('modal-name').textContent = t.teacher_name || 'Anonymous';
         const initials = (t.teacher_name || 'T').trim().split(/\s+/).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'T';
         document.getElementById('modal-initials').textContent = initials;
 
-        // 2. Active / Inactive Badge
+        // 2. Platform Verification Status Display (Read-Only)
+        const statusContainer = document.getElementById('modal-status-container');
+        const statusIcon = document.getElementById('modal-status-icon');
+        const statusText = document.getElementById('modal-status-text');
+        const statusPill = document.getElementById('modal-status-pill');
         const activeBadge = document.getElementById('modal-active-badge');
-        if (activeBadge) {
-          if (t.is_active == 1) {
+
+        const reason = t.validation_reason || (t.is_active ? 'Verified Active on TeacherOn' : 'Inactive on TeacherOn');
+        if (statusText) statusText.textContent = reason;
+
+        if (t.is_active == 1) {
+          if (statusContainer) statusContainer.className = 'p-3.5 rounded-xl border flex items-center justify-between gap-3 shadow-2xs bg-emerald-50/70 border-emerald-200';
+          if (statusIcon) {
+            statusIcon.className = 'w-8 h-8 rounded-lg flex items-center justify-center text-sm shrink-0 bg-emerald-100 text-emerald-700';
+            statusIcon.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+          }
+          if (statusPill) {
+            statusPill.className = 'px-2.5 py-1 rounded-lg text-[10px] font-bold font-mono uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300';
+            statusPill.textContent = 'Active';
+          }
+          if (activeBadge) {
             activeBadge.textContent = 'Active Profile';
             activeBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
-          } else {
-            const reason = (t.validation_reason && t.validation_reason !== 'OK') ? t.validation_reason : 'Inactive on TeacherOn';
-            activeBadge.textContent = `Inactive (${reason.slice(0, 22)})`;
+          }
+        } else if (reason.includes('404') || reason.includes('Removed') || reason.includes('No Profile')) {
+          if (statusContainer) statusContainer.className = 'p-3.5 rounded-xl border flex items-center justify-between gap-3 shadow-2xs bg-rose-50/70 border-rose-200';
+          if (statusIcon) {
+            statusIcon.className = 'w-8 h-8 rounded-lg flex items-center justify-center text-sm shrink-0 bg-rose-100 text-rose-700';
+            statusIcon.innerHTML = '<i class="fa-solid fa-user-xmark"></i>';
+          }
+          if (statusPill) {
+            statusPill.className = 'px-2.5 py-1 rounded-lg text-[10px] font-bold font-mono uppercase tracking-wider bg-rose-100 text-rose-800 border border-rose-300';
+            statusPill.textContent = 'No Profile';
+          }
+          if (activeBadge) {
+            activeBadge.textContent = 'No Live Profile';
+            activeBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider font-mono bg-rose-500/20 text-rose-300 border border-rose-500/30';
+          }
+        } else {
+          // Dormant single registration (e.g. T2 Anupama Manoj Navayath)
+          if (statusContainer) statusContainer.className = 'p-3.5 rounded-xl border flex items-center justify-between gap-3 shadow-2xs bg-amber-50/70 border-amber-200';
+          if (statusIcon) {
+            statusIcon.className = 'w-8 h-8 rounded-lg flex items-center justify-center text-sm shrink-0 bg-amber-100 text-amber-700';
+            statusIcon.innerHTML = '<i class="fa-solid fa-clock-rotate-left"></i>';
+          }
+          if (statusPill) {
+            statusPill.className = 'px-2.5 py-1 rounded-lg text-[10px] font-bold font-mono uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-300';
+            statusPill.textContent = 'Inactive (Dormant)';
+          }
+          if (activeBadge) {
+            activeBadge.textContent = 'Inactive (Dormant)';
             activeBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider font-mono bg-amber-500/20 text-amber-300 border border-amber-500/30';
           }
         }
