@@ -86,7 +86,7 @@ def parse_teacheron_html(html, url):
 
     return data
 
-def scrape_tutor_url(url, proxy=None, timeout=12):
+def scrape_tutor_url(url, proxy=None, timeout=12, cookie=None):
     """
     Fetch a single TeacherOn tutor profile with browser spoofing.
     """
@@ -106,6 +106,12 @@ def scrape_tutor_url(url, proxy=None, timeout=12):
         "Upgrade-Insecure-Requests": "1"
     }
 
+    if cookie:
+        cookie_clean = cookie.strip()
+        if "cf_clearance=" not in cookie_clean and "=" not in cookie_clean:
+            cookie_clean = f"cf_clearance={cookie_clean}"
+        headers["Cookie"] = cookie_clean
+
     req = urllib.request.Request(url, headers=headers)
     if proxy:
         req.set_proxy(proxy, "http" if proxy.startswith("http://") else "https")
@@ -124,7 +130,7 @@ def scrape_tutor_url(url, proxy=None, timeout=12):
     except Exception as ex:
         return {"status": "error", "validation_reason": str(ex)[:40]}
 
-def run_scraper(db_path, limit=50, delay=2.0, source_tab="not scraped", tutor_id=None, proxy=None):
+def run_scraper(db_path, limit=50, delay=2.0, source_tab="not scraped", tutor_id=None, proxy=None, cookie=None):
     if not os.path.exists(db_path):
         print(f"Error: Database not found at {db_path}")
         sys.exit(1)
@@ -142,6 +148,8 @@ def run_scraper(db_path, limit=50, delay=2.0, source_tab="not scraped", tutor_id
     print(f" BMP Tutors - Live Profile Verification & Scraper")
     print(f" Target Cohort: {source_tab} | Queue Size: {len(rows)} tutors")
     print(f" Rate Limit Delay: {delay}s | Database: {os.path.basename(db_path)}")
+    if cookie:
+        print(f" Cloudflare Session Cookie: Configured (Length: {len(cookie)} chars)")
     print(f"=======================================================\n")
 
     stats = {"active": 0, "dormant": 0, "removed": 0, "cloudflare_blocked": 0, "errors": 0}
@@ -151,7 +159,7 @@ def run_scraper(db_path, limit=50, delay=2.0, source_tab="not scraped", tutor_id
             continue
 
         print(f"[{i}/{len(rows)}] Scraping {tid} ({name or 'Anonymous'}) -> {url} ...", end=" ", flush=True)
-        res = scrape_tutor_url(url, proxy=proxy)
+        res = scrape_tutor_url(url, proxy=proxy, cookie=cookie)
         status = res.get("status")
 
         if status == "active":

@@ -12,7 +12,7 @@ except Exception:
 
 UV_PATH = "/home/nilesh7757/.cache/uv/archive-v0/b2_g7sKwC5mPN6Zp/lib/python3.13/site-packages"
 if os.path.exists(UV_PATH) and UV_PATH not in sys.path:
-    sys.path.append(UV_PATH)
+    sys.path.insert(0, UV_PATH)
 
 import uvicorn
 import xlsxwriter

@@ -543,6 +543,10 @@
             </button>
           </div>
 
+          <button onclick="openCustomWordModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white transition-all flex items-center gap-2 shadow-xs active:scale-[0.98]">
+            <i class="fa-solid fa-file-word text-sm"></i>
+            <span>Word Report (.docx)</span>
+          </button>
           <a href="/api/export/visual-analytics-pdf" download="BMP_Tutors_Visual_Analytics_Complete_Report.pdf" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white transition-all flex items-center gap-2 shadow-xs active:scale-[0.98]">
             <i class="fa-solid fa-file-pdf text-sm"></i> <span>Download PDF</span>
           </a>
@@ -1924,6 +1928,167 @@
         </div>
 
       </div>
+    </div>
+  </div>
+
+  <!-- CUSTOM WORD REPORT MODAL -->
+  <div id="modal-custom-word" class="fixed inset-0 z-50 hidden bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden transform transition-all">
+      
+      <!-- Modal Header -->
+      <div class="p-6 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white relative">
+        <button onclick="closeCustomWordModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white transition-colors w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+        <div class="flex items-center gap-2.5 mb-1.5">
+          <span class="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 border border-blue-400/30 flex items-center justify-center text-sm">
+            <i class="fa-solid fa-file-word"></i>
+          </span>
+          <span class="text-xs uppercase tracking-widest text-blue-300 font-bold font-mono">100% Native DrawingML Word Export</span>
+        </div>
+        <h3 class="text-xl font-extrabold tracking-tight text-white">Customize & Extract Word Report (.docx)</h3>
+        <p class="text-xs text-slate-300 mt-1 max-w-lg leading-relaxed">
+          Select which sections to extract. Every chart is generated as an editable Office DrawingML graphic with an embedded Excel workbook—edit numbers in Excel and adjust colors/fonts directly in Word.
+        </p>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 max-h-[60vh] overflow-y-auto space-y-5 custom-scrollbar">
+        
+        <!-- Selection Cohort Scope -->
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+          <label class="text-xs font-bold text-slate-800 uppercase tracking-wider block mb-2 font-mono">
+            1. Select Educator Cohort for Word Report:
+          </label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <label class="flex items-start gap-3 p-3 rounded-xl border border-blue-300 bg-blue-50/60 cursor-pointer transition-all hover:border-blue-400" id="label-docx-scope-all">
+              <input type="radio" name="docx-scope" value="all" checked class="mt-0.5 text-blue-600 focus:ring-blue-500">
+              <div>
+                <span class="font-bold text-slate-900 block text-xs flex items-center gap-1.5">
+                  <i class="fa-solid fa-database text-blue-600"></i> All 107,723 Educators
+                </span>
+                <span class="text-[11px] text-slate-500 block mt-0.5">Complete master dataset across 36 States & UTs (87.4k active + 19.0k dormant + 1.2k unstated)</span>
+              </div>
+            </label>
+            <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 bg-white cursor-pointer transition-all hover:border-emerald-300" id="label-docx-scope-active">
+              <input type="radio" name="docx-scope" value="active" class="mt-0.5 text-emerald-600 focus:ring-emerald-500">
+              <div>
+                <span class="font-bold text-slate-900 block text-xs flex items-center gap-1.5">
+                  <i class="fa-solid fa-circle-check text-emerald-600"></i> Verified Active Only (87,439)
+                </span>
+                <span class="text-[11px] text-slate-500 block mt-0.5">Strictly verified multi-session profiles with confirmed login activity</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Selection Controls -->
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+          <span class="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">2. Select Report Sections & Modules</span>
+          <div class="flex items-center gap-2">
+            <button onclick="toggleDocxSections(true)" class="text-xs text-indigo-600 hover:text-indigo-800 font-bold">Select All</button>
+            <span class="text-slate-300">&bull;</span>
+            <button onclick="toggleDocxSections(false)" class="text-xs text-slate-500 hover:text-slate-700 font-medium">Clear All</button>
+          </div>
+        </div>
+
+        <!-- Section Checkboxes Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
+            <input type="checkbox" name="docx-section" value="kpi" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+            <div>
+              <span class="font-bold text-slate-900 block">Executive KPI Dashboard</span>
+              <span class="text-[11px] text-slate-500">Summary stat cards (107k tutors, rates, online adoption)</span>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
+            <input type="checkbox" name="docx-section" value="gender" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+            <div>
+              <span class="font-bold text-slate-900 block">Gender Distribution</span>
+              <span class="text-[11px] text-slate-500">Figure 2 Column Chart & Table 2 subject gender breakdown</span>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
+            <input type="checkbox" name="docx-section" value="subjects" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+            <div>
+              <span class="font-bold text-slate-900 block">Subject Streams & Demand</span>
+              <span class="text-[11px] text-slate-500">Figure 3A & 3B charts (macro categories & top 12 subjects)</span>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
+            <input type="checkbox" name="docx-section" value="multilingual" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+            <div>
+              <span class="font-bold text-slate-900 block">Linguistic Demographics</span>
+              <span class="text-[11px] text-slate-500">Top 10 spoken tutoring languages & polyglot pricing analysis</span>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
+            <input type="checkbox" name="docx-section" value="experience" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+            <div>
+              <span class="font-bold text-slate-900 block">Teaching Experience (Age Proxy)</span>
+              <span class="text-[11px] text-slate-500">Figure 4 Column Chart (0–30 years) & seniority breakdown</span>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
+            <input type="checkbox" name="docx-section" value="fees" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+            <div>
+              <span class="font-bold text-slate-900 block">Hourly Tuition Rates Across India</span>
+              <span class="text-[11px] text-slate-500">Figure 5 Rates distribution, percentiles & city tier benchmarks</span>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
+            <input type="checkbox" name="docx-section" value="levels" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+            <div>
+              <span class="font-bold text-slate-900 block">Subject Rates by Student Grade</span>
+              <span class="text-[11px] text-slate-500">Table 2.8 Pricing matrix (Primary to Higher Education)</span>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
+            <input type="checkbox" name="docx-section" value="occupations" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+            <div>
+              <span class="font-bold text-slate-900 block">Professional Gig Occupations</span>
+              <span class="text-[11px] text-slate-500">Table 7 IT engineers, College students & Full-time educators</span>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
+            <input type="checkbox" name="docx-section" value="geography" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+            <div>
+              <span class="font-bold text-slate-900 block">Geographic Map & District Directory</span>
+              <span class="text-[11px] text-slate-500">All-India labeled state map + complete 440+ district table</span>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all sm:col-span-2">
+            <input type="checkbox" name="docx-section" value="audit" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+            <div>
+              <span class="font-bold text-slate-900 block">Data Cleaning & Verification Methodology</span>
+              <span class="text-[11px] text-slate-500">Audited notes verifying 107,723 records with zero fake placeholders</span>
+            </div>
+          </label>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+        <button onclick="closeCustomWordModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-800 transition-colors">
+          Cancel
+        </button>
+        <button id="btn-download-custom-word" onclick="downloadCustomWordReport()" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white transition-all flex items-center gap-2 shadow-xs active:scale-[0.98]">
+          <i id="word-export-spinner" class="fa-solid fa-circle-notch fa-spin hidden"></i>
+          <i class="fa-solid fa-download"></i>
+          <span id="word-export-btn-text">Generate & Download Word (.docx)</span>
+        </button>
+      </div>
+
     </div>
   </div>
 
@@ -4724,6 +4889,8 @@
 
 
 let vennSubjectsList = [];
+let currentVennData = null;
+let currentSelectedSegment = 'all_three';
 
     async function initVennLab() {
       try {
