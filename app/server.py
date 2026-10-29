@@ -88,7 +88,7 @@ async def api_stats(request):
     avg_fee = cur.execute("SELECT round(avg(hourly_fee_avg), 1) FROM teachers WHERE hourly_fee_avg IS NOT NULL AND hourly_fee_avg <= 5000").fetchone()[0]
     active_tutors = cur.execute("SELECT count(*) FROM teachers WHERE is_active = 1").fetchone()[0]
     dormant_tutors = cur.execute("SELECT count(*) FROM teachers WHERE is_active = 0 AND validation_reason LIKE '%Dormant%'").fetchone()[0]
-    removed_tutors = cur.execute("SELECT count(*) FROM teachers WHERE is_active = 0 AND (validation_reason LIKE '%No Profile%' OR validation_reason LIKE '%404%')").fetchone()[0]
+    removed_tutors = cur.execute("SELECT count(*) FROM teachers WHERE is_active = 0 AND (validation_reason LIKE '%Unstated%' OR validation_reason LIKE '%No Profile%' OR validation_reason LIKE '%404%')").fetchone()[0]
     
     conn.close()
     _STATS_CACHE = {
@@ -257,9 +257,9 @@ async def api_tutors(request):
     if status_filter == "active":
         where_clauses.append("t.is_active = 1")
     elif status_filter in ("inactive", "dormant"):
-        where_clauses.append("t.is_active = 0 AND t.validation_reason LIKE '%Inactive%'")
-    elif status_filter in ("removed", "no_profile", "404"):
-        where_clauses.append("t.is_active = 0 AND (t.validation_reason LIKE '%No Profile%' OR t.validation_reason LIKE '%404%')")
+        where_clauses.append("t.is_active = 0 AND t.validation_reason LIKE '%Dormant%'")
+    elif status_filter in ("removed", "no_profile", "404", "unstated"):
+        where_clauses.append("t.is_active = 0 AND (t.validation_reason LIKE '%Unstated%' OR t.validation_reason LIKE '%No Profile%' OR t.validation_reason LIKE '%404%')")
         
     # Bridge filters
     bridge_joins = []
