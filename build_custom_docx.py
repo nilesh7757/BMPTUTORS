@@ -95,6 +95,20 @@ def set_cell_margins(cell, top=80, bottom=80, left=110, right=110):
         tcMar.append(node)
     tcPr.append(tcMar)
 
+def add_outlier_audit_note(doc, note_text):
+    p = doc.add_paragraph()
+    p.paragraph_format.space_before = Pt(4)
+    p.paragraph_format.space_after = Pt(10)
+    r_bold = p.add_run("Note & Data Audit: ")
+    r_bold.font.size = Pt(8.0)
+    r_bold.font.bold = True
+    r_bold.font.color.rgb = RGBColor(71, 85, 105)
+    r_text = p.add_run(note_text)
+    r_text.font.size = Pt(8.0)
+    r_text.font.italic = True
+    r_text.font.color.rgb = RGBColor(100, 116, 139)
+    return p
+
 def set_table_borders(table, color="CBD5E1", sz="4", val="single"):
     tblPr = table._element.xpath('w:tblPr')
     if tblPr:
@@ -211,6 +225,7 @@ class NativeChartBuilder:
           </c:val>
         </c:ser>
         <c:dLbls>
+          <c:numFmt formatCode="0.0%" sourceLinked="0"/>
           <c:showLegendKey val="0"/>
           <c:showVal val="0"/>
           <c:showCatName val="0"/>
@@ -645,7 +660,8 @@ def generate_docx_report(selected_sections=None, active_only=False, venn_info=No
                 if c_idx == 0:
                     r.font.bold = True
 
-        doc.add_paragraph().paragraph_format.space_after = Pt(12)
+        add_outlier_audit_note(doc, "N = 107,723 total registered educators. 1,638 educators (1.5%) did not specify their degree credential and are grouped under 'Not Specified'. Verified active profiles: 76,706 (71.2%); historical inactive profiles: 30,964 (28.7%); unstated status: 53 (0.1%).")
+        doc.add_paragraph().paragraph_format.space_after = Pt(6)
 
         # ---------------------------------------------------------
     if "gender" in selected:
@@ -972,7 +988,8 @@ def generate_docx_report(selected_sections=None, active_only=False, venn_info=No
             r_run.font.size = Pt(8)
             r_run.font.bold = True
 
-        doc.add_paragraph().paragraph_format.space_after = Pt(12)
+        add_outlier_audit_note(doc, "Disaggregated across 106,552 educators listing specific academic disciplines (327,720 subject offerings, avg 3.08 per tutor). 1,171 general educators who registered without selecting specific subject tags are excluded from subject cross-tabulations.")
+        doc.add_paragraph().paragraph_format.space_after = Pt(6)
 
         # ---------------------------------------------------------
     if "subjects" in selected:
@@ -1071,7 +1088,8 @@ def generate_docx_report(selected_sections=None, active_only=False, venn_info=No
                 if c_idx == 1:
                     r.font.bold = True
 
-        doc.add_paragraph().paragraph_format.space_after = Pt(10)
+        add_outlier_audit_note(doc, "N = 327,720 offerings across 106,552 tutors. Top 10 disciplines account for 139,490 offerings (42.6% of nationwide subject catalog).")
+        doc.add_paragraph().paragraph_format.space_after = Pt(6)
 
         # ---------------------------------------------------------
     if "venn" in selected:
@@ -1493,7 +1511,8 @@ def generate_docx_report(selected_sections=None, active_only=False, venn_info=No
                 if c_idx == 0:
                     r.font.bold = True
 
-        doc.add_paragraph().paragraph_format.space_after = Pt(12)
+        add_outlier_audit_note(doc, "N = 105,890 educators reporting realistic experience (0 to 30 years; peak mode 1–2 yrs, median 3.0 yrs, mean 4.6 yrs). Outliers excluded from curve: 1,268 unstated experience records and 565 extreme entries (>30 to 75 yrs).")
+        doc.add_paragraph().paragraph_format.space_after = Pt(6)
 
         # ---------------------------------------------------------
     if "fees" in selected:
@@ -1596,7 +1615,7 @@ def generate_docx_report(selected_sections=None, active_only=False, venn_info=No
         headers_t6 = [
             "Subject Domain",
             "Elementary\n(Classes 1–5)",
-            "Upper Primary\n(Classes 5–8)",
+            "Primary\n(Classes 5–8)",
             "Secondary\n(Classes 9–10)",
             "Senior Sec\n(Classes 11–12)",
             "College /\nUniversity",
@@ -1643,7 +1662,8 @@ def generate_docx_report(selected_sections=None, active_only=False, venn_info=No
         p6_note.paragraph_format.space_before = Pt(6)
         p6_note.paragraph_format.space_after = Pt(12)
         r6_note = p6_note.add_run(
-            "Takeaway: Rates jump after Class 5 as parents switch from general homework helpers to dedicated subject specialists."
+            "Takeaway: Rates jump after Class 5 as parents switch from general homework helpers to dedicated subject specialists.\n"
+            "Note & Data Audit: Hourly fees benchmarked strictly within realistic tuition band (₹50 to ₹5,000/hr across 76,416 stating tutors; mean ₹848.4/hr). Outlier exclusions: 28,411 tutors (26.4%) with unstated/negotiable rates, 959 extreme low entries (<₹50/hr), and 1,937 extreme placeholder entries (>₹5,000/hr). Premium competitive entrance exams (IIT-JEE, NEET, CAT, SAT) average ₹1,383/hr across 1,378+ specialized test-prep educators."
         )
         r6_note.font.size = Pt(8.5)
         r6_note.font.italic = True
