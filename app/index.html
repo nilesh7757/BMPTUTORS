@@ -62,10 +62,6 @@
           <i class="fa-solid fa-chart-column"></i>
           <span>Visual Analytics</span>
         </button>
-        <button id="tab-btn-venn" onclick="jumpToVennStudio()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-2">
-          <i class="fa-solid fa-shapes text-teal-400"></i>
-          <span>Subject Venn Lab</span>
-        </button>
         <button id="tab-btn-fee-ai" onclick="switchTab('fee-ai')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-2">
           <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
           <span>AI Fee Estimator</span>
@@ -547,10 +543,6 @@
             </button>
           </div>
 
-          <button onclick="openCustomWordModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white transition-all flex items-center gap-2 shadow-xs active:scale-[0.98]">
-            <i class="fa-solid fa-file-word text-sm"></i>
-            <span>Word Report (.docx)</span>
-          </button>
           <a href="/api/export/visual-analytics-pdf" download="BMP_Tutors_Visual_Analytics_Complete_Report.pdf" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white transition-all flex items-center gap-2 shadow-xs active:scale-[0.98]">
             <i class="fa-solid fa-file-pdf text-sm"></i> <span>Download PDF</span>
           </a>
@@ -848,107 +840,29 @@
         </div>
       </div>
 
-      <!-- SECTION 4: ACADEMIC TABLES (TABLE 2 & TABLE 3) -->
-      <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
-          <div>
-            <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-rose-200/60">Demographic Breakdown</span>
-            <h3 class="text-base font-bold text-slate-900 mt-1">Table 2: Gender Distribution by Tutoring Subject</h3>
-            <p class="text-xs text-slate-500 mt-0.5">Disaggregated participation rates for women vs men across academic domains.</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <div class="bg-slate-100 p-0.5 rounded-lg flex items-center space-x-0.5 border border-slate-200 text-xs">
-              <button id="btn-gender-cats" onclick="switchGenderTable('cats')" class="px-3 py-1 rounded-md font-bold bg-indigo-600 text-white shadow-2xs">Broad Domains</button>
-              <button id="btn-gender-subs" onclick="switchGenderTable('subs')" class="px-3 py-1 rounded-md font-medium text-slate-600 hover:text-slate-900">Top Subjects</button>
+      <!-- SECTION 3B: THREE-SUBJECT OVERLAP & VENN DIAGRAM STUDIO -->
+      <section id="section-venn-studio" class="flex flex-col gap-6">
+        <!-- SUBJECT SELECTION & PRESETS CARD -->
+        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
+          <div class="flex flex-col gap-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md bg-teal-50 text-teal-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-teal-200/60">Subject Intersections</span>
+                  <span class="text-xs text-slate-400 font-mono">Dynamic 3-Way Subject Overlap Studio</span>
+                </div>
+                <h3 class="text-base font-bold text-slate-900 mt-1 flex items-center gap-2">
+                  <i class="fa-solid fa-shapes text-teal-600"></i>
+                  <span>Figure 2B: Dynamic Three-Subject Venn Diagram & Overlap Studio</span>
+                </h3>
+                <p class="text-xs text-slate-500 mt-0.5">Select any three academic subjects across 107,723 educators to dynamically analyze single-subject specialists, dual-subject overlaps, and triple-subject bundle mastery.</p>
+              </div>
+
+              <button onclick="exportVennSVG()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition-all flex items-center gap-2 shadow-xs shrink-0 self-start sm:self-auto active:scale-[0.98]">
+                <i class="fa-solid fa-download text-teal-600"></i>
+                <span>Export Vector SVG</span>
+              </button>
             </div>
-            <button onclick="copyGenderTable()" class="px-3 py-1 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors flex items-center gap-1 shadow-2xs">
-              <i class="fa-solid fa-copy text-[10px]"></i> <span id="copy-table-btn-text">Copy Table</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="overflow-x-auto custom-scrollbar">
-          <table id="academic-gender-table" class="w-full text-left border-collapse text-xs">
-            <thead>
-              <tr class="bg-slate-900 text-white font-semibold">
-                <th class="py-2.5 px-4 rounded-tl-lg">Subject Domain / Discipline</th>
-                <th class="py-2.5 px-4 text-right">Men (%)</th>
-                <th class="py-2.5 px-4 text-right">Women (%)</th>
-                <th class="py-2.5 px-4 text-right rounded-tr-lg">Sample Size (N)</th>
-              </tr>
-            </thead>
-            <tbody id="gender-table-body" class="divide-y divide-slate-100 font-medium"></tbody>
-            <tfoot id="gender-table-foot" class="border-t-2 border-slate-300 font-bold bg-slate-100"></tfoot>
-          </table>
-        </div>
-        <p class="text-[11px] text-slate-500 italic pt-2 border-t border-slate-100 mt-2">
-          <strong>Sample Reconciliation:</strong> Total Sample Size N = 106,552 unique educators offering verified subject disciplines (62,374 women [58.5%], 43,901 men [41.2%], 277 unstated gender [0.3%]). Exactly 1,171 educators (1.1% of national total) did not specify individual subject disciplines or gender in their profile and were omitted from this cross-tabulation.
-        </p>
-      </div>
-
-      <!-- SECTION 5: HOURLY TUITION FEES TABLE (TABLE 3) -->
-      <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
-          <div>
-            <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-emerald-200/60">Pricing Architecture</span>
-            <h3 class="text-base font-bold text-slate-900 mt-1">Table 3: Hourly Tuition Fees by Educational Stage & Geographic Zone</h3>
-            <p class="text-xs text-slate-500 mt-0.5">Empirical pricing escalations across primary, secondary, senior secondary, and higher education.</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <div class="bg-slate-100 p-0.5 rounded-lg flex items-center space-x-0.5 border border-slate-200 text-xs">
-              <button id="btn-fee-me" onclick="switchFeeTable('me')" class="px-2.5 py-1 rounded-md font-bold bg-indigo-600 text-white shadow-2xs">Maths & English</button>
-              <button id="btn-fee-all" onclick="switchFeeTable('all')" class="px-2.5 py-1 rounded-md font-medium text-slate-600 hover:text-slate-900">All 5 Subjects</button>
-              <button id="btn-fee-matrix" onclick="switchFeeTable('matrix')" class="px-2.5 py-1 rounded-md font-medium text-slate-600 hover:text-slate-900">Cross-Matrix</button>
-            </div>
-            <button onclick="copyFeeTable()" class="px-3 py-1 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors flex items-center gap-1 shadow-2xs">
-              <i class="fa-solid fa-copy text-[10px]"></i> <span id="copy-fee-table-btn-text">Copy Table</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="overflow-x-auto custom-scrollbar">
-          <table id="academic-fee-table" class="w-full text-left border-collapse text-xs">
-            <thead id="fee-table-head"></thead>
-            <tbody id="fee-table-body" class="divide-y divide-slate-100 font-medium"></tbody>
-          </table>
-        </div>
-        <p class="text-[11px] text-slate-500 italic pt-2 border-t border-slate-100 mt-2">
-          <strong>Outlier Reconciliation:</strong> Hourly fees benchmarked strictly within the realistic tuition band (₹50 to ₹5,000/hr across 76,416 stating tutors). Excluded from calculations: 28,411 tutors (26.4%) with unstated or 'negotiable' fee policies, 959 extreme low entries (<₹50/hr), and 1,937 extreme placeholder entries (>₹5,000/hr).
-        </p>
-      </div>
-
-      <section id="section-venn-studio" class="flex flex-col gap-6 pt-2">
-<!-- Executive Banner -->
-      <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 p-6 md:p-8 rounded-2xl shadow-md border border-indigo-900/50 text-white relative overflow-hidden">
-        <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div class="space-y-2">
-            <div class="flex items-center gap-2.5">
-              <span class="w-8 h-8 rounded-lg bg-teal-400/20 text-teal-300 border border-teal-400/30 flex items-center justify-center text-sm shadow-xs">
-                <i class="fa-solid fa-shapes"></i>
-              </span>
-              <span class="text-xs uppercase tracking-widest text-teal-300 font-bold font-mono">Interactive Subject Intelligence</span>
-            </div>
-            <h2 class="text-2xl font-black tracking-tight text-white flex items-center gap-2">
-              Three-Subject Venn Diagram Studio
-            </h2>
-            <p class="text-xs sm:text-sm text-slate-300 max-w-3xl leading-relaxed">
-              Select any three academic subjects across 107,723 educators. Dynamically analyze single-subject specialists, dual-subject overlaps, and triple-subject bundle mastery with real-time hourly fee benchmarks.
-            </p>
-          </div>
-
-          <div class="flex items-center gap-3 shrink-0">
-            <button onclick="exportVennSVG()" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-all flex items-center gap-2 shadow-xs backdrop-blur-sm active:scale-[0.98]">
-              <i class="fa-solid fa-download text-teal-400"></i>
-              <span>Export Vector SVG</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- SUBJECT SELECTION & PRESETS CARD -->
-      <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
-        <div class="flex flex-col gap-4">
           
           <!-- Selectors Grid -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -1178,6 +1092,77 @@
       </div>
       </section>
 
+      <!-- SECTION 4: ACADEMIC TABLES (TABLE 2 & TABLE 3) -->
+      <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
+          <div>
+            <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-rose-200/60">Demographic Breakdown</span>
+            <h3 class="text-base font-bold text-slate-900 mt-1">Table 2: Gender Distribution by Tutoring Subject</h3>
+            <p class="text-xs text-slate-500 mt-0.5">Disaggregated participation rates for women vs men across academic domains.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="bg-slate-100 p-0.5 rounded-lg flex items-center space-x-0.5 border border-slate-200 text-xs">
+              <button id="btn-gender-cats" onclick="switchGenderTable('cats')" class="px-3 py-1 rounded-md font-bold bg-indigo-600 text-white shadow-2xs">Broad Domains</button>
+              <button id="btn-gender-subs" onclick="switchGenderTable('subs')" class="px-3 py-1 rounded-md font-medium text-slate-600 hover:text-slate-900">Top Subjects</button>
+            </div>
+            <button onclick="copyGenderTable()" class="px-3 py-1 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors flex items-center gap-1 shadow-2xs">
+              <i class="fa-solid fa-copy text-[10px]"></i> <span id="copy-table-btn-text">Copy Table</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto custom-scrollbar">
+          <table id="academic-gender-table" class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-900 text-white font-semibold">
+                <th class="py-2.5 px-4 rounded-tl-lg">Subject Domain / Discipline</th>
+                <th class="py-2.5 px-4 text-right">Men (%)</th>
+                <th class="py-2.5 px-4 text-right">Women (%)</th>
+                <th class="py-2.5 px-4 text-right rounded-tr-lg">Sample Size (N)</th>
+              </tr>
+            </thead>
+            <tbody id="gender-table-body" class="divide-y divide-slate-100 font-medium"></tbody>
+            <tfoot id="gender-table-foot" class="border-t-2 border-slate-300 font-bold bg-slate-100"></tfoot>
+          </table>
+        </div>
+        <p class="text-[11px] text-slate-500 italic pt-2 border-t border-slate-100 mt-2">
+          <strong>Sample Reconciliation:</strong> Total Sample Size N = 106,552 unique educators offering verified subject disciplines (62,374 women [58.5%], 43,901 men [41.2%], 277 unstated gender [0.3%]). Exactly 1,171 educators (1.1% of national total) did not specify individual subject disciplines or gender in their profile and were omitted from this cross-tabulation.
+        </p>
+      </div>
+
+      <!-- SECTION 5: HOURLY TUITION FEES TABLE (TABLE 3) -->
+      <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
+          <div>
+            <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-emerald-200/60">Pricing Architecture</span>
+            <h3 class="text-base font-bold text-slate-900 mt-1">Table 3: Hourly Tuition Fees by Educational Stage & Geographic Zone</h3>
+            <p class="text-xs text-slate-500 mt-0.5">Empirical pricing escalations across primary, secondary, senior secondary, and higher education.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="bg-slate-100 p-0.5 rounded-lg flex items-center space-x-0.5 border border-slate-200 text-xs">
+              <button id="btn-fee-me" onclick="switchFeeTable('me')" class="px-2.5 py-1 rounded-md font-bold bg-indigo-600 text-white shadow-2xs">Maths & English</button>
+              <button id="btn-fee-all" onclick="switchFeeTable('all')" class="px-2.5 py-1 rounded-md font-medium text-slate-600 hover:text-slate-900">All 5 Subjects</button>
+              <button id="btn-fee-matrix" onclick="switchFeeTable('matrix')" class="px-2.5 py-1 rounded-md font-medium text-slate-600 hover:text-slate-900">Cross-Matrix</button>
+            </div>
+            <button onclick="copyFeeTable()" class="px-3 py-1 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors flex items-center gap-1 shadow-2xs">
+              <i class="fa-solid fa-copy text-[10px]"></i> <span id="copy-fee-table-btn-text">Copy Table</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto custom-scrollbar">
+          <table id="academic-fee-table" class="w-full text-left border-collapse text-xs">
+            <thead id="fee-table-head"></thead>
+            <tbody id="fee-table-body" class="divide-y divide-slate-100 font-medium"></tbody>
+          </table>
+        </div>
+        <p class="text-[11px] text-slate-500 italic pt-2 border-t border-slate-100 mt-2">
+          <strong>Outlier Reconciliation:</strong> Hourly fees benchmarked strictly within the realistic tuition band (₹50 to ₹5,000/hr across 76,416 stating tutors). Excluded from calculations: 28,411 tutors (26.4%) with unstated or 'negotiable' fee policies, 959 extreme low entries (<₹50/hr), and 1,937 extreme placeholder entries (>₹5,000/hr).
+        </p>
+      </div>
+
+      
+
       <!-- SECTION: LINGUISTIC & MULTILINGUAL DEMOGRAPHICS -->
       <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80 space-y-5">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
@@ -1308,39 +1293,6 @@
     <!-- TAB 3: AI FEE PREDICTOR & FAIR PRICING ENGINE -->
     <div id="tab-fee-ai" class="hidden flex-col gap-6">
       
-      <!-- Executive Banner -->
-      <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 p-6 md:p-8 rounded-2xl shadow-md border border-indigo-900/50 text-white relative overflow-hidden">
-        <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div class="space-y-2">
-            <div class="flex items-center gap-2.5">
-              <span class="w-8 h-8 rounded-lg bg-amber-400/20 text-amber-300 border border-amber-400/30 flex items-center justify-center text-sm shadow-xs">
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
-              </span>
-              <span class="text-xs font-bold uppercase tracking-wider text-amber-300 font-mono">Marketplace Machine Learning</span>
-            </div>
-            <h2 class="text-xl md:text-2xl font-black tracking-tight text-white">Smart Fee Prediction & Pricing Engine</h2>
-            <p class="text-xs md:text-sm text-slate-300 max-w-2xl leading-relaxed">
-              Trained on <span class="font-bold text-white font-mono">72,001 verified outlier-free tutor profiles</span> across all 36 States & UTs (statistically filtered using Tukey's IQR fences to eliminate test dummy values and extreme lump sums). Get instant, fair market hourly fees and real-time cohort benchmarks.
-            </p>
-          </div>
-          
-          <div class="flex flex-wrap md:flex-col gap-2 shrink-0">
-            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-2xs">
-              <i class="fa-solid fa-filter-circle-xmark text-emerald-400 text-xs"></i>
-              <span class="text-[11px] font-mono text-slate-200"><strong class="text-white">72,001</strong> Outlier-Free Tutors</span>
-            </div>
-            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-2xs">
-              <i class="fa-solid fa-chart-line text-indigo-400 text-xs"></i>
-              <span class="text-[11px] font-mono text-slate-200">Tukey IQR + Ridge L2</span>
-            </div>
-            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-2xs">
-              <i class="fa-solid fa-bullseye text-amber-400 text-xs"></i>
-              <span class="text-[11px] font-mono text-slate-200">Real-Time Cohort Median</span>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <!-- Main 2-Column Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -1608,43 +1560,6 @@
     <!-- TAB 4: AI PROFILE STUDIO & BIO OPTIMIZER -->
     <div id="tab-bio-ai" class="hidden flex-col gap-6">
       
-      <!-- Executive Banner -->
-      <div class="bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 p-6 md:p-8 rounded-2xl shadow-md border border-teal-900/50 text-white relative overflow-hidden">
-        <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div class="space-y-2">
-            <div class="flex items-center gap-2.5">
-              <span class="w-8 h-8 rounded-lg bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 flex items-center justify-center text-sm shadow-xs">
-                <i class="fa-solid fa-pen-nib"></i>
-              </span>
-              <span class="text-xs font-bold uppercase tracking-wider text-emerald-300 font-mono">Profile Intelligence & NLP</span>
-              <span id="bio-engine-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-mono font-bold flex items-center gap-1.5 ml-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                Gemini 2.5 Flash Connected
-              </span>
-            </div>
-            <h2 class="text-xl md:text-2xl font-black tracking-tight text-white">AI Profile Studio & Bio Optimizer</h2>
-            <p class="text-xs md:text-sm text-slate-300 max-w-2xl leading-relaxed">
-              Generate dual-audience profile descriptions tailored specifically for <strong class="text-white">Parents</strong> (results & discipline) and <strong class="text-white">Students</strong> (concept clarity & patience), plus audit your bio for conversion strength.
-            </p>
-          </div>
-          
-          <div class="flex flex-wrap md:flex-col gap-2 shrink-0">
-            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-2xs">
-              <i class="fa-solid fa-users text-teal-400 text-xs"></i>
-              <span class="text-[11px] font-mono text-slate-200">Dual-Audience Targeting</span>
-            </div>
-            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-2xs">
-              <i class="fa-solid fa-clipboard-check text-emerald-400 text-xs"></i>
-              <span class="text-[11px] font-mono text-slate-200">Live 100-Pt Conversion Audit</span>
-            </div>
-            <div class="bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-2xs">
-              <i class="fa-solid fa-bolt text-amber-400 text-xs"></i>
-              <span class="text-[11px] font-mono text-slate-200">High-CTR Search Headlines</span>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <!-- Main 2-Column Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -2018,177 +1933,6 @@
     </div>
   </div>
 
-  <!-- CUSTOM WORD REPORT MODAL -->
-  <div id="modal-custom-word" class="fixed inset-0 z-50 hidden bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden transform transition-all">
-      
-      <!-- Modal Header -->
-      <div class="p-6 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white relative">
-        <button onclick="closeCustomWordModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white transition-colors w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
-          <i class="fa-solid fa-xmark text-sm"></i>
-        </button>
-        <div class="flex items-center gap-2.5 mb-1.5">
-          <span class="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 border border-blue-400/30 flex items-center justify-center text-sm">
-            <i class="fa-solid fa-file-word"></i>
-          </span>
-          <span class="text-xs uppercase tracking-widest text-blue-300 font-bold font-mono">100% Native DrawingML Word Export</span>
-        </div>
-        <h3 class="text-xl font-extrabold tracking-tight text-white">Customize & Extract Word Report (.docx)</h3>
-        <p class="text-xs text-slate-300 mt-1 max-w-lg leading-relaxed">
-          Select which sections to extract. Every chart is generated as an editable Office DrawingML graphic with an embedded Excel workbook—edit numbers in Excel and adjust colors/fonts directly in Word.
-        </p>
-      </div>
-
-      <!-- Modal Body -->
-      <div class="p-6 max-h-[60vh] overflow-y-auto space-y-5 custom-scrollbar">
-        
-        <!-- Selection Cohort Scope -->
-        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
-          <label class="text-xs font-bold text-slate-800 uppercase tracking-wider block mb-2 font-mono">
-            1. Select Educator Cohort for Word Report:
-          </label>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <label class="flex items-start gap-3 p-3 rounded-xl border border-blue-300 bg-blue-50/60 cursor-pointer transition-all hover:border-blue-400" id="label-docx-scope-all">
-              <input type="radio" name="docx-scope" value="all" checked class="mt-0.5 text-blue-600 focus:ring-blue-500">
-              <div>
-                <span class="font-bold text-slate-900 block text-xs flex items-center gap-1.5">
-                  <i class="fa-solid fa-database text-blue-600"></i> All 107,723 Educators
-                </span>
-                <span class="text-[11px] text-slate-500 block mt-0.5">Complete master dataset (76,706 active + 30,964 historical + 53 unstated)</span>
-              </div>
-            </label>
-            <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 bg-white cursor-pointer transition-all hover:border-emerald-300" id="label-docx-scope-active">
-              <input type="radio" name="docx-scope" value="active" class="mt-0.5 text-emerald-600 focus:ring-emerald-500">
-              <div>
-                <span class="font-bold text-slate-900 block text-xs flex items-center gap-1.5">
-                  <i class="fa-solid fa-circle-check text-emerald-600"></i> Verified Active Only (76,706)
-                </span>
-                <span class="text-[11px] text-slate-500 block mt-0.5">Strictly live-verified profiles with 100% active profile URLs</span>
-              </div>
-            </label>
-          </div>
-        </div>
-
-        <!-- Selection Controls -->
-        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-          <span class="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">2. Select Report Sections & Modules</span>
-          <div class="flex items-center gap-2">
-            <button onclick="toggleDocxSections(true)" class="text-xs text-indigo-600 hover:text-indigo-800 font-bold">Select All</button>
-            <span class="text-slate-300">&bull;</span>
-            <button onclick="toggleDocxSections(false)" class="text-xs text-slate-500 hover:text-slate-700 font-medium">Clear All</button>
-          </div>
-        </div>
-
-        <!-- Section Checkboxes Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
-            <input type="checkbox" name="docx-section" value="kpi" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
-            <div>
-              <span class="font-bold text-slate-900 block">Executive KPI Dashboard</span>
-              <span class="text-[11px] text-slate-500">Summary stat cards (107k tutors, rates, online adoption)</span>
-            </div>
-          </label>
-
-          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
-            <input type="checkbox" name="docx-section" value="qualifications" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
-            <div>
-              <span class="font-bold text-slate-900 block">Tutor Qualifications</span>
-              <span class="text-[11px] text-slate-500">Figure 1 Pie Chart & academic degree distribution table</span>
-            </div>
-          </label>
-
-          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
-            <input type="checkbox" name="docx-section" value="gender" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
-            <div>
-              <span class="font-bold text-slate-900 block">Gender Distribution</span>
-              <span class="text-[11px] text-slate-500">Figure 2 Column Chart & Table 2 subject gender breakdown</span>
-            </div>
-          </label>
-
-          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
-            <input type="checkbox" name="docx-section" value="subjects" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
-            <div>
-              <span class="font-bold text-slate-900 block">Subject Streams & Demand</span>
-              <span class="text-[11px] text-slate-500">Figure 3A & 3B charts (macro categories & top 12 subjects)</span>
-            </div>
-          </label>
-
-          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
-            <input type="checkbox" name="docx-section" value="multilingual" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
-            <div>
-              <span class="font-bold text-slate-900 block">Linguistic Demographics</span>
-              <span class="text-[11px] text-slate-500">Top 10 spoken tutoring languages & polyglot pricing analysis</span>
-            </div>
-          </label>
-
-          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
-            <input type="checkbox" name="docx-section" value="experience" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
-            <div>
-              <span class="font-bold text-slate-900 block">Teaching Experience (Age Proxy)</span>
-              <span class="text-[11px] text-slate-500">Figure 4 Column Chart (0–30 years) & seniority breakdown</span>
-            </div>
-          </label>
-
-          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
-            <input type="checkbox" name="docx-section" value="fees" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
-            <div>
-              <span class="font-bold text-slate-900 block">Hourly Tuition Rates Across India</span>
-              <span class="text-[11px] text-slate-500">Figure 5 Rates distribution, percentiles & city tier benchmarks</span>
-            </div>
-          </label>
-
-          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
-            <input type="checkbox" name="docx-section" value="levels" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
-            <div>
-              <span class="font-bold text-slate-900 block">Subject Rates by Student Grade</span>
-              <span class="text-[11px] text-slate-500">Table 2.8 Pricing matrix (Primary to Higher Education)</span>
-            </div>
-          </label>
-
-          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
-            <input type="checkbox" name="docx-section" value="occupations" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
-            <div>
-              <span class="font-bold text-slate-900 block">Professional Gig Occupations</span>
-              <span class="text-[11px] text-slate-500">Table 7 IT engineers, College students & Full-time educators</span>
-            </div>
-          </label>
-
-          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
-            <input type="checkbox" name="docx-section" value="geography" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
-            <div>
-              <span class="font-bold text-slate-900 block">Geographic Map & District Directory</span>
-              <span class="text-[11px] text-slate-500">All-India labeled state map + complete 440+ district table</span>
-            </div>
-          </label>
-
-          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all sm:col-span-2">
-            <input type="checkbox" name="docx-section" value="audit" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
-            <div>
-              <span class="font-bold text-slate-900 block">Data Cleaning & Verification Methodology</span>
-              <span class="text-[11px] text-slate-500">Audited notes verifying 107,723 records with zero fake placeholders</span>
-            </div>
-          </label>
-        </div>
-
-        </div>
-
-      </div>
-
-      <!-- Modal Footer -->
-      <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
-        <button onclick="closeCustomWordModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-800 transition-colors">
-          Cancel
-        </button>
-        <button id="btn-download-custom-word" onclick="downloadCustomWordReport()" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white transition-all flex items-center gap-2 shadow-xs active:scale-[0.98]">
-          <i id="word-export-spinner" class="fa-solid fa-circle-notch fa-spin hidden"></i>
-          <i class="fa-solid fa-download"></i>
-          <span id="word-export-btn-text">Generate & Download Word (.docx)</span>
-        </button>
-      </div>
-
-    </div>
-  </div>
-
   <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500 mt-auto">
     <div class="w-full px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2">
       <p>BMP Tutors &bull; Empirical Market Intelligence & Geospatial Analytics &bull; September 2026</p>
@@ -2525,6 +2269,7 @@
       // Load stats and filter options concurrently in the background
       loadStats();
       loadFilterOptions();
+      initVennLab();
     });
 
     // Load Overall Platform Statistics
