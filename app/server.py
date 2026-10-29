@@ -87,8 +87,7 @@ async def api_stats(request):
     total_bridge = cur.execute("SELECT count(*) FROM teacher_subjects").fetchone()[0]
     avg_fee = cur.execute("SELECT round(avg(hourly_fee_avg), 1) FROM teachers WHERE hourly_fee_avg IS NOT NULL AND hourly_fee_avg <= 5000").fetchone()[0]
     active_tutors = cur.execute("SELECT count(*) FROM teachers WHERE is_active = 1").fetchone()[0]
-    dormant_tutors = cur.execute("SELECT count(*) FROM teachers WHERE is_active = 0 AND validation_reason LIKE '%Dormant%'").fetchone()[0]
-    removed_tutors = cur.execute("SELECT count(*) FROM teachers WHERE is_active = 0 AND (validation_reason LIKE '%Unstated%' OR validation_reason LIKE '%No Profile%' OR validation_reason LIKE '%404%')").fetchone()[0]
+    removed_tutors = cur.execute("SELECT count(*) FROM teachers WHERE is_active = 0").fetchone()[0]
     
     conn.close()
     _STATS_CACHE = {
@@ -96,7 +95,7 @@ async def api_stats(request):
         "total_bridge": total_bridge,
         "avg_fee": avg_fee,
         "active_tutors": active_tutors,
-        "dormant_tutors": dormant_tutors,
+        "dormant_tutors": 0,
         "removed_tutors": removed_tutors
     }
     return JSONResponse(_STATS_CACHE)
@@ -256,10 +255,8 @@ async def api_tutors(request):
         
     if status_filter == "active":
         where_clauses.append("t.is_active = 1")
-    elif status_filter in ("inactive", "dormant"):
-        where_clauses.append("t.is_active = 0 AND t.validation_reason LIKE '%Dormant%'")
-    elif status_filter in ("removed", "no_profile", "404", "unstated"):
-        where_clauses.append("t.is_active = 0 AND (t.validation_reason LIKE '%Unstated%' OR t.validation_reason LIKE '%No Profile%' OR t.validation_reason LIKE '%404%')")
+    elif status_filter in ("inactive", "dormant", "removed", "no_profile", "404", "unstated"):
+        where_clauses.append("t.is_active = 0")
         
     # Bridge filters
     bridge_joins = []
@@ -1119,6 +1116,39 @@ async def api_export_visual_analytics_pdf(request):
 
 DOCX_REPORT_PATH = os.path.join(PROJECT_ROOT, "BMP_Tutors_Visual_Analytics_Report.docx")
 ACTIVE_MASTER_EXCEL_PATH = os.path.join(PROJECT_ROOT, "BMP_Tutors_Verified_Active_Master.xlsx")
+NORMALIZED_TUTORS_PATH = os.path.join(PROJECT_ROOT, "BMP_Tutors_Master_Normalized.xlsx")
+NORMALIZED_SUBJECTS_PATH = os.path.join(PROJECT_ROOT, "BMP_Subjects_Master_Normalized.xlsx")
+NORMALIZED_DB_PATH = os.path.join(PROJECT_ROOT, "BMP_Normalized_Database_2Tables.xlsx")
+
+async def api_download_normalized_tutors_excel(request):
+    if not os.path.exists(NORMALIZED_TUTORS_PATH):
+        import subprocess
+        subprocess.run(["python3", os.path.join(PROJECT_ROOT, "generate_normalized_dbms_tables.py")], check=True)
+    return FileResponse(
+        NORMALIZED_TUTORS_PATH,
+        filename="BMP_Tutors_Master_Normalized.xlsx",
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+
+async def api_download_normalized_subjects_excel(request):
+    if not os.path.exists(NORMALIZED_SUBJECTS_PATH):
+        import subprocess
+        subprocess.run(["python3", os.path.join(PROJECT_ROOT, "generate_normalized_dbms_tables.py")], check=True)
+    return FileResponse(
+        NORMALIZED_SUBJECTS_PATH,
+        filename="BMP_Subjects_Master_Normalized.xlsx",
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+
+async def api_download_normalized_database_excel(request):
+    if not os.path.exists(NORMALIZED_DB_PATH):
+        import subprocess
+        subprocess.run(["python3", os.path.join(PROJECT_ROOT, "generate_normalized_dbms_tables.py")], check=True)
+    return FileResponse(
+        NORMALIZED_DB_PATH,
+        filename="BMP_Normalized_Database_2Tables.xlsx",
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
 
 async def api_download_active_master_excel(request):
     if not os.path.exists(ACTIVE_MASTER_EXCEL_PATH):
@@ -1424,6 +1454,9 @@ routes = [
     Route("/api/geojson/districts", api_geojson_districts),
     Route("/api/download/master-excel", api_download_master_excel),
     Route("/api/download/active-master-excel", api_download_active_master_excel),
+    Route("/api/download/normalized-tutors-excel", api_download_normalized_tutors_excel),
+    Route("/api/download/normalized-subjects-excel", api_download_normalized_subjects_excel),
+    Route("/api/download/normalized-database-excel", api_download_normalized_database_excel),
     Route("/api/download/category-excel", api_download_category_excel),
     Route("/api/download/filtered-excel", api_download_filtered_excel),
     Route("/api/export/visual-analytics-pdf", api_export_visual_analytics_pdf),
