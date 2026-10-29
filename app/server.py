@@ -87,13 +87,17 @@ async def api_stats(request):
     total_bridge = cur.execute("SELECT count(*) FROM teacher_subjects").fetchone()[0]
     avg_fee = cur.execute("SELECT round(avg(hourly_fee_avg), 1) FROM teachers WHERE hourly_fee_avg IS NOT NULL AND hourly_fee_avg <= 5000").fetchone()[0]
     active_tutors = cur.execute("SELECT count(*) FROM teachers WHERE is_active = 1").fetchone()[0]
+    dormant_tutors = cur.execute("SELECT count(*) FROM teachers WHERE is_active = 0 AND validation_reason LIKE '%Dormant%'").fetchone()[0]
+    removed_tutors = cur.execute("SELECT count(*) FROM teachers WHERE is_active = 0 AND (validation_reason LIKE '%No Profile%' OR validation_reason LIKE '%404%')").fetchone()[0]
     
     conn.close()
     _STATS_CACHE = {
         "total_tutors": total_tutors,
         "total_bridge": total_bridge,
         "avg_fee": avg_fee,
-        "active_tutors": active_tutors
+        "active_tutors": active_tutors,
+        "dormant_tutors": dormant_tutors,
+        "removed_tutors": removed_tutors
     }
     return JSONResponse(_STATS_CACHE)
 
@@ -172,7 +176,7 @@ def get_sort_clause(params):
     elif sort_by in ("id", "tutor_id"):
         return f"t.rowid {direction}", "id", sort_order
     else:
-        return "t.rowid ASC", "default", "asc"
+        return "t.is_active DESC, t.rowid ASC", "default", "asc"
 
 async def api_tutors(request):
     params = request.query_params
@@ -194,6 +198,7 @@ async def api_tutors(request):
     teaches_online = params.get("teaches_online", "").strip()
     min_fee = params.get("min_fee", "").strip()
     max_fee = params.get("max_fee", "").strip()
+    status_filter = params.get("status", "").strip().lower()
     
     where_clauses = []
     args = []
@@ -249,6 +254,13 @@ async def api_tutors(request):
         where_clauses.append("t.hourly_fee_avg <= ?")
         args.append(float(max_fee))
         
+    if status_filter == "active":
+        where_clauses.append("t.is_active = 1")
+    elif status_filter in ("inactive", "dormant"):
+        where_clauses.append("t.is_active = 0 AND t.validation_reason LIKE '%Inactive%'")
+    elif status_filter in ("removed", "no_profile", "404"):
+        where_clauses.append("t.is_active = 0 AND (t.validation_reason LIKE '%No Profile%' OR t.validation_reason LIKE '%404%')")
+        
     # Bridge filters
     bridge_joins = []
     if subject_category:
@@ -286,7 +298,7 @@ async def api_tutors(request):
         t.tutor_id, t.teacher_name, t.teacher_hookline, t.state, t.region, t.city,
         t.gender, t.works_as, t.experience_role, t.seniority_tier, t.total_teaching_exp_years,
         t.highest_qualification, t.has_education_degree, t.speaks_languages,
-        t.teaches_online, t.hourly_fee_avg, t.is_active, t.occupation
+        t.teaches_online, t.hourly_fee_avg, t.is_active, t.occupation, t.validation_reason, t.profile_url
     FROM teachers t
     {where_sql}
     ORDER BY {order_clause}
@@ -1362,6 +1374,32 @@ async def api_venn_diagram(request):
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=500)
 
+async def api_update_tutor_status(request):
+    try:
+        tutor_id = request.path_params.get("tutor_id")
+        data = await request.json()
+        new_is_active = int(data.get("is_active", 0))
+        reason = data.get("validation_reason", "Verified via Dashboard")
+        
+        conn = get_db()
+        cur = conn.cursor()
+        cur.execute("UPDATE teachers SET is_active = ?, validation_reason = ? WHERE tutor_id = ?", (new_is_active, reason, tutor_id))
+        conn.commit()
+        conn.close()
+        
+        global _STATS_CACHE, _TOTAL_TUTORS_COUNT
+        _STATS_CACHE = None
+        _TOTAL_TUTORS_COUNT = None
+        
+        return JSONResponse({
+            "success": True,
+            "tutor_id": tutor_id,
+            "is_active": new_is_active,
+            "validation_reason": reason
+        })
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+
 async def healthz(request):
     return JSONResponse({"status": "ok"})
 
@@ -1378,6 +1416,7 @@ routes = [
     Route("/api/analyze-bio", api_analyze_bio, methods=["GET", "POST"]),
     Route("/api/tutors", api_tutors),
     Route("/api/tutors/{tutor_id}", api_tutor_detail),
+    Route("/api/tutors/{tutor_id}/status", api_update_tutor_status, methods=["POST", "PATCH"]),
     Route("/api/charts", api_charts),
     Route("/api/map/states", api_map_states),
     Route("/api/map/cities", api_map_cities),

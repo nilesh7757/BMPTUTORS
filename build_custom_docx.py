@@ -660,7 +660,7 @@ def generate_docx_report(selected_sections=None, active_only=False, venn_info=No
                 if c_idx == 0:
                     r.font.bold = True
 
-        add_outlier_audit_note(doc, "N = 107,723 total registered educators. 1,638 educators (1.5%) did not specify their degree credential and are grouped under 'Not Specified'. Verified active profiles: 76,706 (71.2%); historical inactive profiles: 30,964 (28.7%); unstated status: 53 (0.1%).")
+        add_outlier_audit_note(doc, "N = 107,723 total registered educators. 1,638 educators (1.5%) did not specify their degree credential and are grouped under 'Not Specified'. Verified active profiles: 63,947 (59.4%); dormant single-day registrations: 12,759 (11.8%); removed/404 profiles: 31,017 (28.8%).")
         doc.add_paragraph().paragraph_format.space_after = Pt(6)
 
         # ---------------------------------------------------------
@@ -2126,9 +2126,9 @@ def generate_docx_report(selected_sections=None, active_only=False, venn_info=No
         p9.add_run(
             "Comprehensive Data Audit & Outlier Reconciliation (N = 107,723 Total Registrations):\n\n"
             "1. Verified Profile Status:\n"
-            "   • 76,706 active profiles (71.2%) verified with reachable live tutor URLs.\n"
-            "   • 30,964 inactive historical profiles (28.7%) retained in master database for longitudinal analytics.\n"
-            "   • 53 profiles (0.1%) with unstated status.\n\n"
+            "   • 63,947 verified active profiles (59.4%) with confirmed multi-session activity on TeacherOn.\n"
+            "   • 12,759 dormant single-day registration profiles (11.8%) deactivated by TeacherOn.\n"
+            "   • 31,017 profiles (28.8%) removed or returned no tutor name upon crawling.\n\n"
             "2. Hourly Tuition Rate Reconciliation (Mean: ₹848.4/hr):\n"
             "   • 76,416 educators provided realistic hourly pricing between ₹50 and ₹5,000/hr.\n"
             "   • 28,411 educators (26.4%) chose 'negotiable' or did not state a fixed rate and were excluded from benchmark averages.\n"
