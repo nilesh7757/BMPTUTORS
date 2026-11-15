@@ -10,9 +10,14 @@ try:
 except Exception:
     pass
 
-UV_PATH = "/home/nilesh7757/.cache/uv/archive-v0/b2_g7sKwC5mPN6Zp/lib/python3.13/site-packages"
-if os.path.exists(UV_PATH) and UV_PATH not in sys.path:
-    sys.path.insert(0, UV_PATH)
+UV_PATHS = [
+    "/home/nilesh7757/.cache/uv/archive-v0/KcQCAaaojDTfnz86/lib/python3.13/site-packages",
+    "/home/nilesh7757/.cache/uv/archive-v0/b2_g7sKwC5mPN6Zp/lib/python3.13/site-packages",
+    "/home/nilesh7757/.cache/uv/archive-v0/hoJjWQYazaEYVkk3/lib/python3.13/site-packages",
+]
+for p in UV_PATHS:
+    if os.path.exists(p) and p not in sys.path:
+        sys.path.insert(0, p)
 
 import uvicorn
 import xlsxwriter
@@ -295,7 +300,8 @@ async def api_tutors(request):
         t.tutor_id, t.teacher_name, t.teacher_hookline, t.state, t.region, t.city,
         t.gender, t.works_as, t.experience_role, t.seniority_tier, t.total_teaching_exp_years,
         t.highest_qualification, t.has_education_degree, t.speaks_languages,
-        t.teaches_online, t.hourly_fee_avg, t.is_active, t.occupation, t.validation_reason, t.profile_url
+        t.teaches_online, t.hourly_fee_avg, t.is_active, t.occupation, t.validation_reason, t.profile_url,
+        t.monthly_fee_avg, t.monthly_fee_min, t.monthly_fee_max, t.fee_unit, t.fee_raw
     FROM teachers t
     {where_sql}
     ORDER BY {order_clause}
@@ -419,7 +425,12 @@ async def api_charts(request):
         FROM teachers t
         {t_where}
         GROUP BY t.highest_qualification
-        ORDER BY count DESC
+        ORDER BY CASE 
+            WHEN t.highest_qualification = 'Less than UG' THEN 1
+            WHEN t.highest_qualification = 'Undergraduate (UG)' THEN 2
+            WHEN t.highest_qualification = 'Postgraduate (PG)' THEN 3
+            WHEN t.highest_qualification = 'Advanced (PhD/Doctorate)' THEN 4
+            ELSE 5 END ASC
     """, t_args).fetchall()
     
     regions = cur.execute(f"""
@@ -454,7 +465,12 @@ async def api_charts(request):
         FROM teachers t
         WHERE t.city_tier IS NOT NULL {t_and}
         GROUP BY t.city_tier
-        ORDER BY count DESC
+        ORDER BY CASE 
+            WHEN t.city_tier = 'Tier 1 (Metro)' THEN 1
+            WHEN t.city_tier = 'Tier 2 (Urban)' THEN 2
+            WHEN t.city_tier = 'Tier 3 / Semi-Urban' THEN 3
+            WHEN t.city_tier = 'Tier 3 / Rural' THEN 4
+            ELSE 5 END ASC
     """, t_args).fetchall()
 
     fee_by_cat = cur.execute(f"""
@@ -471,7 +487,12 @@ async def api_charts(request):
         FROM teachers t
         WHERE t.seniority_tier IS NOT NULL {t_and}
         GROUP BY t.seniority_tier
-        ORDER BY count DESC
+        ORDER BY CASE 
+            WHEN t.seniority_tier LIKE '%<2%' THEN 1
+            WHEN t.seniority_tier LIKE '%2%5%' THEN 2
+            WHEN t.seniority_tier LIKE '%5%10%' THEN 3
+            WHEN t.seniority_tier LIKE '%10+%' THEN 4
+            ELSE 5 END ASC
     """, t_args).fetchall()
 
     # Gender distribution by broad category (Academic Table 2)
@@ -708,7 +729,17 @@ async def api_charts(request):
             round(avg(CASE WHEN t.hourly_fee_avg BETWEEN 50 AND 5000 THEN t.hourly_fee_avg END), 0) as avg_fee,
             round(sum(case when t.teaches_online = 1 then 1 else 0 end) * 100.0 / count(*), 1) as online_pct
         FROM teachers t
-        WHERE t.occupation IS NOT NULL {t_and}
+        WHERE t.occupation IS NOT NULL 
+          AND t.occupation NOT IN (
+              'Professional Online Educator', 
+              'Independent Private Tutor', 
+              'Early-Career Educator', 
+              'Senior Private Educator', 
+              'Private / Home Tutor',
+              'Homemaker & Home-Based Educator',
+              'Student Tutor / Peer Educator'
+          )
+          {t_and}
         GROUP BY t.occupation
         ORDER BY count DESC
     """, t_args).fetchall()

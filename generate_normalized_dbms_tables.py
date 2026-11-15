@@ -11,6 +11,11 @@ Eliminates the 327k-row redundant flat bridge while preserving 100% relational i
 
 import os
 import sys
+
+# Support uv site-packages
+extra_path = '/home/nilesh7757/.cache/uv/archive-v0/KcQCAaaojDTfnz86/lib/python3.13/site-packages'
+if extra_path not in sys.path:
+    sys.path.append(extra_path)
 import sqlite3
 from collections import Counter, defaultdict
 import numpy as np
@@ -155,8 +160,7 @@ def build_normalized_tables():
             "Subject_Name": sub,
             "Subject_Category": cat,
             "Total_Tutors_Offering": tut_count,
-            "Market_Share_Pct": mkt_share,
-            "Avg_Hourly_Fee_INR": avg_fee,
+                        "Avg_Hourly_Fee_INR": avg_fee,
             "Median_Hourly_Fee_INR": med_fee,
             "Min_Hourly_Fee_INR": min_fee,
             "Max_Hourly_Fee_INR": max_fee,
@@ -213,6 +217,10 @@ def build_normalized_tables():
             "Hourly_Fee_Avg_INR": t["hourly_fee_avg"],
             "Hourly_Fee_Min_INR": t["hourly_fee_min"],
             "Hourly_Fee_Max_INR": t["hourly_fee_max"],
+            "Fee_Unit": t["fee_unit"],
+            "Monthly_Fee_Avg_INR": t["monthly_fee_avg"],
+            "Monthly_Fee_Min_INR": t["monthly_fee_min"],
+            "Monthly_Fee_Max_INR": t["monthly_fee_max"],
             "Registered_Date": t["registered_date"],
             "Last_Login_Date": t["last_login_date"],
             "Total_Subjects_Taught": len(sub_list),

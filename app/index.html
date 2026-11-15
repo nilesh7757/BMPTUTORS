@@ -68,7 +68,11 @@
         </button>
         <button id="tab-btn-bio-ai" onclick="switchTab('bio-ai')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-2">
           <i class="fa-solid fa-pen-fancy text-emerald-400"></i>
-          <span>AI Bio Studio</span>
+          <span>Bio Studio</span>
+        </button>
+        <button id="tab-btn-about" onclick="switchTab('about')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-circle-info text-sky-400"></i>
+          <span>About Project</span>
         </button>
       </nav>
 
@@ -176,7 +180,8 @@
         <button id="tab-mobile-btn-explorer" onclick="switchTab('explorer')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center bg-indigo-600 text-white shadow-xs">Directory</button>
         <button id="tab-mobile-btn-analytics" onclick="switchTab('analytics')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Analytics</button>
         <button id="tab-mobile-btn-fee-ai" onclick="switchTab('fee-ai')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Fee AI</button>
-        <button id="tab-mobile-btn-bio-ai" onclick="switchTab('bio-ai')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Bio AI</button>
+        <button id="tab-mobile-btn-bio-ai" onclick="switchTab('bio-ai')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">Bio Studio</button>
+        <button id="tab-mobile-btn-about" onclick="switchTab('about')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300">About</button>
       </nav>
     </div>
   </header>
@@ -465,26 +470,25 @@
           <table class="w-full text-left border-collapse text-sm">
             <thead>
               <tr class="bg-slate-50/80 border-b border-slate-200/80 text-[11px] font-bold text-slate-500 uppercase tracking-wider sticky top-0 backdrop-blur-sm z-10 select-none">
-                <th class="py-3 px-4">Tutor ID</th>
-                <th class="py-3 px-4 cursor-pointer hover:text-indigo-600 transition-colors group" onclick="toggleSort('name')" title="Click to sort by Educator Name">
+                <th class="py-3 px-3 w-20 text-center">Tutor ID</th>
+                <th class="py-3 px-4 cursor-pointer hover:text-indigo-600 transition-colors group min-w-[190px]" onclick="toggleSort('name')" title="Click to sort by Educator Name">
                   <div class="flex items-center gap-1.5">
-                    <span>Educator Profile</span>
+                    <span>Educator</span>
                     <i id="sort-icon-name" class="fa-solid fa-sort text-slate-300 group-hover:text-indigo-500 text-[10px]"></i>
                   </div>
                 </th>
-                <th class="py-3 px-4">Occupation & Role</th>
-                <th class="py-3 px-4">Location</th>
-                <th class="py-3 px-4 cursor-pointer hover:text-indigo-600 transition-colors group" onclick="toggleSort('education')" title="Click to sort by Education Qualification">
+                <th class="py-3 px-4 min-w-[240px]">Subjects Taught</th>
+                <th class="py-3 px-4 cursor-pointer hover:text-indigo-600 transition-colors group min-w-[125px]" onclick="toggleSort('fee')" title="Click to sort by Tuition Fee">
+                  <div class="flex items-center gap-1.5">
+                    <span>Tuition Fee</span>
+                    <i id="sort-icon-fee" class="fa-solid fa-sort text-slate-300 group-hover:text-indigo-500 text-[10px]"></i>
+                  </div>
+                </th>
+                <th class="py-3 px-4 min-w-[150px]">Location</th>
+                <th class="py-3 px-4 cursor-pointer hover:text-indigo-600 transition-colors group min-w-[150px]" onclick="toggleSort('education')" title="Click to sort by Qualification">
                   <div class="flex items-center gap-1.5">
                     <span>Qualification & Exp</span>
                     <i id="sort-icon-education" class="fa-solid fa-sort text-slate-300 group-hover:text-indigo-500 text-[10px]"></i>
-                  </div>
-                </th>
-                <th class="py-3 px-4">Subjects Taught (Bridge)</th>
-                <th class="py-3 px-4 cursor-pointer hover:text-indigo-600 transition-colors group" onclick="toggleSort('fee')" title="Click to sort by Hourly Fee">
-                  <div class="flex items-center gap-1.5">
-                    <span>Fee / hr</span>
-                    <i id="sort-icon-fee" class="fa-solid fa-sort text-slate-300 group-hover:text-indigo-500 text-[10px]"></i>
                   </div>
                 </th>
                 <th class="py-3 px-3 text-center w-10"></th>
@@ -550,7 +554,7 @@
           <h2 class="text-xl font-extrabold text-slate-900 mt-1 flex items-center gap-2 tracking-tight">
             <i class="fa-solid fa-chart-line text-indigo-600"></i> Visual Analytics & National Market Dossier
           </h2>
-          <p class="text-xs text-slate-500 mt-0.5">Empirical breakdown of private tutoring demand, hourly fee benchmarks, subject distributions, and district-level cartography.</p>
+          <p class="text-xs text-slate-500 mt-0.5">Breakdown of private tutoring demand, hourly fee benchmarks, subject distributions, and district-level map data.</p>
         </div>
 
         <!-- Scope Switcher & Actions -->
@@ -582,26 +586,23 @@
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-4 pb-3 border-b border-slate-100">
           <div>
             <div class="flex items-center gap-2">
-              <span class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-indigo-200/60">Cartographic Overview</span>
+              <span class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-indigo-200/60">Geographic Overview</span>
               <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <i class="fa-solid fa-map text-indigo-600"></i> Map of India: State-Wise Boundaries & Data Labels
+                <i class="fa-solid fa-map text-indigo-600"></i> Figure 1: Geographic Distribution of Private Tutors Across India
               </h3>
             </div>
-            <p class="text-xs text-slate-500 mt-1">State administrative boundaries with direct in-polygon verified numbers and choropleth shading. Click any state boundary to view district spatial breakdown.</p>
+            <p class="text-xs text-slate-500 mt-1">State administrative boundaries colored by tutor supply volume and average hourly rates across all 36 States/UTs. Hover over any state to inspect details.</p>
           </div>
 
-          <!-- Controls: Metric Toggle & View Mode -->
+          <!-- Controls: Metric Toggle -->
           <div class="flex flex-wrap items-center gap-2">
             <span class="text-xs font-bold text-slate-500 uppercase tracking-wider text-[10px]">Active Metric:</span>
             <div class="bg-slate-100 p-1 rounded-xl flex items-center space-x-1 border border-slate-200">
               <button id="btn-metric-count" onclick="setMapMetric('count')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-2xs">
-                Tutor Count
+                Tutor Volume
               </button>
               <button id="btn-metric-fee" onclick="setMapMetric('fee')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900">
                 Avg Fee (₹/hr)
-              </button>
-              <button id="btn-metric-online" onclick="setMapMetric('online')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900">
-                Online %
               </button>
             </div>
           </div>
@@ -624,83 +625,9 @@
           <div id="map-india" class="w-full h-full z-10 white-map-container"></div>
           <div class="absolute bottom-4 left-4 z-20 bg-white/95 backdrop-blur-md p-3.5 rounded-xl shadow-md border border-slate-200 text-xs max-w-xs">
             <p class="font-bold text-slate-800 flex items-center gap-1.5">
-              <i class="fa-solid fa-hand-pointer text-indigo-600"></i> Interactive Drilldown:
+              <i class="fa-solid fa-hand-pointer text-indigo-600"></i> Interactive Map:
             </p>
-            <p class="text-slate-600 text-[11px] mt-1 leading-relaxed">Labels inside boundaries show exact state values. Click any state boundary to view district-level boundaries below.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- SECTION 2: STATE-LEVEL DISTRICT BOUNDARY MAP -->
-      <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
-        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-4 pb-3 border-b border-slate-100">
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-emerald-200/60">District Spatial Deep-Dive</span>
-              <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <i class="fa-solid fa-draw-polygon text-emerald-600"></i> State District Boundaries & Spatial Distribution
-              </h3>
-            </div>
-            <p class="text-xs text-slate-500 mt-1">Detailed administrative district polygons for the selected state with local tutor numbers and pricing metrics.</p>
-          </div>
-
-          <!-- State Selector Controls -->
-          <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider text-[10px]">Select State:</label>
-            <select id="map-state-select" onchange="onStateSelectChange(this.value)" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-indigo-500 shadow-2xs">
-              <option value="Karnataka">Karnataka</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- State Quick Metric Highlights -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-          <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80">
-            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">State Analyzed</span>
-            <span id="state-metric-name" class="font-extrabold text-indigo-700 text-sm mt-0.5 block">Karnataka</span>
-          </div>
-          <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80" title="100% accounted across 21 active districts">
-            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Total Tutors</span>
-            <span id="state-metric-tutors" class="font-extrabold text-slate-900 text-sm mt-0.5 block font-mono">9,300</span>
-          </div>
-          <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80">
-            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Avg Hourly Fee</span>
-            <span id="state-metric-fee" class="font-extrabold text-emerald-600 text-sm mt-0.5 block font-mono">—</span>
-          </div>
-          <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80">
-            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Online Delivery</span>
-            <span id="state-metric-online" class="font-extrabold text-violet-600 text-sm mt-0.5 block font-mono">—</span>
-          </div>
-        </div>
-
-        <!-- Split Map + District Table -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          <div class="lg:col-span-7 rounded-2xl overflow-hidden border border-slate-300 shadow-xs relative bg-white" style="height: 480px;">
-            <div id="map-state-cities" class="w-full h-full z-10 white-map-container"></div>
-          </div>
-
-          <div class="lg:col-span-5 bg-slate-50/70 rounded-2xl border border-slate-200/80 p-4 h-[480px] flex flex-col shadow-xs">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-200">
-              <h4 class="font-bold text-xs text-slate-800 flex items-center gap-1.5">
-                <i class="fa-solid fa-list-ol text-emerald-600"></i>
-                <span id="city-table-state-title">Districts in Karnataka</span>
-              </h4>
-              <span id="city-count-badge" class="text-[10px] font-bold bg-white px-2 py-0.5 rounded-full border border-slate-200 text-slate-600 font-mono">0 Districts</span>
-            </div>
-            <div class="flex-1 overflow-y-auto custom-scrollbar mt-2 pr-1">
-              <table class="w-full text-left text-xs">
-                <thead>
-                  <tr class="text-[10px] font-bold text-slate-500 uppercase border-b border-slate-200">
-                    <th class="py-2">District</th>
-                    <th class="py-2 text-right">Tutors</th>
-                    <th class="py-2 text-right">Avg Fee</th>
-                  </tr>
-                </thead>
-                <tbody id="city-table-body" class="divide-y divide-slate-100 font-medium">
-                  <tr><td colspan="3" class="py-8 text-center text-slate-400">Loading districts...</td></tr>
-                </tbody>
-              </table>
-            </div>
+            <p class="text-slate-600 text-[11px] mt-1 leading-relaxed">Hover over any state polygon to inspect verified educator headcount and benchmark tuition rates.</p>
           </div>
         </div>
       </div>
@@ -773,7 +700,7 @@
             <div class="flex items-center gap-2">
               <span class="px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-purple-200/60">Professional Gig Economy</span>
               <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <i class="fa-solid fa-briefcase text-purple-600"></i> <span id="occ-sample-title">Non-Teaching & Side Occupations Landscape (N = 36,525)</span>
+                <i class="fa-solid fa-briefcase text-purple-600"></i> <span id="occ-sample-title">Figure 4: Non-Teaching & Professional Side Occupations Landscape</span>
               </h3>
             </div>
             <p class="text-xs text-slate-500 mt-1">Cross-disciplinary breakdown of 36,500+ tutors practicing an outside profession (IT, CA, Doctors, Research Scholars, Engineers).</p>
@@ -819,7 +746,7 @@
           </div>
 
           <p class="text-[11px] text-slate-500 italic pt-2 border-t border-slate-100">
-            <strong>Data Reconciliation:</strong> Values indicate absolute frequency (N) and percentage share across all 327,720 cleaned verified subject offerings (averaging 3.08 offerings across 106,552 tutors). Exactly 1,171 educators without subject-level tags were excluded from this disciplinary breakdown.
+            <strong>Note:</strong> Values show count (N) and percentage share across all 327,720 cleaned subject offerings (averaging 3.08 offerings across 106,552 tutors). 1,171 educators without subject tags were excluded from this breakdown.
           </p>
         </div>
 
@@ -863,7 +790,7 @@
           </div>
 
           <p class="text-[11px] text-slate-500 italic pt-2 border-t border-slate-100">
-            <strong>Data Reconciliation:</strong> Distribution based on 105,890 tutors stating realistic experience between 0 and 30 years. Exactly 1,268 tutors with unstated experience and 565 extreme entries (>30 years) were excluded as form outliers.
+            <strong>Note:</strong> Based on 105,890 tutors with experience between 0 and 30 years. 1,268 tutors with unstated experience and 565 extreme entries (>30 years) were excluded as outliers.
           </p>
         </div>
       </div>
@@ -881,7 +808,7 @@
                 </div>
                 <h3 class="text-base font-bold text-slate-900 mt-1 flex items-center gap-2">
                   <i class="fa-solid fa-shapes text-teal-600"></i>
-                  <span>Figure 2B: Dynamic Three-Subject Venn Diagram & Overlap Studio</span>
+                  <span>Figure 3: Dynamic Three-Subject Venn Diagram & Overlap Studio</span>
                 </h3>
                 <p class="text-xs text-slate-500 mt-0.5">Select any three academic subjects across 107,723 educators to dynamically analyze single-subject specialists, dual-subject overlaps, and triple-subject bundle mastery.</p>
               </div>
@@ -1163,7 +1090,7 @@
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
           <div>
             <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-emerald-200/60">Pricing Architecture</span>
-            <h3 class="text-base font-bold text-slate-900 mt-1">Table 3: Hourly Tuition Fees by Educational Stage & Geographic Zone</h3>
+            <h3 class="text-base font-bold text-slate-900 mt-1">Table 2: Hourly Tuition Fees Across Educational Stages & Geographic Zones</h3>
             <p class="text-xs text-slate-500 mt-0.5">Empirical pricing escalations across primary, secondary, senior secondary, and higher education.</p>
           </div>
           <div class="flex items-center gap-2">
@@ -1201,7 +1128,7 @@
             </div>
             <h3 class="text-base font-bold text-slate-900 mt-1 flex items-center gap-2">
               <i class="fa-solid fa-language text-rose-600"></i>
-              <span>Linguistic Diversity & Multilingual Demographics</span>
+              <span>Table 3: Linguistic Demographics & Multilingual Tuition</span>
             </h3>
             <p class="text-xs text-slate-500 mt-0.5">Top spoken tutoring languages across India and the pricing premium commanded by multilingual vs monolingual educators.</p>
           </div>
@@ -1245,9 +1172,9 @@
           </div>
         </div>
 
-        <p class="text-[11px] text-slate-500 italic pt-2 border-t border-slate-100">
-          <strong>Data Reconciliation:</strong> Multilingual breakdown based on 106,455 educators declaring spoken languages (46,201 bilingual [43.4%], 28,113 trilingual [26.4%], 24,259 monolingual [22.8%], 7,882 polyglot 4+ languages [7.4%]). Exactly 1,268 educators (1.2% of national total) with unstated spoken languages were omitted from this analysis.
-        </p>
+        <p class="text-xs text-slate-500 italic pt-2 border-t border-slate-100">
+            <strong>Note:</strong> Multilingual breakdown based on 106,455 educators declaring spoken languages (46,201 bilingual [43.4%], 28,113 trilingual [26.4%], 24,259 monolingual [22.8%], 7,882 speak 4+ languages [7.4%]). 1,268 educators (1.2%) with unstated languages were left out of this analysis.
+          </p>
       </div>
 
       <!-- SECTION 6: CORE MARKET STRUCTURE CHARTS GRID -->
@@ -1816,6 +1743,163 @@
 
     </div>
 
+  
+    <!-- TAB 5: ABOUT PROJECT -->
+    <div id="tab-about" class="hidden flex-col gap-6">
+      
+      <!-- Top Banner -->
+      <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-8 text-white shadow-md border border-slate-800">
+        <div class="max-w-3xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-semibold mb-3 border border-indigo-400/20 font-mono">
+            <i class="fa-solid fa-graduation-cap"></i> DA-IICT • Academic Capstone Project
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">BMP Tutors: Real Data on India's Private Tutors</h2>
+          <p class="text-sm text-slate-300 mt-2.5 leading-relaxed">
+            We scraped and verified 107,723 tutor profiles from TeacherOn across all 36 Indian States and Union Territories, then cleaned them into two normalized tables so anyone can see fair pricing, subject overlaps, and which profiles are still active.
+          </p>
+        </div>
+      </div>
+
+      <!-- 3 Key Pillars Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Card 1: Motivation & Purpose -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg mb-3">
+              <i class="fa-solid fa-bullseye"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-900">Why We Built This</h3>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              Private tutoring in India is a messy, unorganized market. Parents have no idea what a fair hourly rate is — tutors quote anywhere from ₹200 to ₹3,500 for the same subject. TeacherOn shows profiles but doesn't tell you which ones are still active. We scraped 107,723 tutor profiles, verified which ones are live, and put fair pricing benchmarks in one place.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-semibold text-blue-600 flex items-center gap-1">
+            <span>Primary Focus:</span> <span class="text-slate-600">Fairness, Transparency & Accessibility</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Tools & Frameworks -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg mb-3">
+              <i class="fa-solid fa-code"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-900">Tools We Used</h3>
+            <ul class="text-xs text-slate-600 mt-2 space-y-1.5 leading-relaxed">
+              <li>• <strong class="text-slate-800">Database:</strong> SQLite 3, Python 3.12, Pandas — cleaned 107k rows into two tables.</li>
+              <li>• <strong class="text-slate-800">Maps:</strong> Leaflet.js, GeoJSON — India map with state borders.</li>
+              <li>• <strong class="text-slate-800">Charts:</strong> Chart.js, Tailwind CSS — fee and subject breakdowns.</li>
+              <li>• <strong class="text-slate-800">Pricing ML:</strong> Gradient boosting (R² = 0.84, MAE = ₹62/hr) — predicts hourly rates.</li>
+              <li>• <strong class="text-slate-800">Bio Generator:</strong> NLP + Gemini — writes parent and student profile bios.</li>
+            </ul>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-semibold text-emerald-600 flex items-center gap-1">
+            <span>Architecture:</span> <span class="text-slate-600">3NF Normalized Relational Model</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Who Can Use It -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-lg mb-3">
+              <i class="fa-solid fa-users"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-900">Who Uses It</h3>
+            <ul class="text-xs text-slate-600 mt-2 space-y-1.5 leading-relaxed">
+              <li>• <strong class="text-slate-800">Parents & Students:</strong> Check fair hourly rates, find multi-subject bundles, and see verified local or online tutors.</li>
+              <li>• <strong class="text-slate-800">Private Tutors:</strong> See what others charge for your subject and city, and generate a professional bio.</li>
+              <li>• <strong class="text-slate-800">Researchers:</strong> Download the full normalized Excel file with 107k tutor records.</li>
+            </ul>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-semibold text-purple-600 flex items-center gap-1">
+            <span>Open Access:</span> <span class="text-slate-600">Full Relational Excel & PDF Exports</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Project Authors & Academic Mentorship -->
+      <div class="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-xs space-y-6">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 font-mono">Academic Capstone Group 18</span>
+          <h3 class="text-xl font-extrabold text-slate-900 mt-0.5">Project Authors & Faculty Mentorship</h3>
+          <p class="text-xs text-slate-500 mt-0.5">Dhirubhai Ambani Institute of Information and Communication Technology (DA-IICT), Gandhinagar, Gujarat.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          
+          <!-- Author 1 -->
+          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-base mb-3 font-mono">
+                NM
+              </div>
+              <h4 class="font-extrabold text-slate-900 text-sm">Nilesh Mori</h4>
+              <p class="text-xs text-indigo-600 font-mono font-semibold mt-0.5">Student ID: 202301473</p>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                Built the 3NF database normalization, scraping pipeline, PII protection, and India state map cartography.
+              </p>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-slate-200 text-[10px] text-slate-500 font-mono">
+              Role: System Architecture & DBMS
+            </div>
+          </div>
+
+          <!-- Author 2 -->
+          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-base mb-3 font-mono">
+                HM
+              </div>
+              <h4 class="font-extrabold text-slate-900 text-sm">Harsh Maheriya</h4>
+              <p class="text-xs text-emerald-600 font-mono font-semibold mt-0.5">Student ID: 202301470</p>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                Built the 3-subject Venn diagram studio, fee regression model, and grade-wise pricing.
+              </p>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-slate-200 text-[10px] text-slate-500 font-mono">
+              Role: Econometrics & Venn Studio
+            </div>
+          </div>
+
+          <!-- Author 3 -->
+          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-base mb-3 font-mono">
+                TH
+              </div>
+              <h4 class="font-extrabold text-slate-900 text-sm">Tarang Hirapara</h4>
+              <p class="text-xs text-rose-600 font-mono font-semibold mt-0.5">Student ID: 202301207</p>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                Built the client dashboard, tutor verification system, and AI bio generator.
+              </p>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-slate-200 text-[10px] text-slate-500 font-mono">
+              Role: Web Platform & AI Bio Studio
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Mentorship Card -->
+        <div class="p-5 rounded-2xl bg-indigo-50/60 border border-indigo-200/80 flex items-start gap-4">
+          <div class="w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-lg shrink-0">
+            <i class="fa-solid fa-award"></i>
+          </div>
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-700 font-mono">Faculty Mentorship</span>
+            <h4 class="font-extrabold text-slate-900 text-base mt-0.5">Dr. Parul Gupta</h4>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+              Faculty Mentor, DA-IICT, Gandhinagar. Guided our research approach, data verification, and pricing validation.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
   </main>
 
   <!-- TUTOR DETAIL SLIDE-OVER DRAWER MODAL -->
@@ -1874,7 +1958,7 @@
         <!-- 4 Metric Cards -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
           <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
-            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Hourly Fee</span>
+            <span id="modal-fee-label" class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Tuition Rate</span>
             <span id="modal-fee" class="text-base font-extrabold text-emerald-600 block mt-0.5 font-mono">—</span>
           </div>
           <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
@@ -1935,7 +2019,7 @@
 
         <!-- Subjects List (Bridge Links) -->
         <div>
-          <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2">Subject Offerings (Bridge Links)</span>
+          <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2">Subject Offerings</span>
           <div id="modal-subjects-container" class="space-y-2 max-h-60 overflow-y-auto custom-scrollbar"></div>
         </div>
 
@@ -1945,10 +2029,10 @@
           <div id="modal-desc" class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed max-h-60 overflow-y-auto custom-scrollbar whitespace-pre-line font-serif italic"></div>
         </div>
 
-        <!-- System Metadata -->
-        <div class="pt-4 border-t border-slate-100 text-[11px] text-slate-400 flex items-center justify-between font-mono">
-          <div><span id="modal-source-tab">Tab: scraped</span> &bull; Registered: <span id="modal-registered">—</span></div>
-          <div>Last Login: <span id="modal-last-login">—</span></div>
+        <!-- Verified Metadata -->
+        <div class="pt-4 border-t border-slate-100 text-[11px] text-slate-500 flex items-center justify-between font-mono">
+          <div>Registered: <span id="modal-registered" class="font-semibold text-slate-700">—</span></div>
+          <div>Last Activity: <span id="modal-last-login" class="font-semibold text-slate-700">—</span></div>
         </div>
 
       </div>
@@ -1991,7 +2075,7 @@
                 <span class="font-bold text-slate-900 block text-xs flex items-center gap-1.5">
                   <i class="fa-solid fa-database text-blue-600"></i> All 107,723 Educators
                 </span>
-                <span class="text-[11px] text-slate-500 block mt-0.5">Complete master dataset across 36 States & UTs (87.4k active + 19.0k dormant + 1.2k unstated)</span>
+                <span class="text-[11px] text-slate-500 block mt-0.5">Complete master dataset across 36 States & UTs (76.7k verified active + 31.0k inactive/removed)</span>
               </div>
             </label>
             <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 bg-white cursor-pointer transition-all hover:border-emerald-300" id="label-docx-scope-active">
@@ -2393,7 +2477,13 @@
       const canvas = document.getElementById('chart-occupations');
       if (!canvas || !window.dashboardCharts || !window.dashboardCharts.occupations) return;
       
-      const occData = window.dashboardCharts.occupations;
+      const occData = window.dashboardCharts.occupations || [];
+      const totalOccN = occData.reduce((acc, curr) => acc + (curr.count || 0), 0);
+      const occTitleElem = document.getElementById('occ-sample-title');
+      if (occTitleElem) {
+        occTitleElem.textContent = `Figure 4: Non-Teaching & Professional Side Occupations Landscape (N = ${totalOccN.toLocaleString()})`;
+      }
+
       const sorted = [...occData].sort((a,b) => currentOccMode === 'count' ? a.count - b.count : a.avg_fee - b.avg_fee);
       const labels = sorted.map(d => d.occupation);
       const values = sorted.map(d => currentOccMode === 'count' ? d.count : d.avg_fee);
@@ -2490,7 +2580,7 @@
     }
 
     function switchTab(tabId) {
-      const tabs = ['explorer', 'analytics', 'fee-ai', 'bio-ai'];
+      const tabs = ['explorer', 'analytics', 'fee-ai', 'bio-ai', 'about'];
       
       tabs.forEach(t => {
         const el = document.getElementById(`tab-${t}`);
@@ -2745,9 +2835,22 @@
             statusDot = `<span class="inline-flex items-center gap-1 text-[10px] font-semibold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-md border border-rose-200" title="${escapeHtml(t.validation_reason || 'No Profile on TeacherOn')}"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>No Profile</span>`;
           }
 
+          // Fee display logic
+          let feeDisplay = '';
+          if (t.hourly_fee_avg) {
+            feeDisplay = `<span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold font-mono bg-emerald-50 text-emerald-700 border border-emerald-200/80">₹${Math.round(t.hourly_fee_avg)}<span class="text-[10px] text-emerald-600/70 font-sans ml-0.5">/hr</span></span>`;
+          } else if (t.monthly_fee_avg) {
+            feeDisplay = `<span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold font-mono bg-blue-50 text-blue-700 border border-blue-200/80">₹${Math.round(t.monthly_fee_avg).toLocaleString()}<span class="text-[10px] text-blue-600/70 font-sans ml-0.5">/mo</span></span>`;
+          } else if (t.fee_raw) {
+            const cleanRaw = t.fee_raw.split('(')[0].trim();
+            feeDisplay = `<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700" title="${escapeHtml(t.fee_raw)}">${escapeHtml(cleanRaw)}</span>`;
+          } else {
+            feeDisplay = `<span class="text-xs text-slate-400 font-medium">Negotiable</span>`;
+          }
+
           html += `
-            <tr class="hover:bg-indigo-50/40 transition-colors group cursor-pointer" onclick="viewTutorDetails('${t.tutor_id}')" title="Click to view full educator dossier">
-              <td class="py-3.5 px-4 font-mono font-bold text-xs text-indigo-600">
+            <tr class="hover:bg-indigo-50/40 transition-colors group cursor-pointer" onclick="viewTutorDetails('${t.tutor_id}')" title="Click to view educator dossier">
+              <td class="py-3.5 px-3 text-center font-mono font-bold text-xs text-indigo-600">
                 <span class="bg-indigo-50 group-hover:bg-indigo-100 text-indigo-700 px-2 py-1 rounded-md border border-indigo-200/60 transition-colors">
                   ${t.tutor_id}
                 </span>
@@ -2759,18 +2862,20 @@
                   </div>
                   <div class="min-w-0">
                     <div class="flex items-center gap-2">
-                      <span class="font-semibold text-slate-900 text-sm group-hover:text-indigo-600 transition-colors truncate">${escapeHtml(t.teacher_name || 'Anonymous')}</span>
+                      <span class="font-semibold text-slate-900 text-sm group-hover:text-indigo-600 transition-colors truncate">${escapeHtml(t.teacher_name || 'Tutor')}</span>
                       ${statusDot}
                     </div>
-                    <div class="text-xs text-slate-500 truncate max-w-xs mt-0.5">${escapeHtml(t.teacher_hookline || 'No headline available')}</div>
+                    <div class="text-xs text-slate-500 truncate max-w-xs mt-0.5">${escapeHtml(t.teacher_hookline || t.occupation || 'Private Educator')}</div>
                   </div>
                 </div>
               </td>
               <td class="py-3.5 px-4">
-                <div class="flex flex-col gap-1 items-start">
-                  ${occBadge}
-                  <span class="text-[10px] text-slate-400 font-medium">${escapeHtml(t.seniority_tier || 'Practitioner')}</span>
+                <div class="flex flex-wrap gap-1 items-center max-w-sm">
+                  ${subjsBadges}
                 </div>
+              </td>
+              <td class="py-3.5 px-4">
+                ${feeDisplay}
               </td>
               <td class="py-3.5 px-4">
                 <div class="font-medium text-slate-800 text-xs flex items-center gap-1">
@@ -2780,21 +2885,11 @@
                 <div class="text-[11px] text-slate-500 ml-3.5">${escapeHtml(t.state || '')} <span class="text-slate-400">(${escapeHtml(t.region || '—')})</span></div>
               </td>
               <td class="py-3.5 px-4">
-                <div class="text-xs font-semibold text-slate-800">${escapeHtml(t.highest_qualification || 'Degree')}</div>
+                <div class="text-xs font-semibold text-slate-800">${escapeHtml(t.highest_qualification || 'Graduate')}</div>
                 <div class="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1">
                   <i class="fa-regular fa-clock text-slate-400 text-[10px]"></i>
-                  <span>${t.total_teaching_exp_years != null ? t.total_teaching_exp_years + ' yrs exp' : '0 yrs exp'}</span>
+                  <span>${t.total_teaching_exp_years != null ? t.total_teaching_exp_years + ' yrs exp' : '1+ yrs exp'}</span>
                 </div>
-              </td>
-              <td class="py-3.5 px-4">
-                <div class="flex flex-wrap gap-1 items-center max-w-sm">
-                  ${subjsBadges}
-                </div>
-              </td>
-              <td class="py-3.5 px-4">
-                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold font-mono bg-emerald-50 text-emerald-700 border border-emerald-200/80">
-                  ${t.hourly_fee_avg ? `₹${Math.round(t.hourly_fee_avg)}<span class="text-[10px] text-emerald-600/70 font-sans ml-0.5">/hr</span>` : 'N/A'}
-                </span>
               </td>
               <td class="py-3.5 px-3 text-center text-slate-300 group-hover:text-indigo-600 transition-colors">
                 <i class="fa-solid fa-chevron-right text-xs"></i>
@@ -2886,7 +2981,19 @@
         document.getElementById('modal-hookline').textContent = t.teacher_hookline || 'No headline available';
 
         // 4. Metric Cards
-        document.getElementById('modal-fee').textContent = t.hourly_fee_avg ? `₹${Math.round(t.hourly_fee_avg)} / hr` : (t.fee_raw || 'Negotiable / Unstated');
+                if (t.hourly_fee_avg) {
+          document.getElementById('modal-fee').textContent = `₹${Math.round(t.hourly_fee_avg)} / hr`;
+          const lbl = document.getElementById('modal-fee-label');
+          if (lbl) lbl.textContent = 'Hourly Rate';
+        } else if (t.monthly_fee_avg) {
+          document.getElementById('modal-fee').textContent = `₹${Math.round(t.monthly_fee_avg).toLocaleString()} / mo`;
+          const lbl = document.getElementById('modal-fee-label');
+          if (lbl) lbl.textContent = 'Monthly Rate';
+        } else {
+          document.getElementById('modal-fee').textContent = t.fee_raw ? t.fee_raw.split('(')[0].trim() : 'Negotiable';
+          const lbl = document.getElementById('modal-fee-label');
+          if (lbl) lbl.textContent = 'Tuition Fee';
+        }
         const expYrs = (t.total_teaching_exp_years != null) ? t.total_teaching_exp_years : null;
         document.getElementById('modal-exp').textContent = (expYrs !== null) ? `${expYrs} yrs` : 'Not Stated';
         
@@ -4130,8 +4237,9 @@
       currentMapMetric = metric;
 
       // Update button styles
-      ['count', 'fee', 'online'].forEach(m => {
+      ['count', 'fee'].forEach(m => {
         const btn = document.getElementById(`btn-metric-${m}`);
+        if (!btn) return;
         if (m === metric) {
           btn.className = "px-3 py-1 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-sm";
         } else {
@@ -4144,14 +4252,13 @@
       if (statesGeoDataCache) {
         renderIndiaChoropleth(statesGeoDataCache);
       }
-      if (currentDistrictGeoCache) {
-        renderDistrictChoropleth(currentDistrictGeoCache);
-      }
     }
 
     function initOrUpdateMaps() {
       if (!mapsInitialized) {
-        // 1. Initialize All-India Boundary Map (Pure Academic White)
+        const mapElem = document.getElementById('map-india');
+        if (!mapElem) return;
+        
         mapIndia = L.map('map-india', {
           scrollWheelZoom: false,
           zoomControl: true,
@@ -4160,21 +4267,11 @@
 
         indiaLabelsGroup = L.layerGroup().addTo(mapIndia);
 
-        // 2. Initialize State District Map
-        mapStateCities = L.map('map-state-cities', {
-          scrollWheelZoom: false,
-          zoomControl: true,
-          attributionControl: false
-        }).setView([15.3173, 75.7139], 6.5);
-
-        stateDistrictsLabelsGroup = L.layerGroup().addTo(mapStateCities);
-
         mapsInitialized = true;
         updateLegendUI();
         loadGeoJSONData();
       } else {
-        mapIndia.invalidateSize();
-        mapStateCities.invalidateSize();
+        if (mapIndia) mapIndia.invalidateSize();
       }
     }
 
@@ -4184,25 +4281,7 @@
         const res = await fetch('/api/geojson/states' + activeParam);
         statesGeoDataCache = await res.json();
 
-        // Populate State Dropdown
-        const stateSelect = document.getElementById('map-state-select');
-        stateSelect.innerHTML = '';
-        
-        // Sort states by tutor count descending
-        const sortedFeatures = [...statesGeoDataCache.features].sort((a, b) => (b.properties.tutor_count || 0) - (a.properties.tutor_count || 0));
-        
-        sortedFeatures.forEach(feat => {
-          const p = feat.properties;
-          const opt = document.createElement('option');
-          opt.value = p.state;
-          opt.textContent = `${p.state} (${(p.tutor_count || 0).toLocaleString()} tutors)`;
-          stateSelect.appendChild(opt);
-        });
-
         renderIndiaChoropleth(statesGeoDataCache);
-
-        // Load default state
-        selectState(currentSelectedState);
 
       } catch (err) {
         console.error('Error loading GeoJSON states:', err);
@@ -4239,27 +4318,15 @@
               center = [p.label_lat, p.label_lng];
             }
 
-            // Label marker inside state boundary
-            if (p.tutor_count > 0 || currentMapMetric === 'fee') {
-              const labelMarker = L.marker(center, {
-                icon: L.divIcon({
-                  className: 'polygon-number-label',
-                  html: `<span>${formattedVal}</span>`,
-                  iconSize: [40, 16],
-                  iconAnchor: [20, 8]
-                })
-              });
-              indiaLabelsGroup.addLayer(labelMarker);
-            }
+            // Figures shown on hover only to prevent map clutter (per academic requirements)
           } catch(e) {}
 
-          // Interactive Hover & Tooltip
+          // Clean Hover Tooltip (Figure & label on hover only)
           layer.bindTooltip(`
-            <div class="font-sans text-xs">
-              <div class="font-bold text-slate-900 border-b pb-0.5 mb-1">${escapeHtml(p.state)}</div>
-              <div>Tutors: <b>${(p.tutor_count || 0).toLocaleString()}</b></div>
-              <div>Avg Fee: <b>₹${p.avg_fee}/hr</b></div>
-              <div>Online: <b>${p.online_pct}%</b></div>
+            <div class="font-sans text-xs p-1">
+              <div class="font-bold text-slate-900 border-b border-slate-200 pb-0.5 mb-1">${escapeHtml(p.state)}</div>
+              <div>Total Tutors: <b class="text-indigo-600">${(p.tutor_count || 0).toLocaleString()}</b></div>
+              <div>Avg Hourly Fee: <b class="text-emerald-600">₹${p.avg_fee}/hr</b></div>
             </div>
           `, { sticky: true });
 
@@ -5317,7 +5384,7 @@ let currentSelectedSegment = 'all_three';
           count: c.all_three,
           pct: p.all_three,
           fee: f.all_three,
-          insight: `There are ${c.all_three.toLocaleString()} educators (${p.all_three}% of this pool) teaching all three subjects. Multi-subject educators often cater to high-demand school students needing comprehensive all-in-one exam prep.`
+          insight: `There are ${c.all_three.toLocaleString()} educators (${p.all_three}% of this pool) teaching all three subjects. Multi-subject educators often help high-demand school students who want all-in-one exam prep.`
         },
         s1_s2: {
           title: `Dual Overlap: ${s.s1} + ${s.s2}`,

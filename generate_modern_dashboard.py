@@ -11,18 +11,18 @@ import re
 BACKUP_PATH = "/home/nilesh7757/BMPTUTORS1/app/index.html.bak"
 TARGET_PATH = "/home/nilesh7757/BMPTUTORS1/app/index.html"
 
-with open(BACKUP_PATH, 'r') as f:
+with open(BACKUP_PATH, "r") as f:
     orig = f.read()
 
 # Extract script block
-script_start = orig.find('<script>\n    // State')
+script_start = orig.find("<script>\n    // State")
 if script_start == -1:
-    script_start = orig.find('<script>\n    // State')
+    script_start = orig.find("<script>\n    // State")
     if script_start == -1:
-        script_start = orig.rfind('<script>')
+        script_start = orig.rfind("<script>")
 
-script_end = orig.rfind('</script>')
-orig_script = orig[script_start + len('<script>'):script_end]
+script_end = orig.rfind("</script>")
+orig_script = orig[script_start + len("<script>") : script_end]
 
 # Now let's enhance the script to support:
 # 1. Occupation filter in params and populateSelect
@@ -54,7 +54,9 @@ new_reset = """document.getElementById('filter-role').value = '';
 script_mod = script_mod.replace(old_reset, new_reset, 1)
 
 # 4. Add occupation in viewTutorDetails modal
-old_modal_role = "document.getElementById('modal-role').textContent = t.experience_role || 'Tutor';"
+old_modal_role = (
+    "document.getElementById('modal-role').textContent = t.experience_role || 'Tutor';"
+)
 new_modal_role = """document.getElementById('modal-role').textContent = t.experience_role || 'Tutor';
         if (document.getElementById('modal-occupation')) {
           document.getElementById('modal-occupation').textContent = t.occupation || t.experience_role || 'Educator';
@@ -86,10 +88,17 @@ skeleton_html = """
       `).join('');
 """
 
-script_mod = re.sub(r'tbody\.innerHTML\s*=\s*`\s*<tr>\s*<td colspan="7".*?</td>\s*</tr>\s*`;', skeleton_html.strip(), script_mod, flags=re.DOTALL)
+script_mod = re.sub(
+    r'tbody\.innerHTML\s*=\s*`\s*<tr>\s*<td colspan="7".*?</td>\s*</tr>\s*`;',
+    skeleton_html.strip(),
+    script_mod,
+    flags=re.DOTALL,
+)
 
 # Update row HTML generation in loadTutors
-old_row_gen_start = "html += `\n            <tr class=\"hover:bg-slate-50/80 transition-colors\">"
+old_row_gen_start = (
+    'html += `\n            <tr class="hover:bg-slate-50/80 transition-colors">'
+)
 # We'll replace the row HTML generator with the modern card/table row
 new_row_gen = """
           // Helper for initials
@@ -203,11 +212,16 @@ new_row_gen = """
 """
 
 # Replace the row rendering
-old_row_match = re.search(r'data\.items\.forEach\(t\s*=>\s*\{(.*?)html\s*\+=\s*`\s*<tr class="hover:bg-slate-50/80.*?</tr>\s*`;\s*\}\);', script_mod, re.DOTALL)
+old_row_match = re.search(
+    r'data\.items\.forEach\(t\s*=>\s*\{(.*?)html\s*\+=\s*`\s*<tr class="hover:bg-slate-50/80.*?</tr>\s*`;\s*\}\);',
+    script_mod,
+    re.DOTALL,
+)
 if old_row_match:
     full_block = old_row_match.group(0)
     # extract subjsBadges logic
-    subjs_logic = """
+    subjs_logic = (
+        """
         data.items.forEach(t => {
           let subjsBadges = '';
           if (t.subjects && t.subjects.length) {
@@ -229,7 +243,10 @@ if old_row_match:
           } else {
             subjsBadges = '<span class="text-xs text-slate-400 italic">None listed</span>';
           }
-    """ + new_row_gen + "\n        });"
+    """
+        + new_row_gen
+        + "\n        });"
+    )
     script_mod = script_mod.replace(full_block, subjs_logic)
 
 # 6. Add Occupations Chart logic
@@ -320,7 +337,11 @@ if dom_idx != -1:
 # Call renderOccupationsChart in loadCharts
 load_charts_idx = script_mod.find("window.genderAnalyticsData = data;")
 if load_charts_idx != -1:
-    script_mod = script_mod[:load_charts_idx] + "window.dashboardCharts = data;\n        if (data.occupations) { renderOccupationsChart(); }\n        " + script_mod[load_charts_idx:]
+    script_mod = (
+        script_mod[:load_charts_idx]
+        + "window.dashboardCharts = data;\n        if (data.occupations) { renderOccupationsChart(); }\n        "
+        + script_mod[load_charts_idx:]
+    )
 
 # -------------------------------------------------------------
 # Construct the Complete Modern HTML
@@ -1142,8 +1163,8 @@ full_html = f"""<!DOCTYPE html>
             <i class="fa-solid fa-network-wired"></i>
           </div>
           <div>
-            <h3 class="text-lg font-bold text-slate-900 tracking-tight">Relational Star Schema & Bridge Architecture</h3>
-            <p class="text-xs text-slate-500">Zero data redundancy, zero wide sparsity, relational 3NF production standard</p>
+            <h3 class="text-lg font-bold text-slate-900 tracking-tight">Two-Table Database Design</h3>
+            <p class="text-xs text-slate-500">Zero duplicate data, clean two-table structure</p>
           </div>
         </div>
 
@@ -1369,7 +1390,7 @@ full_html = f"""<!DOCTYPE html>
 </html>
 """
 
-with open(TARGET_PATH, 'w') as f:
+with open(TARGET_PATH, "w") as f:
     f.write(full_html)
 
 print("Redesigned modern dashboard generated successfully at:", TARGET_PATH)
