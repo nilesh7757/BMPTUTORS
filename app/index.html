@@ -1844,11 +1844,11 @@
             </div>
             <h3 class="text-base font-bold text-slate-900">Tools We Used</h3>
             <ul class="text-xs text-slate-600 mt-2 space-y-1.5 leading-relaxed">
-              <li>• <strong class="text-slate-800">Database:</strong> SQLite 3, Python 3.12, Pandas — cleaned 107k rows into two tables.</li>
-              <li>• <strong class="text-slate-800">Maps:</strong> Leaflet.js, GeoJSON — India map with state borders.</li>
-              <li>• <strong class="text-slate-800">Charts:</strong> Chart.js, Tailwind CSS — fee and subject breakdowns.</li>
-              <li>• <strong class="text-slate-800">Pricing ML:</strong> Gradient boosting (R² = 0.84, MAE = ₹62/hr) — predicts hourly rates.</li>
-              <li>• <strong class="text-slate-800">Bio Generator:</strong> NLP + Gemini — writes parent and student profile bios.</li>
+              <li>• <strong class="text-slate-800">Database:</strong> SQLite 3, Python 3.12, Pandas — 3NF normalized model (107k tutors, 403k offerings across 386 clean disciplines).</li>
+              <li>• <strong class="text-slate-800">Maps:</strong> Leaflet.js, GeoJSON — India map with state borders and density choropleth.</li>
+              <li>• <strong class="text-slate-800">Charts:</strong> Chart.js, Tailwind CSS — fee, tier, and subject breakdowns.</li>
+              <li>• <strong class="text-slate-800">Pricing ML:</strong> Ridge Regression with L2 regularization (R² = 9.8%, MAE = ₹370/hr on 72,001 rows) — baseline pricing estimator.</li>
+              <li>• <strong class="text-slate-800">Bio Generator:</strong> NLP + Gemini 2.5 Flash — writes parent and student profile bios.</li>
             </ul>
           </div>
           <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-semibold text-emerald-600 flex items-center gap-1">
@@ -1879,12 +1879,12 @@
       <!-- Project Authors & Academic Mentorship -->
       <div class="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-xs space-y-6">
         <div>
-          <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 font-mono">Academic Capstone Group 18</span>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 font-mono">Academic Capstone Project (SC452)</span>
           <h3 class="text-xl font-extrabold text-slate-900 mt-0.5">Project Authors & Faculty Mentorship</h3>
           <p class="text-xs text-slate-500 mt-0.5">Dhirubhai Ambani Institute of Information and Communication Technology (DA-IICT), Gandhinagar, Gujarat.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           
           <!-- Author 1 -->
           <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between">
@@ -1895,11 +1895,11 @@
               <h4 class="font-extrabold text-slate-900 text-sm">Nilesh Mori</h4>
               <p class="text-xs text-indigo-600 font-mono font-semibold mt-0.5">Student ID: 202301473</p>
               <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                Built the 3NF database normalization, scraping pipeline, PII protection, and India state map cartography.
+                Full-Stack System Engineering, 3NF Database Normalization, Automated Scraping & Verification Pipeline, and Geospatial GIS Mapping.
               </p>
             </div>
             <div class="mt-4 pt-2.5 border-t border-slate-200 text-[10px] text-slate-500 font-mono">
-              Role: System Architecture & DBMS
+              Equal Collaborative Co-Engineer
             </div>
           </div>
 
@@ -1907,33 +1907,16 @@
           <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between">
             <div>
               <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-base mb-3 font-mono">
-                HM
+                PC
               </div>
-              <h4 class="font-extrabold text-slate-900 text-sm">Harsh Maheriya</h4>
-              <p class="text-xs text-emerald-600 font-mono font-semibold mt-0.5">Student ID: 202301470</p>
+              <h4 class="font-extrabold text-slate-900 text-sm">Pratik Chauhan</h4>
+              <p class="text-xs text-emerald-600 font-mono font-semibold mt-0.5">Student ID: 202301435</p>
               <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                Built the 3-subject Venn diagram studio, fee regression model, and grade-wise pricing.
+                Data Science & Econometrics, NLP Subject Taxonomy & Canonicalization, Ridge Regression Pricing Engine, and Interactive Venn Studio.
               </p>
             </div>
             <div class="mt-4 pt-2.5 border-t border-slate-200 text-[10px] text-slate-500 font-mono">
-              Role: Econometrics & Venn Studio
-            </div>
-          </div>
-
-          <!-- Author 3 -->
-          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between">
-            <div>
-              <div class="w-12 h-12 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-base mb-3 font-mono">
-                TH
-              </div>
-              <h4 class="font-extrabold text-slate-900 text-sm">Tarang Hirapara</h4>
-              <p class="text-xs text-rose-600 font-mono font-semibold mt-0.5">Student ID: 202301207</p>
-              <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                Built the client dashboard, tutor verification system, and AI bio generator.
-              </p>
-            </div>
-            <div class="mt-4 pt-2.5 border-t border-slate-200 text-[10px] text-slate-500 font-mono">
-              Role: Web Platform & AI Bio Studio
+              Equal Collaborative Co-Engineer
             </div>
           </div>
 
@@ -2262,7 +2245,7 @@
       <div class="flex items-center space-x-4 flex-wrap gap-y-1">
         <a href="/report" target="_blank" class="hover:text-indigo-600 transition-colors">Academic Report</a>
         <a href="/api/download/normalized-tutors-excel" class="hover:text-blue-600 transition-colors font-medium">Tutors Table (107k)</a>
-        <a href="/api/download/normalized-subjects-excel" class="hover:text-teal-600 transition-colors font-medium">Subjects Table (12.3k)</a>
+        <a href="/api/download/normalized-subjects-excel" class="hover:text-teal-600 transition-colors font-medium">Subjects Table (403k Offerings)</a>
         <a href="/api/download/normalized-database-excel" class="hover:text-emerald-600 transition-colors font-semibold flex items-center gap-1">
           <i class="fa-solid fa-file-excel text-emerald-600"></i>
           <span>Normalized 2-Table DB (.xlsx)</span>
