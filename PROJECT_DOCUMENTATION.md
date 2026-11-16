@@ -35,22 +35,22 @@ To ensure high research integrity and prevent outdated or corrupted listings fro
 | **Dormant / Removed** | **31,017** | **28.8%** | Accounts created once and never used, or profiles that no longer exist. Kept in the archive but not in pricing. |
 | **No Activity Data** | **1,268** | **1.2%** | Profiles with missing login dates, verified via headless browser automation. |
 
-### 2.3 Automated Data Cleaning & Hygiene Rules
-1. **Hourly Fee Sanitization:** Stripped currency labels (`Rs`, `INR`, `/hr`), commas, and whitespace. Clamped fees between **₹100/hr and ₹5,000/hr** to eliminate data entry typos (e.g., users entering ₹50,000/month in an hourly field).
-2. **Subject Canonicalization:** Grouped thousands of raw subject variations into standardized canonical taxonomies (e.g., *Maths*, *Mathematics*, *Vedic Math*, *Applied Math* → mapped to canonical *Mathematics* with sub-tags).
-3. **Geographic Standardization:** Standardized city and state names against official Census of India boundaries, correcting misspellings and mapping satellite towns to their parent districts.
-4. **Name & Contact Privacy:** Protected educator privacy by masking phone numbers (e.g., `+91-98XXX-XX123`) and email addresses in public interfaces and export sheets.
+### 2.3 Cleaning Rules We Applied
+1. **Fee cleanup:** Removed currency labels (`Rs`, `INR`, `/hr`), commas, and extra spaces. Limited fees to ₹100–₹5,000 per hour to catch typos (e.g., someone typing ₹50,000/month in an hourly field).
+2. **Subject name standardization:** Grouped thousands of spelling variants into standard subjects (e.g., *Maths*, *Mathematics*, *Vedic Math*, *Applied Math* all mapped to canonical *Mathematics*).
+3. **City and state standardization:** Fixed misspellings and mapped satellite towns to their parent districts using Census of India boundaries.
+4. **Privacy protection:** Masked phone numbers (e.g., `+91-98XXX-XX123`) and email addresses in public views and export files.
 
 ---
 
 ## 3. Database — Two Clean Tables
 
-### 3.1 The Flat Spreadsheet Problem
-Initially, tutor data was stored in an unnormalized spreadsheet where each subject taught by a tutor generated a new repeating row. For example, if an educator taught 4 subjects, their name, bio, contact details, and location were duplicated 4 times across more than 340,000 rows:
-- **Redundancy & Storage Bloat:** Massive file sizes and memory overhead.
-- **Update Anomalies:** Updating a tutor's hourly fee or city required updating multiple rows; any missed row caused conflicting rate data.
-- **Deletion Anomalies:** Removing a tutor's last subject accidentally wiped out their entire profile.
-- **Insertion Anomalies:** A newly registered tutor could not be stored without assigning at least one dummy subject.
+### 3.1 Why We Needed Two Tables
+Initially, tutor data was stored in one flat spreadsheet where each subject taught by a tutor created a new repeating row. If an educator taught 4 subjects, their name, bio, contact details, and location were repeated 4 times across more than 340,000 rows:
+- **Repeated data:** The same tutor info appeared many times, making files large and slow.
+- **Conflicting updates:** Changing a tutor's fee or city meant editing multiple rows. A missed row left wrong data behind.
+- **Lost profiles:** Deleting a tutor's last subject accidentally removed their entire profile.
+- **No empty entries:** A new tutor could not be added without assigning at least one dummy subject.
 
 ### 3.2 Normalized 3NF Dual-Table Schema
 We resolved these anomalies by decomposing the dataset into two cleanly normalized, relational tables connected by a primary-to-foreign key relationship:
@@ -91,13 +91,13 @@ We resolved these anomalies by decomposing the dataset into two cleanly normaliz
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### 3.3 Removal of Synthetic Metrics
-In alignment with strict database normalization standards, artificial and non-original columns (such as synthetic "Market Share" formulas that were not part of the source data) were permanently removed to maintain pure, authentic DBMS records.
+### 3.3 Removing Made-Up Columns
+We removed artificial columns that were not part of the original source data — such as synthetic "Market Share" formulas — to keep the database records authentic and trustworthy.
 
 **Engineering Outcomes:**
-- **Zero Redundancy:** Tutors are represented exactly once; bio and contact details are never duplicated.
-- **64% Storage Reduction:** Relational decomposition reduced disk footprint by nearly two-thirds.
-- **Full ACID Compliance:** Seamless updates, insertions, and deletions with zero anomalies.
+- **No repeated data:** Each tutor appears exactly once; bio and contact details are never duplicated.
+- **About 64% smaller files:** Splitting into two tables reduced disk footprint by nearly two-thirds.
+- **Reliable updates:** Adding, editing, or deleting records works cleanly without data conflicts.
 
 ---
 
@@ -118,10 +118,10 @@ In alignment with strict database normalization standards, artificial and non-or
 - **North Zone (28,400 Tutors • Median Fee: ₹480/hr):** Massive scale in CBSE board tuition and JEE/NEET competitive preparation.
 - **East & Central Zone (23,600 Tutors • Most Affordable Median: ₹380/hr):** High concentration of foundational school learning and regional literature.
 
-### 4.3 Urban Tiers & Delivery Mode Transformation
-- **Urban Concentration:** Tier-1 Metros account for **54.0%** of tutors (median fee ₹600/hr); Tier-2 Emerging Cities account for **31.0%** (median fee ₹400/hr); Tier-3 and Semi-Urban districts account for **15.0%** (median fee ₹280/hr).
-- **The Online Dominance:** **68.0%** of tutors operate primarily online, **24.0%** provide in-person home tuition, and **8.0%** offer hybrid instruction.
-- **The Online Earnings Premium:** Online-capable tutors earn on average **22% higher hourly rates** than offline-only tutors because they can teach high-income metro students regardless of where they physically live.
+### 4.3 City Tiers and How Tutors Deliver Classes
+- **Where tutors are:** Tier-1 metros hold **54.0%** of tutors (median fee ₹600/hr); Tier-2 cities hold **31.0%** (median fee ₹400/hr); Tier-3 and semi-urban districts hold **15.0%** (median fee ₹280/hr).
+- **Mostly online:** **68.0%** of tutors teach mainly online, **24.0%** visit students in person, and **8.0%** use hybrid instruction.
+- **Online tutors earn more:** Online-capable tutors charge about **22% higher** hourly rates than offline-only tutors, since they can reach students in big cities from anywhere.
 
 ### 4.4 Academic Subject Demand
 1. **Mathematics:** 37,566 Tutors (34.8%) — The undisputed #1 subject across all age groups and boards.
@@ -182,17 +182,17 @@ An analysis of external occupations revealed that private tutoring is primarily 
 
 ## 5. Software Engineering & AI Tools
 
-### 5.1 Interactive Web Platform
-- **Zero-Lag Client Architecture:** Engineered with high-efficiency vanilla JavaScript and lightweight backend API endpoints, enabling instant live search across 107k profiles without page reloads.
-- **Dynamic India Vector Map:** Interactive SVG choropleth allowing users to hover over any of India's 36 States/UTs to inspect live tutor counts, median rates, and top subjects.
-- **Dynamic 3-Way Subject Overlap Studio:** Select any three subjects to dynamically generate intersection counts, calculate bundle savings, and export clean publication-ready Vector SVGs.
-- **Multi-Attribute Filter Engine:** Instant filtering across state, city, gender, experience, max fee, and delivery mode.
+### 5.1 Website Platform
+- **Fast search:** Built with lightweight JavaScript and simple backend API endpoints, so you can search across 100k+ tutor profiles without waiting for pages to reload.
+- **India map:** An interactive SVG map where you can hover over any of India's 36 States/UTs to see tutor counts, median rates, and top subjects.
+- **3-subject overlap tool:** Pick any three subjects to see how many tutors teach them together, calculate bundle savings, and export vector SVG files.
+- **Smart filters:** Instant filtering by state, city, gender, experience, maximum fee, and delivery mode.
 
-### 5.2 Smart Hourly Fee Prediction Engine (Machine Learning)
-- **Model Architecture:** Evaluated Ridge Regression, Random Forest, and LightGBM Decision Trees. LightGBM achieved the highest accuracy.
-- **Performance:** **$R^2 = 0.84$** and **$MAE = ₹62/hr$** on held-out test data.
-- **Predictive Weights:** City Tier & State Economy (32%), Subject & Academic Stage (28%), Teaching Experience (21%), Education Degree & Delivery Mode (19%).
-- **Practical Utility:** Enables tutors to price competitively and helps parents immediately identify whether an educator's quoted fee is fair, economical, or overpriced.
+### 5.2 Hourly Fee Prediction (Machine Learning)
+- **Model tested:** We compared Ridge Regression, Random Forest, and LightGBM decision trees. LightGBM gave the best results.
+- **Accuracy:** **R² = 0.84** and **MAE = ₹62/hr** on test data the model had not seen before.
+- **What drives the price:** City tier and state economy (32%), subject and grade level (28%), teaching experience (21%), education degree and delivery mode (19%).
+- **Why it matters:** Tutors can price competitively, and parents can instantly see whether a quoted fee is fair, reasonable, or overpriced.
 
 ### 5.3 Bio Generator & Profile Optimizer
 - **The Problem:** Over 40% of skilled tutors write short, informal bios that don't communicate their expertise to parents.

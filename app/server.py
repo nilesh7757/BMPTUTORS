@@ -1,3 +1,4 @@
+import jinja2
 from collections import Counter
 import sqlite3
 import json
@@ -119,6 +120,7 @@ async def api_filters(request):
     seniority_tiers = [r[0] for r in cur.execute("SELECT DISTINCT seniority_tier FROM teachers WHERE seniority_tier IS NOT NULL ORDER BY seniority_tier").fetchall()]
     experience_roles = [r[0] for r in cur.execute("SELECT DISTINCT experience_role FROM teachers WHERE experience_role IS NOT NULL ORDER BY experience_role").fetchall()]
     subject_categories = [r[0] for r in cur.execute("SELECT DISTINCT subject_category FROM teacher_subjects WHERE subject_category IS NOT NULL ORDER BY subject_category").fetchall()]
+    canonical_subjects = [r[0] for r in cur.execute("SELECT DISTINCT canonical_subject FROM teacher_subjects WHERE canonical_subject IS NOT NULL ORDER BY canonical_subject").fetchall()]
     levels = [r[0] for r in cur.execute("SELECT DISTINCT level_category FROM teacher_subjects WHERE level_category IS NOT NULL ORDER BY level_category").fetchall()]
     exams = [r[0] for r in cur.execute("SELECT DISTINCT competitive_exam FROM teacher_subjects WHERE competitive_exam IS NOT NULL ORDER BY competitive_exam").fetchall()]
     occupations = [r[0] for r in cur.execute("SELECT DISTINCT occupation FROM teachers WHERE occupation IS NOT NULL ORDER BY occupation").fetchall()]
@@ -132,6 +134,7 @@ async def api_filters(request):
         "experience_roles": experience_roles,
         "occupations": occupations,
         "subject_categories": subject_categories,
+        "canonical_subjects": canonical_subjects,
         "levels": levels,
         "exams": exams
     }
@@ -263,6 +266,54 @@ async def api_tutors(request):
     elif status_filter in ("inactive", "dormant", "removed", "no_profile", "404", "unstated"):
         where_clauses.append("t.is_active = 0")
         
+    # Data Quality & Cleansing Filters
+    canonical_subject = params.get("canonical_subject", params.get("subject", "")).strip()
+    if canonical_subject:
+        where_clauses.append("EXISTS (SELECT 1 FROM teacher_subjects bcs WHERE bcs.tutor_id = t.tutor_id AND bcs.canonical_subject = ?)")
+        args.append(canonical_subject)
+
+    exclude_dummy = params.get("exclude_dummy", "").strip().lower() in ("1", "true", "yes")
+    if exclude_dummy:
+        where_clauses.append("""(
+            LOWER(t.teacher_name) NOT LIKE '%dummy%' 
+            AND LOWER(t.teacher_name) NOT LIKE '%test account%'
+            AND LOWER(t.teacher_name) NOT LIKE '%test prep%'
+            AND LOWER(t.teacher_name) NOT LIKE '%sample%'
+            AND LOWER(t.teacher_name) NOT IN ('xyz', 'abc')
+        )""")
+
+    deduplicate = params.get("deduplicate", "").strip().lower() in ("1", "true", "yes")
+    if deduplicate:
+        where_clauses.append("""t.rowid IN (
+            SELECT MIN(t2.rowid) FROM teachers t2 
+            WHERE t2.teacher_name != 'Anonymous Tutor'
+            GROUP BY LOWER(TRIM(t2.teacher_name)), LOWER(TRIM(COALESCE(t2.city, '')))
+            UNION ALL
+            SELECT t3.rowid FROM teachers t3 WHERE t3.teacher_name = 'Anonymous Tutor'
+        )""")
+
+    exclude_empty_raw = params.get("exclude_empty", "").strip().lower()
+    exclude_empty_cols = set([c.strip() for c in exclude_empty_raw.split(",") if c.strip()])
+
+    if "name" in exclude_empty_cols:
+        where_clauses.append("(t.teacher_name IS NOT NULL AND TRIM(t.teacher_name) != '' AND t.teacher_name != 'Anonymous Tutor')")
+    if "fee" in exclude_empty_cols or "hourly_fee" in exclude_empty_cols:
+        where_clauses.append("(t.hourly_fee_avg IS NOT NULL AND t.hourly_fee_avg >= 100 AND t.hourly_fee_avg <= 5000)")
+    if "experience" in exclude_empty_cols or "total_teaching_exp_years" in exclude_empty_cols:
+        where_clauses.append("(t.total_teaching_exp_years IS NOT NULL)")
+    if "languages" in exclude_empty_cols or "speaks_languages" in exclude_empty_cols:
+        where_clauses.append("(t.speaks_languages IS NOT NULL AND TRIM(t.speaks_languages) != '' AND t.speaks_languages NOT LIKE 'Language%')")
+    if "state" in exclude_empty_cols or "location" in exclude_empty_cols:
+        where_clauses.append("(t.state IS NOT NULL AND TRIM(t.state) != '' AND t.state NOT IN ('Not Specified', 'Other / International'))")
+    if "city" in exclude_empty_cols:
+        where_clauses.append("(t.city IS NOT NULL AND TRIM(t.city) != '' AND t.city NOT IN ('Not Specified'))")
+    if "qualification" in exclude_empty_cols or "highest_qualification" in exclude_empty_cols:
+        where_clauses.append("(t.highest_qualification IS NOT NULL AND TRIM(t.highest_qualification) != '' AND t.highest_qualification NOT IN ('Not Specified', 'Other'))")
+    if "description" in exclude_empty_cols or "bio" in exclude_empty_cols:
+        where_clauses.append("(t.description IS NOT NULL AND TRIM(t.description) != '' AND LENGTH(TRIM(t.description)) > 20)")
+    if "subjects" in exclude_empty_cols:
+        where_clauses.append("EXISTS (SELECT 1 FROM teacher_subjects bse WHERE bse.tutor_id = t.tutor_id AND bse.canonical_subject IS NOT NULL AND TRIM(bse.canonical_subject) != '')")
+
     # Bridge filters
     bridge_joins = []
     if subject_category:
@@ -851,7 +902,6 @@ async def api_map_states(request):
         SELECT 
             state, region, count(*) as tutor_count,
             round(avg(case when hourly_fee_avg between 50 and 5000 then hourly_fee_avg end), 1) as avg_fee,
-            round(avg(teaches_online) * 100, 1) as online_pct,
             sum(case when is_active = 1 then 1 else 0 end) as active_count
         FROM teachers
         WHERE state IS NOT NULL AND state NOT IN ('Other / International', 'Other')
@@ -868,7 +918,6 @@ async def api_map_states(request):
             "region": r["region"],
             "tutor_count": r["tutor_count"],
             "avg_fee": r["avg_fee"] or 0,
-            "online_pct": r["online_pct"] or 0,
             "active_count": r["active_count"],
             "lat": coords[0],
             "lng": coords[1]
@@ -884,8 +933,7 @@ async def api_map_cities(request):
     rows = cur.execute("""
         SELECT 
             city, count(*) as tutor_count,
-            round(avg(case when hourly_fee_avg between 50 and 5000 then hourly_fee_avg end), 1) as avg_fee,
-            round(avg(teaches_online) * 100, 1) as online_pct
+            round(avg(case when hourly_fee_avg between 50 and 5000 then hourly_fee_avg end), 1) as avg_fee
         FROM teachers
         WHERE state = ? AND city IS NOT NULL AND city != ''
         GROUP BY city
@@ -911,7 +959,6 @@ async def api_map_cities(request):
             "state": state,
             "tutor_count": r["tutor_count"],
             "avg_fee": r["avg_fee"] or 0,
-            "online_pct": r["online_pct"] or 0,
             "lat": coords[0],
             "lng": coords[1]
         })
@@ -1021,6 +1068,53 @@ async def api_download_filtered_excel(request):
         where_clauses.append("EXISTS (SELECT 1 FROM teacher_subjects be WHERE be.tutor_id = t.tutor_id AND be.competitive_exam = ?)")
         args.append(exam)
 
+    canonical_subject = params.get("canonical_subject", params.get("subject", "")).strip()
+    if canonical_subject:
+        where_clauses.append("EXISTS (SELECT 1 FROM teacher_subjects bcs WHERE bcs.tutor_id = t.tutor_id AND bcs.canonical_subject = ?)")
+        args.append(canonical_subject)
+
+    exclude_dummy = params.get("exclude_dummy", "").strip().lower() in ("1", "true", "yes")
+    if exclude_dummy:
+        where_clauses.append("""(
+            LOWER(t.teacher_name) NOT LIKE '%dummy%' 
+            AND LOWER(t.teacher_name) NOT LIKE '%test account%'
+            AND LOWER(t.teacher_name) NOT LIKE '%test prep%'
+            AND LOWER(t.teacher_name) NOT LIKE '%sample%'
+            AND LOWER(t.teacher_name) NOT IN ('xyz', 'abc')
+        )""")
+
+    deduplicate = params.get("deduplicate", "").strip().lower() in ("1", "true", "yes")
+    if deduplicate:
+        where_clauses.append("""t.rowid IN (
+            SELECT MIN(t2.rowid) FROM teachers t2 
+            WHERE t2.teacher_name != 'Anonymous Tutor'
+            GROUP BY LOWER(TRIM(t2.teacher_name)), LOWER(TRIM(COALESCE(t2.city, '')))
+            UNION ALL
+            SELECT t3.rowid FROM teachers t3 WHERE t3.teacher_name = 'Anonymous Tutor'
+        )""")
+
+    exclude_empty_raw = params.get("exclude_empty", "").strip().lower()
+    exclude_empty_cols = set([c.strip() for c in exclude_empty_raw.split(",") if c.strip()])
+
+    if "name" in exclude_empty_cols:
+        where_clauses.append("(t.teacher_name IS NOT NULL AND TRIM(t.teacher_name) != '' AND t.teacher_name != 'Anonymous Tutor')")
+    if "fee" in exclude_empty_cols or "hourly_fee" in exclude_empty_cols:
+        where_clauses.append("(t.hourly_fee_avg IS NOT NULL AND t.hourly_fee_avg >= 100 AND t.hourly_fee_avg <= 5000)")
+    if "experience" in exclude_empty_cols or "total_teaching_exp_years" in exclude_empty_cols:
+        where_clauses.append("(t.total_teaching_exp_years IS NOT NULL)")
+    if "languages" in exclude_empty_cols or "speaks_languages" in exclude_empty_cols:
+        where_clauses.append("(t.speaks_languages IS NOT NULL AND TRIM(t.speaks_languages) != '' AND t.speaks_languages NOT LIKE 'Language%')")
+    if "state" in exclude_empty_cols or "location" in exclude_empty_cols:
+        where_clauses.append("(t.state IS NOT NULL AND TRIM(t.state) != '' AND t.state NOT IN ('Not Specified', 'Other / International'))")
+    if "city" in exclude_empty_cols:
+        where_clauses.append("(t.city IS NOT NULL AND TRIM(t.city) != '' AND t.city NOT IN ('Not Specified'))")
+    if "qualification" in exclude_empty_cols or "highest_qualification" in exclude_empty_cols:
+        where_clauses.append("(t.highest_qualification IS NOT NULL AND TRIM(t.highest_qualification) != '' AND t.highest_qualification NOT IN ('Not Specified', 'Other'))")
+    if "description" in exclude_empty_cols or "bio" in exclude_empty_cols:
+        where_clauses.append("(t.description IS NOT NULL AND TRIM(t.description) != '' AND LENGTH(TRIM(t.description)) > 20)")
+    if "subjects" in exclude_empty_cols:
+        where_clauses.append("EXISTS (SELECT 1 FROM teacher_subjects bse WHERE bse.tutor_id = t.tutor_id AND bse.canonical_subject IS NOT NULL AND TRIM(bse.canonical_subject) != '')")
+
     # If no filters applied, return full master excel directly!
     if not where_clauses:
         return FileResponse(
@@ -1104,6 +1198,72 @@ async def api_download_filtered_excel(request):
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         headers={"Content-Disposition": "attachment; filename=BMP_Tutors_Filtered_Export.xlsx"}
     )
+
+
+_TUTOR_PROFILE_TMPL = None
+
+def get_tutor_profile_template():
+    global _TUTOR_PROFILE_TMPL
+    if _TUTOR_PROFILE_TMPL is None:
+        with open(os.path.join(APP_DIR, "tutor_profile.html"), "r", encoding="utf-8") as f:
+            _TUTOR_PROFILE_TMPL = jinja2.Environment().from_string(f.read())
+    return _TUTOR_PROFILE_TMPL
+
+async def tutor_profile_view(request):
+    tutor_id = request.path_params["tutor_id"].strip().upper()
+    if not tutor_id.startswith('T') and tutor_id.isdigit():
+        tutor_id = f"T{tutor_id}"
+
+    conn = get_db()
+    cur = conn.cursor()
+    t = cur.execute("SELECT * FROM teachers WHERE tutor_id = ?", [tutor_id]).fetchone()
+    if not t:
+        conn.close()
+        return HTMLResponse("""
+        <!DOCTYPE html>
+        <html><head><title>Tutor Not Found — BMP Tutors</title>
+        <link rel="stylesheet" href="/static/css/tailwind.min.css" /></head>
+        <body class="bg-slate-100 flex items-center justify-center min-h-screen p-4">
+          <div class="bg-white p-8 rounded-2xl shadow-md max-w-md w-full text-center">
+            <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-3 font-bold text-xl">!</div>
+            <h1 class="text-xl font-bold text-slate-800">Tutor Profile Not Found</h1>
+            <p class="text-xs text-slate-500 mt-2">The educator with ID """ + tutor_id + """ does not exist in our normalized database.</p>
+            <a href="/" class="mt-4 inline-block px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700 transition-colors">Return to Directory</a>
+          </div>
+        </body></html>
+        """, status_code=404)
+
+    d = dict(t)
+    subjs = cur.execute("""
+        SELECT subject_index, raw_subject_string, canonical_subject,
+               subject_category, level_category, competitive_exam
+        FROM teacher_subjects
+        WHERE tutor_id = ?
+        ORDER BY subject_index ASC
+    """, [tutor_id]).fetchall()
+    d["subjects"] = [dict(s) for s in subjs]
+    conn.close()
+
+    raw_name = (d.get("teacher_name") or "Educator").strip()
+    initials = "".join([part[0] for part in raw_name.split()[:2]]).upper() or "ED"
+    d["initials"] = initials
+
+    if d.get("hourly_fee_avg"):
+        d["fee_headline"] = f"₹{round(d['hourly_fee_avg']):,}"
+        d["fee_subtext"] = "per hour"
+    elif d.get("monthly_fee_avg"):
+        d["fee_headline"] = f"₹{round(d['monthly_fee_avg']):,}"
+        d["fee_subtext"] = "per month"
+    elif d.get("fee_raw"):
+        d["fee_headline"] = d["fee_raw"].split("(")[0].strip()
+        d["fee_subtext"] = "stated tuition fee"
+    else:
+        d["fee_headline"] = "Negotiable"
+        d["fee_subtext"] = "rate on contact"
+
+    tmpl = get_tutor_profile_template()
+    html = tmpl.render(**d)
+    return HTMLResponse(html)
 
 async def index(request):
     with open(os.path.join(APP_DIR, "index.html"), "r", encoding="utf-8") as f:
@@ -1461,10 +1621,18 @@ async def api_update_tutor_status(request):
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=500)
 
+FAVICON_PATH = os.path.join(APP_DIR, "favicon.ico")
+
+async def favicon_view(request):
+    if os.path.exists(FAVICON_PATH):
+        return FileResponse(FAVICON_PATH, media_type="image/x-icon")
+    return Response(status_code=404)
+
 async def healthz(request):
     return JSONResponse({"status": "ok"})
 
 routes = [
+    Route("/favicon.ico", favicon_view),
     Route("/healthz", healthz),
     Route("/", index),
     Route("/report", report_view),
@@ -1475,6 +1643,7 @@ routes = [
     Route("/api/predict-fee", api_predict_fee, methods=["GET", "POST"]),
     Route("/api/generate-bio", api_generate_bio, methods=["GET", "POST"]),
     Route("/api/analyze-bio", api_analyze_bio, methods=["GET", "POST"]),
+    Route("/tutor/{tutor_id}", tutor_profile_view),
     Route("/api/tutors", api_tutors),
     Route("/api/tutors/{tutor_id}", api_tutor_detail),
     Route("/api/tutors/{tutor_id}/status", api_update_tutor_status, methods=["POST", "PATCH"]),
@@ -1494,6 +1663,7 @@ routes = [
     Route("/api/download/visual-analytics-docx", api_download_visual_analytics_docx),
     Route("/api/export/custom-docx", api_export_custom_docx, methods=["GET", "POST"]),
     Mount("/static/images", StaticFiles(directory=os.path.join(PROJECT_ROOT, "extracted_images")), name="static_images"),
+    Mount("/static", StaticFiles(directory=os.path.join(APP_DIR, "static")), name="static"),
 ]
 
 app = Starlette(debug=True, routes=routes)

@@ -217,7 +217,6 @@ def get_state_metrics(active_only=False):
         SELECT 
             state, region, count(*) as tutor_count,
             round(avg(case when hourly_fee_avg between 50 and 5000 then hourly_fee_avg end), 1) as avg_fee,
-            round(avg(teaches_online) * 100, 1) as online_pct,
             sum(case when is_active = 1 then 1 else 0 end) as active_count
         FROM teachers
         WHERE state IS NOT NULL AND state NOT IN ('Other / International', 'Other', 'Not Specified') {where_active}
@@ -233,26 +232,24 @@ def get_state_metrics(active_only=False):
             "region": r["region"],
             "tutor_count": r["tutor_count"],
             "avg_fee": r["avg_fee"] or 0,
-            "online_pct": r["online_pct"] or 0,
             "active_count": r["active_count"]
         }
     conn.close()
 
     # Special handling for merged / renamed UTs
-    dnh = metrics.get("Dadra and Nagar Haveli", {"tutor_count": 18, "active_count": 14, "avg_fee": 687.5, "online_pct": 100.0})
-    dd = metrics.get("Daman and Diu", {"tutor_count": 4, "active_count": 3, "avg_fee": 687.5, "online_pct": 100.0})
+    dnh = metrics.get("Dadra and Nagar Haveli", {"tutor_count": 18, "active_count": 14, "avg_fee": 687.5})
+    dd = metrics.get("Daman and Diu", {"tutor_count": 4, "active_count": 3, "avg_fee": 687.5})
     combined_dnh_dd = {
         "state": "Dadra and Nagar Haveli and Daman and Diu",
         "region": "West",
         "tutor_count": dnh["tutor_count"] + dd["tutor_count"],
         "avg_fee": 687.5,
-        "online_pct": 100.0,
         "active_count": dnh["active_count"] + dd["active_count"]
     }
     metrics["Dadra and Nagar Haveli and Daman and Diu"] = combined_dnh_dd
 
     # Andaman aliases
-    an = metrics.get("Andaman and Nicobar Islands", {"state": "Andaman and Nicobar Islands", "region": "South", "tutor_count": 24, "avg_fee": 900.7, "online_pct": 100.0, "active_count": 18})
+    an = metrics.get("Andaman and Nicobar Islands", {"state": "Andaman and Nicobar Islands", "region": "South", "tutor_count": 24, "avg_fee": 900.7, "active_count": 18})
     metrics["Andaman and Nicobar Islands"] = an
     metrics["Andaman & Nicobar"] = an
 
@@ -263,7 +260,6 @@ def get_state_metrics(active_only=False):
             "region": "North",
             "tutor_count": 0,
             "avg_fee": 0,
-            "online_pct": 0,
             "active_count": 0
         }
 
@@ -284,7 +280,6 @@ def get_enriched_states_geojson(active_only=False):
             "region": "Other",
             "tutor_count": 0,
             "avg_fee": 0,
-            "online_pct": 0,
             "active_count": 0
         }
         
@@ -315,7 +310,6 @@ def get_enriched_districts_geojson(target_state, active_only=False):
             SELECT 
                 city, count(*) as tutor_count,
                 round(avg(case when hourly_fee_avg between 50 and 5000 then hourly_fee_avg end), 1) as avg_fee,
-                round(avg(teaches_online) * 100, 1) as online_pct,
                 sum(case when gender = 'Female' then 1 else 0 end) as female_cnt,
                 sum(case when gender = 'Male' then 1 else 0 end) as male_cnt
             FROM teachers
@@ -327,7 +321,6 @@ def get_enriched_districts_geojson(target_state, active_only=False):
             SELECT 
                 city, count(*) as tutor_count,
                 round(avg(case when hourly_fee_avg between 50 and 5000 then hourly_fee_avg end), 1) as avg_fee,
-                round(avg(teaches_online) * 100, 1) as online_pct,
                 sum(case when gender = 'Female' then 1 else 0 end) as female_cnt,
                 sum(case when gender = 'Male' then 1 else 0 end) as male_cnt
             FROM teachers
@@ -339,7 +332,6 @@ def get_enriched_districts_geojson(target_state, active_only=False):
             SELECT 
                 city, count(*) as tutor_count,
                 round(avg(case when hourly_fee_avg between 50 and 5000 then hourly_fee_avg end), 1) as avg_fee,
-                round(avg(teaches_online) * 100, 1) as online_pct,
                 sum(case when gender = 'Female' then 1 else 0 end) as female_cnt,
                 sum(case when gender = 'Male' then 1 else 0 end) as male_cnt
             FROM teachers
@@ -380,7 +372,7 @@ def get_enriched_districts_geojson(target_state, active_only=False):
             break
             
     # Assign every single city row to a district
-    dist_buckets = {d: {"tutors": 0, "fees": [], "online": [], "females": 0, "males": 0} for d in district_names}
+    dist_buckets = {d: {"tutors": 0, "fees": [], "females": 0, "males": 0} for d in district_names}
     
     # Identify default/dominant district for unassigned towns
     default_district = district_names[0]
@@ -394,7 +386,6 @@ def get_enriched_districts_geojson(target_state, active_only=False):
         c_low = c_name.lower().strip()
         cnt = r["tutor_count"]
         fee = r["avg_fee"]
-        online = r["online_pct"]
         females = r["female_cnt"]
         males = r["male_cnt"]
         
@@ -423,18 +414,15 @@ def get_enriched_districts_geojson(target_state, active_only=False):
         dist_buckets[assigned]["males"] += males
         if fee:
             dist_buckets[assigned]["fees"].append((fee, cnt))
-        if online is not None:
-            dist_buckets[assigned]["online"].append((online, cnt))
             
     # Update matched features with exact counts
     for feature in matched_features:
         dt_name = feature.get("properties", {}).get("NAME_2", "")
         dt_lower = dt_name.lower().strip()
-        b = dist_buckets.get(dt_lower, {"tutors": 0, "fees": [], "online": [], "females": 0, "males": 0})
+        b = dist_buckets.get(dt_lower, {"tutors": 0, "fees": [], "females": 0, "males": 0})
         
         t_cnt = b["tutors"]
         t_fee = round(sum(f*c for f,c in b["fees"]) / sum(c for f,c in b["fees"]), 1) if b["fees"] else 0
-        t_online = round(sum(o*c for o,c in b["online"]) / sum(c for f,c in b["online"]), 1) if b["online"] else 0
         t_fem = b["females"]
         t_mal = b["males"]
         fem_pct = round(t_fem * 100.0 / t_cnt, 1) if t_cnt > 0 else 0.0
@@ -445,7 +433,6 @@ def get_enriched_districts_geojson(target_state, active_only=False):
             "state": target_norm,
             "tutor_count": t_cnt,
             "avg_fee": t_fee,
-            "online_pct": t_online,
             "female_count": t_fem,
             "male_count": t_mal,
             "female_pct": fem_pct,

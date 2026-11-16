@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ teacher_name }} ({{ tutor_id }}) — Verified Educator Profile | BMP Tutors</title>
+  <link rel="stylesheet" href="/static/css/tailwind.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: #0f172a !important; }
+      .shadow-sm, .shadow-md, .shadow-lg, .shadow-xs, .shadow-2xs { box-shadow: none !important; }
+      .border { border-color: #cbd5e1 !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50/80 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-indigo-100 selection:text-indigo-900">
+
+  <!-- TOP EXECUTIVE NAVIGATION BAR -->
+  <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-40 transition-all shadow-sm no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Brand & Link Back -->
+      <div class="flex items-center gap-3 shrink-0">
+        <a href="/" class="flex items-center gap-2.5 group">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-violet-500 shadow-md flex items-center justify-center font-bold text-lg text-white ring-1 ring-white/20 group-hover:scale-105 transition-transform">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div>
+            <h1 class="text-xl font-black tracking-tight text-white group-hover:text-indigo-300 transition-colors">BMP Tutors</h1>
+            <p class="text-[10px] text-slate-400 font-mono tracking-wider uppercase">Verified Educators Platform</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2.5">
+        <a href="/" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all flex items-center gap-2 shadow-2xs">
+          <i class="fa-solid fa-arrow-left text-indigo-400"></i>
+          <span>Back to Directory</span>
+        </a>
+        {% if profile_url %}
+        <a href="{{ profile_url }}" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex px-3.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white transition-all items-center gap-1.5 shadow-xs">
+          <i class="fa-solid fa-external-link text-xs"></i>
+          <span>TeacherOn Profile</span>
+          <i class="fa-solid fa-arrow-up-right-from-square text-[9px] opacity-70"></i>
+        </a>
+        {% endif %}
+        <button onclick="window.print()" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-print"></i>
+          <span class="hidden md:inline">Print Profile</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- BREADCRUMB BAR (SCREEN ONLY) -->
+  <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-4 pb-2 text-xs text-slate-500 flex items-center gap-2 no-print">
+    <a href="/" class="hover:text-indigo-600 font-medium">Home</a>
+    <i class="fa-solid fa-chevron-right text-[9px] text-slate-400"></i>
+    <a href="/" class="hover:text-indigo-600 font-medium">Directory</a>
+    <i class="fa-solid fa-chevron-right text-[9px] text-slate-400"></i>
+    <span class="text-slate-400">{{ state or 'India' }}</span>
+    <i class="fa-solid fa-chevron-right text-[9px] text-slate-400"></i>
+    <span class="text-slate-800 font-semibold truncate">{{ teacher_name }} ({{ tutor_id }})</span>
+  </div>
+
+  <!-- MAIN PROFILE DOSSIER CONTENT -->
+  <main class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-5 flex-1 flex flex-col gap-6">
+
+    <!-- HERO PROFILE BANNER CARD -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xs border border-slate-200/80 relative overflow-hidden">
+      <!-- Gradient accent strip -->
+      <div class="h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 absolute top-0 left-0 right-0"></div>
+
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pt-2">
+        
+        <!-- Left: Avatar & Identity -->
+        <div class="flex items-start sm:items-center gap-5">
+          <!-- Initials Avatar -->
+          <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-gradient-to-tr from-slate-900 via-indigo-950 to-indigo-800 text-white flex items-center justify-center font-extrabold text-2xl sm:text-3xl shadow-md border-2 border-white ring-4 ring-indigo-50 shrink-0">
+            {{ initials }}
+          </div>
+          
+          <!-- Identity Details -->
+          <div class="space-y-1.5">
+            <div class="flex flex-wrap items-center gap-2.5">
+              <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ teacher_name }}</h1>
+              <span class="text-xl select-none" title="India">🇮🇳</span>
+              <span class="font-mono text-xs font-bold px-2.5 py-0.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200">
+                {{ tutor_id }}
+              </span>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 pt-0.5">
+              {% if city or state %}
+              <span class="text-slate-300">·</span>
+              <span class="inline-flex items-center gap-1 text-xs text-slate-600 font-medium">
+                <i class="fa-solid fa-location-dot text-slate-400 text-[11px]"></i>
+                <span>{{ city }}{% if city and state %}, {% endif %}{{ state }} ({{ region or 'India' }})</span>
+              </span>
+              {% endif %}
+
+              {% if city_tier %}
+              <span class="text-slate-300">·</span>
+              <span class="text-xs text-slate-500 font-medium">{{ city_tier }}</span>
+              {% endif %}
+            </div>
+
+            <!-- Headline / Hookline -->
+            {% if teacher_hookline %}
+            <p class="text-sm font-semibold text-indigo-950 mt-1 leading-snug">
+              {{ teacher_hookline }}
+            </p>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Right: Primary Rate & Action -->
+        <div class="w-full md:w-auto flex md:flex-col items-center md:items-end justify-between md:justify-center gap-3 border-t md:border-t-0 pt-4 md:pt-0 border-slate-100 shrink-0">
+          <div class="text-left md:text-right">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">Tuition Fee</span>
+            <div class="text-3xl font-black text-slate-900 font-mono tracking-tight">{{ fee_headline }}</div>
+            <span class="text-xs text-slate-500 font-medium">{{ fee_subtext }}</span>
+          </div>
+          
+          {% if profile_url %}
+          <a href="{{ profile_url }}" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center gap-2 group cursor-pointer">
+            <span>Open on TeacherOn</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-[11px] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+          </a>
+          {% endif %}
+        </div>
+
+      </div>
+
+      <!-- Quick Attribute Tags Row -->
+      <div class="mt-6 pt-5 border-t border-slate-100 flex flex-wrap items-center gap-2.5 text-xs">
+        {% if occupation %}
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium border border-slate-200">
+          <i class="fa-solid fa-briefcase text-slate-400 text-[11px]"></i>
+          <span>Occupation: <b>{{ occupation }}</b></span>
+        </span>
+        {% endif %}
+
+        {% if highest_qualification %}
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium border border-slate-200">
+          <i class="fa-solid fa-graduation-cap text-slate-400 text-[11px]"></i>
+          <span>Qualification: <b>{{ highest_qualification }}{% if education_raw %} ({{ education_raw }}){% endif %}</b></span>
+        </span>
+        {% endif %}
+
+        {% if seniority_tier %}
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium border border-slate-200">
+          <i class="fa-solid fa-award text-slate-400 text-[11px]"></i>
+          <span>Seniority: <b>{{ seniority_tier }}</b></span>
+        </span>
+        {% endif %}
+
+        {% if speaks_languages %}
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium border border-slate-200">
+          <i class="fa-solid fa-language text-slate-400 text-[11px]"></i>
+          <span>Speaks: <b>{{ speaks_languages }}</b></span>
+        </span>
+        {% endif %}
+
+        {% if has_education_degree == 1 %}
+        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-purple-50 text-purple-700 font-semibold border border-purple-200">
+          <i class="fa-solid fa-certificate text-[11px]"></i>
+          <span>B.Ed / M.Ed Certified</span>
+        </span>
+        {% endif %}
+      </div>
+
+    </div>
+
+    <!-- CORE VERIFIED METRICS GRID (REAL DATA ONLY) -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+      
+      <!-- Metric 1: Total Teaching Experience -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Teaching Experience</span>
+        <div class="text-xl font-extrabold text-slate-900 mt-1 font-mono">
+          {{ total_teaching_exp_years ~ ' Yrs' if total_teaching_exp_years is not none else 'Not Stated' }}
+        </div>
+        <span class="text-[11px] text-slate-500 mt-0.5 block">Total Career</span>
+      </div>
+
+      <!-- Metric 2: Online Teaching Experience -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Online Experience</span>
+        <div class="text-xl font-extrabold text-slate-900 mt-1 font-mono">
+          {{ online_teaching_exp_years ~ ' Yrs' if online_teaching_exp_years is not none else (teaches_online and 'Available' or 'None') }}
+        </div>
+        <span class="text-[11px] text-slate-500 mt-0.5 block">Digital Delivery</span>
+      </div>
+
+      <!-- Metric 3: Online Classes Available -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Online Mode</span>
+        <div class="text-xl font-extrabold {{ 'text-emerald-600' if teaches_online else 'text-slate-600' }} mt-1">
+          {{ 'Yes' if teaches_online else 'No' }}
+        </div>
+        <span class="text-[11px] text-slate-500 mt-0.5 block">Remote Classes</span>
+      </div>
+
+      <!-- Metric 4: Teaches at Student Home -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Student Home</span>
+        <div class="text-xl font-extrabold {{ 'text-emerald-600' if teaches_at_student_home else 'text-slate-400' }} mt-1">
+          {{ 'Yes' if teaches_at_student_home else 'No' }}
+        </div>
+        <span class="text-[11px] text-slate-500 mt-0.5 block">In-Person Tutoring</span>
+      </div>
+
+      <!-- Metric 5: Homework Help -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Homework Help</span>
+        <div class="text-xl font-extrabold {{ 'text-indigo-600' if homework_help else 'text-slate-400' }} mt-1">
+          {{ 'Yes' if homework_help else 'No' }}
+        </div>
+        <span class="text-[11px] text-slate-500 mt-0.5 block">Assignment Support</span>
+      </div>
+
+      <!-- Metric 6: Subject Offerings Count -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Subject Count</span>
+        <div class="text-xl font-extrabold text-violet-600 mt-1 font-mono">
+          {{ subjects|length }}
+        </div>
+        <span class="text-[11px] text-slate-500 mt-0.5 block">Registered Subjects</span>
+      </div>
+
+    </div>
+
+    <!-- MAIN 2-COLUMN SECTION: BIO & SUBJECTS -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <!-- LEFT 2 COLUMNS: FULL BIO DESCRIPTION & TEACHING PROFILE -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- Full Bio Section -->
+        <div class="bg-white rounded-3xl p-6 sm:p-7 shadow-xs border border-slate-200/80">
+          <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+            <h2 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-align-left text-indigo-600"></i>
+              <span>Tutor Bio</span>
+            </h2>
+            <span class="text-[11px] text-slate-400 font-mono">Original Profile Text</span>
+          </div>
+
+          <div class="mt-5 text-sm text-slate-700 leading-relaxed space-y-4 whitespace-pre-line font-sans">
+            {% if description %}
+            {{ description }}
+            {% else %}
+            <p class="text-slate-400 italic">No detailed biography provided in educator profile.</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Subjects Taught Detailed Breakdown Table -->
+        <div class="bg-white rounded-3xl p-6 sm:p-7 shadow-xs border border-slate-200/80">
+          <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+            <div>
+              <h2 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-book-bookmark text-indigo-600"></i>
+                <span>Registered Subject Offerings ({{ subjects|length }})</span>
+              </h2>
+              <p class="text-xs text-slate-500 mt-0.5">Subjects and topics this educator teaches</p>
+            </div>
+            <span class="text-xs font-mono font-bold text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-200/60">
+              Subjects Taught
+            </span>
+          </div>
+
+          <div class="mt-4 overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="border-b border-slate-200 text-slate-400 uppercase font-mono text-[10px] bg-slate-50/60">
+                  <th class="py-2.5 px-3 w-12 text-center">#</th>
+                  <th class="py-2.5 px-3">Canonical Subject</th>
+                  <th class="py-2.5 px-3">Domain Category</th>
+                  <th class="py-2.5 px-3">Grade / Level</th>
+                  <th class="py-2.5 px-3">Exam Focus</th>
+                  <th class="py-2.5 px-3">Raw Subject Listing</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                {% for s in subjects %}
+                <tr class="hover:bg-slate-50/60 transition-colors">
+                  <td class="py-3 px-3 text-center font-mono text-slate-400">{{ loop.index }}</td>
+                  <td class="py-3 px-3 font-bold text-slate-900">{{ s.canonical_subject }}</td>
+                  <td class="py-3 px-3">
+                    <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200/50">
+                      {{ s.subject_category or 'General' }}
+                    </span>
+                  </td>
+                  <td class="py-3 px-3">
+                    {% if s.level_category %}
+                    <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/50">
+                      {{ s.level_category }}
+                    </span>
+                    {% else %}
+                    <span class="text-slate-400">—</span>
+                    {% endif %}
+                  </td>
+                  <td class="py-3 px-3">
+                    {% if s.competitive_exam %}
+                    <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-rose-50 text-rose-700 border border-rose-200/50">
+                      {{ s.competitive_exam }}
+                    </span>
+                    {% else %}
+                    <span class="text-slate-400">—</span>
+                    {% endif %}
+                  </td>
+                  <td class="py-3 px-3 text-slate-500 font-mono text-[11px] truncate max-w-xs" title="{{ s.raw_subject_string }}">
+                    {{ s.raw_subject_string or '—' }}
+                  </td>
+                </tr>
+                {% else %}
+                <tr>
+                  <td colspan="6" class="py-6 text-center text-slate-400 italic">No subject offerings recorded in the bridge database.</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT 1 COLUMN: VERIFICATION DOSSIER & CONNECT -->
+      <div class="space-y-6">
+
+        <!-- Verification & Audit Card -->
+        <div class="bg-white rounded-3xl p-6 shadow-xs border border-slate-200/80 space-y-4">
+          <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider font-mono flex items-center gap-2">
+            <i class="fa-solid fa-shield-halved text-indigo-600"></i>
+            <span>Verification Status</span>
+          </h3>
+
+          <div class="space-y-3 text-xs">
+            <div class="p-3.5 rounded-xl {{ 'bg-emerald-50/70 border border-emerald-200 text-emerald-900' if is_active == 1 else 'bg-rose-50/70 border border-rose-200 text-rose-900' }}">
+              <div class="font-bold flex items-center gap-1.5">
+                <i class="fa-solid {{ 'fa-circle-check text-emerald-600' if is_active == 1 else 'fa-circle-exclamation text-rose-600' }}"></i>
+                <span>Status: {{ 'Verified Active' if is_active == 1 else 'Inactive / Removed' }}</span>
+              </div>
+              <p class="text-[11px] mt-1 text-slate-600 leading-snug">
+                {{ validation_reason or ('Profile live on TeacherOn platform' if is_active == 1 else 'No active profile found on TeacherOn') }}
+              </p>
+            </div>
+
+            <div class="divide-y divide-slate-100 text-xs">
+              <div class="py-2 flex justify-between">
+                <span class="text-slate-400">Tutor ID:</span>
+                <span class="font-mono font-bold text-slate-800">{{ tutor_id }}</span>
+              </div>
+              <div class="py-2 flex justify-between">
+                <span class="text-slate-400">Gender:</span>
+                <span class="font-semibold text-slate-800">{{ gender or 'Not Specified' }}</span>
+              </div>
+              <div class="py-2 flex justify-between">
+                <span class="text-slate-400">Role:</span>
+                <span class="font-semibold text-slate-800">{{ works_as or 'Individual' }}</span>
+              </div>
+              <div class="py-2 flex justify-between">
+                <span class="text-slate-400">Education Degree:</span>
+                <span class="font-semibold text-slate-800">{{ 'B.Ed / M.Ed Certified' if has_education_degree else 'No Degree' }}</span>
+              </div>
+              <div class="py-2 flex justify-between">
+                <span class="text-slate-400">Registered:</span>
+                <span class="font-mono text-slate-700">{{ registered_date or 'N/A' }}</span>
+              </div>
+              <div class="py-2 flex justify-between">
+                <span class="text-slate-400">Last Activity:</span>
+                <span class="font-mono text-slate-700">{{ last_login_date or 'N/A' }}</span>
+              </div>
+              <div class="py-2 flex justify-between">
+                <span class="text-slate-400">Source Tab:</span>
+                <span class="font-mono text-slate-700">{{ source_tab or 'scraped' }}</span>
+              </div>
+            </div>
+
+            {% if profile_url %}
+            <div class="pt-2">
+              <a href="{{ profile_url }}" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center gap-2">
+                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                <span>Open Live TeacherOn URL</span>
+              </a>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Academic Actions & Tools -->
+        <div class="bg-gradient-to-br from-indigo-900 via-indigo-950 to-slate-900 rounded-3xl p-6 text-white shadow-md space-y-4">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-300 font-mono">Helpful Tools</span>
+            <h4 class="text-base font-bold text-white mt-1">Analytics & Benchmarking</h4>
+            <p class="text-xs text-indigo-200 mt-1">Cross-reference this profile with national macroeconomic private tuition data.</p>
+          </div>
+
+          <div class="space-y-2 pt-1 text-xs">
+            <a href="/#fee-ai" class="w-full py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all flex items-center justify-between font-semibold">
+              <span class="flex items-center gap-2">
+                <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
+                <span>AI Fee Estimator</span>
+              </span>
+              <i class="fa-solid fa-chevron-right text-[10px] text-white/50"></i>
+            </a>
+
+            <a href="/#bio-ai" class="w-full py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all flex items-center justify-between font-semibold">
+              <span class="flex items-center gap-2">
+                <i class="fa-solid fa-pen-fancy text-emerald-400"></i>
+                <span>AI Bio Studio</span>
+              </span>
+              <i class="fa-solid fa-chevron-right text-[10px] text-white/50"></i>
+            </a>
+
+            <a href="/#analytics" class="w-full py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all flex items-center justify-between font-semibold">
+              <span class="flex items-center gap-2">
+                <i class="fa-solid fa-chart-column text-sky-400"></i>
+                <span>National Visual Analytics</span>
+              </span>
+              <i class="fa-solid fa-chevron-right text-[10px] text-white/50"></i>
+            </a>
+          </div>
+
+          <div class="pt-2 border-t border-white/10">
+            <a href="/" class="w-full py-2.5 px-4 bg-indigo-500 hover:bg-indigo-400 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center gap-2">
+              <i class="fa-solid fa-table-cells-large text-xs"></i>
+              <span>Explore All 107k Tutors</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="mt-12 border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500 no-print">
+    <div class="max-w-7xl mx-auto px-4">
+      <p>BMP Tutors &copy; Verified Educators Analytics Platform &bull; Verified profiles and tutoring trends across India</p>
+    </div>
+  </footer>
+
+</body>
+</html>

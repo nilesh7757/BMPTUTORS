@@ -154,7 +154,8 @@ def predict_fee(
     
     # Monthly projection at N hours/week
     weekly_hours = max(1, min(int(hours_per_week), 60))
-    monthly_projection = int(round(rounded_fee * weekly_hours * 4.33))
+    monthly_hours = int(round(weekly_hours * (52.0 / 12.0)))
+    monthly_projection = rounded_fee * monthly_hours
     
     # Real-time cohort lookup from SQLite database (strictly without outliers)
     cohort_stats = get_cohort_stats(city_tier, subject_category, highest_qualification)
@@ -178,6 +179,7 @@ def predict_fee(
         "fee_max_rec": fee_max_rec,
         "monthly_projection": monthly_projection,
         "weekly_hours": weekly_hours,
+        "monthly_hours": monthly_hours,
         "confidence_score": round(metadata.get("r2_pct", 9.8) / 100.0 + 0.80, 2),
         "cohort_stats": cohort_stats,
         "feature_contributions": contributions,

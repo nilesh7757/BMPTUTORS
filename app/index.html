@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BMP Tutors — Verified Educators Analytics Platform</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>BMP Tutors — Find Verified Tutors Across India</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="/static/css/tailwind.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -94,14 +96,14 @@
           
           <div id="export-dropdown-menu" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 text-slate-800 divide-y divide-slate-100">
             <div class="p-1">
-              <span class="block px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-teal-700 font-mono">Normalized DBMS Tables (3NF)</span>
+              <span class="block px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-teal-700 font-mono">Clean Datasets (Excel)</span>
               <a href="/api/download/normalized-database-excel" download="BMP_Normalized_Database_2Tables.xlsx" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-50 transition-colors group">
                 <div class="flex items-center gap-2.5">
                   <div class="w-7 h-7 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center text-xs">
                     <i class="fa-solid fa-table-columns"></i>
                   </div>
                   <div>
-                    <span class="text-xs font-bold text-slate-900 group-hover:text-teal-600 block">Complete 2-Table DB (.xlsx)</span>
+                    <span class="text-xs font-bold text-slate-900 group-hover:text-teal-600 block">Combined Tutors & Subjects (.xlsx)</span>
                     <span class="text-[10px] text-slate-500">Tutors & Subjects Sheets Combined</span>
                   </div>
                 </div>
@@ -119,7 +121,7 @@
               </div>
             </div>
             <div class="p-1">
-              <span class="block px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">Master Datasets</span>
+              <span class="block px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">Full Datasets</span>
               <a href="/api/download/active-master-excel" download="BMP_Tutors_Verified_Active_Master.xlsx" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-50 transition-colors group">
                 <div class="flex items-center gap-2.5">
                   <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs">
@@ -127,7 +129,7 @@
                   </div>
                   <div>
                     <span class="text-xs font-bold text-slate-900 group-hover:text-indigo-600 block">Active Master Excel</span>
-                    <span class="text-[10px] text-slate-500">76,705 URL-Verified Educators</span>
+                    <span class="text-[10px] text-slate-500">76,706 Active Tutors</span>
                   </div>
                 </div>
                 <span class="text-[10px] font-mono text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">58 MB</span>
@@ -138,8 +140,8 @@
                     <i class="fa-solid fa-file-excel"></i>
                   </div>
                   <div>
-                    <span class="text-xs font-bold text-slate-900 group-hover:text-indigo-600 block">Complete Cleaned Master</span>
-                    <span class="text-[10px] text-slate-500">All 107,723 Records</span>
+                    <span class="text-xs font-bold text-slate-900 group-hover:text-indigo-600 block">All Tutors Master File</span>
+                    <span class="text-[10px] text-slate-500">All 107,673 Records</span>
                   </div>
                 </div>
                 <span class="text-[10px] font-mono text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">79 MB</span>
@@ -186,20 +188,20 @@
     </div>
   </header>
 
-  <!-- MACRO METRIC SUMMARY KPI CARDS (Contextual for Directory & Analytics) -->
+  <!-- SUMMARY STATS (Clean & Human) -->
   <section id="global-kpi-section" class="w-full px-4 sm:px-6 lg:px-8 pt-5">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       
-      <!-- Card 1: Unique Tutors -->
+      <!-- Card 1: Total Tutors -->
       <div class="bg-white rounded-2xl p-5 shadow-xs border border-slate-200/80 hover:shadow-md hover:border-slate-300 transition-all group relative overflow-hidden">
         <div class="h-1 bg-indigo-500 absolute top-0 left-0 right-0"></div>
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Verified Unique Tutors</p>
-            <h3 id="stat-tutors" class="text-3xl font-extrabold text-slate-900 mt-1 font-mono tracking-tight">107,723</h3>
-            <p class="text-xs text-emerald-600 mt-1.5 font-medium flex items-center gap-1">
-              <i class="fa-solid fa-circle-check text-[11px]"></i>
-              <span>100% Normalized Master Database</span>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Total Tutors</p>
+            <h3 id="stat-tutors" class="text-3xl font-extrabold text-slate-900 mt-1 font-mono tracking-tight">107,673</h3>
+            <p class="text-xs text-slate-500 mt-1.5 font-medium flex items-center gap-1">
+              <i class="fa-solid fa-graduation-cap text-indigo-500 text-[11px]"></i>
+              <span>Teachers across India</span>
             </p>
           </div>
           <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
@@ -208,16 +210,16 @@
         </div>
       </div>
 
-      <!-- Card 2: Bridge Offerings -->
+      <!-- Card 2: Subjects -->
       <div class="bg-white rounded-2xl p-5 shadow-xs border border-slate-200/80 hover:shadow-md hover:border-slate-300 transition-all group relative overflow-hidden">
         <div class="h-1 bg-violet-500 absolute top-0 left-0 right-0"></div>
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Subject Offerings</p>
-            <h3 id="stat-bridge" class="text-3xl font-extrabold text-slate-900 mt-1 font-mono tracking-tight">327,720</h3>
-            <p class="text-xs text-violet-600 mt-1.5 font-medium flex items-center gap-1" title="327,720 offerings across 106,552 tutors listing subjects; 1,171 general tutors without subject tags excluded">
-              <i class="fa-solid fa-diagram-project text-[11px]"></i>
-              <span>3.08 Cleaned Subjects / Tutor</span>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Subjects</p>
+            <h3 id="stat-bridge" class="text-3xl font-extrabold text-slate-900 mt-1 font-mono tracking-tight">403,221</h3>
+            <p class="text-xs text-slate-500 mt-1.5 font-medium flex items-center gap-1">
+              <i class="fa-solid fa-book-open text-violet-500 text-[11px]"></i>
+              <span>School, college & exams</span>
             </p>
           </div>
           <div class="w-12 h-12 rounded-2xl bg-violet-50 text-violet-600 ring-1 ring-violet-100 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
@@ -226,16 +228,16 @@
         </div>
       </div>
 
-      <!-- Card 3: Avg Hourly Fee -->
+      <!-- Card 3: Hourly Rate -->
       <div class="bg-white rounded-2xl p-5 shadow-xs border border-slate-200/80 hover:shadow-md hover:border-slate-300 transition-all group relative overflow-hidden">
         <div class="h-1 bg-emerald-500 absolute top-0 left-0 right-0"></div>
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Benchmark Hourly Rate</p>
-            <h3 id="stat-fee" class="text-3xl font-extrabold text-slate-900 mt-1 font-mono tracking-tight">₹848 <span class="text-base font-sans font-medium text-slate-500">/hr</span></h3>
-            <p class="text-xs text-slate-500 mt-1.5 font-medium flex items-center gap-1" title="76,416 stating tutors; 28,411 negotiable/unstated, 2,896 outliers (<₹50 or >₹5,000) excluded">
-              <i class="fa-solid fa-shield-halved text-emerald-600 text-[11px]"></i>
-              <span>Realistic Band (76,416 Tutors • ₹50–₹5k)</span>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Average Rate</p>
+            <h3 id="stat-fee" class="text-3xl font-extrabold text-slate-900 mt-1 font-mono tracking-tight">₹864 <span class="text-base font-sans font-medium text-slate-500">/hr</span></h3>
+            <p class="text-xs text-slate-500 mt-1.5 font-medium flex items-center gap-1">
+              <i class="fa-solid fa-clock text-emerald-500 text-[11px]"></i>
+              <span>Typical hourly fee</span>
             </p>
           </div>
           <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
@@ -249,11 +251,11 @@
         <div class="h-1 bg-amber-500 absolute top-0 left-0 right-0"></div>
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Verified Active Tutors</p>
-            <h3 id="stat-active" class="text-3xl font-extrabold text-slate-900 mt-1 font-mono tracking-tight">76,706</h3>
-            <p class="text-xs text-amber-600 mt-1.5 font-medium flex items-center gap-1" title="76,706 verified active educators; 31,017 inactive/removed profiles">
-              <i class="fa-solid fa-bolt text-[11px]"></i>
-              <span id="stat-active-sub">76,706 Active (71.2%) • 31,017 Removed / Inactive</span>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Active Now</p>
+            <h3 id="stat-active" class="text-3xl font-extrabold text-slate-900 mt-1 font-mono tracking-tight">76,683</h3>
+            <p class="text-xs text-slate-500 mt-1.5 font-medium flex items-center gap-1">
+              <i class="fa-solid fa-circle-check text-emerald-600 text-[11px]"></i>
+              <span id="stat-active-sub">Available for new students</span>
             </p>
           </div>
           <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 ring-1 ring-amber-100 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
@@ -271,25 +273,57 @@
     <!-- TAB 1: EXPLORER (DIRECTORY) -->
     <div id="tab-explorer" class="flex flex-col lg:flex-row gap-6 flex-1">
       
-      <!-- SIDEBAR FACETED FILTERS -->
+      <!-- SIDEBAR FILTERS & CONTROLS -->
       <aside class="w-full lg:w-80 bg-white p-5 rounded-2xl shadow-xs border border-slate-200/80 flex-shrink-0 flex flex-col gap-3.5">
+        
+        <!-- Header -->
         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
           <div class="flex items-center gap-2">
             <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100 flex items-center justify-center text-xs">
-              <i class="fa-solid fa-filter"></i>
+              <i class="fa-solid fa-sliders"></i>
             </div>
-            <h2 class="font-bold text-slate-900 text-sm">Filter Tutors</h2>
+            <h2 class="font-bold text-slate-900 text-sm">Filters & Sorting</h2>
           </div>
-          <button id="btn-reset-filters" onclick="resetFilters()" class="text-xs text-slate-400 hover:text-indigo-600 font-semibold flex items-center gap-1 transition-colors cursor-pointer">
-            <i class="fa-solid fa-rotate-left text-[10px]"></i> Reset All
+          <button id="btn-reset-filters" onclick="resetFilters()" class="text-xs text-slate-400 hover:text-indigo-600 font-semibold flex items-center gap-1 transition-colors cursor-pointer" title="Reset all filters">
+            <i class="fa-solid fa-rotate-left text-[10px]"></i> Reset
           </button>
         </div>
 
-        <!-- Search input with Instant Debounce and Clear Button -->
+        <!-- Sort and Show Controls (Moved into Filter block) -->
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label for="table-sort-select" class="block text-[11px] font-semibold text-slate-700 mb-1">Sort by</label>
+            <select id="table-sort-select" onchange="onSortDropdownChange(this.value)" class="w-full py-2 px-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white transition-all shadow-2xs cursor-pointer font-medium">
+              <option value="default_asc">Tutor ID</option>
+              <option value="name_asc">Name: A → Z</option>
+              <option value="name_desc">Name: Z → A</option>
+              <option value="fee_asc">Fee: Low to High</option>
+              <option value="fee_desc">Fee: High to Low</option>
+              <option value="education_desc">Highest Degree</option>
+              <option value="experience_desc">Most Experienced</option>
+            </select>
+          </div>
+          <div>
+            <label for="page-size" class="block text-[11px] font-semibold text-slate-700 mb-1">Per page</label>
+            <select id="page-size" onchange="changePageSize()" class="w-full py-2 px-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white transition-all shadow-2xs cursor-pointer font-medium">
+              <option value="12" selected>12 tutors</option>
+              <option value="24">24 tutors</option>
+              <option value="48">48 tutors</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Export Filtered Button -->
+        <button type="button" onclick="downloadFilteredExcel()" class="w-full py-2 px-3 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-800 hover:border-emerald-200 text-slate-700 border border-slate-200 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-2 shadow-2xs cursor-pointer" title="Export matching rows to Excel">
+          <i class="fa-solid fa-file-excel text-emerald-600 text-xs"></i>
+          <span>Export Results (Excel)</span>
+        </button>
+
+        <!-- Search input -->
         <div>
-          <label for="filter-search" class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Quick Search</label>
+          <label for="filter-search" class="block text-[11px] font-semibold text-slate-700 mb-1">Search</label>
           <div class="relative">
-            <input type="text" id="filter-search" oninput="onSearchInput(this.value)" onkeydown="if(event.key==='Enter') applyFilters()" placeholder="Name, ID (e.g. T1), city, headline..." class="w-full pl-8 pr-7 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white transition-all shadow-2xs" />
+            <input type="text" id="filter-search" oninput="onSearchInput(this.value)" onkeydown="if(event.key==='Enter') applyFilters()" placeholder="Name, ID (e.g. T1), subject..." class="w-full pl-8 pr-7 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white transition-all shadow-2xs" />
             <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
             <button id="btn-clear-search" onclick="clearSearch()" class="hidden absolute right-2.5 top-2 text-slate-400 hover:text-slate-600 text-xs">
               <i class="fa-solid fa-circle-xmark"></i>
@@ -297,23 +331,34 @@
           </div>
         </div>
 
-        <!-- Primary Core Filter 1: Subject Category -->
+        <!-- Primary Filter 1: Canonical Subject -->
         <div>
-          <label for="filter-subject-category" class="block text-xs font-semibold text-slate-700 mb-1">Subject Domain</label>
-          <select id="filter-subject-category" onchange="applyFilters()" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white transition-all shadow-2xs cursor-pointer">
-            <option value="">All Disciplines</option>
+          <label for="filter-canonical-subject" class="block text-xs font-semibold text-slate-700 mb-1 flex items-center justify-between">
+            <span>Canonical Subject</span>
+            <span class="text-[10px] text-indigo-600 font-semibold bg-indigo-50 px-1.5 py-0.2 rounded">3NF Clean</span>
+          </label>
+          <select id="filter-canonical-subject" onchange="applyFilters()" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white transition-all shadow-2xs cursor-pointer font-medium text-slate-800">
+            <option value="">All Canonical Subjects (All 262)</option>
           </select>
         </div>
 
-        <!-- Primary Core Filter 2: State / UT -->
+        <!-- Primary Filter 2: Subject Category -->
         <div>
-          <label for="filter-state" class="block text-xs font-semibold text-slate-700 mb-1">State / Territory</label>
+          <label for="filter-subject-category" class="block text-xs font-semibold text-slate-700 mb-1">Subject Category</label>
+          <select id="filter-subject-category" onchange="applyFilters()" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white transition-all shadow-2xs cursor-pointer">
+            <option value="">All Subject Categories</option>
+          </select>
+        </div>
+
+        <!-- Primary Filter 3: State / UT -->
+        <div>
+          <label for="filter-state" class="block text-xs font-semibold text-slate-700 mb-1">State</label>
           <select id="filter-state" onchange="applyFilters()" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white transition-all shadow-2xs cursor-pointer">
             <option value="">All States & UTs</option>
           </select>
         </div>
 
-        <!-- Primary Core Filter 3: Education Level -->
+        <!-- Primary Filter 4: Education Level -->
         <div>
           <label for="filter-qualification" class="block text-xs font-semibold text-slate-700 mb-1">Education Level</label>
           <select id="filter-qualification" onchange="applyFilters()" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white transition-all shadow-2xs cursor-pointer">
@@ -321,14 +366,79 @@
           </select>
         </div>
 
-        <!-- Primary Core Filter 4: Platform Status -->
+        <!-- Primary Filter 5: Profile Status -->
         <div>
-          <label for="filter-status" class="block text-xs font-semibold text-slate-700 mb-1">Platform Status</label>
+          <label for="filter-status" class="block text-xs font-semibold text-slate-700 mb-1">Profile Status</label>
           <select id="filter-status" onchange="applyFilters()" class="w-full py-2 px-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white transition-all shadow-2xs cursor-pointer font-medium">
-            <option value="">All Statuses (107,723)</option>
-            <option value="active">🟢 Verified Active Only (76,706)</option>
-            <option value="inactive">🔴 No Profile / Removed (31,017)</option>
+            <option value="">All Tutors</option>
+            <option value="active">🟢 Active Tutors (76,683)</option>
+            <option value="inactive">🔴 Inactive / Archived (30,990)</option>
           </select>
+        </div>
+
+        <!-- Data Quality & Cleansing Control Panel -->
+        <div class="p-3 bg-gradient-to-br from-indigo-50/70 via-slate-50 to-purple-50/50 rounded-xl border border-indigo-100 shadow-2xs space-y-2.5">
+          <div class="flex items-center justify-between border-b border-indigo-100/70 pb-1.5">
+            <span class="flex items-center gap-1.5 text-xs font-bold text-slate-800">
+              <i class="fa-solid fa-broom text-indigo-600 text-xs"></i>
+              <span>Data Cleansing Filters</span>
+            </span>
+            <span class="text-[10px] font-semibold text-indigo-700 bg-indigo-100/80 px-1.5 py-0.5 rounded">Quality Controls</span>
+          </div>
+
+          <!-- Remove Empty Master & Columns Checklist -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <label class="flex items-center gap-2 cursor-pointer text-xs font-semibold text-slate-800 hover:text-indigo-900 select-none">
+                <input type="checkbox" id="filter-exclude-empty-master" onchange="toggleAllEmptyFilters(this.checked)" class="w-3.5 h-3.5 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer">
+                <span>Remove Empty Values</span>
+              </label>
+              <button type="button" onclick="toggleEmptyColsPanel()" class="text-[11px] font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 cursor-pointer">
+                <span id="empty-cols-badge" class="px-1.5 py-0.2 rounded-full bg-indigo-100 text-indigo-700 font-bold text-[10px]">0 cols</span>
+                <i id="empty-cols-chevron" class="fa-solid fa-chevron-down text-[8px] transition-transform"></i>
+              </button>
+            </div>
+
+            <!-- Expandable Column-by-Column Checklist -->
+            <div id="empty-columns-checklist" class="space-y-1.5 pl-3.5 pt-1 text-[11px] text-slate-600 border-l-2 border-indigo-200">
+              <label class="flex items-center gap-2 cursor-pointer hover:text-slate-900 select-none">
+                <input type="checkbox" name="empty-col" value="name" onchange="onEmptyColChange()" class="w-3 h-3 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer">
+                <span>Tutor Name <span class="text-[10px] text-slate-400 font-normal">(hide anonymous/empty)</span></span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer hover:text-slate-900 select-none">
+                <input type="checkbox" name="empty-col" value="fee" onchange="onEmptyColChange()" class="w-3 h-3 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer">
+                <span>Hourly Fee <span class="text-[10px] text-slate-400 font-normal">(hide unstated/null fee)</span></span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer hover:text-slate-900 select-none">
+                <input type="checkbox" name="empty-col" value="experience" onchange="onEmptyColChange()" class="w-3 h-3 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer">
+                <span>Experience <span class="text-[10px] text-slate-400 font-normal">(hide unstated exp)</span></span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer hover:text-slate-900 select-none">
+                <input type="checkbox" name="empty-col" value="languages" onchange="onEmptyColChange()" class="w-3 h-3 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer">
+                <span>Languages <span class="text-[10px] text-slate-400 font-normal">(hide unstated languages)</span></span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer hover:text-slate-900 select-none">
+                <input type="checkbox" name="empty-col" value="state" onchange="onEmptyColChange()" class="w-3 h-3 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer">
+                <span>State / Region <span class="text-[10px] text-slate-400 font-normal">(hide unspecified state)</span></span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer hover:text-slate-900 select-none">
+                <input type="checkbox" name="empty-col" value="city" onchange="onEmptyColChange()" class="w-3 h-3 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer">
+                <span>City <span class="text-[10px] text-slate-400 font-normal">(hide unspecified city)</span></span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer hover:text-slate-900 select-none">
+                <input type="checkbox" name="empty-col" value="qualification" onchange="onEmptyColChange()" class="w-3 h-3 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer">
+                <span>Qualification <span class="text-[10px] text-slate-400 font-normal">(hide unspecified degree)</span></span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer hover:text-slate-900 select-none">
+                <input type="checkbox" name="empty-col" value="description" onchange="onEmptyColChange()" class="w-3 h-3 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer">
+                <span>Bio / Description <span class="text-[10px] text-slate-400 font-normal">(hide empty bio)</span></span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer hover:text-slate-900 select-none">
+                <input type="checkbox" name="empty-col" value="subjects" onchange="onEmptyColChange()" class="w-3 h-3 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer">
+                <span>Subjects Taught <span class="text-[10px] text-slate-400 font-normal">(must have offerings)</span></span>
+              </label>
+            </div>
+          </div>
         </div>
 
         <!-- Secondary Collapsible Accordion -->
@@ -336,7 +446,7 @@
           <button id="btn-toggle-more-filters" type="button" onclick="toggleMoreFilters()" class="w-full py-2 px-3 text-xs font-semibold text-slate-600 hover:text-indigo-600 bg-slate-50 hover:bg-slate-100/70 border border-slate-200/80 rounded-xl flex items-center justify-between transition-colors shadow-2xs">
             <span class="flex items-center gap-1.5">
               <i class="fa-solid fa-sliders text-indigo-500 text-[10px]"></i>
-              <span>Advanced Filters</span>
+              <span>More Filters</span>
             </span>
             <span class="flex items-center gap-1.5">
               <span id="more-filters-badge" class="hidden px-1.5 py-0.2 rounded-full bg-indigo-100 text-indigo-700 text-[10px] font-bold font-mono">0</span>
@@ -346,7 +456,7 @@
 
           <div id="more-filters-container" class="hidden space-y-3 pt-3">
             <div>
-              <label for="filter-occupation" class="block text-[11px] font-semibold text-slate-700 mb-1">Career / Occupation</label>
+              <label for="filter-occupation" class="block text-[11px] font-semibold text-slate-700 mb-1">Occupation</label>
               <select id="filter-occupation" onchange="applyFilters()" class="w-full py-2 px-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs">
                 <option value="">All Occupations</option>
               </select>
@@ -360,37 +470,37 @@
             </div>
 
             <div>
-              <label for="filter-online" class="block text-[11px] font-semibold text-slate-700 mb-1">Delivery Mode</label>
+              <label for="filter-online" class="block text-[11px] font-semibold text-slate-700 mb-1">Class Mode</label>
               <select id="filter-online" onchange="applyFilters()" class="w-full py-2 px-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs">
                 <option value="">Any Mode</option>
                 <option value="1">Online Only</option>
-                <option value="0">Offline / In-person</option>
+                <option value="0">In-person Only</option>
               </select>
             </div>
 
             <div>
-              <label for="filter-seniority" class="block text-[11px] font-semibold text-slate-700 mb-1">Seniority Tier</label>
+              <label for="filter-seniority" class="block text-[11px] font-semibold text-slate-700 mb-1">Seniority</label>
               <select id="filter-seniority" onchange="applyFilters()" class="w-full py-2 px-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs">
                 <option value="">All Seniority Tiers</option>
               </select>
             </div>
 
             <div>
-              <label for="filter-role" class="block text-[11px] font-semibold text-slate-700 mb-1">Experience Role</label>
+              <label for="filter-role" class="block text-[11px] font-semibold text-slate-700 mb-1">Role</label>
               <select id="filter-role" onchange="applyFilters()" class="w-full py-2 px-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs">
                 <option value="">All Roles</option>
               </select>
             </div>
 
             <div>
-              <label for="filter-exam" class="block text-[11px] font-semibold text-slate-700 mb-1">Competitive Exam</label>
+              <label for="filter-exam" class="block text-[11px] font-semibold text-slate-700 mb-1">Exam</label>
               <select id="filter-exam" onchange="applyFilters()" class="w-full py-2 px-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs">
                 <option value="">All Exams</option>
               </select>
             </div>
 
             <div>
-              <label for="filter-region" class="block text-[11px] font-semibold text-slate-700 mb-1">Geographic Zone</label>
+              <label for="filter-region" class="block text-[11px] font-semibold text-slate-700 mb-1">Zone</label>
               <select id="filter-region" onchange="applyFilters()" class="w-full py-2 px-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-2xs">
                 <option value="">All Zones</option>
               </select>
@@ -408,129 +518,76 @@
         </div>
       </aside>
 
-      <!-- TABLE & PAGINATION CONTAINER -->
-      <section class="flex-1 bg-white rounded-2xl shadow-xs border border-slate-200/80 flex flex-col overflow-hidden">
+      <!-- TUTOR CARDS & PAGINATION CONTAINER (No banner) -->
+      <section class="flex-1 flex flex-col gap-4">
         
-        <!-- Results Header Toolbar -->
-        <div class="px-6 py-3.5 border-b border-slate-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 bg-slate-50/40">
-          <div class="flex items-center gap-2.5">
-            <h3 class="font-bold text-slate-900 text-sm">Educator Profiles</h3>
-            <span id="results-count-badge" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/70 font-mono">
-              Loading...
-            </span>
-          </div>
-          
-          <!-- Controls: Sort Selector + Page Size + Export -->
-          <div class="flex flex-wrap items-center gap-2.5 text-xs w-full md:w-auto justify-between md:justify-end">
-            <!-- Sort Selector Dropdown -->
-            <div class="flex items-center gap-1.5">
-              <label for="table-sort-select" class="text-slate-500 font-semibold text-[11px] flex items-center gap-1">
-                <i class="fa-solid fa-arrow-down-short-wide text-indigo-500 text-[10px]"></i>
-                <span>Sort:</span>
-              </label>
-              <select id="table-sort-select" onchange="onSortDropdownChange(this.value)" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-medium text-slate-700 focus:outline-none focus:border-indigo-500 shadow-2xs cursor-pointer">
-                <option value="default_asc">Default (Tutor ID)</option>
-                <option value="name_asc">Name: A → Z</option>
-                <option value="name_desc">Name: Z → A</option>
-                <option value="fee_asc">Fee: Low to High</option>
-                <option value="fee_desc">Fee: High to Low</option>
-                <option value="education_desc">Education: Highest Degree</option>
-                <option value="education_asc">Education: Lowest Degree</option>
-                <option value="experience_desc">Experience: Most Experienced</option>
-                <option value="experience_asc">Experience: Least Experienced</option>
-              </select>
-            </div>
-
-            <!-- Page Size -->
-            <div class="flex items-center gap-1.5 pl-2 border-l border-slate-200">
-              <span class="text-slate-500 font-medium text-[11px]">Rows:</span>
-              <select id="page-size" onchange="changePageSize()" class="bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-indigo-500 shadow-2xs cursor-pointer">
-                <option value="15">15</option>
-                <option value="25" selected>25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-              </select>
-            </div>
-
-            <!-- Export Filtered Button -->
-            <button onclick="downloadFilteredExcel()" class="px-2.5 py-1 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 text-slate-700 border border-slate-200 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shadow-2xs ml-1" title="Export matching rows to Excel">
-              <i class="fa-solid fa-file-excel text-emerald-600 text-[11px]"></i>
-              <span>Export</span>
-            </button>
-          </div>
-        </div>
-
         <!-- Active Filters Bar -->
-        <div id="active-filters-bar" class="hidden px-6 py-2 bg-indigo-50/40 border-b border-indigo-100/60 flex flex-wrap items-center gap-1.5 text-xs">
+        <div id="active-filters-bar" class="hidden px-5 py-2.5 bg-indigo-50/50 border border-indigo-100/80 rounded-xl flex flex-wrap items-center gap-1.5 text-xs">
           <!-- Dynamically populated chips -->
         </div>
 
-        <!-- Table Container -->
-        <div class="flex-1 overflow-x-auto custom-scrollbar">
-          <table class="w-full text-left border-collapse text-sm">
-            <thead>
-              <tr class="bg-slate-50/80 border-b border-slate-200/80 text-[11px] font-bold text-slate-500 uppercase tracking-wider sticky top-0 backdrop-blur-sm z-10 select-none">
-                <th class="py-3 px-3 w-20 text-center">Tutor ID</th>
-                <th class="py-3 px-4 cursor-pointer hover:text-indigo-600 transition-colors group min-w-[190px]" onclick="toggleSort('name')" title="Click to sort by Educator Name">
-                  <div class="flex items-center gap-1.5">
-                    <span>Educator</span>
-                    <i id="sort-icon-name" class="fa-solid fa-sort text-slate-300 group-hover:text-indigo-500 text-[10px]"></i>
-                  </div>
-                </th>
-                <th class="py-3 px-4 min-w-[240px]">Subjects Taught</th>
-                <th class="py-3 px-4 cursor-pointer hover:text-indigo-600 transition-colors group min-w-[125px]" onclick="toggleSort('fee')" title="Click to sort by Tuition Fee">
-                  <div class="flex items-center gap-1.5">
-                    <span>Tuition Fee</span>
-                    <i id="sort-icon-fee" class="fa-solid fa-sort text-slate-300 group-hover:text-indigo-500 text-[10px]"></i>
-                  </div>
-                </th>
-                <th class="py-3 px-4 min-w-[150px]">Location</th>
-                <th class="py-3 px-4 cursor-pointer hover:text-indigo-600 transition-colors group min-w-[150px]" onclick="toggleSort('education')" title="Click to sort by Qualification">
-                  <div class="flex items-center gap-1.5">
-                    <span>Qualification & Exp</span>
-                    <i id="sort-icon-education" class="fa-solid fa-sort text-slate-300 group-hover:text-indigo-500 text-[10px]"></i>
-                  </div>
-                </th>
-                <th class="py-3 px-3 text-center w-10"></th>
-              </tr>
-            </thead>
-            <tbody id="tutors-table-body" class="divide-y divide-slate-100 text-slate-700">
-              <tr class="animate-pulse">
-                <td class="py-4 px-4"><div class="h-4 w-12 bg-slate-200 rounded"></div></td>
-                <td class="py-4 px-4">
-                  <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-full bg-slate-200 shrink-0"></div>
-                    <div class="space-y-1.5 flex-1">
-                      <div class="h-3.5 w-32 bg-slate-200 rounded"></div>
-                      <div class="h-2.5 w-48 bg-slate-100 rounded"></div>
-                    </div>
-                  </div>
-                </td>
-                <td class="py-4 px-4"><div class="h-5 w-24 bg-slate-200 rounded-full"></div></td>
-                <td class="py-4 px-4"><div class="h-3.5 w-24 bg-slate-200 rounded"></div></td>
-                <td class="py-4 px-4"><div class="h-3.5 w-20 bg-slate-200 rounded"></div></td>
-                <td class="py-4 px-4"><div class="h-5 w-40 bg-slate-200 rounded"></div></td>
-                <td class="py-4 px-4"><div class="h-5 w-16 bg-slate-200 rounded-full"></div></td>
-                <td class="py-4 px-3 text-center"><div class="h-5 w-5 bg-slate-200 rounded-full mx-auto"></div></td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- View Mode Switcher -->
+        <div class="flex items-center justify-between pb-1 pt-1">
+          <div class="text-xs font-semibold text-slate-500 flex items-center gap-2">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 font-mono text-[11px] border border-slate-200/80">
+              <i class="fa-solid fa-list-check text-slate-400"></i> Tutor Directory
+            </span>
+          </div>
+          <div class="inline-flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200 text-xs shadow-2xs">
+            <button id="view-mode-card" type="button" onclick="setViewMode('card')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-indigo-600 shadow-2xs cursor-pointer">
+              <i class="fa-solid fa-table-cells-large text-xs"></i>
+              <span>Card view</span>
+            </button>
+            <button id="view-mode-table" type="button" onclick="setViewMode('table')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-600 hover:text-slate-900 cursor-pointer">
+              <i class="fa-solid fa-table-list text-xs"></i>
+              <span>Table view</span>
+            </button>
+          </div>
         </div>
 
-        <!-- Pagination Controls -->
-        <div class="px-6 py-3.5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-50/50">
-          <div id="page-info" class="text-xs text-slate-500 font-medium">
-            Showing 1 to 25 of 107,723 entries
+        <!-- Scrollable Cards Container (Card View) -->
+        <div id="tutors-cards-list" class="space-y-4">
+          <!-- Tutor Cards dynamically injected here -->
+        </div>
+
+        <!-- Column / Table View Container (Table View) -->
+        <div id="tutors-table-wrapper" class="hidden bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
+                  <th class="py-3.5 px-4 font-mono">Educator</th>
+                  <th class="py-3.5 px-4">Subjects Taught</th>
+                  <th class="py-3.5 px-4 text-right">Fee Rate</th>
+                  <th class="py-3.5 px-4">Experience</th>
+                  <th class="py-3.5 px-4">Location</th>
+                  <th class="py-3.5 px-4">Mode</th>
+                  <th class="py-3.5 px-4 text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody id="tutors-table-body" class="divide-y divide-slate-100 font-medium text-slate-700">
+                <!-- Rows injected here -->
+              </tbody>
+            </table>
           </div>
-          <div class="flex items-center space-x-1">
+        </div>
+
+        <!-- Pagination Controls Bottom Bar -->
+        <div class="bg-white rounded-2xl border border-slate-200/80 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+          <div id="page-info" class="text-xs text-slate-500 font-semibold">
+            Showing 1 to 12 of 107,673 tutors
+          </div>
+          <div class="flex items-center space-x-1.5">
             <button onclick="goToPage(1)" class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-xs hover:bg-slate-50 disabled:opacity-40 shadow-2xs transition-colors cursor-pointer" id="btn-first" title="First Page">
               <i class="fa-solid fa-angles-left text-[10px]"></i>
             </button>
-            <button onclick="changePage(-1)" class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs hover:bg-slate-50 disabled:opacity-40 shadow-2xs transition-colors flex items-center gap-1 cursor-pointer" id="btn-prev">
+            <button onclick="changePage(-1)" class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs hover:bg-slate-50 disabled:opacity-40 shadow-2xs transition-colors flex items-center gap-1 cursor-pointer font-medium" id="btn-prev">
               <i class="fa-solid fa-chevron-left text-[10px]"></i> <span>Prev</span>
             </button>
-            <span id="current-page-display" class="px-3 py-1.5 text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/80 rounded-lg font-mono">1</span>
-            <button onclick="changePage(1)" class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs hover:bg-slate-50 disabled:opacity-40 shadow-2xs transition-colors flex items-center gap-1 cursor-pointer" id="btn-next">
+            <div id="pagination-pages" class="flex items-center space-x-1">
+              <span id="current-page-display" class="px-3 py-1.5 text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/80 rounded-lg font-mono">1</span>
+            </div>
+            <button onclick="changePage(1)" class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs hover:bg-slate-50 disabled:opacity-40 shadow-2xs transition-colors flex items-center gap-1 cursor-pointer font-medium" id="btn-next">
               <span>Next</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
             </button>
             <button onclick="goToLastPage()" class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-xs hover:bg-slate-50 disabled:opacity-40 shadow-2xs transition-colors cursor-pointer" id="btn-last" title="Last Page">
@@ -548,13 +605,13 @@
       <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div class="flex items-center gap-2">
-            <span class="px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-indigo-200/60">Empirical Research</span>
-            <span id="analytics-scope-subtitle" class="text-xs text-slate-400 font-mono">107,723 Tutors &bull; 327,720 Offerings &bull; 28 States &amp; 8 UTs (National Master)</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-indigo-200/60">Tutoring Trends</span>
+            <span id="analytics-scope-subtitle" class="text-xs text-slate-400 font-mono">107,673 Tutors &bull; 403,221 Subjects &bull; All 36 States &amp; UTs</span>
           </div>
           <h2 class="text-xl font-extrabold text-slate-900 mt-1 flex items-center gap-2 tracking-tight">
-            <i class="fa-solid fa-chart-line text-indigo-600"></i> Visual Analytics & National Market Dossier
+            <i class="fa-solid fa-chart-line text-indigo-600"></i> Tutoring Market Insights
           </h2>
-          <p class="text-xs text-slate-500 mt-0.5">Breakdown of private tutoring demand, hourly fee benchmarks, subject distributions, and district-level map data.</p>
+          <p class="text-xs text-slate-500 mt-0.5">What tutors charge, which subjects are popular, and where tutors are located across India.</p>
         </div>
 
         <!-- Scope Switcher & Actions -->
@@ -588,10 +645,10 @@
             <div class="flex items-center gap-2">
               <span class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-indigo-200/60">Geographic Overview</span>
               <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <i class="fa-solid fa-map text-indigo-600"></i> Figure 1: Geographic Distribution of Private Tutors Across India
+                <i class="fa-solid fa-map text-indigo-600"></i> Where Tutors Are Located Across India
               </h3>
             </div>
-            <p class="text-xs text-slate-500 mt-1">State administrative boundaries colored by tutor supply volume and average hourly rates across all 36 States/UTs. Hover over any state to inspect details.</p>
+            <p class="text-xs text-slate-500 mt-1">State borders colored by how many tutors are in each state and average hourly rates across all 36 States/UTs. Hover over any state to see details.</p>
           </div>
 
           <!-- Controls: Metric Toggle -->
@@ -641,10 +698,10 @@
             </span>
             <div>
               <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                Dynamic Graph Controls & Slice-and-Dice Filters
+                Chart Controls & Filters
                 <span id="charts-filter-indicator" class="hidden px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">Filtered</span>
               </h3>
-              <p class="text-[11px] text-slate-500">Filter all Visual Analytics charts simultaneously by geographic region, delivery format, and educator qualification.</p>
+              <p class="text-[11px] text-slate-500">Filter all charts at once by region, teaching mode, and qualification.</p>
             </div>
           </div>
 
@@ -693,37 +750,6 @@
         </div>
       </div>
 
-      <!-- NEW SECTION: PROFESSIONAL LANDSCAPE — NON-TEACHING & SIDE OCCUPATIONS -->
-      <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-purple-200/60">Professional Gig Economy</span>
-              <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <i class="fa-solid fa-briefcase text-purple-600"></i> <span id="occ-sample-title">Figure 4: Non-Teaching & Professional Side Occupations Landscape</span>
-              </h3>
-            </div>
-            <p class="text-xs text-slate-500 mt-1">Cross-disciplinary breakdown of 36,500+ tutors practicing an outside profession (IT, CA, Doctors, Research Scholars, Engineers).</p>
-          </div>
-
-          <div class="bg-slate-100 p-1 rounded-xl flex items-center space-x-1 border border-slate-200 text-xs">
-            <button id="btn-occ-count" onclick="switchOccupationsChart('count')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-2xs">Tutor Volume</button>
-            <button id="btn-occ-fee" onclick="switchOccupationsChart('fee')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900">Avg Fee (₹/hr)</button>
-          </div>
-        </div>
-
-        <div class="h-80 my-2 relative">
-          <canvas id="chart-occupations"></canvas>
-        </div>
-
-        <p class="text-[11px] text-slate-500 italic pt-2 border-t border-slate-100">
-          <strong>Key Insight:</strong> Independent consultants, Chartered Accountants, and Software Engineers command an 80% fee premium (₹1,050–₹1,180/hr) over entry-level university peer tutors (₹767/hr).
-        </p>
-        <p class="text-[11px] text-slate-500 italic pt-1 border-t border-slate-100 mt-1">
-          <strong>Sample Reconciliation:</strong> Analysis covers 36,525 educators who declared an external professional occupation (IT software engineers, chartered accountants, research scholars, medical practitioners). Exactly 71,198 educators (66.1% of national registry) are dedicated full-time educators or did not specify an outside corporate profession.
-        </p>
-      </div>
-
       <!-- SECTION 3: ACADEMIC FIGURES (FIGURE 1 & FIGURE 2) -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Figure 1 -->
@@ -731,14 +757,14 @@
           <div>
             <div class="flex items-center justify-between gap-2 mb-2">
               <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                <i class="fa-solid fa-chart-column text-indigo-600"></i> Figure 1: Subjects Offered for Tuition
+                <i class="fa-solid fa-chart-column text-indigo-600"></i> Figure 1: Subjects Offered
               </h3>
               <div class="bg-slate-100 p-0.5 rounded-lg flex items-center space-x-0.5 border border-slate-200 text-[11px]">
                 <button id="btn-fig1-macro" onclick="switchFigure1('macro')" class="px-2.5 py-0.5 rounded-md font-bold bg-indigo-600 text-white shadow-2xs">Macro Clusters</button>
                 <button id="btn-fig1-top" onclick="switchFigure1('top')" class="px-2.5 py-0.5 rounded-md font-medium text-slate-600 hover:text-slate-900">Top 12 Disciplines</button>
               </div>
             </div>
-            <p class="text-xs text-slate-500 mt-0.5" id="fig1-sample-subtitle">Categorical volume of private tutoring offerings across India (N = 327,720 cleaned offerings).</p>
+            <p class="text-xs text-slate-500 mt-0.5" id="fig1-sample-subtitle">Categorical volume of private tutoring offerings across India (N = 403,221 cleaned offerings).</p>
           </div>
 
           <div class="h-72 my-4 relative">
@@ -746,7 +772,7 @@
           </div>
 
           <p class="text-[11px] text-slate-500 italic pt-2 border-t border-slate-100">
-            <strong>Note:</strong> Values show count (N) and percentage share across all 327,720 cleaned subject offerings (averaging 3.08 offerings across 106,552 tutors). 1,171 educators without subject tags were excluded from this breakdown.
+            <strong>Note:</strong> Values show count (N) and percentage share across all 403,221 cleaned subject offerings (averaging 3.79 offerings across 106,502 tutors). Exactly 1,171 educators without subject tags were excluded from this breakdown.
           </p>
         </div>
 
@@ -755,7 +781,7 @@
           <div>
             <div class="flex items-center justify-between gap-2 mb-2">
               <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                <i class="fa-solid fa-chart-line text-indigo-600"></i> Figure 2: Teaching Experience Structure
+                <i class="fa-solid fa-chart-line text-indigo-600"></i> Figure 2: Teaching Experience
               </h3>
               <div class="bg-slate-100 p-0.5 rounded-lg flex items-center space-x-0.5 border border-slate-200 text-[11px]">
                 <button id="btn-fig3-total" onclick="switchFigure3('total')" class="px-2.5 py-0.5 rounded-md font-bold bg-indigo-600 text-white shadow-2xs">Total Curve</button>
@@ -790,7 +816,7 @@
           </div>
 
           <p class="text-[11px] text-slate-500 italic pt-2 border-t border-slate-100">
-            <strong>Note:</strong> Based on 105,890 tutors with experience between 0 and 30 years. 1,268 tutors with unstated experience and 565 extreme entries (>30 years) were excluded as outliers.
+            <strong>Note:</strong> Based on 105,840 tutors with experience between 0 and 30 years. Exactly 1,268 educators with unstated experience and 565 extreme entries (>30 years) were excluded.
           </p>
         </div>
       </div>
@@ -808,9 +834,9 @@
                 </div>
                 <h3 class="text-base font-bold text-slate-900 mt-1 flex items-center gap-2">
                   <i class="fa-solid fa-shapes text-teal-600"></i>
-                  <span>Figure 3: Dynamic Three-Subject Venn Diagram & Overlap Studio</span>
+                  <span>Figure 3: Dynamic 3-Subject Venn Overlap Studio</span>
                 </h3>
-                <p class="text-xs text-slate-500 mt-0.5">Select any three academic subjects across 107,723 educators to dynamically analyze single-subject specialists, dual-subject overlaps, and triple-subject bundle mastery.</p>
+                <p class="text-xs text-slate-500 mt-0.5">Select any three academic subjects across 107,673 educators to dynamically analyze single-subject specialists, dual-subject overlaps, and triple-subject bundle mastery.</p>
               </div>
 
               <button onclick="exportVennSVG()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition-all flex items-center gap-2 shadow-xs shrink-0 self-start sm:self-auto active:scale-[0.98]">
@@ -1047,12 +1073,43 @@
       </div>
       </section>
 
+      <!-- NEW SECTION: PROFESSIONAL LANDSCAPE — NON-TEACHING & SIDE OCCUPATIONS -->
+      <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-purple-200/60">Side Jobs & Occupations</span>
+              <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-briefcase text-purple-600"></i> <span id="occ-sample-title">Tutors' Other Jobs</span>
+              </h3>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">Breakdown of tutors who also work in IT, chartered accountancy, healthcare, research, and other professions.</p>
+          </div>
+
+          <div class="bg-slate-100 p-1 rounded-xl flex items-center space-x-1 border border-slate-200 text-xs">
+            <button id="btn-occ-count" onclick="switchOccupationsChart('count')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-2xs">Tutor Volume</button>
+            <button id="btn-occ-fee" onclick="switchOccupationsChart('fee')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900">Avg Fee (₹/hr)</button>
+          </div>
+        </div>
+
+        <div class="h-80 my-2 relative">
+          <canvas id="chart-occupations"></canvas>
+        </div>
+
+        <p class="text-[11px] text-slate-500 italic pt-2 border-t border-slate-100">
+          <strong>Key Insight:</strong> Independent consultants, Chartered Accountants, and Software Engineers command an 80% fee premium (₹1,050–₹1,180/hr) over entry-level university peer tutors (₹767/hr).
+        </p>
+        <p class="text-[11px] text-slate-500 italic pt-1 border-t border-slate-100 mt-1">
+          <strong>Sample Reconciliation:</strong> Analysis covers 36,525 educators who declared an external professional occupation (IT software engineers, chartered accountants, research scholars, medical practitioners). Exactly 71,198 educators (66.1% of national registry) are dedicated full-time educators or did not specify an outside corporate profession.
+        </p>
+      </div>
+
       <!-- SECTION 4: ACADEMIC TABLES (TABLE 2 & TABLE 3) -->
       <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
           <div>
             <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-rose-200/60">Demographic Breakdown</span>
-            <h3 class="text-base font-bold text-slate-900 mt-1">Table 2: Gender Distribution by Tutoring Subject</h3>
+            <h3 class="text-base font-bold text-slate-900 mt-1">Table 1: Gender Distribution by Tutoring Subject</h3>
             <p class="text-xs text-slate-500 mt-0.5">Disaggregated participation rates for women vs men across academic domains.</p>
           </div>
           <div class="flex items-center gap-2">
@@ -1081,16 +1138,16 @@
           </table>
         </div>
         <p class="text-[11px] text-slate-500 italic pt-2 border-t border-slate-100 mt-2">
-          <strong>Sample Reconciliation:</strong> Total Sample Size N = 106,552 unique educators offering verified subject disciplines (62,374 women [58.5%], 43,901 men [41.2%], 277 unstated gender [0.3%]). Exactly 1,171 educators (1.1% of national total) did not specify individual subject disciplines or gender in their profile and were omitted from this cross-tabulation.
+          <strong>Sample Reconciliation:</strong> Total Sample Size N = 106,502 unique educators offering verified subject disciplines (62,440 women [58.6%], 43,947 men [41.3%], 115 unstated gender [0.1%]). Exactly 1,171 educators (1.1% of national total) did not specify individual subject disciplines in their profile and were omitted from this cross-tabulation.
         </p>
       </div>
 
-      <!-- SECTION 5: HOURLY TUITION FEES TABLE (TABLE 3) -->
+      <!-- SECTION 5: HOURLY TUITION FEES TABLE (TABLE 2) -->
       <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
           <div>
             <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-emerald-200/60">Pricing Architecture</span>
-            <h3 class="text-base font-bold text-slate-900 mt-1">Table 2: Hourly Tuition Fees Across Educational Stages & Geographic Zones</h3>
+            <h3 class="text-base font-bold text-slate-900 mt-1">Table 2: Hourly Tuition Fees Across Educational Stages & Zones</h3>
             <p class="text-xs text-slate-500 mt-0.5">Empirical pricing escalations across primary, secondary, senior secondary, and higher education.</p>
           </div>
           <div class="flex items-center gap-2">
@@ -1112,25 +1169,25 @@
           </table>
         </div>
         <p class="text-[11px] text-slate-500 italic pt-2 border-t border-slate-100 mt-2">
-          <strong>Outlier Reconciliation:</strong> Hourly fees benchmarked strictly within the realistic tuition band (₹50 to ₹5,000/hr across 76,416 stating tutors). Excluded from calculations: 28,411 tutors (26.4%) with unstated or 'negotiable' fee policies, 959 extreme low entries (<₹50/hr), and 1,937 extreme placeholder entries (>₹5,000/hr).
+          <strong>Outlier Reconciliation:</strong> Hourly fees benchmarked strictly within the realistic tuition band (₹100 to ₹5,000/hr across 78,757 stating tutors). Excluded from calculations: exactly 28,916 tutors (26.9%) with unstated or 'negotiable' fee policies.
         </p>
       </div>
 
       
 
-      <!-- SECTION: LINGUISTIC & MULTILINGUAL DEMOGRAPHICS -->
+      <!-- SECTION: LINGUISTIC & MULTILINGUAL DEMOGRAPHICS (TABLE 3) -->
       <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80 space-y-5">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
           <div>
             <div class="flex items-center gap-2">
               <span class="px-2.5 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-rose-200/60">Linguistic Diversity</span>
-              <span id="lang-sample-badge" class="text-xs text-slate-400 font-mono">N = 106,455 Stating Educators</span>
+              <span id="lang-sample-badge" class="text-xs text-slate-400 font-mono">N = 106,405 Stating Educators</span>
             </div>
             <h3 class="text-base font-bold text-slate-900 mt-1 flex items-center gap-2">
               <i class="fa-solid fa-language text-rose-600"></i>
-              <span>Table 3: Linguistic Demographics & Multilingual Tuition</span>
+              <span>Table 3: Languages Spoken & Multilingual Teaching</span>
             </h3>
-            <p class="text-xs text-slate-500 mt-0.5">Top spoken tutoring languages across India and the pricing premium commanded by multilingual vs monolingual educators.</p>
+            <p class="text-xs text-slate-500 mt-0.5">Top languages tutors speak and how knowing multiple languages affects pricing.</p>
           </div>
 
           <div class="flex items-center gap-2">
@@ -1183,7 +1240,7 @@
           <h3 class="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
             <i class="fa-solid fa-shapes text-indigo-600"></i> Subject Offerings Distribution
           </h3>
-          <p class="text-xs text-slate-500 mb-4" id="sec6-subjects-subtitle">Total breakdown across 327,720 cleaned verified subject offerings</p>
+          <p class="text-xs text-slate-500 mb-4" id="sec6-subjects-subtitle">Total breakdown across 403,221 cleaned verified subject offerings</p>
           <div class="h-64"><canvas id="chart-subjects"></canvas></div>
         </div>
 
@@ -1347,7 +1404,7 @@
 
             <!-- Professional Background (Occupation) -->
             <div class="space-y-1.5">
-              <label class="font-bold text-slate-700 text-xs">Primary Profession / Occupation</label>
+              <label class="font-bold text-slate-700 text-xs">Occupation</label>
               <select id="ai-occ-select" onchange="onFeeParamChange()"
                 class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
                 <option value="School Educator (Teacher)">School Educator (Teacher)</option>
@@ -1392,7 +1449,7 @@
                   15 Hours / Week
                 </span>
               </div>
-              <input type="range" id="ai-hours-slider" min="4" max="40" step="2" value="15" oninput="onFeeParamChange()"
+              <input type="range" id="ai-hours-slider" min="4" max="40" step="1" value="15" oninput="onFeeParamChange()"
                 class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600" />
               <div class="flex justify-between text-[10px] text-slate-400 font-medium font-mono">
                 <span>Part-Time (4h)</span>
@@ -1437,7 +1494,7 @@
               <div>
                 <span class="text-xs text-emerald-100 font-medium block">Estimated Monthly Earning Potential</span>
                 <span id="ai-monthly-earning" class="text-2xl md:text-3xl font-black font-mono tracking-tight block mt-0.5">₹55,250</span>
-                <span class="text-[11px] text-emerald-100/90 block">Based on <span id="ai-monthly-hours-label" class="font-bold">15 hours/week</span> (approx. 65 hours/month)</span>
+                <span class="text-[11px] text-emerald-100/90 block">Based on <span id="ai-monthly-hours-label" class="font-bold">15 hours/week</span> (<span id="ai-monthly-hours-approx">approx. 65 hours/month</span>)</span>
               </div>
               <div class="bg-white/20 backdrop-blur-sm px-3.5 py-2 rounded-xl text-center shrink-0 border border-white/20 shadow-2xs">
                 <span class="text-[10px] text-emerald-100 uppercase tracking-wider block font-bold">Annualized Potential</span>
@@ -1450,9 +1507,9 @@
               <div class="flex items-center justify-between">
                 <h4 class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
                   <i class="fa-solid fa-chart-simple text-indigo-500"></i>
-                  <span>Pricing Drivers Attribution (Explainable ML)</span>
+                  <span>Why This Rate? (Fee Breakdown)</span>
                 </h4>
-                <span class="text-[10px] text-slate-400 font-mono">Additive Ridge Weights</span>
+                <span class="text-[10px] text-slate-400 font-mono">How the fee is calculated</span>
               </div>
               
               <div id="ai-contributions-container" class="space-y-2 max-h-56 overflow-y-auto custom-scrollbar pr-1">
@@ -1465,7 +1522,7 @@
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
                   <i class="fa-solid fa-users-viewfinder text-blue-600 text-xs"></i>
-                  <span class="text-xs font-bold text-slate-800">Actual Market Cohort in Database</span>
+                  <span class="text-xs font-bold text-slate-800">Similar Tutors in Our Data</span>
                 </div>
                 <span id="ai-cohort-count" class="text-[10px] font-mono font-bold bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
                   1,420 Verified Tutors
@@ -1493,11 +1550,11 @@
               </div>
             </div>
 
-            <!-- Strategic Optimization Tips -->
+            <!-- Rate Suggestions -->
             <div class="border-t border-slate-100 pt-4 space-y-2">
               <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
                 <i class="fa-solid fa-lightbulb text-amber-500"></i>
-                <span>Actionable Rate Optimization Recommendations</span>
+                <span>Suggestions to Set Your Rate</span>
               </span>
               <div id="ai-recommendations-container" class="space-y-2">
                 <!-- Dynamically populated via JS -->
@@ -1526,9 +1583,9 @@
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
               <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
                 <i class="fa-solid fa-user-gear text-teal-600"></i>
-                <span>Tutor Profile Builder</span>
+                <span>Write Your Tutor Bio</span>
               </h3>
-              <span class="text-[11px] text-slate-400">Customized Output</span>
+              <span class="text-[11px] text-slate-400">Fill in your details below</span>
             </div>
 
             <!-- Name & Experience -->
@@ -1693,14 +1750,14 @@
                     100
                   </div>
                   <div>
-                    <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Profile Conversion Strength</span>
-                    <span id="bio-grade-label" class="text-xs font-bold text-emerald-700 block mt-0.5">Excellent (High Conversion)</span>
+                    <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Bio Quality Score</span>
+                    <span id="bio-grade-label" class="text-xs font-bold text-emerald-700 block mt-0.5">Excellent (Ready to Use)</span>
                   </div>
                 </div>
 
                 <div class="text-xs font-mono text-slate-500 sm:text-right">
-                  <span class="block">Algorithmic Heuristics</span>
-                  <span class="text-[10px] text-emerald-600 font-bold font-sans">Marketplace Ready</span>
+                  <span class="block">How It's Scored</span>
+                  <span class="text-[10px] text-emerald-600 font-bold font-sans">Ready for Marketplace</span>
                 </div>
               </div>
 
@@ -1755,7 +1812,7 @@
           </div>
           <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">BMP Tutors: Real Data on India's Private Tutors</h2>
           <p class="text-sm text-slate-300 mt-2.5 leading-relaxed">
-            We scraped and verified 107,723 tutor profiles from TeacherOn across all 36 Indian States and Union Territories, then cleaned them into two normalized tables so anyone can see fair pricing, subject overlaps, and which profiles are still active.
+            We scraped and verified 107,673 tutor profiles from TeacherOn across all 36 Indian States and Union Territories, then cleaned them into two normalized tables so anyone can see fair pricing, subject overlaps, and which profiles are still active.
           </p>
         </div>
       </div>
@@ -1771,7 +1828,7 @@
             </div>
             <h3 class="text-base font-bold text-slate-900">Why We Built This</h3>
             <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-              Private tutoring in India is a messy, unorganized market. Parents have no idea what a fair hourly rate is — tutors quote anywhere from ₹200 to ₹3,500 for the same subject. TeacherOn shows profiles but doesn't tell you which ones are still active. We scraped 107,723 tutor profiles, verified which ones are live, and put fair pricing benchmarks in one place.
+              Private tutoring in India is a messy, unorganized market. Parents have no idea what a fair hourly rate is — tutors quote anywhere from ₹200 to ₹3,500 for the same subject. TeacherOn shows profiles but doesn't tell you which ones are still active. We scraped 107,673 tutor profiles, verified which ones are live, and put fair pricing benchmarks in one place.
             </p>
           </div>
           <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-semibold text-blue-600 flex items-center gap-1">
@@ -1902,53 +1959,43 @@
 
   </main>
 
-  <!-- TUTOR DETAIL SLIDE-OVER DRAWER MODAL -->
-  <div id="detail-modal" class="fixed inset-0 z-50 hidden bg-slate-950/40 backdrop-blur-sm flex justify-end transition-opacity">
-    <div class="bg-white w-full max-w-2xl h-full shadow-2xl flex flex-col transform transition-transform duration-300 translate-x-0 overflow-hidden">
+  <!-- TUTOR WHOLE PROFILE IN-PAGE DISPLAY WINDOW (WITH CLOSE CROSS BUTTON) -->
+  <div id="detail-modal" class="fixed inset-0 z-50 hidden bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5 overflow-y-auto transition-all" onclick="if(event.target === this) closeModal()">
+    <div class="bg-white rounded-3xl max-w-2xl sm:max-w-3xl w-full my-auto shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[90vh] transform transition-all" onclick="event.stopPropagation()">
       
-      <!-- Drawer Header -->
-      <div class="p-6 bg-slate-900 text-white flex items-start justify-between border-b border-slate-800">
-        <div class="flex items-center gap-3">
+      <!-- Window Header with Close Cross Button -->
+      <div class="p-5 sm:p-6 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800 shrink-0">
+        <div class="flex items-center gap-3.5 min-w-0">
           <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-500 to-violet-500 text-white flex items-center justify-center font-bold text-lg ring-2 ring-white/10 shrink-0">
             <span id="modal-initials">T</span>
           </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <h3 id="modal-name" class="text-lg font-extrabold tracking-tight">Tutor Details</h3>
-              <span id="modal-active-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider font-mono"></span>
+          <div class="min-w-0">
+            <div class="flex flex-wrap items-center gap-2">
+              <h3 id="modal-name" class="text-lg sm:text-xl font-extrabold tracking-tight truncate">Tutor Details</h3>
             </div>
-            <p id="modal-tutor-id" class="text-xs text-indigo-300 font-mono mt-0.5 font-semibold">T1</p>
+            <div class="flex items-center gap-2 text-xs text-indigo-300 font-mono mt-0.5">
+              <span id="modal-tutor-id" class="font-bold">T1</span>
+              <span class="text-slate-600">·</span>
+              <span class="text-slate-400 font-sans">Whole Profile</span>
+            </div>
           </div>
         </div>
         
-        <div class="flex items-center gap-2">
-          <a id="modal-url" href="#" target="_blank" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 transition-colors flex items-center gap-1.5" title="Open TeacherOn Profile in new tab">
-            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            <span>TeacherOn Profile</span>
+        <div class="flex items-center gap-2.5 shrink-0 ml-3">
+          <a id="modal-url" href="#" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-slate-700 transition-colors items-center gap-1.5 shadow-2xs" title="Open TeacherOn Profile">
+            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-indigo-400"></i>
+            <span>TeacherOn</span>
           </a>
-          <button onclick="closeModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center text-sm transition-colors">
+          <!-- Close Cross Button (X) -->
+          <button type="button" onclick="closeModal()" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-rose-600 text-slate-300 hover:text-white flex items-center justify-center text-base font-bold transition-all shadow-sm cursor-pointer ring-1 ring-white/10 active:scale-95" title="Close Profile (Esc)" aria-label="Close modal">
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
       </div>
 
-      <!-- Drawer Scrollable Content -->
-      <div class="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar text-sm">
+      <!-- Window Scrollable Content (Whole Profile) -->
+      <div class="flex-1 overflow-y-auto p-5 sm:p-7 space-y-5 custom-scrollbar text-sm">
         
-        <!-- TeacherOn Verification Status Banner (Read-Only) -->
-        <div id="modal-status-container" class="p-3.5 rounded-xl border flex items-center justify-between gap-3 shadow-2xs bg-slate-50 border-slate-200">
-          <div class="flex items-center gap-3">
-            <span id="modal-status-icon" class="w-8 h-8 rounded-lg flex items-center justify-center text-sm shrink-0 bg-emerald-100 text-emerald-700">
-              <i class="fa-solid fa-circle-check"></i>
-            </span>
-            <div>
-              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-mono block">TeacherOn Verification Status</span>
-              <span id="modal-status-text" class="text-xs font-bold text-slate-800">Verified Active on TeacherOn</span>
-            </div>
-          </div>
-          <span id="modal-status-pill" class="px-2.5 py-1 rounded-lg text-[10px] font-bold font-mono uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300">Active</span>
-        </div>
-
         <!-- Headline / Hookline -->
         <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100 text-slate-800">
           <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider block mb-1">Professional Headline</span>
@@ -2017,7 +2064,7 @@
           <p id="modal-speaks" class="text-xs text-slate-500 mt-1">Languages: —</p>
         </div>
 
-        <!-- Subjects List (Bridge Links) -->
+        <!-- Subjects List -->
         <div>
           <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2">Subject Offerings</span>
           <div id="modal-subjects-container" class="space-y-2 max-h-60 overflow-y-auto custom-scrollbar"></div>
@@ -2036,6 +2083,15 @@
         </div>
 
       </div>
+
+      <!-- Modal Footer with Close Button -->
+      <div class="p-4 sm:px-6 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-3 shrink-0">
+        <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs">
+          <i class="fa-solid fa-xmark text-xs"></i>
+          <span>Close Profile</span>
+        </button>
+      </div>
+
     </div>
   </div>
 
@@ -2073,16 +2129,16 @@
               <input type="radio" name="docx-scope" value="all" checked class="mt-0.5 text-blue-600 focus:ring-blue-500">
               <div>
                 <span class="font-bold text-slate-900 block text-xs flex items-center gap-1.5">
-                  <i class="fa-solid fa-database text-blue-600"></i> All 107,723 Educators
+                  <i class="fa-solid fa-database text-blue-600"></i> All 107,673 Educators
                 </span>
-                <span class="text-[11px] text-slate-500 block mt-0.5">Complete master dataset across 36 States & UTs (76.7k verified active + 31.0k inactive/removed)</span>
+                <span class="text-[11px] text-slate-500 block mt-0.5">Complete master dataset across 36 States & UTs (76,683 verified active + 30,990 archived/inactive)</span>
               </div>
             </label>
             <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 bg-white cursor-pointer transition-all hover:border-emerald-300" id="label-docx-scope-active">
               <input type="radio" name="docx-scope" value="active" class="mt-0.5 text-emerald-600 focus:ring-emerald-500">
               <div>
                 <span class="font-bold text-slate-900 block text-xs flex items-center gap-1.5">
-                  <i class="fa-solid fa-circle-check text-emerald-600"></i> Verified Active Only (76,706)
+                  <i class="fa-solid fa-circle-check text-emerald-600"></i> Verified Active Only (76,683)
                 </span>
                 <span class="text-[11px] text-slate-500 block mt-0.5">Strictly verified live TeacherOn educator profiles with active URLs</span>
               </div>
@@ -2178,7 +2234,7 @@
             <input type="checkbox" name="docx-section" value="audit" checked class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
             <div>
               <span class="font-bold text-slate-900 block">Data Cleaning & Verification Methodology</span>
-              <span class="text-[11px] text-slate-500">Audited notes verifying 107,723 records with zero fake placeholders</span>
+              <span class="text-[11px] text-slate-500">Audited notes verifying 107,673 records with zero fake placeholders</span>
             </div>
           </label>
         </div>
@@ -2202,7 +2258,7 @@
 
   <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500 mt-auto">
     <div class="w-full px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2">
-      <p>BMP Tutors &bull; Empirical Market Intelligence & Geospatial Analytics &bull; September 2026</p>
+      <p>BMP Tutors &bull; Tutoring market data and maps across India &bull; September 2026</p>
       <div class="flex items-center space-x-4 flex-wrap gap-y-1">
         <a href="/report" target="_blank" class="hover:text-indigo-600 transition-colors">Academic Report</a>
         <a href="/api/download/normalized-tutors-excel" class="hover:text-blue-600 transition-colors font-medium">Tutors Table (107k)</a>
@@ -2219,7 +2275,7 @@
 
     let currentPage = 1;
     let totalPages = 1;
-    let pageSize = 25;
+    let pageSize = 12;
     let chartsInitialized = false;
     let feePredictorInitialized = false;
     let currentSelectedTier = 'Tier 1 (Metro)';
@@ -2231,6 +2287,231 @@
     let currentSortBy = 'default';
     let currentSortOrder = 'asc';
     let searchDebounceTimer = null;
+    let vennInitialized = false;
+
+    // View Mode Toggle (Card view vs Column/Table view with localStorage persistence)
+    let currentViewMode = 'card';
+    try {
+      currentViewMode = localStorage.getItem('bmptutors_view_mode') || 'card';
+    } catch(e) {}
+    let cachedTutorsItems = [];
+
+    function setViewMode(mode) {
+      currentViewMode = mode;
+      try {
+        localStorage.setItem('bmptutors_view_mode', mode);
+      } catch(e) {}
+      updateViewModeUI();
+      if (cachedTutorsItems && cachedTutorsItems.length) {
+        renderTutors(cachedTutorsItems);
+      }
+    }
+
+    function updateViewModeUI() {
+      const btnCard = document.getElementById('view-mode-card');
+      const btnTable = document.getElementById('view-mode-table');
+      const cardsList = document.getElementById('tutors-cards-list');
+      const tableWrap = document.getElementById('tutors-table-wrapper');
+
+      if (currentViewMode === 'table') {
+        if (btnTable) btnTable.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-indigo-600 shadow-2xs cursor-pointer";
+        if (btnCard) btnCard.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-600 hover:text-slate-900 cursor-pointer";
+        if (cardsList) cardsList.classList.add('hidden');
+        if (tableWrap) tableWrap.classList.remove('hidden');
+      } else {
+        if (btnCard) btnCard.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-indigo-600 shadow-2xs cursor-pointer";
+        if (btnTable) btnTable.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-600 hover:text-slate-900 cursor-pointer";
+        if (cardsList) cardsList.classList.remove('hidden');
+        if (tableWrap) tableWrap.classList.add('hidden');
+      }
+    }
+
+    // Run initialization on load
+    function initApp() {
+      updateViewModeUI();
+      loadTutors();
+      loadStats();
+      loadFilterOptions();
+      if (typeof initVennLab === 'function') initVennLab();
+    }
+
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
+
+    // Load Overall Platform Statistics
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/stats');
+        const data = await res.json();
+        const statTutors = document.getElementById('stat-tutors');
+        if (statTutors && data.total_tutors != null) statTutors.textContent = data.total_tutors.toLocaleString();
+        const statBridge = document.getElementById('stat-bridge');
+        if (statBridge && data.total_bridge != null) statBridge.textContent = data.total_bridge.toLocaleString();
+        const statFee = document.getElementById('stat-fee');
+        if (statFee && data.avg_fee != null) statFee.textContent = '₹' + data.avg_fee + ' / hr';
+        const statActive = document.getElementById('stat-active');
+        if (statActive && data.active_tutors != null) statActive.textContent = data.active_tutors.toLocaleString();
+      } catch (err) {
+        console.error('Error loading stats:', err);
+      }
+    }
+
+    // Switch Tabs Navigation
+    function jumpToVennStudio() {
+      switchTab('analytics');
+      setTimeout(() => {
+        const el = document.getElementById('section-venn-studio');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 150);
+    }
+
+    function switchTab(tabId) {
+      const tabs = ['explorer', 'analytics', 'fee-ai', 'bio-ai', 'about'];
+      
+      tabs.forEach(t => {
+        const el = document.getElementById(`tab-${t}`);
+        if (el) el.classList.add('hidden');
+        
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (btn) {
+          btn.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-2";
+        }
+        const mBtn = document.getElementById(`tab-mobile-btn-${t}`);
+        if (mBtn) {
+          mBtn.className = "flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300 hover:text-white transition-all";
+        }
+      });
+
+      const activeClass = "px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-indigo-600 text-white shadow-xs flex items-center gap-2";
+      const activeMobileClass = "flex-1 py-1.5 rounded-lg text-xs font-semibold text-center bg-indigo-600 text-white shadow-xs";
+
+      const activeEl = document.getElementById(`tab-${tabId}`);
+      if (activeEl) activeEl.classList.remove('hidden');
+
+      const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+      if (activeBtn) activeBtn.className = activeClass;
+
+      const activeMobileBtn = document.getElementById(`tab-mobile-btn-${tabId}`);
+      if (activeMobileBtn) activeMobileBtn.className = activeMobileClass;
+
+      // Toggle macro KPI metrics: show for Directory & Analytics, keep AI workspaces clean & focused
+      const kpiSection = document.getElementById('global-kpi-section');
+      if (kpiSection) {
+        if (tabId === 'explorer' || tabId === 'analytics') {
+          kpiSection.classList.remove('hidden');
+        } else {
+          kpiSection.classList.add('hidden');
+        }
+      }
+
+      if (tabId === 'analytics') {
+        if (!chartsInitialized) {
+          loadCharts();
+          chartsInitialized = true;
+        }
+        setTimeout(() => {
+          if (typeof initOrUpdateMaps === 'function') initOrUpdateMaps();
+        }, 150);
+        if (!vennInitialized) {
+          if (typeof initVennLab === 'function') initVennLab();
+          vennInitialized = true;
+        }
+      } else if (tabId === 'fee-ai') {
+        if (!feePredictorInitialized) {
+          if (typeof initFeePredictor === 'function') initFeePredictor();
+          feePredictorInitialized = true;
+        }
+      } else if (tabId === 'bio-ai') {
+        if (!bioStudioInitialized) {
+          if (typeof initBioStudio === 'function') initBioStudio();
+          bioStudioInitialized = true;
+        }
+      }
+    }
+
+    // Load Filter Options
+    async function loadFilterOptions() {
+      try {
+        const res = await fetch('/api/filters');
+        const data = await res.json();
+
+        if (data.canonical_subjects && document.getElementById('filter-canonical-subject')) {
+          populateSelect('filter-canonical-subject', data.canonical_subjects);
+        }
+        populateSelect('filter-subject-category', data.subject_categories);
+        populateSelect('filter-level', data.levels);
+        populateSelect('filter-exam', data.exams);
+        populateSelect('filter-region', data.regions);
+        populateSelect('filter-state', data.states);
+        populateSelect('filter-qualification', data.qualifications);
+        populateSelect('filter-seniority', data.seniority_tiers);
+        populateSelect('filter-role', data.experience_roles);
+        if (data.occupations && document.getElementById('filter-occupation')) {
+          populateSelect('filter-occupation', data.occupations);
+        }
+      } catch (err) {
+        console.error('Error loading filters:', err);
+      }
+    }
+
+    function toggleEmptyColsPanel() {
+      const panel = document.getElementById('empty-columns-checklist');
+      const chevron = document.getElementById('empty-cols-chevron');
+      if (!panel) return;
+      panel.classList.toggle('hidden');
+      if (chevron) {
+        chevron.classList.toggle('rotate-180');
+      }
+    }
+
+    function updateEmptyColsBadge() {
+      const checkedBoxes = document.querySelectorAll('input[name="empty-col"]:checked');
+      const badge = document.getElementById('empty-cols-badge');
+      const master = document.getElementById('filter-exclude-empty-master');
+      const totalBoxes = document.querySelectorAll('input[name="empty-col"]');
+      if (badge) {
+        badge.textContent = `${checkedBoxes.length} col${checkedBoxes.length === 1 ? '' : 's'}`;
+        if (checkedBoxes.length > 0) {
+          badge.classList.remove('bg-indigo-100', 'text-indigo-700');
+          badge.classList.add('bg-indigo-600', 'text-white');
+        } else {
+          badge.classList.remove('bg-indigo-600', 'text-white');
+          badge.classList.add('bg-indigo-100', 'text-indigo-700');
+        }
+      }
+      if (master) {
+        master.checked = checkedBoxes.length === totalBoxes.length && totalBoxes.length > 0;
+        master.indeterminate = checkedBoxes.length > 0 && checkedBoxes.length < totalBoxes.length;
+      }
+    }
+
+    function toggleAllEmptyFilters(checked) {
+      document.querySelectorAll('input[name="empty-col"]').forEach(cb => {
+        cb.checked = checked;
+      });
+      updateEmptyColsBadge();
+      applyFilters();
+    }
+
+    function onEmptyColChange() {
+      updateEmptyColsBadge();
+      applyFilters();
+    }
+
+    function populateSelect(elemId, items) {
+      const select = document.getElementById(elemId);
+      if (!select || !items) return;
+      items.forEach(item => {
+        if (!item) return;
+        const opt = document.createElement('option');
+        opt.value = item;
+        opt.textContent = item;
+        select.appendChild(opt);
+      });
+    }
 
     // Toggle Export Menu
     function toggleExportMenu(e) {
@@ -2370,14 +2651,44 @@
       const searchVal = document.getElementById('filter-search')?.value.trim();
       if (searchVal) chips.push({ label: `Search: "${searchVal}"`, clear: () => clearSearch() });
 
+      const canSubjVal = document.getElementById('filter-canonical-subject')?.value;
+      if (canSubjVal) chips.push({ label: `Subject: ${canSubjVal}`, clear: () => { document.getElementById('filter-canonical-subject').value = ''; applyFilters(); } });
+
       const subjVal = document.getElementById('filter-subject-category')?.value;
-      if (subjVal) chips.push({ label: `Subject: ${subjVal}`, clear: () => { document.getElementById('filter-subject-category').value = ''; applyFilters(); } });
+      if (subjVal) chips.push({ label: `Category: ${subjVal}`, clear: () => { document.getElementById('filter-subject-category').value = ''; applyFilters(); } });
 
       const stateVal = document.getElementById('filter-state')?.value;
       if (stateVal) chips.push({ label: `State: ${stateVal}`, clear: () => { document.getElementById('filter-state').value = ''; applyFilters(); } });
 
       const qualVal = document.getElementById('filter-qualification')?.value;
       if (qualVal) chips.push({ label: `Degree: ${qualVal}`, clear: () => { document.getElementById('filter-qualification').value = ''; applyFilters(); } });
+
+      const statusVal = document.getElementById('filter-status')?.value;
+      if (statusVal) chips.push({ label: `Status: ${statusVal === 'active' ? 'Active' : 'Inactive'}`, clear: () => { document.getElementById('filter-status').value = ''; applyFilters(); } });
+
+      const emptyColLabels = {
+        'name': 'Has Name',
+        'fee': 'Has Stated Fee',
+        'experience': 'Has Exp',
+        'languages': 'Has Languages',
+        'state': 'Has State',
+        'city': 'Has City',
+        'qualification': 'Has Degree',
+        'description': 'Has Bio',
+        'subjects': 'Has Offerings'
+      };
+      document.querySelectorAll('input[name="empty-col"]:checked').forEach(cb => {
+        const colVal = cb.value;
+        const colLabel = emptyColLabels[colVal] || `Clean: ${colVal}`;
+        chips.push({
+          label: `✓ ${colLabel}`,
+          clear: () => {
+            cb.checked = false;
+            updateEmptyColsBadge();
+            applyFilters();
+          }
+        });
+      });
 
       // Secondary filters
       const occVal = document.getElementById('filter-occupation')?.value;
@@ -2387,10 +2698,10 @@
       if (levelVal) { chips.push({ label: `Level: ${levelVal}`, clear: () => { document.getElementById('filter-level').value = ''; applyFilters(); } }); moreCount++; }
 
       const onlineVal = document.getElementById('filter-online')?.value;
-      if (onlineVal !== '') { chips.push({ label: `Mode: ${onlineVal === '1' ? 'Online' : 'Offline'}`, clear: () => { document.getElementById('filter-online').value = ''; applyFilters(); } }); moreCount++; }
+      if (onlineVal !== '') { chips.push({ label: `Mode: ${onlineVal === '1' ? 'Online' : 'In-person'}`, clear: () => { document.getElementById('filter-online').value = ''; applyFilters(); } }); moreCount++; }
 
       const seniorityVal = document.getElementById('filter-seniority')?.value;
-      if (seniorityVal) { chips.push({ label: `Tier: ${seniorityVal}`, clear: () => { document.getElementById('filter-seniority').value = ''; applyFilters(); } }); moreCount++; }
+      if (seniorityVal) { chips.push({ label: `Seniority: ${seniorityVal}`, clear: () => { document.getElementById('filter-seniority').value = ''; applyFilters(); } }); moreCount++; }
 
       const roleVal = document.getElementById('filter-role')?.value;
       if (roleVal) { chips.push({ label: `Role: ${roleVal}`, clear: () => { document.getElementById('filter-role').value = ''; applyFilters(); } }); moreCount++; }
@@ -2429,7 +2740,7 @@
       if (chips.length > 0) {
         bar.classList.remove('hidden');
         bar.innerHTML = `
-          <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mr-1">Active:</span>
+          <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mr-1">Active filters:</span>
           ${chips.map((c, i) => `
             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-white text-indigo-700 border border-indigo-200/80 shadow-2xs">
               <span>${escapeHtml(c.label)}</span>
@@ -2456,250 +2767,437 @@
       }
     };
 
-    // Initialize application
-    
-    // Occupations Chart (Figure 6)
-    let occupationsChartInstance = null;
-    let currentOccMode = 'count';
+    // Saved Bookmarks
+    let savedFavorites = new Set();
+    try {
+      const stored = localStorage.getItem('bmptutors_favorites');
+      if (stored) savedFavorites = new Set(JSON.parse(stored));
+    } catch (e) {}
 
-    function switchOccupationsChart(mode) {
-      currentOccMode = mode;
-      document.getElementById('btn-occ-count').className = mode === 'count'
-        ? "px-3 py-1 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-2xs"
-        : "px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900";
-      document.getElementById('btn-occ-fee').className = mode === 'fee'
-        ? "px-3 py-1 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-2xs"
-        : "px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900";
-      renderOccupationsChart();
-    }
-
-    function renderOccupationsChart() {
-      const canvas = document.getElementById('chart-occupations');
-      if (!canvas || !window.dashboardCharts || !window.dashboardCharts.occupations) return;
-      
-      const occData = window.dashboardCharts.occupations || [];
-      const totalOccN = occData.reduce((acc, curr) => acc + (curr.count || 0), 0);
-      const occTitleElem = document.getElementById('occ-sample-title');
-      if (occTitleElem) {
-        occTitleElem.textContent = `Figure 4: Non-Teaching & Professional Side Occupations Landscape (N = ${totalOccN.toLocaleString()})`;
+    function toggleTutorBookmark(btn, tutorId) {
+      if (!tutorId) return;
+      if (savedFavorites.has(tutorId)) {
+        savedFavorites.delete(tutorId);
+        if (btn) btn.innerHTML = '<i class="fa-regular fa-bookmark text-slate-400 text-sm"></i>';
+      } else {
+        savedFavorites.add(tutorId);
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-bookmark text-indigo-600 text-sm"></i>';
       }
-
-      const sorted = [...occData].sort((a,b) => currentOccMode === 'count' ? a.count - b.count : a.avg_fee - b.avg_fee);
-      const labels = sorted.map(d => d.occupation);
-      const values = sorted.map(d => currentOccMode === 'count' ? d.count : d.avg_fee);
-
-      if (occupationsChartInstance) occupationsChartInstance.destroy();
-
-      occupationsChartInstance = new Chart(canvas, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: currentOccMode === 'count' ? 'Tutor Headcount' : 'Average Hourly Fee (₹/hr)',
-            data: values,
-            backgroundColor: currentOccMode === 'count' ? '#4f46e5' : '#10b981',
-            borderRadius: 6,
-            borderSkipped: false
-          }]
-        },
-        options: {
-          indexAxis: 'y',
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              backgroundColor: '#0f172a',
-              titleFont: { size: 12, weight: 'bold' },
-              padding: 10,
-              cornerRadius: 8,
-              callbacks: {
-                label: function(ctx) {
-                  return currentOccMode === 'count' 
-                    ? ` ${ctx.raw.toLocaleString()} Registered Tutors`
-                    : ` ₹${ctx.raw.toLocaleString()} / hour`;
-                }
-              }
-            }
-          },
-          scales: {
-            x: {
-              grid: { color: '#f1f5f9' },
-              ticks: {
-                callback: function(v) {
-                  return currentOccMode === 'count' ? v.toLocaleString() : '₹' + v.toLocaleString();
-                },
-                font: { family: 'JetBrains Mono', size: 10 }
-              }
-            },
-            y: {
-              grid: { display: false },
-              ticks: { font: { size: 10.5, weight: '500' } }
-            }
-          }
-        }
-      });
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      // Fire tutors fetch immediately for instantaneous table population
-      loadTutors();
-      // Load stats and filter options concurrently in the background
-      loadStats();
-      loadFilterOptions();
-      initVennLab();
-    });
-
-    // Load Overall Platform Statistics
-    async function loadStats() {
       try {
-        const res = await fetch('/api/stats');
-        const data = await res.json();
-        document.getElementById('stat-tutors').textContent = data.total_tutors.toLocaleString();
-        document.getElementById('stat-bridge').textContent = data.total_bridge.toLocaleString();
-        document.getElementById('stat-fee').textContent = '₹' + data.avg_fee + ' / hr';
-        document.getElementById('stat-active').textContent = data.active_tutors ? data.active_tutors.toLocaleString() : '76,706';
-        const sub = document.getElementById('stat-active-sub');
-        if (sub && data.removed_tutors != null) {
-          const actPct = data.total_tutors ? ((data.active_tutors / data.total_tutors) * 100).toFixed(1) : '71.2';
-          sub.textContent = `${data.active_tutors.toLocaleString()} Active (${actPct}%) • ${data.removed_tutors.toLocaleString()} Removed / Inactive`;
-        }
-      } catch (err) {
-        console.error('Error loading stats:', err);
+        localStorage.setItem('bmptutors_favorites', JSON.stringify(Array.from(savedFavorites)));
+      } catch (e) {}
+    }
+
+    // Dynamic Pagination UI generator
+    function updatePaginationPagesUI(curPage, maxPages) {
+      const container = document.getElementById('pagination-pages');
+      if (!container) return;
+
+      if (!maxPages || maxPages <= 1) {
+        container.innerHTML = `<span class="px-3 py-1.5 text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/80 rounded-lg font-mono">1</span>`;
+        return;
       }
-    }
 
-    // Switch Tabs
-        let vennInitialized = false;
-    function jumpToVennStudio() {
-      switchTab('analytics');
-      setTimeout(() => {
-        const el = document.getElementById('section-venn-studio');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 150);
-    }
-
-    function switchTab(tabId) {
-      const tabs = ['explorer', 'analytics', 'fee-ai', 'bio-ai', 'about'];
-      
-      tabs.forEach(t => {
-        const el = document.getElementById(`tab-${t}`);
-        if (el) el.classList.add('hidden');
-        
-        const btn = document.getElementById(`tab-btn-${t}`);
-        if (btn) {
-          btn.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-2";
-        }
-        const mBtn = document.getElementById(`tab-mobile-btn-${t}`);
-        if (mBtn) {
-          mBtn.className = "flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-slate-300 hover:text-white transition-all";
-        }
-      });
-
-      const activeClass = "px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-indigo-600 text-white shadow-xs flex items-center gap-2";
-      const activeMobileClass = "flex-1 py-1.5 rounded-lg text-xs font-semibold text-center bg-indigo-600 text-white shadow-xs";
-
-      const activeEl = document.getElementById(`tab-${tabId}`);
-      if (activeEl) activeEl.classList.remove('hidden');
-
-      const activeBtn = document.getElementById(`tab-btn-${tabId}`);
-      if (activeBtn) activeBtn.className = activeClass;
-
-      const activeMobileBtn = document.getElementById(`tab-mobile-btn-${tabId}`);
-      if (activeMobileBtn) activeMobileBtn.className = activeMobileClass;
-
-      // Intelligently toggle macro KPI metrics: show for Directory & Analytics, keep AI workspaces clean & focused
-      const kpiSection = document.getElementById('global-kpi-section');
-      if (kpiSection) {
-        if (tabId === 'explorer' || tabId === 'analytics') {
-          kpiSection.classList.remove('hidden');
+      let pages = [];
+      if (maxPages <= 7) {
+        for (let i = 1; i <= maxPages; i++) pages.push(i);
+      } else {
+        if (curPage <= 4) {
+          pages = [1, 2, 3, 4, 5, '...', maxPages];
+        } else if (curPage >= maxPages - 3) {
+          pages = [1, '...', maxPages - 4, maxPages - 3, maxPages - 2, maxPages - 1, maxPages];
         } else {
-          kpiSection.classList.add('hidden');
+          pages = [1, '...', curPage - 1, curPage, curPage + 1, '...', maxPages];
         }
       }
 
-      if (tabId === 'analytics') {
-        if (!chartsInitialized) {
-          loadCharts();
-          chartsInitialized = true;
+      container.innerHTML = pages.map(p => {
+        if (p === '...') {
+          return `<span class="px-2 py-1 text-xs text-slate-400 font-mono select-none">…</span>`;
         }
-        setTimeout(() => {
-          initOrUpdateMaps();
-        }, 150);
-        if (!vennInitialized) {
-          initVennLab();
-          vennInitialized = true;
+        if (p === curPage) {
+          return `<button type="button" class="px-3 py-1.5 text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-300 rounded-lg font-mono shadow-2xs">${p}</button>`;
         }
+        return `<button type="button" onclick="goToPage(${p})" class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-xs hover:bg-slate-50 text-slate-700 font-mono transition-colors cursor-pointer">${p}</button>`;
+      }).join('');
+    }
 
-      } else if (tabId === 'fee-ai') {
-        if (!feePredictorInitialized) {
-          initFeePredictor();
-          feePredictorInitialized = true;
-        }
-      } else if (tabId === 'bio-ai') {
-        if (!bioStudioInitialized) {
-          initBioStudio();
-          bioStudioInitialized = true;
-        }
+    // Render Coordinator
+    function renderTutors(items) {
+      updateViewModeUI();
+      if (currentViewMode === "table") {
+        renderTableView(items);
+      } else {
+        renderCardView(items);
       }
     }
 
-    // Load Filter Options
-    async function loadFilterOptions() {
-      try {
-        const res = await fetch('/api/filters');
-        const data = await res.json();
+    function renderTableView(items) {
+      const tbody = document.getElementById("tutors-table-body");
+      if (!tbody) return;
 
-        populateSelect('filter-subject-category', data.subject_categories);
-        populateSelect('filter-level', data.levels);
-        populateSelect('filter-exam', data.exams);
-        populateSelect('filter-region', data.regions);
-        populateSelect('filter-state', data.states);
-        populateSelect('filter-qualification', data.qualifications);
-        populateSelect('filter-seniority', data.seniority_tiers);
-        populateSelect('filter-role', data.experience_roles);
-        if (data.occupations && document.getElementById('filter-occupation')) {
-          populateSelect('filter-occupation', data.occupations);
-        }
-      } catch (err) {
-        console.error('Error loading filters:', err);
+      if (!items || !items.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="py-12 text-center text-slate-400">
+              <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3 text-slate-400 text-lg">
+                <i class="fa-solid fa-user-slash"></i>
+              </div>
+              <h3 class="text-sm font-bold text-slate-800">No verified educators match your filters</h3>
+              <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">Try resetting or broadening your search criteria.</p>
+              <button type="button" onclick="resetFilters()" class="mt-4 px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 transition-colors cursor-pointer">
+                <i class="fa-solid fa-rotate-left text-[10px]"></i> Reset All Filters
+              </button>
+            </td>
+          </tr>`;
+        return;
       }
-    }
 
-    function populateSelect(elemId, items) {
-      const select = document.getElementById(elemId);
-      items.forEach(item => {
-        if (!item) return;
-        const opt = document.createElement('option');
-        opt.value = item;
-        opt.textContent = item;
-        select.appendChild(opt);
+      let html = "";
+      items.forEach(t => {
+        const rawName = (t.teacher_name || "Educator").trim();
+        const cleanName = rawName.replace(/\s*\([Tt]\d+\)$/, "").trim() || "Educator";
+
+        // Fee Display
+        let feeDisplay = "Negotiable";
+        let feeUnit = "";
+        if (t.hourly_fee_avg) {
+          feeDisplay = `₹${Math.round(t.hourly_fee_avg).toLocaleString("en-IN")}`;
+          feeUnit = "/hr";
+        } else if (t.monthly_fee_avg) {
+          feeDisplay = `₹${Math.round(t.monthly_fee_avg).toLocaleString("en-IN")}`;
+          feeUnit = "/mo";
+        } else if (t.fee_raw) {
+          feeDisplay = t.fee_raw.split("(")[0].replace(/^₹/, "").trim();
+          if (!feeDisplay.startsWith("₹") && /^\d/.test(feeDisplay)) feeDisplay = "₹" + feeDisplay;
+        }
+
+        // Subjects Taught
+        let subjHtml = '<span class="text-slate-500">General Curriculum</span>';
+        if (t.subjects && t.subjects.length > 0) {
+          const firstSubj = t.subjects[0].canonical_subject;
+          if (t.subjects.length > 1) {
+            subjHtml = `<span class="font-semibold text-slate-800">${escapeHtml(firstSubj)}</span> <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600 border border-indigo-200/60 font-semibold">+${t.subjects.length - 1}</span>`;
+          } else {
+            subjHtml = `<span class="font-semibold text-slate-800">${escapeHtml(firstSubj)}</span>`;
+          }
+        } else if (t.teacher_hookline && t.teacher_hookline.length < 35) {
+          subjHtml = `<span class="font-semibold text-slate-800">${escapeHtml(t.teacher_hookline)}</span>`;
+        }
+
+        const expText = t.total_teaching_exp_years != null ? `${t.total_teaching_exp_years} yrs` : "Not stated";
+        const qualText = t.highest_qualification || "";
+        const locText = t.city || t.state || "India";
+        const seniority = t.seniority_tier ? t.seniority_tier.split("(")[0].trim() : (t.occupation || "Educator");
+
+        html += `
+          <tr class="hover:bg-indigo-50/40 transition-colors border-b border-slate-100 group cursor-pointer" onclick="viewTutorDetails('${t.tutor_id}')">
+            <!-- Educator -->
+            <td class="py-3 px-4">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <button type="button" onclick="event.stopPropagation(); viewTutorDetails('${t.tutor_id}')" class="font-bold text-slate-900 group-hover:text-indigo-600 transition-colors text-left cursor-pointer">
+                  ${escapeHtml(cleanName)}
+                </button>
+                ${t.is_active == 1 
+                  ? `<span class="inline-flex items-center justify-center w-3.5 h-3.5 bg-emerald-600 text-white rounded text-[8px] shrink-0" title="Verified Educator"><i class="fa-solid fa-check"></i></span>` 
+                  : ""}
+                <span class="text-[10px] font-mono font-semibold px-1 py-0.2 rounded bg-slate-100 text-slate-500 border border-slate-200 shrink-0">${t.tutor_id}</span>
+              </div>
+              <div class="text-[11px] text-slate-400 mt-0.5 truncate max-w-[200px]" title="${escapeHtml(seniority)}">${escapeHtml(seniority)}</div>
+            </td>
+
+            <!-- Subjects Taught -->
+            <td class="py-3 px-4">
+              <div class="text-xs">${subjHtml}</div>
+            </td>
+
+            <!-- Fee Rate -->
+            <td class="py-3 px-4 text-right">
+              <div class="font-bold font-mono text-slate-900 text-xs">${feeDisplay} <span class="text-[10px] text-slate-400 font-normal font-sans">${feeUnit}</span></div>
+            </td>
+
+            <!-- Experience -->
+            <td class="py-3 px-4">
+              <div class="font-mono font-semibold text-slate-800 text-xs">${expText}</div>
+              ${qualText ? `<div class="text-[10px] text-slate-400 truncate max-w-[130px]" title="${escapeHtml(qualText)}">${escapeHtml(qualText)}</div>` : ""}
+            </td>
+
+            <!-- Location -->
+            <td class="py-3 px-4">
+              <div class="text-slate-700 text-xs flex items-center gap-1">
+                <i class="fa-solid fa-location-dot text-slate-400 text-[9px]"></i>
+                <span>${escapeHtml(locText)}</span>
+              </div>
+              ${t.state && t.city ? `<div class="text-[10px] text-slate-400 pl-3">${escapeHtml(t.state)}</div>` : ""}
+            </td>
+
+            <!-- Mode -->
+            <td class="py-3 px-4">
+              ${t.teaches_online == 1 
+                ? '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Online</span>' 
+                : '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200">In-person</span>'}
+            </td>
+
+            <!-- Action -->
+            <td class="py-3 px-4 text-center">
+              <button type="button" onclick="event.stopPropagation(); viewTutorDetails('${t.tutor_id}')" class="px-3 py-1 bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer shadow-2xs">
+                Profile
+              </button>
+            </td>
+          </tr>`;
       });
+
+      tbody.innerHTML = html;
     }
 
-    // Load Tutors Data
-    async function loadTutors() {
-      const tbody = document.getElementById('tutors-table-body');
-      tbody.innerHTML = Array(8).fill(0).map(() => `
-        <tr class="animate-pulse">
-          <td class="py-4 px-4"><div class="h-4 w-12 bg-slate-200 rounded"></div></td>
-          <td class="py-4 px-4">
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-full bg-slate-200 shrink-0"></div>
-              <div class="space-y-1.5 flex-1">
-                <div class="h-3.5 w-32 bg-slate-200 rounded"></div>
-                <div class="h-2.5 w-48 bg-slate-100 rounded"></div>
+    function renderCardView(items) {
+      const container = document.getElementById("tutors-cards-list");
+      if (!container) return;
+
+      if (!items || !items.length) {
+        container.innerHTML = `
+          <div class="bg-white rounded-2xl border border-slate-200/90 p-12 text-center text-slate-400">
+            <div class="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3.5 text-slate-400 text-xl">
+              <i class="fa-solid fa-user-slash"></i>
+            </div>
+            <h3 class="text-sm font-bold text-slate-800">No verified educators match your filters</h3>
+            <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">Try resetting or broadening your search criteria.</p>
+            <button type="button" onclick="resetFilters()" class="mt-4 px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 transition-colors cursor-pointer">
+              <i class="fa-solid fa-rotate-left text-[10px]"></i> Reset All Filters
+            </button>
+          </div>`;
+        return;
+      }
+
+      let html = "";
+      items.forEach(t => {
+        const rawName = (t.teacher_name || "Educator").trim();
+        const cleanName = rawName.replace(/\s*\([Tt]\d+\)$/, "").trim() || "Educator";
+
+        // Profession, Seniority & Occupation
+        const seniority = t.seniority_tier ? t.seniority_tier.split("(")[0].trim() : (t.experience_role || "Educator");
+        const occText = t.occupation || t.experience_role || "Professional Educator";
+        const qualText = t.highest_qualification || "";
+
+        // Subjects Taught
+        let subjectsText = "General Curriculum";
+        if (t.subjects && t.subjects.length > 0) {
+          const firstSubj = t.subjects[0].canonical_subject;
+          if (t.subjects.length > 1) {
+            subjectsText = `${escapeHtml(firstSubj)} <span class="text-slate-400 font-normal">+${t.subjects.length - 1} more</span>`;
+          } else {
+            subjectsText = escapeHtml(firstSubj);
+          }
+        } else if (t.teacher_hookline && t.teacher_hookline.length < 40) {
+          subjectsText = escapeHtml(t.teacher_hookline);
+        }
+
+        // Languages
+        let speaksHtml = "";
+        if (t.speaks_languages && t.speaks_languages.trim()) {
+          speaksHtml = `
+            <div class="flex items-center gap-2 text-xs text-slate-700 mt-1.5">
+              <i class="fa-solid fa-language text-slate-400 w-4 text-center text-xs shrink-0"></i>
+              <span>Speaks: <span class="font-semibold text-slate-900">${escapeHtml(t.speaks_languages)}</span></span>
+            </div>`;
+        }
+
+        // Credential Tag
+        let badgeTagHtml = "";
+        if (t.has_education_degree == 1) {
+          badgeTagHtml = `
+            <div class="mt-2.5">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-purple-50 text-purple-700 border border-purple-200">
+                <i class="fa-solid fa-certificate text-[10px]"></i>
+                <span>B.Ed / M.Ed Certified</span>
+              </span>
+            </div>`;
+        } else if (t.works_as && t.works_as !== "Individual teacher") {
+          badgeTagHtml = `
+            <div class="mt-2.5">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                <i class="fa-solid fa-building-columns text-[10px] text-slate-400"></i>
+                <span>${escapeHtml(t.works_as)}</span>
+              </span>
+            </div>`;
+        }
+
+        // Description
+        let fullDesc = (t.description || t.teacher_hookline || "Dedicated educator profile registered on TeacherOn.").replace(/[\r\n]+/g, " ").trim();
+        const isLong = fullDesc.length > 210;
+        const displayDesc = isLong ? fullDesc.slice(0, 205) + "..." : fullDesc;
+
+        // Pricing
+        let feeDisplay = "Negotiable";
+        let feeUnit = "contact for fee";
+        if (t.hourly_fee_avg) {
+          feeDisplay = `₹${Math.round(t.hourly_fee_avg).toLocaleString("en-IN")}`;
+          feeUnit = "per hour";
+        } else if (t.monthly_fee_avg) {
+          feeDisplay = `₹${Math.round(t.monthly_fee_avg).toLocaleString("en-IN")}`;
+          feeUnit = "per month";
+        } else if (t.fee_raw) {
+          feeDisplay = t.fee_raw.split("(")[0].replace(/^₹/, "").trim();
+          if (!feeDisplay.startsWith("₹") && /^\d/.test(feeDisplay)) feeDisplay = "₹" + feeDisplay;
+          feeUnit = "stated tuition fee";
+        }
+
+        html += `
+          <div class="bg-white rounded-2xl border border-slate-200/90 hover:border-indigo-300 hover:shadow-lg transition-all p-5 md:p-6 flex flex-col lg:flex-row gap-6 justify-between group">
+            
+            <!-- LEFT & CENTER CONTENT AREA -->
+            <div class="flex-1 min-w-0 flex flex-col justify-between">
+              <div>
+                <!-- Header -->
+                <div class="flex flex-wrap items-center gap-2">
+                  <button type="button" onclick="event.stopPropagation(); viewTutorDetails('${t.tutor_id}')" class="font-extrabold text-slate-900 text-lg md:text-xl tracking-tight hover:text-indigo-600 transition-colors inline-flex items-center gap-1.5 text-left cursor-pointer" title="Click to view whole profile on this page">
+                    <span>${escapeHtml(cleanName)}</span>
+                  </button>
+                  ${t.is_active == 1 
+                    ? `<span class="inline-flex items-center justify-center w-4 h-4 bg-emerald-600 text-white rounded text-[9px] shadow-2xs" title="Verified Educator">
+                        <i class="fa-solid fa-check"></i>
+                      </span>`
+                    : ""}
+                  <span class="text-base select-none" title="India">🇮🇳</span>
+                  <span class="text-[11px] font-mono font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 border border-slate-200 ml-1">
+                    ${t.tutor_id}
+                  </span>
+                </div>
+
+                <!-- Row 2: Profession & Occupation -->
+                <div class="flex flex-wrap items-center gap-2 text-xs text-slate-600 mt-1.5 font-medium">
+                  <span class="inline-flex items-center gap-1.5 text-slate-800 font-semibold">
+                    <i class="fa-regular fa-circle-check text-slate-800 text-[11px]"></i>
+                    <span>${escapeHtml(seniority)}</span>
+                  </span>
+                  <span class="text-slate-300">·</span>
+                  <span class="inline-flex items-center gap-1.5 text-slate-700">
+                    <i class="fa-solid fa-briefcase text-slate-400 text-[11px]"></i>
+                    <span>${escapeHtml(occText)}</span>
+                  </span>
+                  ${qualText ? `
+                    <span class="text-slate-300">·</span>
+                    <span class="inline-flex items-center gap-1 text-slate-500">
+                      <i class="fa-solid fa-graduation-cap text-slate-400 text-[11px]"></i>
+                      <span>${escapeHtml(qualText)}</span>
+                    </span>` : ""}
+                </div>
+
+                <!-- Row 3: Subjects Taught -->
+                <div class="flex items-center gap-2 text-xs text-slate-700 mt-2.5">
+                  <i class="fa-solid fa-book-open text-slate-400 w-4 text-center text-xs shrink-0"></i>
+                  <span class="font-medium text-slate-800">${subjectsText}</span>
+                  ${t.teaches_online == 1 ? '<span class="text-[10px] text-indigo-600 bg-indigo-50 border border-indigo-200/60 px-1.5 py-0.2 rounded font-medium ml-1">Online</span>' : ""}
+                </div>
+
+                <!-- Row 4: Speaks Languages -->
+                ${speaksHtml}
+
+                <!-- Row 5: Real Credential Tag -->
+                ${badgeTagHtml}
+
+                <!-- Row 6: Real Description & Full Profile link -->
+                <div class="text-xs text-slate-600 leading-relaxed mt-2.5">
+                  <span>${escapeHtml(displayDesc)}</span>
+                  <button type="button" onclick="event.stopPropagation(); viewTutorDetails('${t.tutor_id}')" class="font-bold underline text-slate-900 hover:text-indigo-600 ml-1 inline cursor-pointer">
+                    <span>Read whole bio</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Location & Experience footer -->
+              <div class="flex items-center gap-2 text-[11px] text-slate-400 mt-3 pt-2.5 border-t border-slate-100">
+                <i class="fa-solid fa-location-dot text-slate-400 text-[10px]"></i>
+                <span>${escapeHtml(t.city || t.state || "India")}${t.state && t.city ? `, ${escapeHtml(t.state)}` : ""}</span>
+                <span class="text-slate-300">·</span>
+                <span>${t.total_teaching_exp_years != null ? t.total_teaching_exp_years + " yrs total exp" : "Experience not stated"}</span>
+                ${t.teaches_online == 1 ? '<span class="text-slate-300">·</span><span class="text-emerald-600 font-medium">Online Available</span>' : ""}
               </div>
             </div>
-          </td>
-          <td class="py-4 px-4"><div class="h-5 w-24 bg-slate-200 rounded-full"></div></td>
-          <td class="py-4 px-4"><div class="h-3.5 w-24 bg-slate-200 rounded"></div></td>
-          <td class="py-4 px-4"><div class="h-3.5 w-20 bg-slate-200 rounded"></div></td>
-          <td class="py-4 px-4"><div class="h-5 w-40 bg-slate-200 rounded"></div></td>
-          <td class="py-4 px-4"><div class="h-5 w-16 bg-slate-200 rounded-full"></div></td>
-          <td class="py-4 px-4 text-center"><div class="h-7 w-16 bg-slate-200 rounded-lg mx-auto"></div></td>
-        </tr>
-      `).join('');
+
+            <!-- RIGHT PRICING & ACTION COLUMN -->
+            <div class="w-full lg:w-72 flex-shrink-0 flex flex-col justify-between border-t lg:border-t-0 lg:border-l border-slate-100 pt-4 lg:pt-0 lg:pl-6">
+              <div>
+                <!-- Top Row: Real Tuition Fee -->
+                <div>
+                  <div class="text-2xl font-black text-slate-900 font-mono tracking-tight">${feeDisplay.startsWith("₹") ? feeDisplay : "₹" + feeDisplay}</div>
+                  <div class="text-[11px] text-slate-500 font-medium">${feeUnit}</div>
+                </div>
+
+                <!-- Middle Row: Database Metrics (Exp, Delivery, Subjects) -->
+                <div class="grid grid-cols-3 gap-2 text-center py-2.5 my-3 border-y border-slate-100">
+                  <div>
+                    <div class="font-bold text-slate-900 text-xs sm:text-sm font-mono">${t.total_teaching_exp_years != null ? t.total_teaching_exp_years + " yrs" : "—"}</div>
+                    <div class="text-[10px] text-slate-400 font-medium">Teaching Exp</div>
+                  </div>
+                  <div>
+                    <div class="font-bold ${t.teaches_online == 1 ? "text-emerald-700" : "text-slate-700"} text-xs sm:text-sm">${t.teaches_online == 1 ? "Online" : "Offline"}</div>
+                    <div class="text-[10px] text-slate-400 font-medium">Class Mode</div>
+                  </div>
+                  <div>
+                    <div class="font-bold text-violet-700 text-xs sm:text-sm font-mono">${(t.subjects && t.subjects.length) ? t.subjects.length : "1+"}</div>
+                    <div class="text-[10px] text-slate-400 font-medium">Subjects</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bottom CTA -->
+              <div class="space-y-2 mt-2">
+                <button type="button" onclick="event.stopPropagation(); viewTutorDetails('${t.tutor_id}')" class="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-xs transition-all text-center flex items-center justify-center gap-2 group/btn cursor-pointer" title="Open whole profile on this page">
+                  <i class="fa-solid fa-id-card text-xs"></i>
+                  <span>Open Whole Profile</span>
+                </button>
+                ${t.profile_url ? `
+                  <a href="${t.profile_url}" target="_blank" rel="noopener noreferrer" class="w-full py-2 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-external-link text-[10px] text-slate-400"></i>
+                    <span>TeacherOn Profile</span>
+                  </a>` : `
+                  <button type="button" onclick="event.stopPropagation(); viewTutorDetails('${t.tutor_id}')" class="w-full py-2 px-4 bg-slate-50 hover:bg-slate-100 text-slate-600 font-semibold text-xs rounded-xl border border-slate-200 transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-circle-info text-[10px] text-slate-400"></i>
+                    <span>Quick Preview</span>
+                  </button>`}
+              </div>
+            </div>
+          </div>`;
+      });
+
+      container.innerHTML = html;
+    }
+
+    // Load and Render Tutor Profiles
+    async function loadTutors() {
+      updateViewModeUI();
+      const cardContainer = document.getElementById("tutors-cards-list");
+      const tableBody = document.getElementById("tutors-table-body");
+
+      if (cardContainer) {
+        cardContainer.innerHTML = Array(4).fill(0).map(() => `
+          <div class="bg-white rounded-2xl border border-slate-200 p-6 animate-pulse flex flex-col lg:flex-row gap-6 justify-between">
+            <div class="flex-1 space-y-3">
+              <div class="h-6 w-48 bg-slate-200 rounded"></div>
+              <div class="h-4 w-64 bg-slate-100 rounded"></div>
+              <div class="h-4 w-32 bg-slate-100 rounded"></div>
+            </div>
+            <div class="w-full lg:w-72 space-y-3">
+              <div class="h-8 w-24 bg-slate-200 rounded"></div>
+              <div class="h-10 w-full bg-slate-100 rounded"></div>
+            </div>
+          </div>
+        `).join("");
+      }
+      if (tableBody) {
+        tableBody.innerHTML = Array(6).fill(0).map(() => `
+          <tr class="animate-pulse border-b border-slate-100">
+            <td class="py-3 px-4"><div class="h-4 w-32 bg-slate-200 rounded"></div></td>
+            <td class="py-3 px-4"><div class="h-4 w-40 bg-slate-100 rounded"></div></td>
+            <td class="py-3 px-4 text-right"><div class="h-4 w-16 bg-slate-200 rounded ml-auto"></div></td>
+            <td class="py-3 px-4"><div class="h-4 w-20 bg-slate-100 rounded"></div></td>
+            <td class="py-3 px-4"><div class="h-4 w-24 bg-slate-100 rounded"></div></td>
+            <td class="py-3 px-4"><div class="h-4 w-12 bg-slate-100 rounded"></div></td>
+            <td class="py-3 px-4 text-center"><div class="h-6 w-16 bg-slate-200 rounded mx-auto"></div></td>
+          </tr>
+        `).join("");
+      }
 
       updateActiveFilterChips();
       updateSortHeaderUI();
@@ -2709,19 +3207,21 @@
         page_size: pageSize,
         sort_by: currentSortBy,
         sort_order: currentSortOrder,
-        search: document.getElementById('filter-search') ? document.getElementById('filter-search').value.trim() : '',
-        subject_category: document.getElementById('filter-subject-category') ? document.getElementById('filter-subject-category').value : '',
-        level: document.getElementById('filter-level') ? document.getElementById('filter-level').value : '',
-        exam: document.getElementById('filter-exam') ? document.getElementById('filter-exam').value : '',
-        region: document.getElementById('filter-region') ? document.getElementById('filter-region').value : '',
-        state: document.getElementById('filter-state') ? document.getElementById('filter-state').value : '',
-        qualification: document.getElementById('filter-qualification') ? document.getElementById('filter-qualification').value : '',
-        status: document.getElementById('filter-status') ? document.getElementById('filter-status').value : '',
-        seniority_tier: document.getElementById('filter-seniority') ? document.getElementById('filter-seniority').value : '',
-        experience_role: document.getElementById('filter-role') ? document.getElementById('filter-role').value : '',
-        occupation: document.getElementById('filter-occupation') ? document.getElementById('filter-occupation').value : '',
-        gender: document.getElementById('filter-gender') ? document.getElementById('filter-gender').value : '',
-        teaches_online: document.getElementById('filter-online') ? document.getElementById('filter-online').value : ''
+        search: document.getElementById("filter-search") ? document.getElementById("filter-search").value.trim() : "",
+        canonical_subject: document.getElementById("filter-canonical-subject") ? document.getElementById("filter-canonical-subject").value : "",
+        subject_category: document.getElementById("filter-subject-category") ? document.getElementById("filter-subject-category").value : "",
+        level: document.getElementById("filter-level") ? document.getElementById("filter-level").value : "",
+        exam: document.getElementById("filter-exam") ? document.getElementById("filter-exam").value : "",
+        region: document.getElementById("filter-region") ? document.getElementById("filter-region").value : "",
+        state: document.getElementById("filter-state") ? document.getElementById("filter-state").value : "",
+        qualification: document.getElementById("filter-qualification") ? document.getElementById("filter-qualification").value : "",
+        status: document.getElementById("filter-status") ? document.getElementById("filter-status").value : "",
+        seniority_tier: document.getElementById("filter-seniority") ? document.getElementById("filter-seniority").value : "",
+        experience_role: document.getElementById("filter-role") ? document.getElementById("filter-role").value : "",
+        occupation: document.getElementById("filter-occupation") ? document.getElementById("filter-occupation").value : "",
+        gender: document.getElementById("filter-gender") ? document.getElementById("filter-gender").value : "",
+        teaches_online: document.getElementById("filter-online") ? document.getElementById("filter-online").value : "",
+        exclude_empty: Array.from(document.querySelectorAll('input[name="empty-col"]:checked')).map(cb => cb.value).join(',')
       });
 
       try {
@@ -2729,196 +3229,40 @@
         const data = await res.json();
 
         totalPages = data.total_pages;
-        document.getElementById('results-count-badge').textContent = `${data.total_count.toLocaleString()} Matches`;
         
         const start = ((currentPage - 1) * pageSize) + 1;
         const end = Math.min(currentPage * pageSize, data.total_count);
-        document.getElementById('page-info').textContent = `Showing ${data.total_count ? start.toLocaleString() : 0} to ${end.toLocaleString()} of ${data.total_count.toLocaleString()} entries`;
-        document.getElementById('current-page-display').textContent = currentPage;
-
-        document.getElementById('btn-prev').disabled = currentPage <= 1;
-        document.getElementById('btn-first').disabled = currentPage <= 1;
-        document.getElementById('btn-next').disabled = currentPage >= totalPages;
-        document.getElementById('btn-last').disabled = currentPage >= totalPages;
-
-        if (!data.items || !data.items.length) {
-          tbody.innerHTML = `
-            <tr>
-              <td colspan="8" class="py-16 text-center text-slate-400">
-                <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3 text-slate-400">
-                  <i class="fa-solid fa-user-slash text-xl"></i>
-                </div>
-                <p class="text-sm font-semibold text-slate-700">No verified educators match your filters</p>
-                <p class="text-xs text-slate-400 mt-1">Try resetting or broadening your search criteria.</p>
-                <button onclick="resetFilters()" class="mt-4 px-3.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 transition-colors">
-                  <i class="fa-solid fa-rotate-left text-[10px]"></i> Reset All Filters
-                </button>
-              </td>
-            </tr>`;
-          return;
+        const pageInfo = document.getElementById("page-info");
+        if (pageInfo) {
+          pageInfo.textContent = `Showing ${data.total_count ? start.toLocaleString() : 0} to ${end.toLocaleString()} of ${data.total_count.toLocaleString()} entries`;
         }
+        const curDisplay = document.getElementById("current-page-display");
+        if (curDisplay) curDisplay.textContent = currentPage;
 
-        let html = '';
-        
-        data.items.forEach(t => {
-          let subjsBadges = '';
-          if (t.subjects && t.subjects.length) {
-            subjsBadges = t.subjects.slice(0, 3).map(s => {
-              let badgeColor = "bg-slate-100 text-slate-700 border-slate-200";
-              if (s.subject_category === 'Science') badgeColor = "bg-blue-50 text-blue-700 border-blue-200/70";
-              if (s.subject_category === 'Coding') badgeColor = "bg-purple-50 text-purple-700 border-purple-200/70";
-              if (s.subject_category === 'Languages') badgeColor = "bg-amber-50 text-amber-700 border-amber-200/70";
-              if (s.subject_category === 'Commerce') badgeColor = "bg-emerald-50 text-emerald-700 border-emerald-200/70";
-              return `<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10.5px] font-medium border ${badgeColor}">
-                ${escapeHtml(s.canonical_subject)}
-                ${s.level_category ? `<span class="ml-1 opacity-75 text-[9px] font-mono">(${escapeHtml(s.level_category)})</span>` : ''}
-              </span>`;
-            }).join(' ');
+        document.getElementById("btn-prev").disabled = currentPage <= 1;
+        document.getElementById("btn-first").disabled = currentPage <= 1;
+        document.getElementById("btn-next").disabled = currentPage >= totalPages;
+        document.getElementById("btn-last").disabled = currentPage >= totalPages;
 
-            if (t.subjects.length > 3) {
-              subjsBadges += ` <span class="text-[10px] text-slate-500 font-semibold px-1 py-0.5 rounded bg-slate-100 border border-slate-200">+${t.subjects.length - 3}</span>`;
-            }
-          } else {
-            subjsBadges = '<span class="text-xs text-slate-400 italic">None listed</span>';
-          }
-    
-          // Helper for initials
-          const names = (t.teacher_name || 'Anonymous').trim().split(' ');
-          const initials = (names[0][0] + (names.length > 1 ? names[names.length - 1][0] : '')).toUpperCase();
-          const avatarColors = [
-            'bg-indigo-100 text-indigo-700 ring-indigo-200',
-            'bg-blue-100 text-blue-700 ring-blue-200',
-            'bg-emerald-100 text-emerald-700 ring-emerald-200',
-            'bg-purple-100 text-purple-700 ring-purple-200',
-            'bg-rose-100 text-rose-700 ring-rose-200',
-            'bg-amber-100 text-amber-700 ring-amber-200'
-          ];
-          const avatarColor = avatarColors[Math.abs(t.tutor_id.split('').reduce((a,c)=>a+c.charCodeAt(0),0)) % avatarColors.length];
+        updatePaginationPagesUI(currentPage, totalPages);
 
-          // Occupation badge style
-          let occBadge = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200">
-            ${escapeHtml(t.occupation || t.experience_role || 'Tutor')}
-          </span>`;
-          if (t.occupation) {
-            if (t.occupation.includes('Software') || t.occupation.includes('IT')) {
-              occBadge = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200/60">
-                <i class="fa-solid fa-code text-[9px] mr-1"></i> Software & IT
-              </span>`;
-            } else if (t.occupation.includes('Student') || t.occupation.includes('Researcher')) {
-              occBadge = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-200/60">
-                <i class="fa-solid fa-graduation-cap text-[9px] mr-1"></i> Student / Scholar
-              </span>`;
-            } else if (t.occupation.includes('Medical') || t.occupation.includes('Healthcare')) {
-              occBadge = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-cyan-50 text-cyan-700 border border-cyan-200/60">
-                <i class="fa-solid fa-user-doctor text-[9px] mr-1"></i> Medical / Doctor
-              </span>`;
-            } else if (t.occupation.includes('Chartered Accountant') || t.occupation.includes('Finance')) {
-              occBadge = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/60">
-                <i class="fa-solid fa-chart-line text-[9px] mr-1"></i> Finance & CA
-              </span>`;
-            } else if (t.occupation.includes('Engineer')) {
-              occBadge = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200/60">
-                <i class="fa-solid fa-gears text-[9px] mr-1"></i> Core Engineer
-              </span>`;
-            } else if (t.occupation.includes('Faculty') || t.occupation.includes('School')) {
-              occBadge = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-purple-50 text-purple-700 border border-purple-200/60">
-                <i class="fa-solid fa-chalkboard-user text-[9px] mr-1"></i> Academic Faculty
-              </span>`;
-            }
-          }
-
-          // Accurate status badge
-          let statusDot = '';
-          if (t.is_active == 1) {
-            statusDot = `<span class="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200" title="Verified Active on TeacherOn"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>Active</span>`;
-          } else {
-            statusDot = `<span class="inline-flex items-center gap-1 text-[10px] font-semibold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-md border border-rose-200" title="${escapeHtml(t.validation_reason || 'No Profile on TeacherOn')}"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>No Profile</span>`;
-          }
-
-          // Fee display logic
-          let feeDisplay = '';
-          if (t.hourly_fee_avg) {
-            feeDisplay = `<span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold font-mono bg-emerald-50 text-emerald-700 border border-emerald-200/80">₹${Math.round(t.hourly_fee_avg)}<span class="text-[10px] text-emerald-600/70 font-sans ml-0.5">/hr</span></span>`;
-          } else if (t.monthly_fee_avg) {
-            feeDisplay = `<span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold font-mono bg-blue-50 text-blue-700 border border-blue-200/80">₹${Math.round(t.monthly_fee_avg).toLocaleString()}<span class="text-[10px] text-blue-600/70 font-sans ml-0.5">/mo</span></span>`;
-          } else if (t.fee_raw) {
-            const cleanRaw = t.fee_raw.split('(')[0].trim();
-            feeDisplay = `<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700" title="${escapeHtml(t.fee_raw)}">${escapeHtml(cleanRaw)}</span>`;
-          } else {
-            feeDisplay = `<span class="text-xs text-slate-400 font-medium">Negotiable</span>`;
-          }
-
-          html += `
-            <tr class="hover:bg-indigo-50/40 transition-colors group cursor-pointer" onclick="viewTutorDetails('${t.tutor_id}')" title="Click to view educator dossier">
-              <td class="py-3.5 px-3 text-center font-mono font-bold text-xs text-indigo-600">
-                <span class="bg-indigo-50 group-hover:bg-indigo-100 text-indigo-700 px-2 py-1 rounded-md border border-indigo-200/60 transition-colors">
-                  ${t.tutor_id}
-                </span>
-              </td>
-              <td class="py-3.5 px-4">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-full ${avatarColor} ring-1 flex items-center justify-center text-xs font-bold shrink-0">
-                    ${initials}
-                  </div>
-                  <div class="min-w-0">
-                    <div class="flex items-center gap-2">
-                      <span class="font-semibold text-slate-900 text-sm group-hover:text-indigo-600 transition-colors truncate">${escapeHtml(t.teacher_name || 'Tutor')}</span>
-                      ${statusDot}
-                    </div>
-                    <div class="text-xs text-slate-500 truncate max-w-xs mt-0.5">${escapeHtml(t.teacher_hookline || t.occupation || 'Private Educator')}</div>
-                  </div>
-                </div>
-              </td>
-              <td class="py-3.5 px-4">
-                <div class="flex flex-wrap gap-1 items-center max-w-sm">
-                  ${subjsBadges}
-                </div>
-              </td>
-              <td class="py-3.5 px-4">
-                ${feeDisplay}
-              </td>
-              <td class="py-3.5 px-4">
-                <div class="font-medium text-slate-800 text-xs flex items-center gap-1">
-                  <i class="fa-solid fa-location-dot text-slate-400 text-[10px]"></i>
-                  <span>${escapeHtml(t.city || t.state || 'India')}</span>
-                </div>
-                <div class="text-[11px] text-slate-500 ml-3.5">${escapeHtml(t.state || '')} <span class="text-slate-400">(${escapeHtml(t.region || '—')})</span></div>
-              </td>
-              <td class="py-3.5 px-4">
-                <div class="text-xs font-semibold text-slate-800">${escapeHtml(t.highest_qualification || 'Graduate')}</div>
-                <div class="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1">
-                  <i class="fa-regular fa-clock text-slate-400 text-[10px]"></i>
-                  <span>${t.total_teaching_exp_years != null ? t.total_teaching_exp_years + ' yrs exp' : '1+ yrs exp'}</span>
-                </div>
-              </td>
-              <td class="py-3.5 px-3 text-center text-slate-300 group-hover:text-indigo-600 transition-colors">
-                <i class="fa-solid fa-chevron-right text-xs"></i>
-              </td>
-            </tr>`;
-        });
-        tbody.innerHTML = html;
+        cachedTutorsItems = data.items || [];
+        renderTutors(cachedTutorsItems);
       } catch (err) {
-        console.error('Error fetching tutors:', err);
-        tbody.innerHTML = Array(8).fill(0).map(() => `
-        <tr class="animate-pulse">
-          <td class="py-4 px-4"><div class="h-4 w-12 bg-slate-200 rounded"></div></td>
-          <td class="py-4 px-4">
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-full bg-slate-200 shrink-0"></div>
-              <div class="space-y-1.5 flex-1">
-                <div class="h-3.5 w-32 bg-slate-200 rounded"></div>
-                <div class="h-2.5 w-48 bg-slate-100 rounded"></div>
-              </div>
-            </div>
-          </td>
-          <td class="py-4 px-4"><div class="h-5 w-24 bg-slate-200 rounded-full"></div></td>
-          <td class="py-4 px-4"><div class="h-3.5 w-24 bg-slate-200 rounded"></div></td>
-          <td class="py-4 px-4"><div class="h-3.5 w-20 bg-slate-200 rounded"></div></td>
-          <td class="py-4 px-4"><div class="h-5 w-40 bg-slate-200 rounded"></div></td>
-          <td class="py-4 px-4"><div class="h-5 w-16 bg-slate-200 rounded-full"></div></td>
-          <td class="py-4 px-4 text-center"><div class="h-7 w-16 bg-slate-200 rounded-lg mx-auto"></div></td>
-        </tr>
-      `).join('');
+        console.error("Error fetching tutors:", err);
+        const errCard = `
+          <div class="bg-white rounded-2xl border border-rose-200 p-8 text-center text-rose-600">
+            <i class="fa-solid fa-circle-exclamation text-2xl mb-2"></i>
+            <p class="font-semibold text-sm">Unable to load educator profiles</p>
+            <p class="text-xs text-slate-500 mt-1">Please check server connection and retry.</p>
+            <button type="button" onclick="loadTutors()" class="mt-3 px-3.5 py-1.5 bg-rose-50 text-rose-700 rounded-lg text-xs font-semibold hover:bg-rose-100 transition-colors cursor-pointer">
+              Retry
+            </button>
+          </div>`;
+        const cCont = document.getElementById("tutors-cards-list");
+        if (cCont) cCont.innerHTML = errCard;
+        const tBody = document.getElementById("tutors-table-body");
+        if (tBody) tBody.innerHTML = `<tr><td colspan="7" class="py-8 text-center">${errCard}</td></tr>`;
       }
     }
 
@@ -2932,50 +3276,12 @@
 
         // 1. Header & ID
         document.getElementById('modal-tutor-id').textContent = t.tutor_id;
+        const fullPageBtn = document.getElementById('modal-full-page-btn');
+        if (fullPageBtn) fullPageBtn.href = `/tutor/${t.tutor_id}`;
         currentModalTutorId = t.tutor_id;
         document.getElementById('modal-name').textContent = t.teacher_name || 'Anonymous';
         const initials = (t.teacher_name || 'T').trim().split(/\s+/).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'T';
         document.getElementById('modal-initials').textContent = initials;
-
-        // 2. Platform Verification Status Display (Read-Only)
-        const statusContainer = document.getElementById('modal-status-container');
-        const statusIcon = document.getElementById('modal-status-icon');
-        const statusText = document.getElementById('modal-status-text');
-        const statusPill = document.getElementById('modal-status-pill');
-        const activeBadge = document.getElementById('modal-active-badge');
-
-        const reason = t.validation_reason || (t.is_active ? 'Verified Active on TeacherOn' : 'Inactive on TeacherOn');
-        if (statusText) statusText.textContent = reason;
-
-        if (t.is_active == 1) {
-          if (statusContainer) statusContainer.className = 'p-3.5 rounded-xl border flex items-center justify-between gap-3 shadow-2xs bg-emerald-50/70 border-emerald-200';
-          if (statusIcon) {
-            statusIcon.className = 'w-8 h-8 rounded-lg flex items-center justify-center text-sm shrink-0 bg-emerald-100 text-emerald-700';
-            statusIcon.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
-          }
-          if (statusPill) {
-            statusPill.className = 'px-2.5 py-1 rounded-lg text-[10px] font-bold font-mono uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300';
-            statusPill.textContent = 'Active';
-          }
-          if (activeBadge) {
-            activeBadge.textContent = 'Active Profile';
-            activeBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
-          }
-        } else {
-          if (statusContainer) statusContainer.className = 'p-3.5 rounded-xl border flex items-center justify-between gap-3 shadow-2xs bg-rose-50/70 border-rose-200';
-          if (statusIcon) {
-            statusIcon.className = 'w-8 h-8 rounded-lg flex items-center justify-center text-sm shrink-0 bg-rose-100 text-rose-700';
-            statusIcon.innerHTML = '<i class="fa-solid fa-user-xmark"></i>';
-          }
-          if (statusPill) {
-            statusPill.className = 'px-2.5 py-1 rounded-lg text-[10px] font-bold font-mono uppercase tracking-wider bg-rose-100 text-rose-800 border border-rose-300';
-            statusPill.textContent = 'No Profile';
-          }
-          if (activeBadge) {
-            activeBadge.textContent = 'No Live Profile';
-            activeBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider font-mono bg-rose-500/20 text-rose-300 border border-rose-500/30';
-          }
-        }
 
         // 3. Headline
         document.getElementById('modal-hookline').textContent = t.teacher_hookline || 'No headline available';
@@ -3028,7 +3334,7 @@
 
         // 9. Bio & Meta
         document.getElementById('modal-desc').textContent = t.description || 'No bio provided.';
-        document.getElementById('modal-source-tab').textContent = `Tab: ${t.source_tab || 'scraped'}`;
+        const srcTab = document.getElementById('modal-source-tab'); if (srcTab) srcTab.textContent = `Tab: ${t.source_tab || 'scraped'}`;
         document.getElementById('modal-registered').textContent = `Registered: ${t.registered_date || 'N/A'}`;
         document.getElementById('modal-last-login').textContent = `Last Login: ${t.last_login_date || 'N/A'}`;
 
@@ -3041,7 +3347,7 @@
           urlElem.classList.add('hidden');
         }
 
-        // 11. Bridge Subjects
+        // 11. Subject Offerings
         const subjsContainer = document.getElementById('modal-subjects-container');
         if (t.subjects && t.subjects.length) {
           subjsContainer.innerHTML = t.subjects.map(s => `
@@ -3058,18 +3364,27 @@
             </div>
           `).join('');
         } else {
-          subjsContainer.innerHTML = '<p class="text-xs text-slate-400">No subjects registered in bridge table.</p>';
+          subjsContainer.innerHTML = '<p class="text-xs text-slate-400">No subjects registered for this tutor.</p>';
         }
 
-        document.getElementById('detail-modal').classList.remove('hidden');
+        document.getElementById('detail-modal').classList.remove('hidden'); document.body.style.overflow = 'hidden';
       } catch (err) {
         console.error('Error viewing tutor details:', err);
       }
     }
 
     function closeModal() {
-      document.getElementById('detail-modal').classList.add('hidden');
+      const modal = document.getElementById('detail-modal');
+      if (modal) modal.classList.add('hidden');
+      document.body.style.overflow = '';
     }
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    });
 
     // Filter and Pagination helpers
     function applyFilters() {
@@ -3081,6 +3396,7 @@
       if (document.getElementById('filter-search')) document.getElementById('filter-search').value = '';
       const clearBtn = document.getElementById('btn-clear-search');
       if (clearBtn) clearBtn.classList.add('hidden');
+      if (document.getElementById('filter-canonical-subject')) document.getElementById('filter-canonical-subject').value = '';
       if (document.getElementById('filter-subject-category')) document.getElementById('filter-subject-category').value = '';
       if (document.getElementById('filter-level')) document.getElementById('filter-level').value = '';
       if (document.getElementById('filter-exam')) document.getElementById('filter-exam').value = '';
@@ -3094,6 +3410,14 @@
       if (document.getElementById('filter-gender')) document.getElementById('filter-gender').value = '';
       if (document.getElementById('filter-online')) document.getElementById('filter-online').value = '';
       
+      // Reset Data Cleansing Checkboxes
+      if (document.getElementById('filter-exclude-empty-master')) {
+        document.getElementById('filter-exclude-empty-master').checked = false;
+        document.getElementById('filter-exclude-empty-master').indeterminate = false;
+      }
+      document.querySelectorAll('input[name="empty-col"]').forEach(cb => { cb.checked = false; });
+      updateEmptyColsBadge();
+
       currentSortBy = 'default';
       currentSortOrder = 'asc';
       const sortSelect = document.getElementById('table-sort-select');
@@ -3108,6 +3432,7 @@
         sort_by: currentSortBy,
         sort_order: currentSortOrder,
         search: document.getElementById('filter-search') ? document.getElementById('filter-search').value.trim() : '',
+        canonical_subject: document.getElementById('filter-canonical-subject') ? document.getElementById('filter-canonical-subject').value : '',
         subject_category: document.getElementById('filter-subject-category') ? document.getElementById('filter-subject-category').value : '',
         level: document.getElementById('filter-level') ? document.getElementById('filter-level').value : '',
         exam: document.getElementById('filter-exam') ? document.getElementById('filter-exam').value : '',
@@ -3119,7 +3444,8 @@
         experience_role: document.getElementById('filter-role') ? document.getElementById('filter-role').value : '',
         occupation: document.getElementById('filter-occupation') ? document.getElementById('filter-occupation').value : '',
         gender: document.getElementById('filter-gender') ? document.getElementById('filter-gender').value : '',
-        teaches_online: document.getElementById('filter-online') ? document.getElementById('filter-online').value : ''
+        teaches_online: document.getElementById('filter-online') ? document.getElementById('filter-online').value : '',
+        exclude_empty: Array.from(document.querySelectorAll('input[name="empty-col"]:checked')).map(cb => cb.value).join(',')
       });
       window.location.href = `/api/download/filtered-excel?${params.toString()}`;
     }
@@ -3129,17 +3455,25 @@
       if (target >= 1 && target <= totalPages) {
         currentPage = target;
         loadTutors();
+        const topEl = document.getElementById('tab-explorer');
+        if (topEl) topEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
 
     function goToPage(page) {
-      currentPage = page;
-      loadTutors();
+      if (page >= 1 && page <= totalPages) {
+        currentPage = page;
+        loadTutors();
+        const topEl = document.getElementById('tab-explorer');
+        if (topEl) topEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
 
     function goToLastPage() {
       currentPage = totalPages;
       loadTutors();
+      const topEl = document.getElementById('tab-explorer');
+      if (topEl) topEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function changePageSize() {
@@ -3276,25 +3610,25 @@
       if (scope === 'active') {
         if (btnAct) btnAct.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-emerald-600 text-white shadow-2xs";
         if (btnAll) btnAll.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900";
-        if (sub) sub.textContent = "76,706 Verified Active Tutors • 247,356 Offerings • 28 States & 8 UTs (100% Reachable Profiles)";
-        if (langBadge) langBadge.textContent = "N = 76,013 Active Stating Educators";
-        if (occSampleTitle) occSampleTitle.textContent = "Non-Teaching & Side Occupations Landscape (N = 26,488 Verified Active)";
-        if (fig1Subtitle) fig1Subtitle.textContent = "Categorical volume of private tutoring offerings across India (N = 247,356 active offerings).";
-        if (sec6SubjectsSubtitle) sec6SubjectsSubtitle.textContent = "Total breakdown across 247,356 verified active subject offerings";
+        if (sub) sub.textContent = "76,683 Verified Active Tutors • 308,162 Offerings • 28 States & 8 UTs (100% Reachable Profiles)";
+        if (langBadge) langBadge.textContent = "N = 76,589 Active Stating Educators";
+        if (occSampleTitle) occSampleTitle.textContent = "Non-Teaching & Side Occupations Landscape (Verified Active)";
+        if (fig1Subtitle) fig1Subtitle.textContent = "Categorical volume of private tutoring offerings across India (N = 308,162 active offerings).";
+        if (sec6SubjectsSubtitle) sec6SubjectsSubtitle.textContent = "Total breakdown across 308,162 verified active subject offerings";
 
-        document.getElementById('stat-tutors').textContent = '76,706';
-        document.getElementById('stat-bridge').textContent = '247,356';
+        document.getElementById('stat-tutors').textContent = '76,683';
+        document.getElementById('stat-bridge').textContent = '308,162';
       } else {
         if (btnAll) btnAll.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-blue-600 text-white shadow-2xs";
         if (btnAct) btnAct.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900";
-        if (sub) sub.textContent = "107,723 Tutors • 327,720 Offerings • 28 States & 8 UTs (National Master)";
-        if (langBadge) langBadge.textContent = "N = 106,455 Stating Educators";
-        if (occSampleTitle) occSampleTitle.textContent = "Non-Teaching & Side Occupations Landscape (N = 36,525)";
-        if (fig1Subtitle) fig1Subtitle.textContent = "Categorical volume of private tutoring offerings across India (N = 327,720 cleaned offerings).";
-        if (sec6SubjectsSubtitle) sec6SubjectsSubtitle.textContent = "Total breakdown across 327,720 cleaned verified subject offerings";
+        if (sub) sub.textContent = "107,673 Tutors • 403,221 Offerings • 28 States & 8 UTs (National Master)";
+        if (langBadge) langBadge.textContent = "N = 106,405 Stating Educators";
+        if (occSampleTitle) occSampleTitle.textContent = "Non-Teaching & Side Occupations Landscape (N = 50,028)";
+        if (fig1Subtitle) fig1Subtitle.textContent = "Categorical volume of private tutoring offerings across India (N = 403,221 cleaned offerings).";
+        if (sec6SubjectsSubtitle) sec6SubjectsSubtitle.textContent = "Total breakdown across 403,221 cleaned verified subject offerings";
 
-        document.getElementById('stat-tutors').textContent = '107,723';
-        document.getElementById('stat-bridge').textContent = '327,720';
+        document.getElementById('stat-tutors').textContent = '107,673';
+        document.getElementById('stat-bridge').textContent = '403,221';
       }
 
       loadCharts({ ...activeAnalyticsFilters, active_only: scope === 'active' ? '1' : '' });
@@ -3357,6 +3691,71 @@
               beginAtZero: true,
               ticks: {
                 callback: (val) => isFee ? '₹' + val : val.toLocaleString()
+              }
+            }
+          }
+        }
+      });
+    }
+
+    let currentOccupationsMetric = 'count';
+
+    function switchOccupationsChart(metric) {
+      currentOccupationsMetric = metric;
+      const btnCount = document.getElementById('btn-occ-count');
+      const btnFee = document.getElementById('btn-occ-fee');
+
+      if (metric === 'fee') {
+        if (btnFee) btnFee.className = "px-3 py-1 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-2xs";
+        if (btnCount) btnCount.className = "px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900";
+      } else {
+        if (btnCount) btnCount.className = "px-3 py-1 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-2xs";
+        if (btnFee) btnFee.className = "px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900";
+      }
+
+      renderOccupationsChart();
+    }
+
+    function renderOccupationsChart() {
+      const el = document.getElementById('chart-occupations');
+      if (!el || !window.dashboardCharts || !window.dashboardCharts.occupations) return;
+      const existing = Chart.getChart(el);
+      if (existing) existing.destroy();
+
+      const occData = window.dashboardCharts.occupations.slice(0, 10);
+      const isFee = (currentOccupationsMetric === 'fee');
+      const labels = occData.map(o => o.occupation);
+      const values = occData.map(o => isFee ? (o.avg_fee || 0) : o.count);
+
+      new Chart(el, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: isFee ? 'Avg Rate (₹/hr)' : 'Tutors Count',
+            data: values,
+            backgroundColor: isFee ? '#10b981' : '#6366f1',
+            borderRadius: 6
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => isFee 
+                  ? ` Average Fee: ₹${ctx.parsed.x.toLocaleString()}/hr`
+                  : ` ${ctx.parsed.x.toLocaleString()} educators`
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: {
+                callback: (val) => isFee ? `₹${val}` : (val >= 1000 ? `${(val/1000).toFixed(1)}k` : val)
               }
             }
           }
@@ -4172,14 +4571,12 @@
       if (!props) return 0;
       if (metric === 'count') return props.tutor_count || 0;
       if (metric === 'fee') return props.avg_fee || 0;
-      if (metric === 'online') return props.online_pct || 0;
       return 0;
     }
 
     function getMetricBreakpoints(metric) {
       if (metric === 'count') return [500, 2000, 6000, 12000];
       if (metric === 'fee') return [500, 700, 900, 1100];
-      if (metric === 'online') return [85, 92, 96, 98];
       return [1, 2, 3, 4];
     }
 
@@ -4197,7 +4594,6 @@
       if (val === 0 || val == null) return '0';
       if (metric === 'count') return val >= 1000 ? (val >= 10000 ? Math.round(val/1000) + 'k' : (val/1000).toFixed(1) + 'k') : val.toString();
       if (metric === 'fee') return '₹' + Math.round(val);
-      if (metric === 'online') return Math.round(val) + '%';
       return val;
     }
 
@@ -4208,10 +4604,8 @@
 
       if (currentMapMetric === 'count') {
         legendTitle.textContent = 'Tutor Count Range:';
-      } else if (currentMapMetric === 'fee') {
-        legendTitle.textContent = 'Average Hourly Fee:';
       } else {
-        legendTitle.textContent = 'Online Tutoring Rate:';
+        legendTitle.textContent = 'Average Hourly Fee:';
       }
 
       const labels = [
@@ -4371,16 +4765,20 @@
         );
         if (feat) {
           const p = feat.properties;
-          document.getElementById('state-metric-name').textContent = p.state;
-          document.getElementById('state-metric-tutors').textContent = `${(p.tutor_count || 0).toLocaleString()} Tutors`;
-          document.getElementById('state-metric-fee').textContent = `₹${p.avg_fee} / hr`;
-          document.getElementById('state-metric-online').textContent = `${p.online_pct}%`;
-          document.getElementById('city-table-state-title').textContent = p.state;
+          const elName = document.getElementById('state-metric-name');
+          if (elName) elName.textContent = p.state;
+          const elTutors = document.getElementById('state-metric-tutors');
+          if (elTutors) elTutors.textContent = `${(p.tutor_count || 0).toLocaleString()} Tutors`;
+          const elFee = document.getElementById('state-metric-fee');
+          if (elFee) elFee.textContent = `₹${p.avg_fee} / hr`;
+          const elTitle = document.getElementById('city-table-state-title');
+          if (elTitle) elTitle.textContent = p.state;
         }
       }
 
       // Fetch district boundaries
       const tbody = document.getElementById('city-table-body');
+      if (!tbody) return;
       tbody.innerHTML = '<tr><td colspan="4" class="py-8 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Loading district boundaries...</td></tr>';
 
       try {
@@ -4422,9 +4820,6 @@
               </td>
               <td class="py-2.5 px-2 text-right font-bold text-slate-900">${(d.tutor_count || 0).toLocaleString()}</td>
               <td class="py-2.5 px-2 text-right font-semibold text-emerald-700">${d.avg_fee ? '₹' + Math.round(d.avg_fee) : '—'}</td>
-              <td class="py-2.5 px-2 text-right">
-                <span class="px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-medium text-[10px]">${d.online_pct || 0}%</span>
-              </td>
             </tr>
           `;
         });
@@ -4438,10 +4833,13 @@
     }
 
     function renderDistrictChoropleth(geoData) {
+      if (!mapStateCities) return;
       if (stateDistrictsGeoLayer) {
         mapStateCities.removeLayer(stateDistrictsGeoLayer);
       }
-      stateDistrictsLabelsGroup.clearLayers();
+      if (stateDistrictsLabelsGroup) {
+        stateDistrictsLabelsGroup.clearLayers();
+      }
 
       if (!geoData.features || !geoData.features.length) return;
 
@@ -4461,29 +4859,13 @@
           const val = getMetricValue(p, currentMapMetric);
           const formattedVal = formatLabelValue(val, currentMapMetric);
 
-          try {
-            const bounds = layer.getBounds();
-            const center = bounds.getCenter();
-
-            if (p.tutor_count > 0 || currentMapMetric === 'fee') {
-              const labelMarker = L.marker(center, {
-                icon: L.divIcon({
-                  className: 'polygon-number-label',
-                  html: `<span>${formattedVal}</span>`,
-                  iconSize: [36, 14],
-                  iconAnchor: [18, 7]
-                })
-              });
-              stateDistrictsLabelsGroup.addLayer(labelMarker);
-            }
-          } catch(e) {}
+          // Figures shown on hover only to avoid map clutter per mentor feedback
 
           layer.bindTooltip(`
             <div class="font-sans text-xs">
               <div class="font-bold text-slate-900 border-b pb-0.5 mb-1">${escapeHtml(p.district || p.city)}</div>
               <div>Tutors: <b>${(p.tutor_count || 0).toLocaleString()}</b></div>
               <div>Avg Fee: <b>₹${p.avg_fee}/hr</b></div>
-              <div>Online: <b>${p.online_pct}%</b></div>
             </div>
           `, { sticky: true });
 
@@ -4569,9 +4951,14 @@
 
       if (hoursSlider && hoursBadge) {
         const hVal = parseInt(hoursSlider.value, 10);
+        const mHours = Math.round(hVal * (52 / 12));
         hoursBadge.textContent = `${hVal} Hours / Week`;
         if (monthlyHoursLabel) {
           monthlyHoursLabel.textContent = `${hVal} hours/week`;
+        }
+        const monthlyApprox = document.getElementById('ai-monthly-hours-approx');
+        if (monthlyApprox) {
+          monthlyApprox.textContent = `approx. ${mHours} hours/month`;
         }
       }
 
@@ -4628,6 +5015,11 @@
       // 2. Monthly & Annual Projections
       const monthlyEarning = document.getElementById('ai-monthly-earning');
       if (monthlyEarning) monthlyEarning.textContent = `₹${data.monthly_projection.toLocaleString()}`;
+
+      const monthlyApprox = document.getElementById('ai-monthly-hours-approx');
+      if (monthlyApprox && data.monthly_hours) {
+        monthlyApprox.textContent = `approx. ${data.monthly_hours} hours/month`;
+      }
 
       const annualEarning = document.getElementById('ai-annual-earning');
       if (annualEarning) {
@@ -4982,7 +5374,7 @@ let currentSelectedSegment = 'all_three';
         const s2 = document.getElementById('venn-select-2');
         const s3 = document.getElementById('venn-select-3');
 
-        if (s1 && s2 && s3) {
+        if (Array.isArray(subjects) && s1 && s2 && s3) {
           const optionsHtml = subjects.map(s => 
             `<option value="${escapeHtml(s.subject)}">${escapeHtml(s.subject)} (${s.count.toLocaleString()} tutors)</option>`
           ).join('');
@@ -5025,7 +5417,7 @@ let currentSelectedSegment = 'all_three';
         wrapper.innerHTML = `
           <div class="flex flex-col items-center justify-center p-12 text-slate-400 gap-3">
             <i class="fa-solid fa-spinner fa-spin text-2xl text-indigo-600"></i>
-            <span class="text-xs font-mono font-medium">Computing set intersections across 107,723 educators...</span>
+            <span class="text-xs font-mono font-medium">Computing set intersections across 107,673 educators...</span>
           </div>
         `;
       }

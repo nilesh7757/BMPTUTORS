@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BMP Tutors - Visual Analytics & Comprehensive Market Intelligence Report</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/static/css/tailwind.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
@@ -70,7 +70,7 @@
             Indian Private Tutoring Market: Comprehensive Visual Analytics
           </h1>
           <p class="text-sm text-slate-600 mt-1 font-medium">
-            Empirical structure of 107,723 verified educators, 403,353 subject-grade offerings, 37 states & union territories, and academic pricing architecture.
+            Empirical structure of 107,673 verified educators, 403,221 subject offerings, 36 states & union territories, and academic pricing architecture.
           </p>
         </div>
         <div class="text-right text-xs text-slate-500 font-mono shrink-0">
@@ -84,7 +84,7 @@
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mt-6">
         <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
           <span class="text-[10px] uppercase font-bold text-slate-500 block">Total Verified Tutors</span>
-          <span class="text-xl font-extrabold text-indigo-950 font-mono mt-0.5 block">107,723</span>
+          <span class="text-xl font-extrabold text-indigo-950 font-mono mt-0.5 block">107,673</span>
           <span class="text-[10px] text-emerald-600 font-semibold">100% deduplicated</span>
         </div>
         <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
@@ -127,7 +127,7 @@
       <!-- Map of India (Dashboard Style) -->
       <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm max-w-3xl mx-auto">
         <h3 class="text-xs font-bold text-slate-800 uppercase mb-2 flex items-center gap-1.5">
-          <i class="fa-solid fa-map-pin text-indigo-600"></i> Figure 1A: Map of India — State-Wise Boundaries & Data Labels (N = 107,723)
+          <i class="fa-solid fa-map-pin text-indigo-600"></i> Figure 1A: Map of India — State-Wise Boundaries & Data Labels (N = 107,673)
         </h3>
         <img src="/static/images/maps/india_all_states_labeled_dashboard.png" alt="All India State-Wise Tutor Map" class="w-full h-auto rounded-lg border border-slate-100">
         <p class="text-[11px] text-slate-500 mt-2 italic text-center">Academic presentation matching the Visual Analytics Dashboard. In-polygon numerical labels display the verified tutor count for every single state and union territory across all of India.</p>
@@ -168,7 +168,7 @@
         </table>
       </div>
       <p class="text-[10px] text-slate-500 italic pt-1">
-        <strong>Notes:</strong> Tutors geocoded from address records across 107,723 profiles. Hourly fee excludes unverified outliers (&lt; ₹50 or &gt; ₹5,000/hr). 
+        <strong>Notes:</strong> Tutors geocoded from address records across 107,673 profiles. Hourly fee benchmarked within realistic tuition band (₹100 to ₹5,000/hr). 
       </p>
     </section>
 
@@ -369,7 +369,7 @@
     <!-- REPORT FOOTER -->
     <footer class="pt-6 border-t border-slate-300 text-slate-500 text-[11px] avoid-break flex flex-col sm:flex-row items-center justify-between gap-2">
       <div>
-        <strong>BMP Tutors Analytics Platform</strong> &bull; Generated from Master Database (107,723 Educators)
+        <strong>BMP Tutors Analytics Platform</strong> &bull; Generated from Master Database (107,673 Educators)
       </div>
       <div class="font-mono">
         Report Generated: September 2026 &bull; Page 1 of Complete Dossier
@@ -442,7 +442,7 @@
         }
         weightedOnlineSum += s.online_pct * s.tutor_count;
 
-        const pctShare = (s.tutor_count / 107723 * 100).toFixed(2);
+        const pctShare = (s.tutor_count / 107673 * 100).toFixed(2);
         const rankBadge = idx < 3 
           ? `<span class="inline-block w-5 h-5 rounded-full bg-amber-500 text-white font-bold text-[10px] text-center leading-5">${idx + 1}</span>`
           : idx + 1;
@@ -510,7 +510,7 @@
       };
 
       const stRank = reportStatesCache.findIndex(s => s.state.toLowerCase() === stateName.toLowerCase()) + 1;
-      const pctShare = (st.tutor_count / 107723 * 100).toFixed(2);
+      const pctShare = (st.tutor_count / 107673 * 100).toFixed(2);
       const actPct = st.tutor_count > 0 ? (st.active_count / st.tutor_count * 100).toFixed(1) : '0.0';
 
       box.innerHTML = `
