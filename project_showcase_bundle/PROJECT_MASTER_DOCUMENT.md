@@ -1,6 +1,6 @@
-# BMP TUTORS: THE COMPLETE EMPIRICAL & TECHNICAL MASTER DOSSIER (100% DATABASE RECONCILED)
+# TUTORMETRIC: THE COMPLETE EMPIRICAL & TECHNICAL MASTER DOSSIER (100% DATABASE RECONCILED)
 
-**Course**: SC452 — DA-IICT Academic Capstone Project  
+**Course**: SC452 — DA-IICT B.Tech Mini Project  
 **Joint Authors**: Nilesh Mori (Student ID: 202301473) & Pratik Chauhan (Student ID: 202301435)  
 **Authorship Statement**: Equal Collaborative Authorship (Joint End-to-End System Engineering)  
 **Project Title**: Empirical Structure & Geospatial Pricing Architecture of India's Private Education Market  
@@ -102,8 +102,8 @@ When training pricing models on 72,001 verified profiles, decision trees and ran
 
 *(Optimized for 15–18 slides, widescreen 16:9, clean card containers)*
 
-- **Slide 01: Title Slide** — BMP Tutors: National Market Intelligence on India's Private Education. Joint Authors: Nilesh Mori (202301473) & Pratik Chauhan (202301435).
-- **Slide 02: Motivation & The Indian Tutoring Gap** — Commercial platform lock-in (paywalls, stale contacts) vs. BMP Tutors' open, verified model.
+- **Slide 01: Title Slide** — TutorMetric: National Market Intelligence on India's Private Education. Joint Authors: Nilesh Mori (202301473) & Pratik Chauhan (202301435).
+- **Slide 02: Motivation & The Indian Tutoring Gap** — Commercial platform lock-in (paywalls, stale contacts) vs. TutorMetric' open, verified model.
 - **Slide 03: Platform Architecture & Live Search Utilities** — Dynamic multi-filtering (State, Fee, Mode, Experience) with sub-50ms query responses.
 - **Slide 04: Data Quality & Playwright Active Verification** — Automated verification identifying 76,683 active educators (71.2%) vs. 30,990 ghost profiles.
 - **Slide 05: Database Architecture: Relational 3NF Decomposition** — Normalizing the 78-col spreadsheet into `teachers` and `teacher_subjects` (403,221 rows).
@@ -174,7 +174,7 @@ When training pricing models on 72,001 verified profiles, decision trees and ran
 > *"Tuition fees in India are right-skewed. Elite entrance-exam coaching specialists and university professors charge up to ₹2,500–₹2,800/hr, pulling the mathematical average up to ₹864/hr. The median of ₹650/hr reflects the actual typical fee paid by standard Indian households."*
 
 ### Q6. Who built this project?
-> *"Nilesh Mori (Student ID: 202301473) and Pratik Chauhan (Student ID: 202301435) built this project as equal joint co-engineers for our DA-IICT SC452 academic capstone."*
+> *"Nilesh Mori (Student ID: 202301473) and Pratik Chauhan (Student ID: 202301435) built this project as equal joint co-engineers for our DA-IICT SC452 B.Tech Mini Project."*
 
 ---
 

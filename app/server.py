@@ -1221,7 +1221,7 @@ async def tutor_profile_view(request):
         conn.close()
         return HTMLResponse("""
         <!DOCTYPE html>
-        <html><head><title>Tutor Not Found — BMP Tutors</title>
+        <html><head><title>Tutor Not Found — TutorMetric</title>
         <link rel="stylesheet" href="/static/css/tailwind.min.css" /></head>
         <body class="bg-slate-100 flex items-center justify-center min-h-screen p-4">
           <div class="bg-white p-8 rounded-2xl shadow-md max-w-md w-full text-center">
