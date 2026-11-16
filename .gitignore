@@ -5,7 +5,10 @@ __pycache__/
 *.csv
 *.parquet
 exports/
-cleaned_tutors_data.db*
+cleaned_tutors_data.db
+cleaned_tutors_data.db.bak
+cleaned_tutors_data.db.*
+!cleaned_tutors_data.db.gz
 tutors.db*
 finalSKAoutput.xlsx
 ProjectTracker.xlsx
