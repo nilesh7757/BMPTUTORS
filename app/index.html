@@ -7,238 +7,7 @@
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="stylesheet" href="/static/css/tailwind.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js">
-    // ----------------------------------------------------------------
-    // COMPARE TUTORS LOGIC
-    // ----------------------------------------------------------------
-    let compareTutorsList = [];
-
-    function isTutorInCompare(tutorId) {
-      return compareTutorsList.includes(tutorId);
-    }
-
-    function toggleCompareTutor(tutorId) {
-      if (compareTutorsList.includes(tutorId)) {
-        compareTutorsList = compareTutorsList.filter(id => id !== tutorId);
-      } else {
-        if (compareTutorsList.length >= 2) {
-          compareTutorsList.shift();
-        }
-        compareTutorsList.push(tutorId);
-      }
-      updateCompareUI();
-    }
-
-    function clearCompareList() {
-      compareTutorsList = [];
-      updateCompareUI();
-    }
-
-    function updateCompareUI() {
-      const dock = document.getElementById('compare-dock');
-      const countLabel = document.getElementById('compare-dock-count');
-      const subLabel = document.getElementById('compare-dock-sub');
-      const topBadge = document.getElementById('top-compare-badge');
-
-      if (topBadge) {
-        if (compareTutorsList.length > 0) {
-          topBadge.textContent = compareTutorsList.length;
-          topBadge.classList.remove('hidden');
-        } else {
-          topBadge.classList.add('hidden');
-        }
-      }
-
-      if (dock) {
-        if (compareTutorsList.length > 0) {
-          dock.classList.remove('hidden');
-          countLabel.textContent = `${compareTutorsList.length}/2`;
-          if (compareTutorsList.length === 1) {
-            subLabel.textContent = `Tutor ${compareTutorsList[0]} selected. Pick one more!`;
-          } else {
-            subLabel.textContent = `Both candidates ready for comparison!`;
-          }
-        } else {
-          dock.classList.add('hidden');
-        }
-      }
-
-      // Re-render current list to update button highlights
-      if (cachedTutorsItems && cachedTutorsItems.length) {
-        if (currentViewMode === 'table') {
-          renderTableView(cachedTutorsItems);
-        } else {
-          renderCardView(cachedTutorsItems);
-        }
-      }
-    }
-
-    async function openCompareModal() {
-      if (compareTutorsList.length === 0) {
-        compareTutorsList = ['T1', 'T2'];
-      } else if (compareTutorsList.length === 1) {
-        compareTutorsList.push(compareTutorsList[0] === 'T1' ? 'T2' : 'T1');
-      }
-
-      document.getElementById('cmp-input-1').value = compareTutorsList[0];
-      document.getElementById('cmp-input-2').value = compareTutorsList[1];
-      document.getElementById('compare-modal').classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
-
-      await loadCompareData(compareTutorsList[0], compareTutorsList[1]);
-    }
-
-    function closeCompareModal() {
-      const modal = document.getElementById('compare-modal');
-      if (modal) modal.classList.add('hidden');
-      document.body.style.overflow = '';
-    }
-
-    async function loadCompareFromInputs() {
-      const id1 = (document.getElementById('cmp-input-1').value || '').trim().toUpperCase();
-      const id2 = (document.getElementById('cmp-input-2').value || '').trim().toUpperCase();
-      if (!id1 || !id2) return;
-      compareTutorsList = [id1, id2];
-      updateCompareUI();
-      await loadCompareData(id1, id2);
-    }
-
-    async function loadCompareData(id1, id2) {
-      const container = document.getElementById('compare-content');
-      container.innerHTML = `
-        <div class="text-center py-12 text-slate-400">
-          <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-indigo-500"></i>
-          <p class="text-xs">Fetching side-by-side metrics...</p>
-        </div>`;
-
-      try {
-        const res = await fetch(`/api/tutors/compare?t1=${id1}&t2=${id2}`);
-        if (!res.ok) {
-          const err = await res.json();
-          container.innerHTML = `
-            <div class="p-6 bg-rose-50 border border-rose-200 rounded-2xl text-center text-rose-700 text-xs">
-              <i class="fa-solid fa-circle-exclamation text-xl mb-2"></i>
-              <p class="font-bold">Unable to compare profiles</p>
-              <p class="mt-1">${escapeHtml(err.error || 'Check that both Tutor IDs exist in the database.')}</p>
-            </div>`;
-          return;
-        }
-
-        const data = await res.json();
-        const t1 = data.tutor1;
-        const t2 = data.tutor2;
-        const j1 = t1.fee_justification || {};
-        const j2 = t2.fee_justification || {};
-
-        container.innerHTML = `
-          <!-- Verdicts Banner -->
-          <div class="p-4 rounded-2xl bg-gradient-to-r from-amber-50 to-indigo-50 border border-amber-200/80">
-            <span class="text-[10px] font-bold text-amber-900 uppercase tracking-wider font-mono block mb-1">Comparative Value Verdict</span>
-            <ul class="text-xs text-slate-700 space-y-1">
-              ${(data.verdict_notes || []).map(v => `<li class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> <span>${escapeHtml(v)}</span></li>`).join('')}
-            </ul>
-          </div>
-
-          <!-- Comparison Grid -->
-          <div class="grid grid-cols-2 gap-4">
-            
-            <!-- Tutor 1 Column -->
-            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
-                  ${escapeHtml(t1.teacher_name ? t1.teacher_name[0] : 'T')}
-                </div>
-                <div>
-                  <h4 class="font-extrabold text-slate-900 text-sm leading-tight">${escapeHtml(t1.teacher_name || t1.tutor_id)}</h4>
-                  <span class="text-[10px] font-mono font-bold text-indigo-600 bg-indigo-50 px-1.5 py-0.2 rounded border border-indigo-200">${t1.tutor_id}</span>
-                </div>
-              </div>
-
-              <!-- Fee & Justification -->
-              <div class="p-3 bg-white rounded-xl border border-slate-200">
-                <span class="text-[10px] text-slate-400 font-bold uppercase block">Hourly Fee</span>
-                <div class="text-xl font-black text-slate-900 font-mono mt-0.5">₹${t1.hourly_fee_avg ? Math.round(t1.hourly_fee_avg) : 'Negotiable'}/hr</div>
-                ${j1.verdict ? `<span class="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold ${j1.status === 'underpriced' ? 'bg-emerald-100 text-emerald-800' : j1.status === 'premium' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">${escapeHtml(j1.verdict)}</span>` : ''}
-                <div class="text-[10px] text-slate-500 mt-1 font-mono">Market Baseline: ₹${j1.predicted_fee || '—'}/hr</div>
-              </div>
-
-              <!-- Credentials -->
-              <div class="space-y-1.5 text-xs">
-                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">Experience</span> <span class="font-bold text-slate-900">${t1.total_teaching_exp_years != null ? t1.total_teaching_exp_years + ' yrs' : 'Not stated'}</span></div>
-                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">Qualification</span> <span class="font-bold text-slate-900">${escapeHtml(t1.highest_qualification || 'UG')}</span></div>
-                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">Pedagogy Degree</span> <span class="font-bold text-slate-900">${t1.has_education_degree ? 'Yes (B.Ed/M.Ed)' : 'No'}</span></div>
-                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">City Tier</span> <span class="font-bold text-slate-900">${escapeHtml(t1.city_tier || 'Tier 3')}</span></div>
-                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">Teaching Mode</span> <span class="font-bold text-slate-900">${t1.teaches_online ? 'Online' : 'Offline Home'}</span></div>
-              </div>
-            </div>
-
-            <!-- Tutor 2 Column -->
-            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-violet-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
-                  ${escapeHtml(t2.teacher_name ? t2.teacher_name[0] : 'T')}
-                </div>
-                <div>
-                  <h4 class="font-extrabold text-slate-900 text-sm leading-tight">${escapeHtml(t2.teacher_name || t2.tutor_id)}</h4>
-                  <span class="text-[10px] font-mono font-bold text-violet-600 bg-violet-50 px-1.5 py-0.2 rounded border border-violet-200">${t2.tutor_id}</span>
-                </div>
-              </div>
-
-              <!-- Fee & Justification -->
-              <div class="p-3 bg-white rounded-xl border border-slate-200">
-                <span class="text-[10px] text-slate-400 font-bold uppercase block">Hourly Fee</span>
-                <div class="text-xl font-black text-slate-900 font-mono mt-0.5">₹${t2.hourly_fee_avg ? Math.round(t2.hourly_fee_avg) : 'Negotiable'}/hr</div>
-                ${j2.verdict ? `<span class="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold ${j2.status === 'underpriced' ? 'bg-emerald-100 text-emerald-800' : j2.status === 'premium' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">${escapeHtml(j2.verdict)}</span>` : ''}
-                <div class="text-[10px] text-slate-500 mt-1 font-mono">Market Baseline: ₹${j2.predicted_fee || '—'}/hr</div>
-              </div>
-
-              <!-- Credentials -->
-              <div class="space-y-1.5 text-xs">
-                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">Experience</span> <span class="font-bold text-slate-900">${t2.total_teaching_exp_years != null ? t2.total_teaching_exp_years + ' yrs' : 'Not stated'}</span></div>
-                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">Qualification</span> <span class="font-bold text-slate-900">${escapeHtml(t2.highest_qualification || 'UG')}</span></div>
-                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">Pedagogy Degree</span> <span class="font-bold text-slate-900">${t2.has_education_degree ? 'Yes (B.Ed/M.Ed)' : 'No'}</span></div>
-                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">City Tier</span> <span class="font-bold text-slate-900">${escapeHtml(t2.city_tier || 'Tier 3')}</span></div>
-                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">Teaching Mode</span> <span class="font-bold text-slate-900">${t2.teaches_online ? 'Online' : 'Offline Home'}</span></div>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- Curriculum Intersection & Subjects -->
-          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
-            <span class="text-xs font-bold text-slate-900 uppercase font-mono block">Curriculum Comparison</span>
-            
-            ${data.shared_subjects && data.shared_subjects.length ? `
-              <div>
-                <span class="text-[10px] font-bold text-emerald-800 uppercase block mb-1">Shared Subjects (Both Teach):</span>
-                <div class="flex flex-wrap gap-1.5">
-                  ${data.shared_subjects.map(s => `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300">${escapeHtml(s)}</span>`).join('')}
-                </div>
-              </div>` : '<p class="text-[11px] text-slate-500 italic">No exact canonical subject overlap between these two candidates.</p>'}
-
-            <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-200">
-              <div>
-                <span class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Unique to ${escapeHtml(t1.teacher_name || t1.tutor_id)}:</span>
-                <div class="flex flex-wrap gap-1">
-                  ${(data.t1_unique_subjects || []).slice(0, 6).map(s => `<span class="px-1.5 py-0.5 rounded text-[10px] bg-white border border-slate-200 text-slate-700">${escapeHtml(s)}</span>`).join('')}
-                </div>
-              </div>
-              <div>
-                <span class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Unique to ${escapeHtml(t2.teacher_name || t2.tutor_id)}:</span>
-                <div class="flex flex-wrap gap-1">
-                  ${(data.t2_unique_subjects || []).slice(0, 6).map(s => `<span class="px-1.5 py-0.5 rounded text-[10px] bg-white border border-slate-200 text-slate-700">${escapeHtml(s)}</span>`).join('')}
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      } catch (err) {
-        console.error('Error in compare modal:', err);
-        container.innerHTML = `<p class="text-center text-xs text-rose-600 py-6">Server error loading comparison.</p>`;
-      }
-    }
-
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -2550,6 +2319,258 @@
         if (btnTable) btnTable.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-600 hover:text-slate-900 cursor-pointer";
         if (cardsList) cardsList.classList.remove('hidden');
         if (tableWrap) tableWrap.classList.add('hidden');
+      }
+    }
+
+    // ----------------------------------------------------------------
+    // UTILITY: SAFE HTML ESCAPE
+    // ----------------------------------------------------------------
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // ----------------------------------------------------------------
+    // COMPARE TWO TUTORS ENGINE
+    // ----------------------------------------------------------------
+    let compareTutorsList = [];
+
+    function isTutorInCompare(tutorId) {
+      return compareTutorsList.includes(tutorId);
+    }
+
+    function toggleCompareTutor(tutorId) {
+      if (compareTutorsList.includes(tutorId)) {
+        compareTutorsList = compareTutorsList.filter(id => id !== tutorId);
+      } else {
+        if (compareTutorsList.length >= 2) {
+          compareTutorsList.shift();
+        }
+        compareTutorsList.push(tutorId);
+      }
+      updateCompareUI();
+    }
+
+    function clearCompareList() {
+      compareTutorsList = [];
+      updateCompareUI();
+    }
+
+    function updateCompareUI() {
+      const dock = document.getElementById('compare-dock');
+      const countLabel = document.getElementById('compare-dock-count');
+      const subLabel = document.getElementById('compare-dock-sub');
+      const topBadge = document.getElementById('top-compare-badge');
+
+      if (topBadge) {
+        if (compareTutorsList.length > 0) {
+          topBadge.textContent = compareTutorsList.length;
+          topBadge.classList.remove('hidden');
+        } else {
+          topBadge.classList.add('hidden');
+        }
+      }
+
+      if (dock) {
+        if (compareTutorsList.length > 0) {
+          dock.classList.remove('hidden');
+          if (countLabel) countLabel.textContent = `${compareTutorsList.length}/2`;
+          if (subLabel) {
+            if (compareTutorsList.length === 1) {
+              subLabel.textContent = `Tutor ${compareTutorsList[0]} selected. Pick one more!`;
+            } else {
+              subLabel.textContent = `Both candidates ready for comparison!`;
+            }
+          }
+        } else {
+          dock.classList.add('hidden');
+        }
+      }
+
+      // Re-render current list to update button highlights
+      if (cachedTutorsItems && cachedTutorsItems.length) {
+        if (currentViewMode === 'table') {
+          renderTableView(cachedTutorsItems);
+        } else {
+          renderCardView(cachedTutorsItems);
+        }
+      }
+    }
+
+    async function openCompareModal() {
+      if (compareTutorsList.length === 0) {
+        compareTutorsList = ['T1', 'T2'];
+      } else if (compareTutorsList.length === 1) {
+        compareTutorsList.push(compareTutorsList[0] === 'T1' ? 'T2' : 'T1');
+      }
+
+      const inp1 = document.getElementById('cmp-input-1');
+      const inp2 = document.getElementById('cmp-input-2');
+      if (inp1) inp1.value = compareTutorsList[0];
+      if (inp2) inp2.value = compareTutorsList[1];
+
+      const modal = document.getElementById('compare-modal');
+      if (modal) modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+
+      await loadCompareData(compareTutorsList[0], compareTutorsList[1]);
+    }
+
+    function closeCompareModal() {
+      const modal = document.getElementById('compare-modal');
+      if (modal) modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    async function loadCompareFromInputs() {
+      const inp1 = document.getElementById('cmp-input-1');
+      const inp2 = document.getElementById('cmp-input-2');
+      const id1 = ((inp1 && inp1.value) || '').trim().toUpperCase();
+      const id2 = ((inp2 && inp2.value) || '').trim().toUpperCase();
+      if (!id1 || !id2) return;
+      compareTutorsList = [id1, id2];
+      updateCompareUI();
+      await loadCompareData(id1, id2);
+    }
+
+    async function loadCompareData(id1, id2) {
+      const container = document.getElementById('compare-content');
+      if (!container) return;
+      container.innerHTML = `
+        <div class="text-center py-12 text-slate-400">
+          <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-indigo-500"></i>
+          <p class="text-xs">Fetching side-by-side metrics...</p>
+        </div>`;
+
+      try {
+        const res = await fetch(`/api/tutors/compare?t1=${id1}&t2=${id2}`);
+        if (!res.ok) {
+          const err = await res.json();
+          container.innerHTML = `
+            <div class="p-6 bg-rose-50 border border-rose-200 rounded-2xl text-center text-rose-700 text-xs">
+              <i class="fa-solid fa-circle-exclamation text-xl mb-2"></i>
+              <p class="font-bold">Unable to compare profiles</p>
+              <p class="mt-1">${escapeHtml(err.error || 'Check that both Tutor IDs exist in the database.')}</p>
+            </div>`;
+          return;
+        }
+
+        const data = await res.json();
+        const t1 = data.tutor1;
+        const t2 = data.tutor2;
+        const j1 = t1.fee_justification || {};
+        const j2 = t2.fee_justification || {};
+
+        container.innerHTML = `
+          <!-- Verdicts Banner -->
+          <div class="p-4 rounded-2xl bg-gradient-to-r from-amber-50 to-indigo-50 border border-amber-200/80">
+            <span class="text-[10px] font-bold text-amber-900 uppercase tracking-wider font-mono block mb-1">Comparative Value Verdict</span>
+            <ul class="text-xs text-slate-700 space-y-1">
+              ${(data.verdict_notes || []).map(v => `<li class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> <span>${escapeHtml(v)}</span></li>`).join('')}
+            </ul>
+          </div>
+
+          <!-- Comparison Grid -->
+          <div class="grid grid-cols-2 gap-4">
+            
+            <!-- Tutor 1 Column -->
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
+                  ${escapeHtml(t1.teacher_name ? t1.teacher_name[0] : 'T')}
+                </div>
+                <div>
+                  <h4 class="font-extrabold text-slate-900 text-sm leading-tight">${escapeHtml(t1.teacher_name || t1.tutor_id)}</h4>
+                  <span class="text-[10px] font-mono font-bold text-indigo-600 bg-indigo-50 px-1.5 py-0.2 rounded border border-indigo-200">${t1.tutor_id}</span>
+                </div>
+              </div>
+
+              <!-- Fee & Justification -->
+              <div class="p-3 bg-white rounded-xl border border-slate-200">
+                <span class="text-[10px] text-slate-400 font-bold uppercase block">Hourly Fee</span>
+                <div class="text-xl font-black text-slate-900 font-mono mt-0.5">₹${t1.hourly_fee_avg ? Math.round(t1.hourly_fee_avg) : 'Negotiable'}/hr</div>
+                ${j1.verdict ? `<span class="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold ${j1.status === 'underpriced' ? 'bg-emerald-100 text-emerald-800' : j1.status === 'premium' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">${escapeHtml(j1.verdict)}</span>` : ''}
+                <div class="text-[10px] text-slate-500 mt-1 font-mono">Market Baseline: ₹${j1.predicted_fee || '—'}/hr</div>
+              </div>
+
+              <!-- Credentials -->
+              <div class="space-y-1.5 text-xs">
+                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">Experience</span> <span class="font-bold text-slate-900">${t1.total_teaching_exp_years != null ? t1.total_teaching_exp_years + ' yrs' : 'Not stated'}</span></div>
+                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">Qualification</span> <span class="font-bold text-slate-900">${escapeHtml(t1.highest_qualification || 'UG')}</span></div>
+                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">Pedagogy Degree</span> <span class="font-bold text-slate-900">${t1.has_education_degree ? 'Yes (B.Ed/M.Ed)' : 'No'}</span></div>
+                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">City Tier</span> <span class="font-bold text-slate-900">${escapeHtml(t1.city_tier || 'Tier 3')}</span></div>
+                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">Teaching Mode</span> <span class="font-bold text-slate-900">${t1.teaches_online ? 'Online' : 'Offline Home'}</span></div>
+              </div>
+            </div>
+
+            <!-- Tutor 2 Column -->
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-violet-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
+                  ${escapeHtml(t2.teacher_name ? t2.teacher_name[0] : 'T')}
+                </div>
+                <div>
+                  <h4 class="font-extrabold text-slate-900 text-sm leading-tight">${escapeHtml(t2.teacher_name || t2.tutor_id)}</h4>
+                  <span class="text-[10px] font-mono font-bold text-violet-600 bg-violet-50 px-1.5 py-0.2 rounded border border-violet-200">${t2.tutor_id}</span>
+                </div>
+              </div>
+
+              <!-- Fee & Justification -->
+              <div class="p-3 bg-white rounded-xl border border-slate-200">
+                <span class="text-[10px] text-slate-400 font-bold uppercase block">Hourly Fee</span>
+                <div class="text-xl font-black text-slate-900 font-mono mt-0.5">₹${t2.hourly_fee_avg ? Math.round(t2.hourly_fee_avg) : 'Negotiable'}/hr</div>
+                ${j2.verdict ? `<span class="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold ${j2.status === 'underpriced' ? 'bg-emerald-100 text-emerald-800' : j2.status === 'premium' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">${escapeHtml(j2.verdict)}</span>` : ''}
+                <div class="text-[10px] text-slate-500 mt-1 font-mono">Market Baseline: ₹${j2.predicted_fee || '—'}/hr</div>
+              </div>
+
+              <!-- Credentials -->
+              <div class="space-y-1.5 text-xs">
+                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">Experience</span> <span class="font-bold text-slate-900">${t2.total_teaching_exp_years != null ? t2.total_teaching_exp_years + ' yrs' : 'Not stated'}</span></div>
+                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">Qualification</span> <span class="font-bold text-slate-900">${escapeHtml(t2.highest_qualification || 'UG')}</span></div>
+                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">Pedagogy Degree</span> <span class="font-bold text-slate-900">${t2.has_education_degree ? 'Yes (B.Ed/M.Ed)' : 'No'}</span></div>
+                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">City Tier</span> <span class="font-bold text-slate-900">${escapeHtml(t2.city_tier || 'Tier 3')}</span></div>
+                <div class="flex justify-between py-1 border-b border-slate-200/60"><span class="text-slate-500">Teaching Mode</span> <span class="font-bold text-slate-900">${t2.teaches_online ? 'Online' : 'Offline Home'}</span></div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Curriculum Intersection & Subjects -->
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+            <span class="text-xs font-bold text-slate-900 uppercase font-mono block">Curriculum Comparison</span>
+            
+            ${data.shared_subjects && data.shared_subjects.length ? `
+              <div>
+                <span class="text-[10px] font-bold text-emerald-800 uppercase block mb-1">Shared Subjects (Both Teach):</span>
+                <div class="flex flex-wrap gap-1.5">
+                  ${data.shared_subjects.map(s => `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300">${escapeHtml(s)}</span>`).join('')}
+                </div>
+              </div>` : '<p class="text-[11px] text-slate-500 italic">No exact canonical subject overlap between these two candidates.</p>'}
+
+            <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-200">
+              <div>
+                <span class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Unique to ${escapeHtml(t1.teacher_name || t1.tutor_id)}:</span>
+                <div class="flex flex-wrap gap-1">
+                  ${(data.t1_unique_subjects || []).slice(0, 6).map(s => `<span class="px-1.5 py-0.5 rounded text-[10px] bg-white border border-slate-200 text-slate-700">${escapeHtml(s)}</span>`).join('')}
+                </div>
+              </div>
+              <div>
+                <span class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Unique to ${escapeHtml(t2.teacher_name || t2.tutor_id)}:</span>
+                <div class="flex flex-wrap gap-1">
+                  ${(data.t2_unique_subjects || []).slice(0, 6).map(s => `<span class="px-1.5 py-0.5 rounded text-[10px] bg-white border border-slate-200 text-slate-700">${escapeHtml(s)}</span>`).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      } catch (err) {
+        console.error('Error in compare modal:', err);
+        container.innerHTML = `<p class="text-center text-xs text-rose-600 py-6">Server error loading comparison.</p>`;
       }
     }
 
