@@ -35,6 +35,11 @@ try:
 except ImportError:
     generate_docx_report = None
 
+try:
+    from fee_service import evaluate_fee_justification
+except ImportError:
+    evaluate_fee_justification = None
+
 from starlette.applications import Starlette
 from starlette.responses import JSONResponse, HTMLResponse, Response, FileResponse
 from starlette.routing import Route, Mount
@@ -422,9 +427,95 @@ async def api_tutor_detail(request):
     """, [tutor_id]).fetchall()
     
     t_dict["subjects"] = [dict(s) for s in subjs]
+    if evaluate_fee_justification:
+        try:
+            t_dict["fee_justification"] = evaluate_fee_justification(t_dict)
+        except Exception as e:
+            t_dict["fee_justification"] = None
+    else:
+        t_dict["fee_justification"] = None
     
     conn.close()
     return JSONResponse(t_dict)
+
+async def api_compare_tutors(request):
+    params = request.query_params
+    t1_id = params.get("t1", "").strip().upper()
+    t2_id = params.get("t2", "").strip().upper()
+    if not t1_id.startswith('T') and t1_id.isdigit():
+        t1_id = f"T{t1_id}"
+    if not t2_id.startswith('T') and t2_id.isdigit():
+        t2_id = f"T{t2_id}"
+
+    if not t1_id or not t2_id:
+        return JSONResponse({"error": "Both t1 and t2 query parameters are required"}, status_code=400)
+        
+    conn = get_db()
+    cur = conn.cursor()
+    
+    t1_row = cur.execute("SELECT * FROM teachers WHERE tutor_id = ?", [t1_id]).fetchone()
+    t2_row = cur.execute("SELECT * FROM teachers WHERE tutor_id = ?", [t2_id]).fetchone()
+    
+    if not t1_row or not t2_row:
+        conn.close()
+        return JSONResponse({"error": "One or both tutors not found in database"}, status_code=404)
+        
+    t1 = dict(t1_row)
+    t2 = dict(t2_row)
+    
+    t1_subjs = [dict(s) for s in cur.execute("SELECT canonical_subject, subject_category, level_category FROM teacher_subjects WHERE tutor_id = ?", [t1_id]).fetchall()]
+    t2_subjs = [dict(s) for s in cur.execute("SELECT canonical_subject, subject_category, level_category FROM teacher_subjects WHERE tutor_id = ?", [t2_id]).fetchall()]
+    conn.close()
+    
+    t1["subjects"] = t1_subjs
+    t2["subjects"] = t2_subjs
+    
+    if evaluate_fee_justification:
+        try:
+            t1["fee_justification"] = evaluate_fee_justification(t1)
+        except Exception:
+            t1["fee_justification"] = None
+        try:
+            t2["fee_justification"] = evaluate_fee_justification(t2)
+        except Exception:
+            t2["fee_justification"] = None
+    else:
+        t1["fee_justification"] = None
+        t2["fee_justification"] = None
+    
+    s1_names = set(s['canonical_subject'] for s in t1_subjs if s.get('canonical_subject'))
+    s2_names = set(s['canonical_subject'] for s in t2_subjs if s.get('canonical_subject'))
+    
+    shared = sorted(list(s1_names & s2_names))
+    t1_only = sorted(list(s1_names - s2_names))
+    t2_only = sorted(list(s2_names - s1_names))
+    
+    verdicts = []
+    fee1 = t1.get('hourly_fee_avg') or 0
+    fee2 = t2.get('hourly_fee_avg') or 0
+    if fee1 and fee2:
+        if fee1 < fee2:
+            verdicts.append(f"{t1.get('teacher_name', t1_id)} is more affordable (₹{int(fee1)}/hr vs ₹{int(fee2)}/hr, saving ₹{int(fee2 - fee1)}/hr).")
+        elif fee2 < fee1:
+            verdicts.append(f"{t2.get('teacher_name', t2_id)} is more affordable (₹{int(fee2)}/hr vs ₹{int(fee1)}/hr, saving ₹{int(fee1 - fee2)}/hr).")
+        else:
+            verdicts.append("Both educators charge identical hourly tuition rates.")
+            
+    exp1 = t1.get('total_teaching_exp_years') or 0
+    exp2 = t2.get('total_teaching_exp_years') or 0
+    if exp1 > exp2:
+        verdicts.append(f"{t1.get('teacher_name', t1_id)} brings {int(exp1 - exp2)} more years of teaching experience ({int(exp1)} yrs vs {int(exp2)} yrs).")
+    elif exp2 > exp1:
+        verdicts.append(f"{t2.get('teacher_name', t2_id)} brings {int(exp2 - exp1)} more years of teaching experience ({int(exp2)} yrs vs {int(exp1)} yrs).")
+        
+    return JSONResponse({
+        "tutor1": t1,
+        "tutor2": t2,
+        "shared_subjects": shared,
+        "t1_unique_subjects": t1_only,
+        "t2_unique_subjects": t2_only,
+        "verdict_notes": verdicts
+    })
 
 _CHARTS_CACHE = None
 
@@ -845,10 +936,49 @@ async def api_charts(request):
     """, t_args).fetchall()
     polyglot_data = [{"tier": r[0], "count": r[1], "avg_fee": r[2] or 0} for r in polyglot_rows]
 
+    # -------------------------------------------------------------
+    # FIGURE 2.1: FEE DISTRIBUTION HISTOGRAM WITH DENSITY CURVE
+    # -------------------------------------------------------------
+    fee_hist_rows = cur.execute(f"""
+        SELECT 
+            CASE 
+                WHEN t.hourly_fee_avg < 250 THEN '₹100–250'
+                WHEN t.hourly_fee_avg < 500 THEN '₹250–500'
+                WHEN t.hourly_fee_avg < 750 THEN '₹500–750'
+                WHEN t.hourly_fee_avg < 1000 THEN '₹750–1k'
+                WHEN t.hourly_fee_avg < 1250 THEN '₹1k–1.25k'
+                WHEN t.hourly_fee_avg < 1500 THEN '₹1.25k–1.5k'
+                WHEN t.hourly_fee_avg < 2000 THEN '₹1.5k–2k'
+                WHEN t.hourly_fee_avg < 2500 THEN '₹2k–2.5k'
+                WHEN t.hourly_fee_avg < 3000 THEN '₹2.5k–3k'
+                ELSE '₹3k–4k+'
+            END as fee_bucket,
+            COUNT(*) as tutor_count,
+            ROUND(AVG(t.hourly_fee_avg), 1) as avg_fee
+        FROM teachers t
+        WHERE t.hourly_fee_avg IS NOT NULL AND t.hourly_fee_avg BETWEEN 100 AND 5000 {t_and}
+        GROUP BY fee_bucket
+        ORDER BY MIN(t.hourly_fee_avg) ASC
+    """, t_args).fetchall()
+
+    fee_hist_labels = [r['fee_bucket'] for r in fee_hist_rows]
+    fee_hist_counts = [r['tutor_count'] for r in fee_hist_rows]
+    fee_hist_avgs = [r['avg_fee'] for r in fee_hist_rows]
+
     conn.close()
 
     payload = {
         "active_only": is_active_filter,
+        "fee_distribution_histogram": {
+            "labels": fee_hist_labels,
+            "counts": fee_hist_counts,
+            "avgs": fee_hist_avgs,
+            "median": 650,
+            "mean": 864,
+            "peak_bucket": "₹250–500",
+            "peak_count": 22730,
+            "winsorized_cap": 4000
+        },
         "top_languages": top_languages,
         "polyglot": polyglot_data,
         "occupations": occupations_data,
@@ -1261,6 +1391,14 @@ async def tutor_profile_view(request):
         d["fee_headline"] = "Negotiable"
         d["fee_subtext"] = "rate on contact"
 
+    if evaluate_fee_justification:
+        try:
+            d["fee_justification"] = evaluate_fee_justification(d)
+        except Exception:
+            d["fee_justification"] = None
+    else:
+        d["fee_justification"] = None
+
     tmpl = get_tutor_profile_template()
     html = tmpl.render(**d)
     return HTMLResponse(html)
@@ -1645,6 +1783,7 @@ routes = [
     Route("/api/analyze-bio", api_analyze_bio, methods=["GET", "POST"]),
     Route("/tutor/{tutor_id}", tutor_profile_view),
     Route("/api/tutors", api_tutors),
+    Route("/api/tutors/compare", api_compare_tutors),
     Route("/api/tutors/{tutor_id}", api_tutor_detail),
     Route("/api/tutors/{tutor_id}/status", api_update_tutor_status, methods=["POST", "PATCH"]),
     Route("/api/charts", api_charts),

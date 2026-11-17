@@ -179,6 +179,74 @@
 
     </div>
 
+    <!-- FEE JUSTIFICATION ANALYSIS (ECONOMETRIC MODEL) -->
+    {% if fee_justification %}
+    <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-6 shadow-md border border-indigo-900/50 relative overflow-hidden">
+      <!-- Glow effect -->
+      <div class="absolute -right-20 -top-20 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-indigo-800/40 pb-4 relative z-10">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-400/30 flex items-center justify-center text-indigo-300 text-lg shadow-inner">
+            <i class="fa-solid fa-scale-balanced"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="text-base font-bold text-white tracking-tight">Fair Fee Justification Analysis</h3>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-900/90 text-indigo-300 border border-indigo-700/60 uppercase font-semibold">Ridge Econometric Model</span>
+            </div>
+            <p class="text-xs text-slate-300 mt-0.5">Empirical pricing benchmark calibrated against {{ city or state or 'national' }} market data, credentials, and experience.</p>
+          </div>
+        </div>
+        <div>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold shadow-xs {{ fee_justification.badge_class }}">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>{{ fee_justification.badge_text }}</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 mt-5 text-xs relative z-10">
+        <div class="bg-slate-800/60 p-3.5 rounded-2xl border border-slate-700/50">
+          <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">Actual Tutor Fee</span>
+          <span class="text-xl font-black text-white font-mono mt-1 block">
+            {% if fee_justification.actual_fee %}₹{{ '{:,}'.format(fee_justification.actual_fee) }}<span class="text-xs text-slate-400 font-normal">/hr</span>{% else %}Uncalibrated{% endif %}
+          </span>
+          <span class="text-[10px] text-slate-400 mt-0.5 block">Stated market rate</span>
+        </div>
+
+        <div class="bg-slate-800/60 p-3.5 rounded-2xl border border-slate-700/50">
+          <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">Econometric Benchmark</span>
+          <span class="text-xl font-black text-indigo-300 font-mono mt-1 block">
+            {% if fee_justification.predicted_fee %}₹{{ '{:,}'.format(fee_justification.predicted_fee) }}<span class="text-xs text-slate-400 font-normal">/hr</span>{% else %}N/A{% endif %}
+          </span>
+          <span class="text-[10px] text-slate-400 mt-0.5 block">Peer predicted baseline</span>
+        </div>
+
+        <div class="bg-slate-800/60 p-3.5 rounded-2xl border border-slate-700/50">
+          <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">Fair Pricing Range</span>
+          <span class="text-xl font-black text-emerald-400 font-mono mt-1 block">
+            {% if fee_justification.fair_min and fee_justification.fair_max %}₹{{ '{:,}'.format(fee_justification.fair_min) }}–₹{{ '{:,}'.format(fee_justification.fair_max) }}{% else %}N/A{% endif %}
+          </span>
+          <span class="text-[10px] text-slate-400 mt-0.5 block">±20% confidence band</span>
+        </div>
+
+        <div class="bg-slate-800/60 p-3.5 rounded-2xl border border-slate-700/50">
+          <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">Market Position</span>
+          <span class="text-xl font-black text-amber-300 font-mono mt-1 block">
+            {{ fee_justification.percentile }}th<span class="text-xs font-normal text-slate-400"> percentile</span>
+          </span>
+          <span class="text-[10px] text-slate-400 mt-0.5 block">National fee hierarchy</span>
+        </div>
+      </div>
+
+      <div class="mt-4 pt-3 border-t border-indigo-900/40 flex items-start gap-2.5 text-xs text-slate-300 relative z-10">
+        <i class="fa-solid fa-circle-info text-indigo-400 mt-0.5 shrink-0"></i>
+        <span><strong>Econometric Verdict:</strong> {{ fee_justification.explanation }}</span>
+      </div>
+    </div>
+    {% endif %}
+
     <!-- CORE VERIFIED METRICS GRID (REAL DATA ONLY) -->
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
       

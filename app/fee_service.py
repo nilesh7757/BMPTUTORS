@@ -238,6 +238,91 @@ def get_cohort_stats(city_tier: str, subject_category: str, highest_qualificatio
         "cohort_mean": 750
     }
 
+def evaluate_fee_justification(t):
+    actual_fee = t.get('hourly_fee_avg')
+    if actual_fee is None or actual_fee <= 0:
+        return {
+            "has_fee": False,
+            "actual_fee": None,
+            "predicted_fee": 700,
+            "fair_min": 500,
+            "fair_max": 950,
+            "difference": 0,
+            "difference_pct": 0,
+            "status": "negotiable",
+            "badge_color": "slate",
+            "verdict": "Fee Negotiable / On Request",
+            "summary": "This educator has not stated a fixed hourly fee. Based on credentials, expected baseline is approx ₹700/hr.",
+            "drivers": []
+        }
+
+    exp = float(t.get('total_teaching_exp_years') or 2.0)
+    tier = t.get('city_tier') or "Tier 3 / Semi-Urban"
+    qual = t.get('highest_qualification') or "Undergraduate (UG)"
+    has_bed = int(t.get('has_education_degree') or 0)
+    occ = t.get('occupation') or "Independent Private Tutor"
+    
+    subjs = t.get('subjects') or []
+    sub_cat = "Science"
+    lvl_cat = "Secondary (Class 9–10 / Boards)"
+    if subjs and len(subjs) > 0:
+        first_s = subjs[0]
+        if isinstance(first_s, dict):
+            sub_cat = first_s.get('subject_category') or sub_cat
+            lvl_cat = first_s.get('level_category') or lvl_cat
+
+    online = int(t.get('teaches_online') or 1)
+    home = int(t.get('teaches_at_student_home') or 0)
+
+    pred = predict_fee(
+        exp_years=exp,
+        city_tier=tier,
+        highest_qualification=qual,
+        has_education_degree=has_bed,
+        occupation=occ,
+        subject_category=sub_cat,
+        level_category=lvl_cat,
+        teaches_online=online,
+        teaches_home=home
+    )
+
+    pred_fee = pred['predicted_fee']
+    fair_min = pred['fee_min_rec']
+    fair_max = pred['fee_max_rec']
+    diff = round(actual_fee - pred_fee)
+    diff_pct = round((diff / pred_fee) * 100) if pred_fee else 0
+
+    if diff < -120:
+        status = "underpriced"
+        badge_color = "emerald"
+        verdict = "Great Value (Below Market Benchmark)"
+        summary = f"This tutor charges ₹{int(actual_fee)}/hr, which is ₹{abs(diff)}/hr below the econometric market baseline of ₹{pred_fee}/hr for an educator with {int(exp)} yrs experience in {tier}. High value for budget-conscious families."
+    elif diff > 200:
+        status = "premium"
+        badge_color = "amber"
+        verdict = "Premium Specialist Rate"
+        summary = f"This tutor charges ₹{int(actual_fee)}/hr, which is ₹{diff}/hr above the econometric baseline (₹{pred_fee}/hr). In private tutoring, premium rates reflect unobservable qualities: specialized entrance coaching (JEE/NEET), school board track records, or personalized 1-on-1 mentoring."
+    else:
+        status = "justified"
+        badge_color = "blue"
+        verdict = "Fair & Fully Justified"
+        summary = f"This tutor charges ₹{int(actual_fee)}/hr, which aligns closely with the empirical market benchmark of ₹{pred_fee}/hr (fair range: ₹{fair_min}–₹{fair_max}/hr) given their location ({tier}), qualifications ({qual}), and experience."
+
+    return {
+        "has_fee": True,
+        "actual_fee": round(actual_fee),
+        "predicted_fee": pred_fee,
+        "fair_min": fair_min,
+        "fair_max": fair_max,
+        "difference": diff,
+        "difference_pct": diff_pct,
+        "status": status,
+        "badge_color": badge_color,
+        "verdict": verdict,
+        "summary": summary,
+        "drivers": pred.get('feature_contributions', [])[:4]
+    }
+
 if __name__ == "__main__":
     test_res = predict_fee(
         exp_years=8,
