@@ -36,7 +36,7 @@ def add_white_bg(slide):
     bg.line.fill.background()
     return bg
 
-def add_top_bar(slide, topic, num, total=17):
+def add_top_bar(slide, topic, num, total=16):
     # Topic Badge (Soft Emerald pill, green text)
     badge = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(0.4), Inches(2.3), Inches(0.38))
     badge.fill.solid()
@@ -313,82 +313,14 @@ set_notes(s4, "40s",
     "Did you complete the tracker tasks?",
     "Yes, we covered the full analytical pipeline from cleaning to modeling and deployment, prioritizing interactive web tools over static Word tables.")
 
-# ----------------- SLIDE 5: Data Cleaning -----------------
+# ----------------- SLIDE 5: Database (3NF) -----------------
 s5 = prs.slides.add_slide(blank_layout)
 add_white_bg(s5)
-add_top_bar(s5, "Data Cleaning", 5)
-add_header(s5, "Data Cleaning: How We Prepared 107,673 Records", "Four essential cleaning steps to ensure trustworthy analysis with zero data loss")
-
-metrics5 = [
-    ("107,673", "Verified Unique Tutors"),
-    ("403,221", "Offerings Preserved (0 Lost)"),
-    ("₹4,000 / hr", "Fee Cap (Winsorization)"),
-    ("95.6%", "Online Teaching Adoption")
-]
-for i, (val, lbl) in enumerate(metrics5):
-    m_box = s5.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8 + i * 2.98), Inches(2.0), Inches(2.8), Inches(1.1))
-    m_box.fill.solid()
-    m_box.fill.fore_color.rgb = CARD_BG
-    m_box.line.color.rgb = BORDER_GRAY
-    tf = m_box.text_frame
-    tf.word_wrap = True
-    p = tf.paragraphs[0]
-    p.alignment = PP_ALIGN.CENTER
-    r = p.add_run()
-    r.text = val + "\n"
-    r.font.size = Pt(18)
-    r.font.bold = True
-    r.font.color.rgb = ACCENT_PRIMARY
-    r2 = p.add_run()
-    r2.text = lbl
-    r2.font.size = Pt(10)
-    r2.font.color.rgb = TEXT_MUTED
-
-clean_steps = [
-    ("Deduplication & Merge", "Merged scraped (76,706) and unscraped (31,017) cohorts into 107,673 unique records with zero duplicate IDs."),
-    ("Fee Outliers (Winsorization)", "Caught monthly rates (₹10,000–₹50,000) typed into hourly fields. Bounded at ₹4,000/hr so models aren't skewed."),
-    ("Location & Tier Mapping", "Standardized unorganized cities into 5 macro zones (North, South, East, West, Central) and 3 city tiers."),
-    ("Experience & Modality", "Converted raw text into clean numeric years and identified delivery mode: 95.6% online vs 26.7% home tutoring.")
-]
-clean_coords = [
-    (Inches(0.8), Inches(3.3), Inches(5.7), Inches(1.8)),
-    (Inches(6.8), Inches(3.3), Inches(5.7), Inches(1.8)),
-    (Inches(0.8), Inches(5.3), Inches(5.7), Inches(1.8)),
-    (Inches(6.8), Inches(5.3), Inches(5.7), Inches(1.8)),
-]
-for (t, d), (l, top, w, h) in zip(clean_steps, clean_coords):
-    box = s5.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, l, top, w, h)
-    box.fill.solid()
-    box.fill.fore_color.rgb = CARD_BG
-    box.line.color.rgb = BORDER_GRAY
-    tf = box.text_frame
-    tf.word_wrap = True
-    tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.18)
-    p = tf.paragraphs[0]
-    r = p.add_run()
-    r.text = f"◈  {t}\n\n"
-    r.font.size = Pt(12)
-    r.font.bold = True
-    r.font.color.rgb = ACCENT_PURPLE
-    p2 = tf.add_paragraph()
-    r2 = p2.add_run()
-    r2.text = d
-    r2.font.size = Pt(10.5)
-    r2.font.color.rgb = TEXT_BODY
-
-set_notes(s5, "35s",
-    "To make raw Excel data usable, we executed four essential cleaning rules. We merged scraped and unscraped sheets into 107,673 unique tutors. We resolved unit confusion where monthly coaching fees were typed into hourly slots by applying a ₹4,000/hr Winsorization ceiling. We mapped locations into standard zones and city tiers, and cleaned experience into numeric years. Every single one of our 403,221 offerings survived the pipeline with zero rows lost.",
-    "Why Winsorize instead of deleting fees above ₹4,000?",
-    "Deleting them would bias our sample by removing top entrance exam specialists. Winsorization bounds extreme statistical influence while keeping their profile and subjects in the dataset.")
-
-# ----------------- SLIDE 6: Database (3NF) -----------------
-s6 = prs.slides.add_slide(blank_layout)
-add_white_bg(s6)
-add_top_bar(s6, "Database (3NF)", 6)
-add_header(s6, "Database: Why we split one big spreadsheet into two tables", "3NF normalization eliminates empty cells and speeds up search")
+add_top_bar(s5, "Database (3NF)", 5)
+add_header(s5, "Database: Why we split one big spreadsheet into two tables", "3NF normalization eliminates empty cells and speeds up search")
 
 # Table 1 box
-t1_b = s6.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(2.0), Inches(5.7), Inches(2.8))
+t1_b = s5.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(2.0), Inches(5.7), Inches(2.8))
 t1_b.fill.solid()
 t1_b.fill.fore_color.rgb = CARD_BG
 t1_b.line.color.rgb = BORDER_GRAY
@@ -412,7 +344,7 @@ r3.font.size = Pt(10)
 r3.font.color.rgb = TEXT_MUTED
 
 # Table 2 box
-t2_b = s6.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(2.0), Inches(5.7), Inches(2.8))
+t2_b = s5.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(2.0), Inches(5.7), Inches(2.8))
 t2_b.fill.solid()
 t2_b.fill.fore_color.rgb = CARD_BG
 t2_b.line.color.rgb = BORDER_GRAY
@@ -441,7 +373,7 @@ adv6 = [
     ("3.79 Avg", "Subjects / Tutor", "Flexible 1-to-many relationship handles generalists and specialists cleanly.")
 ]
 for i, (st, lb, dc) in enumerate(adv6):
-    box = s6.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8 + i * 4.0), Inches(5.0), Inches(3.7), Inches(1.8))
+    box = s5.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8 + i * 4.0), Inches(5.0), Inches(3.7), Inches(1.8))
     box.fill.solid()
     box.fill.fore_color.rgb = CARD_BG
     box.line.color.rgb = BORDER_GRAY
@@ -464,16 +396,16 @@ for i, (st, lb, dc) in enumerate(adv6):
     r3.font.size = Pt(9.5)
     r3.font.color.rgb = TEXT_MUTED
 
-set_notes(s6, "45s",
+set_notes(s5, "45s",
     "In the original spreadsheet, each tutor row had 20 repeated subject columns, and 60% of cells were empty NULLs. We split this into 3NF with two tables: 'teachers' with 107k rows, and 'teacher_subjects' with 403k offerings. Because tutors teach an average of 3.79 subjects, this cut file size by 64% and enabled indexed joins that run under 50 milliseconds.",
     "Why SQLite instead of MongoDB?",
     "SQLite provides ACID guarantees and fast indexed B-Tree joins without network overhead, perfect for an analytical benchmark and web deployment.")
 
-# ----------------- SLIDE 7: Taxonomy -----------------
-s7 = prs.slides.add_slide(blank_layout)
-add_white_bg(s7)
-add_top_bar(s7, "Taxonomy", 7)
-add_header(s7, "From 21,956 spellings to 386 clean subjects", "Zero offerings lost — all 403,221 entries grouped into 6 macro categories")
+# ----------------- SLIDE 6: Taxonomy -----------------
+s6 = prs.slides.add_slide(blank_layout)
+add_white_bg(s6)
+add_top_bar(s6, "Taxonomy", 6)
+add_header(s6, "From 21,956 spellings to 386 clean subjects", "Zero offerings lost — all 403,221 entries grouped into 6 macro categories")
 
 cats7 = [
     ("Science & Maths", "142,810 entries", "Mathematics, Physics, Chemistry, Biology, Statistics"),
@@ -492,7 +424,7 @@ grid7 = [
     (Inches(8.8), Inches(4.5), Inches(3.7), Inches(2.3)),
 ]
 for (name, count, ex), (l, top, w, h) in zip(cats7, grid7):
-    box = s7.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, l, top, w, h)
+    box = s6.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, l, top, w, h)
     box.fill.solid()
     box.fill.fore_color.rgb = CARD_BG
     box.line.color.rgb = BORDER_GRAY
@@ -516,22 +448,22 @@ for (name, count, ex), (l, top, w, h) in zip(cats7, grid7):
     r3.font.size = Pt(10)
     r3.font.color.rgb = TEXT_BODY
 
-set_notes(s7, "40s",
+set_notes(s6, "40s",
     "Tutors entered subjects freely, creating 21,956 unique spellings—like 'Maths', 'Math', and 'Mathematics'. Following Categories_DataCleaning.docx, we mapped these into 386 clean canonical disciplines across 6 macro-categories: Science, Languages, Coding, Commerce, Arts, and Hobbies. Not a single offering was lost; all 403,221 rows were preserved.",
     "Did you discard unrecognized subjects?",
     "No, any entry that did not match a standard school subject was classified into canonical specialized fields or placed into Hobbies/Other, keeping row loss at zero.")
 
-# ----------------- SLIDE 8: Geography -----------------
-s8 = prs.slides.add_slide(blank_layout)
-add_white_bg(s8)
-add_top_bar(s8, "Geography", 8)
-add_header(s8, "Where tutors live: Top 5 states hold 54.4%", "Private tutoring follows coaching culture, not state population")
+# ----------------- SLIDE 7: Geography -----------------
+s7 = prs.slides.add_slide(blank_layout)
+add_white_bg(s7)
+add_top_bar(s7, "Geography", 7)
+add_header(s7, "Where tutors live: Top 5 states hold 54.4%", "Private tutoring follows coaching culture, not state population")
 
 img8 = '/home/nilesh7757/BMPTUTORS1/assets/all_india_tutor_choropleth.png'
 if os.path.exists(img8):
-    s8.shapes.add_picture(img8, Inches(0.8), Inches(2.0), width=Inches(5.4))
+    s7.shapes.add_picture(img8, Inches(0.8), Inches(2.0), width=Inches(5.4))
 
-panel8 = s8.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.6), Inches(2.0), Inches(5.9), Inches(4.8))
+panel8 = s7.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.6), Inches(2.0), Inches(5.9), Inches(4.8))
 panel8.fill.solid()
 panel8.fill.fore_color.rgb = CARD_BG
 panel8.line.color.rgb = BORDER_GRAY
@@ -563,22 +495,22 @@ r.text = "\nKey Takeaway:\nKerala has 2.8% of India's population but 13.3% of it
 r.font.size = Pt(10.5)
 r.font.color.rgb = TEXT_BODY
 
-set_notes(s8, "45s",
+set_notes(s7, "45s",
     "Tutor supply is heavily concentrated: five states account for 54.4% of all tutors in India. Tamil Nadu and Kerala lead nationally. This reveals a clear divergence: Kerala holds 2.8% of India's population but 13.3% of tutors, while Bihar holds 8.6% of the population but only 1.4% of tutors. Tutoring density reflects household coaching investment and literacy rather than population.",
     "Why are fees in Kerala lower (₹612/hr) despite high tutor supply?",
     "High supply of qualified graduates creates healthy local competition, which exerts downward competitive pressure on hourly fees.")
 
-# ----------------- SLIDE 9: Market Structure -----------------
-s9 = prs.slides.add_slide(blank_layout)
-add_white_bg(s9)
-add_top_bar(s9, "Market Structure", 9)
-add_header(s9, "The Central Finding: 3 out of 4 tutors work outside big cities", "74.1% of tutors are in Tier-3 semi-urban towns, enabled by online teaching")
+# ----------------- SLIDE 8: Market Structure -----------------
+s8 = prs.slides.add_slide(blank_layout)
+add_white_bg(s8)
+add_top_bar(s8, "Market Structure", 8)
+add_header(s8, "The Central Finding: 3 out of 4 tutors work outside big cities", "74.1% of tutors are in Tier-3 semi-urban towns, enabled by online teaching")
 
 img9 = '/home/nilesh7757/BMPTUTORS1/assets/chart_regional_distribution.png'
 if os.path.exists(img9):
-    s9.shapes.add_picture(img9, Inches(0.8), Inches(2.0), width=Inches(5.4))
+    s8.shapes.add_picture(img9, Inches(0.8), Inches(2.0), width=Inches(5.4))
 
-panel9 = s9.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.6), Inches(2.0), Inches(5.9), Inches(4.8))
+panel9 = s8.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.6), Inches(2.0), Inches(5.9), Inches(4.8))
 panel9.fill.solid()
 panel9.fill.fore_color.rgb = CARD_BG
 panel9.line.color.rgb = BORDER_GRAY
@@ -615,22 +547,22 @@ r.text = "\nOnline Revolution:\n95.6% of tutors teach online. Broadband connecti
 r.font.size = Pt(10.5)
 r.font.color.rgb = ACCENT_AMBER
 
-set_notes(s9, "45s",
+set_notes(s8, "45s",
     "This was our most striking empirical finding: 74.1% of private tutors live outside Tier-1 metros in Tier-3 semi-urban towns. Only 12.7% are in metro cities. EdTech commercial marketing focuses almost entirely on metros, yet the vast reality of Indian tuition is a distributed, small-town phenomenon. Because 95.6% of these tutors teach online, broadband has connected small-town educators to students across the country.",
     "How were cities categorized into tiers?",
     "We followed Government of India / RBI classifications: Tier-1 for the 8 major metros, Tier-2 for state capitals and industrial centers, and Tier-3 for all other municipalities.")
 
 # ----------------- SLIDE 10: Pricing -----------------
-s10 = prs.slides.add_slide(blank_layout)
-add_white_bg(s10)
-add_top_bar(s10, "Pricing Dynamics", 10)
-add_header(s10, "How fees climb with each school level", "National median is ₹650/hr, but mean is ₹864/hr due to top specialist rates")
+s9 = prs.slides.add_slide(blank_layout)
+add_white_bg(s9)
+add_top_bar(s9, "Pricing Dynamics", 9)
+add_header(s9, "How fees climb with each school level", "National median is ₹650/hr, but mean is ₹864/hr due to top specialist rates")
 
 img10 = '/home/nilesh7757/BMPTUTORS1/assets/chart_education_levels.png'
 if os.path.exists(img10):
-    s10.shapes.add_picture(img10, Inches(0.8), Inches(2.0), width=Inches(5.4))
+    s9.shapes.add_picture(img10, Inches(0.8), Inches(2.0), width=Inches(5.4))
 
-panel10 = s10.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.6), Inches(2.0), Inches(5.9), Inches(4.8))
+panel10 = s9.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.6), Inches(2.0), Inches(5.9), Inches(4.8))
 panel10.fill.solid()
 panel10.fill.fore_color.rgb = CARD_BG
 panel10.line.color.rgb = BORDER_GRAY
@@ -665,22 +597,22 @@ r.text = "\nFacts from the Data:\n• Median is ₹650, but mean is ₹864 becau
 r.font.size = Pt(9.5)
 r.font.color.rgb = TEXT_BODY
 
-set_notes(s10, "45s",
+set_notes(s9, "45s",
     "Hourly fees follow a steady ladder as student age climbs. Primary tutors average ₹710/hr, Secondary averages ₹825, Class 11-12 STEM averages ₹950, and Professional coaching reaches ₹1,257—a 77% premium over primary school. The national median is ₹650 while the mean is ₹864, because a high-earning minority charging ₹2,000+ pulls up the arithmetic average.",
     "Why does the Class 11-12 step have such a big fee jump?",
     "Because of intense board examination and competitive entrance pressures (JEE, NEET), where parents are willing to pay a premium for specialized coaching.")
 
-# ----------------- SLIDE 11: Subject Bundling -----------------
-s11 = prs.slides.add_slide(blank_layout)
-add_white_bg(s11)
-add_top_bar(s11, "Subject Bundling", 11)
-add_header(s11, "The STEM Trio: How many tutors teach Math, Physics & Chemistry?", "Set-theoretic analysis reveals that multi-subject generalists are rare")
+# ----------------- SLIDE 10: Subject Bundling -----------------
+s10 = prs.slides.add_slide(blank_layout)
+add_white_bg(s10)
+add_top_bar(s10, "Subject Bundling", 10)
+add_header(s10, "The STEM Trio: How many tutors teach Math, Physics & Chemistry?", "Set-theoretic analysis reveals that multi-subject generalists are rare")
 
 img11 = '/home/nilesh7757/BMPTUTORS1/assets/venn_stem_trio.png'
 if os.path.exists(img11):
-    s11.shapes.add_picture(img11, Inches(0.8), Inches(2.0), width=Inches(5.4))
+    s10.shapes.add_picture(img11, Inches(0.8), Inches(2.0), width=Inches(5.4))
 
-panel11 = s11.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.6), Inches(2.0), Inches(5.9), Inches(4.8))
+panel11 = s10.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.6), Inches(2.0), Inches(5.9), Inches(4.8))
 panel11.fill.solid()
 panel11.fill.fore_color.rgb = CARD_BG
 panel11.line.color.rgb = BORDER_GRAY
@@ -718,22 +650,22 @@ r.text = "\nAcademic Takeaway:\nCoaching ads often claim 'all subjects in one te
 r.font.size = Pt(10)
 r.font.color.rgb = TEXT_MUTED
 
-set_notes(s11, "40s",
+set_notes(s10, "40s",
     "Using our 3NF database, we performed set intersection across the core STEM subjects: Mathematics, Physics, and Chemistry. Across 34,923 STEM tutors, only 2,917—or 8.35%—teach all three subjects. In contrast, 16,929 tutors teach Mathematics alone. Multi-subject generalists are rare; specialization dominates secondary and higher secondary coaching.",
     "How does the web application generate this Venn diagram?",
     "Our server executes SQL INTERSECT queries on the teacher_subjects table, mapping selected subjects into disjoint subsets in real time.")
 
-# ----------------- SLIDE 12: Demographics -----------------
-s12 = prs.slides.add_slide(blank_layout)
-add_white_bg(s12)
-add_top_bar(s12, "Demographics", 12)
-add_header(s12, "Who teaches: 58.7% women, and degrees command a premium", "A PhD earns 41.8% more; 1 in 5 tutors has a non-teaching primary job")
+# ----------------- SLIDE 11: Demographics -----------------
+s11 = prs.slides.add_slide(blank_layout)
+add_white_bg(s11)
+add_top_bar(s11, "Demographics", 11)
+add_header(s11, "Who teaches: 58.7% women, and degrees command a premium", "A PhD earns 41.8% more; 1 in 5 tutors has a non-teaching primary job")
 
 img12 = '/home/nilesh7757/BMPTUTORS1/assets/fig2_experience_gender.png'
 if os.path.exists(img12):
-    s12.shapes.add_picture(img12, Inches(0.8), Inches(2.0), width=Inches(5.4))
+    s11.shapes.add_picture(img12, Inches(0.8), Inches(2.0), width=Inches(5.4))
 
-panel12 = s12.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.6), Inches(2.0), Inches(5.9), Inches(4.8))
+panel12 = s11.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.6), Inches(2.0), Inches(5.9), Inches(4.8))
 panel12.fill.solid()
 panel12.fill.fore_color.rgb = CARD_BG
 panel12.line.color.rgb = BORDER_GRAY
@@ -766,16 +698,16 @@ r.text = "\nDegree & Gig Dynamics:\n• PhD holders average ₹1,179.5/hr vs ₹
 r.font.size = Pt(10)
 r.font.color.rgb = TEXT_BODY
 
-set_notes(s12, "40s",
+set_notes(s11, "40s",
     "In demographics, women make up 58.7% of tutors. Female representation is highest in languages (78%) and biology (73%). Coding is the only male-majority subject at 61%, reflecting broader software industry workforce patterns. Academic degrees matter: tutors with a PhD command a 41.8% fee premium over undergraduates (₹1,179 vs ₹832). Additionally, 1 in 5 tutors teaches as a secondary gig alongside an IT or corporate job.",
     "Why is coding the only male-majority domain?",
     "It mirrors the gender distribution of software engineers who participate in evening tuition as a secondary gig occupation.")
 
-# ----------------- SLIDE 13: Econometric Model -----------------
-s13 = prs.slides.add_slide(blank_layout)
-add_white_bg(s13)
-add_top_bar(s13, "Econometric Model", 13)
-add_header(s13, "Pricing Model: Why formulas only explain 10% of fees", "Ridge regression on 72,001 tutors: math gives a baseline, trust sets the price")
+# ----------------- SLIDE 12: Econometric Model -----------------
+s12 = prs.slides.add_slide(blank_layout)
+add_white_bg(s12)
+add_top_bar(s12, "Econometric Model", 12)
+add_header(s12, "Pricing Model: Why formulas only explain 10% of fees", "Ridge regression on 72,001 tutors: math gives a baseline, trust sets the price")
 
 stats13 = [
     ("72,001", "Tutors Used", "Active with stated fees"),
@@ -784,7 +716,7 @@ stats13 = [
     ("₹370.67", "Avg Error (MAE)", "Prediction baseline (₹/hr)")
 ]
 for i, (val, lbl, sub) in enumerate(stats13):
-    box = s13.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8 + i * 2.98), Inches(2.0), Inches(2.8), Inches(1.1))
+    box = s12.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8 + i * 2.98), Inches(2.0), Inches(2.8), Inches(1.1))
     box.fill.solid()
     box.fill.fore_color.rgb = CARD_BG
     box.line.color.rgb = BORDER_GRAY
@@ -807,7 +739,7 @@ for i, (val, lbl, sub) in enumerate(stats13):
     r3.font.size = Pt(8.5)
     r3.font.color.rgb = TEXT_MUTED
 
-b_o = s13.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(3.3), Inches(5.7), Inches(3.6))
+b_o = s12.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(3.3), Inches(5.7), Inches(3.6))
 b_o.fill.solid()
 b_o.fill.fore_color.rgb = RGBColor(240, 253, 244) # Emerald 50
 b_o.line.color.rgb = RGBColor(187, 247, 208)
@@ -833,7 +765,7 @@ for it in obs_items:
     r.font.size = Pt(10.5)
     r.font.color.rgb = TEXT_DARK
 
-b_u = s13.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(3.3), Inches(5.7), Inches(3.6))
+b_u = s12.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(3.3), Inches(5.7), Inches(3.6))
 b_u.fill.solid()
 b_u.fill.fore_color.rgb = RGBColor(254, 243, 199) # Amber 50
 b_u.line.color.rgb = RGBColor(253, 230, 138)
@@ -859,22 +791,22 @@ for it in unobs_items:
     r.font.size = Pt(10.5)
     r.font.color.rgb = TEXT_DARK
 
-set_notes(s13, "55s",
+set_notes(s12, "55s",
     "Fulfilling the tracker tasks, we built an econometric fee model using Ridge regression on 72,001 tutors. It achieves an R² of 9.84% with an average error of ₹370/hr. Why does a 38-feature model only explain 10% of fees? Because tutoring is an experience good governed by unobservable qualities: word of mouth, personal patience, institutional pedigree, and past student exam results. Observable data gives a reliable baseline (±₹370/hr), but individual pricing ultimately runs on trust.",
     "Why Ridge instead of Ordinary Least Squares (OLS)?",
     "One-hot encoding 386 subjects creates multicollinearity. Ridge's L2 penalty shrinks correlated coefficients, preventing overfitting and keeping coefficients economically stable.")
 
-# ----------------- SLIDE 14: Directory -----------------
-s14 = prs.slides.add_slide(blank_layout)
-add_white_bg(s14)
-add_top_bar(s14, "Directory", 14)
-add_header(s14, "Finding the right tutor in four clicks", "Sub-50ms query latency, 9 reactive filters, and instant Excel export")
+# ----------------- SLIDE 13: Directory -----------------
+s13 = prs.slides.add_slide(blank_layout)
+add_white_bg(s13)
+add_top_bar(s13, "Directory", 13)
+add_header(s13, "Finding the right tutor in four clicks", "Sub-50ms query latency, 9 reactive filters, and instant Excel export")
 
 img14 = '/home/nilesh7757/BMPTUTORS1/assets/screenshot_landing_directory.png'
 if os.path.exists(img14):
-    s14.shapes.add_picture(img14, Inches(0.8), Inches(2.0), width=Inches(5.4))
+    s13.shapes.add_picture(img14, Inches(0.8), Inches(2.0), width=Inches(5.4))
 
-panel14 = s14.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.6), Inches(2.0), Inches(5.9), Inches(4.8))
+panel14 = s13.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.6), Inches(2.0), Inches(5.9), Inches(4.8))
 panel14.fill.solid()
 panel14.fill.fore_color.rgb = CARD_BG
 panel14.line.color.rgb = BORDER_GRAY
@@ -903,18 +835,18 @@ for f_t, f_d in filters14:
     r.font.size = Pt(10.5)
     r.font.color.rgb = TEXT_DARK
 
-set_notes(s14, "40s",
+set_notes(s13, "40s",
     "Here is our live directory dashboard. Users can isolate relevant educators in under four clicks using nine reactive filters: state, city tier, fee range, modality, experience, and active verification status. All 386 clean subjects are indexed, searches run in under 50ms against SQLite, and any filtered list can be exported straight to Excel.",
     "How does it handle 107k profiles without browser lag?",
     "We use server-side pagination with SQLite B-Tree indexing, transferring only 12 to 100 rows per request.")
 
-# ----------------- SLIDE 15: Interactive Tools -----------------
-s15 = prs.slides.add_slide(blank_layout)
-add_white_bg(s15)
-add_top_bar(s15, "Interactive Tools", 15)
-add_header(s15, "Two live tools deployed on the platform", "Translating data engineering and machine learning into practical utilities")
+# ----------------- SLIDE 14: Interactive Tools -----------------
+s14 = prs.slides.add_slide(blank_layout)
+add_white_bg(s14)
+add_top_bar(s14, "Interactive Tools", 14)
+add_header(s14, "Two live tools deployed on the platform", "Translating data engineering and machine learning into practical utilities")
 
-t1_box = s15.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(2.0), Inches(5.7), Inches(4.7))
+t1_box = s14.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(2.0), Inches(5.7), Inches(4.7))
 t1_box.fill.solid()
 t1_box.fill.fore_color.rgb = CARD_BG
 t1_box.line.color.rgb = BORDER_GRAY
@@ -944,7 +876,7 @@ for it in items15_a:
     r.font.size = Pt(10.5)
     r.font.color.rgb = TEXT_DARK
 
-t2_box = s15.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(2.0), Inches(5.7), Inches(4.7))
+t2_box = s14.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(2.0), Inches(5.7), Inches(4.7))
 t2_box.fill.solid()
 t2_box.fill.fore_color.rgb = CARD_BG
 t2_box.line.color.rgb = BORDER_GRAY
@@ -974,16 +906,16 @@ for it in items15_b:
     r.font.size = Pt(10.5)
     r.font.color.rgb = TEXT_DARK
 
-set_notes(s15, "45s",
+set_notes(s14, "45s",
     "To make our research actionable, we built two interactive tools: First, the ML Fee Estimator. Tutors and parents enter 7 details to receive a recommended hourly rate, confidence range, income estimates, and an itemized breakdown. Second, the Bio Studio powered by Google Gemini GenAI, which writes student-converting profile bios with parent and student versions, backed by offline fallback templates.",
     "What happens if the Gemini API key is missing?",
     "The application gracefully switches to a rule-based deterministic template engine that formats tutor bios without interrupting the user experience.")
 
 # ----------------- SLIDE 16: Key Takeaways -----------------
-s16 = prs.slides.add_slide(blank_layout)
-add_white_bg(s16)
-add_top_bar(s16, "Findings & Impact", 16)
-add_header(s16, "Five things the data showed us", "Empirical conclusions from 107,673 tutors and future research scope")
+s15 = prs.slides.add_slide(blank_layout)
+add_white_bg(s15)
+add_top_bar(s15, "Findings & Impact", 15)
+add_header(s15, "Five things the data showed us", "Empirical conclusions from 107,673 tutors and future research scope")
 
 takes16 = [
     ("01", "74.1% Tier-3", "Tuition in India is predominantly a small-town reality, not a metro phenomenon."),
@@ -993,7 +925,7 @@ takes16 = [
     ("05", "Trust-Based", "Formulas provide a baseline (±₹370), while reputation and trust set individual price.")
 ]
 for i, (num, tit, dc) in enumerate(takes16):
-    box = s16.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8 + i * 2.38), Inches(2.0), Inches(2.25), Inches(3.4))
+    box = s15.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8 + i * 2.38), Inches(2.0), Inches(2.25), Inches(3.4))
     box.fill.solid()
     box.fill.fore_color.rgb = CARD_BG
     box.line.color.rgb = BORDER_GRAY
@@ -1017,7 +949,7 @@ for i, (num, tit, dc) in enumerate(takes16):
     r3.font.size = Pt(9.5)
     r3.font.color.rgb = TEXT_BODY
 
-fw_box = s16.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(5.6), Inches(11.733), Inches(1.1))
+fw_box = s15.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(5.6), Inches(11.733), Inches(1.1))
 fw_box.fill.solid()
 fw_box.fill.fore_color.rgb = CARD_BG
 fw_box.line.color.rgb = BORDER_GRAY
@@ -1035,18 +967,18 @@ r2.text = "Quarterly fee tracking across seasons  ·  District-level GIS maps in
 r2.font.size = Pt(10)
 r2.font.color.rgb = TEXT_BODY
 
-set_notes(s16, "45s",
+set_notes(s15, "45s",
     "In conclusion, our B.Tech Mini Project delivers five verified empirical conclusions: First, 74.1% of tutoring operates in Tier-3 semi-urban markets. Second, Southern states dominate national supply. Third, women represent 58.7% of tutors. Fourth, STEM coaching is heavily specialized. Fifth, tutoring fees are anchored by trust and reputation. For future work, we plan quarterly fee tracking, district maps, and parent review scores.",
     "How can this inform educational policy in India?",
     "By showing that 74% of tutoring is outside metros and that fees vary tenfold in the same zip code, education authorities can establish fair coaching guidelines.")
 
-# ----------------- SLIDE 17: Live Demo -----------------
-s17 = prs.slides.add_slide(blank_layout)
-add_white_bg(s17)
-add_top_bar(s17, "Live Demo", 17)
-add_header(s17, "Conclusion & Live Platform Demonstration", "bmptutors.onrender.com")
+# ----------------- SLIDE 16: Live Demo -----------------
+s16 = prs.slides.add_slide(blank_layout)
+add_white_bg(s16)
+add_top_bar(s16, "Live Demo", 16)
+add_header(s16, "Conclusion & Live Platform Demonstration", "bmptutors.onrender.com")
 
-left_box = s17.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(2.0), Inches(5.7), Inches(4.7))
+left_box = s16.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(2.0), Inches(5.7), Inches(4.7))
 left_box.fill.solid()
 left_box.fill.fore_color.rgb = CARD_BG
 left_box.line.color.rgb = BORDER_GRAY
@@ -1073,7 +1005,7 @@ r.text = "Joint Equal Authors:\nNilesh Mori (202301473)  ·  Pratik Chauhan (202
 r.font.size = Pt(11)
 r.font.color.rgb = TEXT_BODY
 
-right_box = s17.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(2.0), Inches(5.7), Inches(4.7))
+right_box = s16.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(2.0), Inches(5.7), Inches(4.7))
 right_box.fill.solid()
 right_box.fill.fore_color.rgb = CARD_BG
 right_box.line.color.rgb = BORDER_GRAY
@@ -1105,7 +1037,7 @@ for st, dc in demo17:
     r2.font.size = Pt(9.5)
     r2.font.color.rgb = TEXT_MUTED
 
-set_notes(s17, "5 Mins",
+set_notes(s16, "5 Mins",
     "Thank you, professors. We invite your questions on our database schema, cleaning methodology, or econometric model. We will now switch to the live deployed application at bmptutors.onrender.com for our interactive demonstration.",
     "Is the deployed system running locally or on cloud infrastructure?",
     "It is running live on Render's container platform with Docker and automated continuous integration from GitHub.")

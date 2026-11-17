@@ -369,54 +369,6 @@
   },
   {
     "id": 5,
-    "badge": "Data Pipeline",
-    "title": "Data Cleaning: How We Prepared 107,673 Records",
-    "subtitle": "Four essential cleaning steps to ensure trustworthy analysis with zero data loss",
-    "image": "assets/cleaning_bg.png",
-    "type": "pipeline_detail",
-    "metrics": [
-      {
-        "val": "107,673",
-        "lbl": "Verified Unique Tutors"
-      },
-      {
-        "val": "403,221",
-        "lbl": "Offerings Preserved (0 Lost)"
-      },
-      {
-        "val": "\u20b94,000/hr",
-        "lbl": "Fee Cap (Winsorization)"
-      },
-      {
-        "val": "95.6%",
-        "lbl": "Online Teaching Adoption"
-      }
-    ],
-    "protocol": [
-      {
-        "step": "Deduplication & Merge",
-        "desc": "Merged scraped (76,706) and unscraped (31,017) cohorts into 107,673 unique records with zero duplicate IDs."
-      },
-      {
-        "step": "Fee Outliers (Winsorization)",
-        "desc": "Caught monthly coaching fees (\u20b910,000\u2013\u20b950,000) typed into hourly fields. Bounded at \u20b94,000/hr so models aren't skewed."
-      },
-      {
-        "step": "Location & Tier Mapping",
-        "desc": "Standardized unorganized cities into 5 macro zones (North, South, East, West, Central) and 3 city tiers."
-      },
-      {
-        "step": "Experience & Modality",
-        "desc": "Converted raw text into clean numeric years and identified delivery mode: 95.6% online vs 26.7% home tutoring."
-      }
-    ],
-    "target_time": "35s",
-    "notes": "To make raw Excel data usable, we executed four essential cleaning rules. We merged scraped and unscraped sheets into 107,673 unique tutors. We resolved unit confusion where monthly coaching fees were typed into hourly slots by applying a \u20b94,000/hr Winsorization ceiling. We mapped locations into standard zones and city tiers, and cleaned experience into numeric years. Every single one of our 403,221 offerings survived the pipeline with zero rows lost.",
-    "viva_q": "Why did you use Winsorization instead of simply dropping outliers above \u20b94,000?",
-    "viva_a": "Dropping high-fee tutors would cause sample selection bias, deleting legitimate top entrance-exam specialists. Winsorization retains their presence, demographics, and subject offerings while bounding extreme variance for econometric regression."
-  },
-  {
-    "id": 6,
     "badge": "Database (3NF)",
     "title": "Database: Why we split one big spreadsheet into two tables",
     "subtitle": "3NF normalization eliminates empty cells and speeds up search",
@@ -481,10 +433,10 @@
     "viva_a": "SQLite is a zero-configuration, serverless ACID-compliant relational engine stored in a single compressed file, perfect for an analytical benchmark and web deployment. It guarantees strict relational integrity and fast B-Tree reads without database network overhead."
   },
   {
-    "id": 7,
+    "id": 6,
     "badge": "Taxonomy",
     "title": "From 21,956 spellings to 386 clean subjects",
-    "subtitle": "Zero offerings lost — all 403,221 entries grouped into 6 macro categories",
+    "subtitle": "Zero offerings lost \u2014 all 403,221 entries grouped into 6 macro categories",
     "image": "assets/fig1_top_subjects.png",
     "type": "taxonomy_cleaning",
     "stats": [
@@ -543,7 +495,7 @@
     "viva_a": "We maintained an explicit dictionary map and an automated residual audit. Any token that did not map directly to a school subject was classified into its canonical discipline or placed into the verified Miscellaneous category, ensuring zero row loss."
   },
   {
-    "id": 8,
+    "id": 7,
     "badge": "Geography",
     "title": "Where tutors live: Top 5 states hold 54.4%",
     "subtitle": "Private tutoring follows coaching culture, not state population",
@@ -593,7 +545,7 @@
     "viva_a": "Kerala possesses the nation's highest literacy rate and widespread educational formalization, creating a large, competitive supply of educated graduates offering tuition, which exerts downward competitive pressure on hourly rates."
   },
   {
-    "id": 9,
+    "id": 8,
     "badge": "Market Structure",
     "title": "The Central Finding: 3 out of 4 tutors work outside big cities",
     "subtitle": "74.1% of tutors are in Tier-3 semi-urban towns, enabled by online teaching",
@@ -629,7 +581,7 @@
     "viva_a": "We adhered to Government of India urban classification standards (RBI / 7th Pay Commission): Tier-1 covers the 8 major metropolitan agglomerations, Tier-2 covers recognized state capitals and industrial cities, and Tier-3 encompasses all other semi-urban municipalities."
   },
   {
-    "id": 10,
+    "id": 9,
     "badge": "Pricing Dynamics",
     "title": "How fees climb with each school level",
     "subtitle": "A monotonic price progression across academic stages: mean \u20b9864/hr, median \u20b9650/hr",
@@ -678,7 +630,7 @@
     "viva_a": "Tutoring fees exhibit a classic right-skewed Pareto distribution. While the bulk of tutors charge between \u20b9400 and \u20b9700, a specialized minority of competitive exam and coding instructors charge between \u20b92,000 and \u20b94,000, elevating the arithmetic mean."
   },
   {
-    "id": 11,
+    "id": 10,
     "badge": "Subject Bundling",
     "title": "The STEM Trio: How many tutors teach Math, Physics & Chemistry?",
     "subtitle": "Set-theoretic analysis reveals that multi-subject generalists are rare",
@@ -713,7 +665,7 @@
     "viva_a": "Our server executes a set intersection query using SQL INTERSECT and GROUP BY tutor_id on the teacher_subjects table, mapping 3 selected subjects into disjoint subsets with sub-second response times."
   },
   {
-    "id": 12,
+    "id": 11,
     "badge": "Demographics",
     "title": "Who teaches: 58.7% women, and degrees command a premium",
     "subtitle": "A PhD earns 41.8% more; 1 in 5 tutors has a non-teaching primary job",
@@ -774,7 +726,7 @@
     "viva_a": "This mirrors broader industry demographics in Indian software engineering and IT professionals participating in evening tuition as a secondary gig occupation (18.8% of our dataset)."
   },
   {
-    "id": 13,
+    "id": 12,
     "badge": "Econometric Model",
     "title": "Pricing Model: Why formulas only explain 10% of fees",
     "subtitle": "Ridge regression on 72,001 tutors: math gives a baseline, trust sets the price",
@@ -828,7 +780,7 @@
     "viva_a": "One-hot encoding 386 subjects and categorical tiers introduces severe multicollinearity. Ridge regression's L2 penalty shrinks correlated coefficients, preventing coefficient inflation and ensuring that feature interpretations remain economically valid."
   },
   {
-    "id": 14,
+    "id": 13,
     "badge": "Directory",
     "title": "Finding the right tutor in four clicks",
     "subtitle": "Sub-50ms query latency, 9 reactive filters, and instant Excel export",
@@ -866,7 +818,7 @@
     "viva_a": "We implemented server-side pagination with limit/offset queries and B-Tree indexing on SQLite, transmitting only 12 to 100 rows per JSON payload."
   },
   {
-    "id": 15,
+    "id": 14,
     "badge": "Interactive Tools",
     "title": "Two live tools deployed on the platform",
     "subtitle": "Translating data engineering and machine learning into practical utilities",
@@ -896,7 +848,7 @@
     "viva_a": "The application gracefully falls back to a deterministic rule-based template engine that formats tutor experience and qualifications without interrupting the user experience."
   },
   {
-    "id": 16,
+    "id": 15,
     "badge": "Findings & Impact",
     "title": "Five things the data showed us",
     "subtitle": "Empirical conclusions from 107,673 tutors and future research scope",
@@ -940,7 +892,7 @@
     "viva_a": "By revealing that 74% of tutors are outside metros and that fees vary tenfold within identical zip codes, state education boards can understand the scale of shadow education and establish fair coaching guidelines."
   },
   {
-    "id": 17,
+    "id": 16,
     "badge": "Live Demonstration",
     "title": "Conclusion & Live Platform Demonstration",
     "subtitle": "Live web system deployed at bmptutors.onrender.com",

@@ -977,7 +977,7 @@ async def api_charts(request):
             "mean": 864,
             "peak_bucket": "₹250–500",
             "peak_count": 22730,
-            "winsorized_cap": 4000
+            "max_bracket": "₹3k–4k+"
         },
         "top_languages": top_languages,
         "polyglot": polyglot_data,
