@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TutorMetric — Presentation Deck (SC452 DA-IICT)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              200: '#bae0fd',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985',
+              800: '#0c4a6e',
+              900: '#082f49',
+              950: '#031726',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* 16:9 Aspect Ratio Presentation Shell */
+    body {
+      background-color: #0b1120;
+      color: #f1f5f9;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      user-select: none;
+    }
+    .slide-viewport {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      background: radial-gradient(circle at 50% 20%, #172554 0%, #0b1120 70%, #030712 100%);
+      padding: 1.25rem 2rem 1rem;
+      box-sizing: border-box;
+      position: relative;
+    }
+    .slide-card {
+      width: 100%;
+      max-width: 1440px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(56, 189, 248, 0.15);
+      backdrop-filter: blur(16px);
+      border-radius: 1.25rem;
+      padding: 2rem 2.5rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+    }
+    .slide-content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 0;
+      overflow-y: auto;
+    }
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(56, 189, 248, 0.3);
+      border-radius: 3px;
+    }
+    /* Notes drawer */
+    #notes-drawer {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    /* Grid Overview Modal */
+    #overview-modal {
+      transition: opacity 0.25s ease;
+    }
+  </style>
+</head>
+<body class="font-sans antialiased">
+
+  <!-- Main Slide Viewport -->
+  <div class="slide-viewport">
+    
+    <!-- Top Bar: Project Tag & Slide Badge Indicator -->
+    <header class="w-full max-width-1440 max-w-[1440px] flex items-center justify-between pb-3">
+      <div class="flex items-center space-x-3">
+        <span class="px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-brand-950 border border-brand-500/30 text-sky-400 font-mono">
+          TutorMetric · SC452
+        </span>
+        <span id="slide-topic-badge" class="px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 border border-slate-700 text-slate-200">
+          <!-- Dynamic Badge -->
+        </span>
+      </div>
+
+      <!-- Slide Jump Dropdown & Keyboard Hint -->
+      <div class="flex items-center space-x-4 text-xs text-slate-400 font-mono">
+        <div class="flex items-center space-x-2">
+          <span>Jump to:</span>
+          <select id="slide-select" class="bg-slate-900 border border-slate-700 text-slate-200 rounded px-2 py-1 text-xs focus:outline-none focus:border-sky-500">
+            <!-- Dynamically populated -->
+          </select>
+        </div>
+        <span class="hidden md:inline px-2 py-1 rounded bg-slate-800/80 border border-slate-700 text-[11px]">
+          [← / → Keys]
+        </span>
+        <span id="slide-counter" class="text-sm font-bold text-sky-400 font-mono">
+          01 / 17
+        </span>
+      </div>
+    </header>
+
+    <!-- Slide Render Canvas -->
+    <main class="slide-card" id="slide-card">
+      <!-- Injected Slide Body -->
+      <div id="slide-render-container" class="slide-content-area">
+        <!-- Rendered by JS -->
+      </div>
+    </main>
+
+    <!-- Bottom Controls & Speaker Notes Drawer Trigger -->
+    <footer class="w-full max-w-[1440px] flex items-center justify-between pt-3 text-xs text-slate-400">
+      <div class="flex items-center space-x-3">
+        <button id="prev-btn" class="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-medium transition flex items-center space-x-1">
+          <span>←</span> <span>Previous</span>
+        </button>
+        <button id="next-btn" class="px-4 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-medium transition flex items-center space-x-1 shadow-lg shadow-sky-600/30">
+          <span>Next</span> <span>→</span>
+        </button>
+        <button id="overview-btn" class="px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-300 transition">
+          Overview (O)
+        </button>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <div class="text-slate-400 text-xs flex items-center space-x-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Joint Equal Authors: Nilesh Mori & Pratik Chauhan</span>
+        </div>
+        <button id="notes-toggle-btn" class="px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 font-medium transition flex items-center space-x-1.5">
+          <span>🎤</span> <span>Speaker Script & Viva (N)</span>
+        </button>
+        <button id="fs-btn" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300">
+          ⛶
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Speaker Notes & Viva Drawer (Slide-Over Panel) -->
+  <aside id="notes-drawer" class="fixed right-0 top-0 bottom-0 w-full max-w-lg bg-slate-900/95 border-l border-slate-700 p-6 backdrop-blur-xl shadow-2xl z-50 transform translate-x-full overflow-y-auto">
+    <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+      <div class="flex items-center space-x-2">
+        <span class="text-lg font-bold text-amber-400">🎤 Speaker Notes & Viva Defense</span>
+      </div>
+      <button id="notes-close-btn" class="text-slate-400 hover:text-white text-lg p-1">✕</button>
+    </div>
+
+    <div class="mt-4 space-y-4">
+      <div>
+        <div class="text-xs font-mono uppercase tracking-wider text-slate-400">Pacing Target</div>
+        <div id="notes-time" class="text-sm font-semibold text-emerald-400 font-mono mt-0.5">35s</div>
+      </div>
+
+      <div>
+        <div class="text-xs font-mono uppercase tracking-wider text-amber-400/90 font-semibold">Word-for-Word Script (Joint Equal Presentation)</div>
+        <div id="notes-script" class="mt-2 text-sm text-slate-200 leading-relaxed bg-slate-950/70 p-4 rounded-xl border border-slate-800">
+          <!-- Injected Script -->
+        </div>
+      </div>
+
+      <div class="pt-2 border-t border-slate-800">
+        <div class="text-xs font-mono uppercase tracking-wider text-sky-400 font-semibold">Anticipated Examiner Viva Defense</div>
+        <div class="mt-2 bg-sky-950/40 p-4 rounded-xl border border-sky-800/40">
+          <div class="text-xs text-sky-300 font-medium">Q: <span id="notes-viva-q"></span></div>
+          <div class="text-sm text-slate-300 mt-2 leading-relaxed">A: <span id="notes-viva-a"></span></div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Slide Overview Grid Modal -->
+  <div id="overview-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 hidden opacity-0 flex flex-col p-8 overflow-y-auto">
+    <div class="flex items-center justify-between pb-4 border-b border-slate-800 max-w-6xl w-full mx-auto">
+      <h2 class="text-xl font-bold text-white">All 17 Presentation Slides</h2>
+      <button id="overview-close-btn" class="px-4 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700">Close (Esc)</button>
+    </div>
+    <div id="overview-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-6xl w-full mx-auto mt-6">
+      <!-- Dynamic thumb cards -->
+    </div>
+  </div>
+
+  <script>
+    const SLIDES = [
+  {
+    "id": 1,
+    "badge": "DA-IICT SC452 \u00b7 B.Tech Mini Project",
+    "title": "TutorMetric",
+    "subtitle": "Empirical Market Dynamics & Transparent Pricing Benchmarks for 107,673 Private Tutors in India",
+    "image": "assets/g34_network_cover_blue.png",
+    "type": "title",
+    "content": {
+      "summary": "An end-to-end data engineering and econometrics project analyzing the unorganized private tutoring market across 38 Indian states & union territories. Standardizing 403,221 offerings into 386 disciplines and deploying a real-time benchmarking platform.",
+      "authors": [
+        {
+          "name": "Nilesh Mori",
+          "id": "202301473",
+          "role": "Joint Equal Co-Engineer"
+        },
+        {
+          "name": "Pratik Chauhan",
+          "id": "202301435",
+          "role": "Joint Equal Co-Engineer"
+        }
+      ],
+      "mentor": "Dr. Parul Gupta",
+      "institution": "Dhirubhai Ambani Institute of Information and Communication Technology (DA-IICT)",
+      "live_url": "bmptutors.onrender.com"
+    },
+    "target_time": "35s",
+    "notes": "Respected professors, examiners, and fellow students, good morning. We are Nilesh Mori and Pratik Chauhan, presenting our B.Tech Mini Project for course SC452 under the mentorship of Dr. Parul Gupta: TutorMetric \u2014 What 107,673 private tutors in India actually charge. Private tutoring in India is an unorganized shadow education market worth billions of rupees that operates in near-total informational secrecy. We took the raw scraped dataset our mentor provided, verified which profiles actively still teach, and built an open-access platform featuring fair-price benchmarks, geospatial analytics, dynamic subject bundling, and predictive fee tools. We engineered this entire system as joint equal co-engineers.",
+    "viva_q": "Why is this project classified as a Mini Project rather than commercial software?",
+    "viva_a": "This is an academic research engineering project for SC452 at DA-IICT. Its core objective is empirical market transparency, reproducible data cleaning, and econometric modeling based on the research roadmap set by Dr. Parul Gupta."
+  },
+  {
+    "id": 2,
+    "badge": "Motivation",
+    "title": "Severe Information Asymmetry & Market Opacity",
+    "subtitle": "A billion-dollar shadow education sector operating with zero published price benchmarks",
+    "image": "assets/01_hero_and_stats.png",
+    "type": "cards_grid",
+    "cards": [
+      {
+        "title": "Extreme Price Dispersion",
+        "badge": "Asymmetry",
+        "text": "In Class 10 CBSE Mathematics within identical urban localities, hourly quotes vary from \u20b9200 to \u20b92,000 for the exact same syllabus. Parents have no reference benchmark to judge whether a quote is fair or predatory."
+      },
+      {
+        "title": "28.8% Dormant Ghost Listings",
+        "badge": "30,990 Inactive",
+        "text": "Commercial tutor portals monetize phone number unlocks and deliberately keep dead accounts online. 30,990 profiles in the dataset were completely inactive, wasting family search time."
+      },
+      {
+        "title": "Fragmented Curriculum Text",
+        "badge": "21,956 Spellings",
+        "text": "Free-form text entry resulted in 21,956 subject spelling variants across 78 unstructured columns. Parents cannot reliably filter or compare educators teaching the same discipline."
+      },
+      {
+        "title": "Our Project Mandate",
+        "badge": "SC452 Research Scope",
+        "text": "Ingest mentor-verified master data, clean and standardize curriculum taxonomy, normalize into a 3NF relational database, and build an open-access public utility for fair-rate discovery."
+      }
+    ],
+    "target_time": "45s",
+    "notes": "We begin directly with the motivation of our project. In India's private tuition marketplace, severe information asymmetry harms both parents and educators. For instance, in Class 10 CBSE Mathematics within the same urban area, one tutor quotes \u20b9200 an hour while another quotes \u20b92,000 for the exact same syllabus, with zero public price benchmarks available to assess fair value. Furthermore, commercial listing portals monetize lead unlocking and keep stale listings online. Our empirical audit revealed that 30,990 profiles\u201428.8% of the dataset\u2014were completely inactive ghost accounts. Our project mandate was to clean this master data, eliminate stale listings, standardize curriculum taxonomy, and publish an open empirical benchmark of tutoring fees across India.",
+    "viva_q": "How did you identify the 28.8% dormant profiles?",
+    "viva_a": "We developed automated Playwright headless scripts and activity telemetry auditing response signals, last-active timestamps, and uncontactable channels. Profiles exhibiting zero response activity were isolated into an inactive partition so users don't chase stale listings."
+  },
+  {
+    "id": 3,
+    "badge": "Value & Scope",
+    "title": "Transforming Static Listings into an Analytical Utility",
+    "subtitle": "How TutorMetric systematically improves upon commercial educator directories",
+    "image": "assets/03_tutor_cards_directory.png",
+    "type": "comparison",
+    "legacy": {
+      "title": "Traditional Commercial Directories",
+      "items": [
+        "Opaque pricing: self-reported fee with zero comparative context",
+        "Monetized contact unlocks: charges parents \u20b9500\u2013\u20b91,500 to view phone numbers",
+        "Stale database: retains inactive profiles indefinitely to inflate directory counts",
+        "Closed data: no bulk export, no API, no reproducible research access"
+      ]
+    },
+    "tutormetric": {
+      "title": "TutorMetric Research Platform",
+      "items": [
+        "Empirical benchmarks: state medians, level ladders, and Ridge regression estimates",
+        "Active verification status: clear indicator showing 76,683 active vs 30,990 inactive",
+        "Sub-50ms 9-filter search: multi-parameter faceted filtering across 386 clean subjects",
+        "Open academic access: full SQLite relational database and filtered Excel export"
+      ]
+    },
+    "target_time": "35s",
+    "notes": "Traditional tutor websites merely display static advertisements: a photo, a name, and an unverified self-reported fee with zero context. TutorMetric transforms this into a transparent analytical utility. We add three distinct capabilities: First, transparent price benchmarks\u2014providing state medians and econometric baseline estimates. Second, active verification status so families never waste time contacting dormant profiles. Third, side-by-side comparability across 107,673 educators in an open, downloadable database for parents, tutors, and academic researchers.",
+    "viva_q": "Who are the primary target users of TutorMetric?",
+    "viva_a": "Three groups: 1) Parents evaluating private coaching quotes, 2) Tutors setting competitive fair rates based on their credentials, and 3) Academic and policy researchers studying shadow education in India."
+  },
+  {
+    "id": 4,
+    "badge": "Project Tracker",
+    "title": "Methodology & Alignment with Mentor Roadmap",
+    "subtitle": "Systematic execution across the six phases defined in Dr. Parul Gupta's ProjectTracker.xlsx",
+    "image": "assets/pipeline_bg.png",
+    "type": "roadmap",
+    "steps": [
+      {
+        "num": "01",
+        "phase": "Master Data Ingestion",
+        "tasks": "Tasks 1\u201312",
+        "desc": "Audited TrueData.xlsx tabs (scraped: 76,706; not scraped: 31,017). Deduplicated into 107,673 unique profiles across all 38 states/UTs."
+      },
+      {
+        "num": "02",
+        "phase": "Taxonomy & Cleaning",
+        "tasks": "Tasks 13\u201328",
+        "desc": "Implemented Categories_DataCleaning.docx: mapped 21,956 spellings to 386 canonical subjects, 4 qualification tiers, and 5 geographic zones."
+      },
+      {
+        "num": "03",
+        "phase": "Relational 3NF Schema",
+        "tasks": "Tasks 29\u201340",
+        "desc": "Decomposed unnormalized 78-column flat sheet into SQLite 3NF schema (teachers & teacher_subjects tables with 403,221 offerings)."
+      },
+      {
+        "num": "04",
+        "phase": "Visual Analytics & EDA",
+        "tasks": "Tasks 41\u201348",
+        "desc": "Built 14 interactive charts, Leaflet state choropleth maps, and multi-set Venn diagrams (Maths-Physics-Chemistry STEM trio)."
+      },
+      {
+        "num": "05",
+        "phase": "Econometric Modeling",
+        "tasks": "Tasks 49\u201361",
+        "desc": "Trained Ridge regression (L2 regularization) on 72,001 rows: 38 dummy/continuous features, R\u00b2 = 9.84%, MAE = \u20b9370.67/hr."
+      },
+      {
+        "num": "06",
+        "phase": "Production Web App",
+        "tasks": "Tasks 62\u201398",
+        "desc": "Deployed responsive web platform with live ML fee calculator, Google Gemini GenAI Bio Studio, and Excel/PDF export."
+      }
+    ],
+    "target_time": "45s",
+    "notes": "To ensure academic rigor, our development followed the exact roadmap outlined in Dr. Parul Gupta's ProjectTracker.xlsx spanning 98 structured tasks across six core phases. We began by ingesting TrueData.xlsx, merging scraped and unscraped cohorts. We then implemented the taxonomy rules from Categories_DataCleaning.docx, normalized the data into a 3NF relational SQLite database, executed comprehensive visual analytics, engineered an econometric pricing model, and finally deployed an interactive production web utility at bmptutors.onrender.com.",
+    "viva_q": "Did you follow every task in ProjectTracker.xlsx exactly?",
+    "viva_a": "We executed the end-to-end analytical pipeline: data cleaning, 3NF schema, EDA, regression modeling, and web deployment. Per mentor feedback, we prioritized interactive web tools over static Word tables, and replaced flat Excel storage with indexed SQLite."
+  },
+  {
+    "id": 5,
+    "badge": "Data Pipeline",
+    "title": "Data Engineering & Hygiene Protocol",
+    "subtitle": "Transforming 78 raw, noisy columns into verified, privacy-compliant records",
+    "image": "assets/cleaning_bg.png",
+    "type": "pipeline_detail",
+    "metrics": [
+      {
+        "val": "107,673",
+        "lbl": "Unique Tutors Verified"
+      },
+      {
+        "val": "403,221",
+        "lbl": "Offerings Preserved (0 Lost)"
+      },
+      {
+        "val": "\u20b94,000/hr",
+        "lbl": "Winsorization Cap (99th %tile)"
+      },
+      {
+        "val": "100%",
+        "lbl": "PII Anonymized (T1..T107673)"
+      }
+    ],
+    "protocol": [
+      {
+        "step": "Privacy & Anonymization",
+        "desc": "All direct PII (tutor names, phone numbers, email addresses, exact street addresses) was stripped. Every profile was assigned a synthetic surrogate key (T1, T2... T107673)."
+      },
+      {
+        "step": "Fee Normalization & Unit Cleaning",
+        "desc": "Resolved unit ambiguity where tutors entered monthly rates (e.g. \u20b915,000) or weekly packages into hourly rate fields. Applied 99th percentile Winsorization at \u20b94,000/hr to prevent extreme distortion."
+      },
+      {
+        "step": "Categorical Harmonization",
+        "desc": "Standardized locations into 5 macro-regions (North, South, East, West, Central) and 3 city tiers (Tier 1 Metros, Tier 2 Urban, Tier 3 Semi-Urban). Mapped academic qualifications into 4 standardized tiers."
+      },
+      {
+        "step": "Experience & Modality Extraction",
+        "desc": "Parsed years of experience from mixed strings into numeric integers. Flagged delivery modes: online instruction (95.6%) versus in-person home tutoring."
+      }
+    ],
+    "target_time": "45s",
+    "notes": "Our data hygiene protocol adhered to strict academic data engineering standards. We stripped all personally identifiable information, replacing names with anonymous IDs T1 through T107673. We resolved severe unit misclassifications\u2014such as tutors entering a monthly coaching package of \u20b915,000 into an hourly fee field. To prevent statistical distortion without dropping valid premium educators, we applied Winsorization at the 99th percentile, capping hourly fees at \u20b94,000. All 403,221 subject offerings survived the pipeline without losing a single record.",
+    "viva_q": "Why did you use Winsorization instead of simply dropping outliers above \u20b94,000?",
+    "viva_a": "Dropping high-fee tutors would cause sample selection bias, deleting legitimate top entrance-exam specialists. Winsorization retains their presence, demographics, and subject offerings while bounding extreme variance for econometric regression."
+  },
+  {
+    "id": 6,
+    "badge": "Database (3NF)",
+    "title": "Relational Database Design in Third Normal Form",
+    "subtitle": "Decomposing unnormalized flat spreadsheets into an indexed 3NF SQLite schema",
+    "image": "assets/icon_pages.png",
+    "type": "database_schema",
+    "tables": [
+      {
+        "name": "teachers",
+        "rows": "107,673 rows",
+        "desc": "Primary entity table storing tutor demographics, pricing, location, and teaching modes.",
+        "columns": [
+          "tutor_id (PK)",
+          "name",
+          "hourly_fee",
+          "min_fee",
+          "max_fee",
+          "exp_years",
+          "qualification_tier",
+          "city_tier",
+          "state",
+          "region",
+          "gender",
+          "is_active",
+          "teaches_online",
+          "teaches_home",
+          "occupation"
+        ]
+      },
+      {
+        "name": "teacher_subjects",
+        "rows": "403,221 rows",
+        "desc": "Relational junction table mapping each tutor to their canonical subject offerings.",
+        "columns": [
+          "id (PK, Auto)",
+          "tutor_id (FK -> teachers.tutor_id)",
+          "subject_name (Indexed)",
+          "category (Indexed)",
+          "level"
+        ]
+      }
+    ],
+    "advantages": [
+      {
+        "stat": "64%",
+        "label": "Storage Footprint Reduction",
+        "desc": "Eliminated 20 repeated subject columns where over 60% of cells were empty NULLs in the raw spreadsheet."
+      },
+      {
+        "stat": "< 50ms",
+        "label": "Query Latency",
+        "desc": "Compound B-Tree index on (subject_name, tutor_id) enables real-time faceted search across 403k offerings."
+      },
+      {
+        "stat": "3.79",
+        "label": "Avg Subjects / Tutor",
+        "desc": "Proper 1-to-many relationship naturally handles variable subject counts without schema rigidity."
+      }
+    ],
+    "target_time": "45s",
+    "notes": "From a database design perspective, the original spreadsheet was heavily unnormalized, packing 20 repeated subject columns per tutor with over 60% NULL values. We decomposed the schema into strict Third Normal Form with two relational tables: 'teachers' holding 107,673 educator records, and 'teacher_subjects' holding 403,221 offerings linked by tutor_id. Because tutors teach an average of 3.79 subjects, this 1-to-many junction structure eliminated NULL redundancy, reduced disk storage by 64%, and enabled indexed joins executing in under 50 milliseconds.",
+    "viva_q": "Why use SQLite rather than PostgreSQL or MongoDB for TutorMetric?",
+    "viva_a": "SQLite is a zero-configuration, serverless ACID-compliant relational engine stored in a single compressed file, perfect for an analytical benchmark and web deployment. It guarantees strict relational integrity and fast B-Tree reads without database network overhead."
+  },
+  {
+    "id": 7,
+    "badge": "Taxonomy",
+    "title": "Curriculum Taxonomy & Subject Normalization",
+    "subtitle": "Unifying 21,956 raw string variants into 386 canonical academic disciplines",
+    "image": "assets/fig1_top_subjects.png",
+    "type": "taxonomy_cleaning",
+    "stats": [
+      {
+        "num": "21,956",
+        "label": "Raw Spelling Variants"
+      },
+      {
+        "num": "386",
+        "label": "Canonical Disciplines"
+      },
+      {
+        "num": "6",
+        "label": "Macro Categories"
+      },
+      {
+        "num": "0",
+        "label": "Offerings Lost (100% Retained)"
+      }
+    ],
+    "categories": [
+      {
+        "name": "Science & Mathematics",
+        "count": "142,810",
+        "examples": "Mathematics, Physics, Chemistry, Biology"
+      },
+      {
+        "name": "Languages",
+        "count": "98,450",
+        "examples": "English, Hindi, Sanskrit, French, German"
+      },
+      {
+        "name": "Coding & Computer Science",
+        "count": "64,220",
+        "examples": "Python, Java, C++, Web Development, Data Science"
+      },
+      {
+        "name": "Commerce & Economics",
+        "count": "45,180",
+        "examples": "Accountancy, Business Studies, Economics"
+      },
+      {
+        "name": "Arts & Social Sciences",
+        "count": "32,940",
+        "examples": "History, Geography, Political Science, Psychology"
+      },
+      {
+        "name": "Miscellaneous & Hobbies",
+        "count": "19,621",
+        "examples": "Music, Chess, Vedic Maths, Yoga"
+      }
+    ],
+    "target_time": "45s",
+    "notes": "A core mandate in Categories_DataCleaning.docx was standardizing the extreme fragmentation of subject names. Because educators typed subjects freely, we encountered 21,956 unique raw strings\u2014for example, 'Math', 'Maths', 'Mathematics', 'Pure Math', and 'CBSE Class 10 Math'. We engineered a multi-stage text normalization pipeline that parsed, tokenized, and mapped these spellings into 386 canonical disciplines classified into 6 macro-categories: Science, Languages, Coding, Commerce, Arts, and Miscellaneous. All 403,221 offerings survived the consolidation.",
+    "viva_q": "How did you ensure that unusual or specialized subjects were not accidentally deleted?",
+    "viva_a": "We maintained an explicit dictionary map and an automated residual audit. Any token that did not map directly to a school subject was classified into its canonical discipline or placed into the verified Miscellaneous category, ensuring zero row loss."
+  },
+  {
+    "id": 8,
+    "badge": "Geography",
+    "title": "Geographic Distribution & Regional Disparities",
+    "subtitle": "Five states account for 54.4% of India's private tutoring workforce",
+    "image": "assets/all_india_tutor_choropleth.png",
+    "type": "geography_analysis",
+    "top_states": [
+      {
+        "rank": "01",
+        "state": "Tamil Nadu",
+        "count": "16,806 tutors",
+        "pct": "15.6%",
+        "fee": "\u20b9782/hr"
+      },
+      {
+        "rank": "02",
+        "state": "Kerala",
+        "count": "14,333 tutors",
+        "pct": "13.3%",
+        "fee": "\u20b9612/hr"
+      },
+      {
+        "rank": "03",
+        "state": "Maharashtra",
+        "count": "11,544 tutors",
+        "pct": "10.7%",
+        "fee": "\u20b91,070/hr"
+      },
+      {
+        "rank": "04",
+        "state": "West Bengal",
+        "count": "8,024 tutors",
+        "pct": "7.5%",
+        "fee": "\u20b9695/hr"
+      },
+      {
+        "rank": "05",
+        "state": "Delhi NCR",
+        "count": "7,869 tutors",
+        "pct": "7.3%",
+        "fee": "\u20b91,142/hr"
+      }
+    ],
+    "takeaway": "Private tuition supply does not correlate with raw population. Kerala holds 2.8% of India's population but accounts for 13.3% of private tutors. Conversely, Bihar holds 8.6% of India's population but represents only 1.4% of tutors (1,520 tutors). Tutoring density is governed by literacy rates, household investment in education, and board examination competition.",
+    "target_time": "45s",
+    "notes": "Moving to our empirical findings: tutor supply is heavily geographically concentrated. Five states account for 54.4% of all private tutors in India. Tamil Nadu leads nationally with 16,806 tutors, followed by Kerala with 14,333, Maharashtra with 11,544, West Bengal with 8,024, and Delhi with 7,869. This reveals a sharp regional divergence: Kerala represents 2.8% of India's population but 13.3% of its tutors, whereas Bihar represents 8.6% of the population but only 1.4% of tutors. Tutoring supply reflects regional educational formalization and private coaching propensity rather than raw population.",
+    "viva_q": "Why does Kerala have such a high concentration of tutors despite a relatively low average fee (\u20b9612/hr)?",
+    "viva_a": "Kerala possesses the nation's highest literacy rate and widespread educational formalization, creating a large, competitive supply of educated graduates offering tuition, which exerts downward competitive pressure on hourly rates."
+  },
+  {
+    "id": 9,
+    "badge": "Market Structure",
+    "title": "The Central Finding: Tier-3 Decentralization",
+    "subtitle": "74.1% of private tutors operate in semi-urban and small-town India",
+    "image": "assets/chart_regional_distribution.png",
+    "type": "tier_breakdown",
+    "tiers": [
+      {
+        "tier": "Tier-3 Semi-Urban & Towns",
+        "count": "79,820 tutors",
+        "share": "74.1%",
+        "avg_fee": "\u20b9823/hr",
+        "desc": "The primary backbone of Indian private tutoring. Small-town educators leverage digital platforms to reach students across regions."
+      },
+      {
+        "tier": "Tier-2 Urban Centers",
+        "count": "14,231 tutors",
+        "share": "13.2%",
+        "avg_fee": "\u20b9895/hr",
+        "desc": "State capitals and industrial hubs (e.g., Ahmedabad, Pune, Jaipur, Lucknow) showing balanced local and online coaching."
+      },
+      {
+        "tier": "Tier-1 Metropolitan Cities",
+        "count": "13,622 tutors",
+        "share": "12.7%",
+        "avg_fee": "\u20b91,022/hr",
+        "desc": "Delhi, Mumbai, Bengaluru, Chennai, Kolkata. Premium market with highest fee dispersion and competitive entrance coaching."
+      }
+    ],
+    "insight": "Commercial EdTech marketing targets Tier-1 metros, yet 74.1% of India's actual tutor base resides in Tier-3 locations. Furthermore, 95.6% of all educators in our dataset offer online instruction, proving that broadband expansion has turned private coaching into a nationally distributed service.",
+    "target_time": "50s",
+    "notes": "This slide presents the most critical empirical finding of our project: 74.1% of private tutors\u201479,820 educators\u2014operate outside Tier-1 metropolitan areas in Tier-3 and semi-urban towns. Only 12.7% (13,622 tutors) are located in Tier-1 cities. EdTech commercial discourse focuses almost entirely on metro cities, yet the vast reality of Indian private tutoring is a distributed, small-town phenomenon. Because 95.6% of these educators teach online, high-speed broadband has connected non-metro educators to students nationwide, flattening geographic boundaries.",
+    "viva_q": "How did you classify cities into Tier 1, 2, and 3?",
+    "viva_a": "We adhered to Government of India urban classification standards (RBI / 7th Pay Commission): Tier-1 covers the 8 major metropolitan agglomerations, Tier-2 covers recognized state capitals and industrial cities, and Tier-3 encompasses all other semi-urban municipalities."
+  },
+  {
+    "id": 10,
+    "badge": "Pricing Dynamics",
+    "title": "Hourly Fee Dispersion & Education Level Ladder",
+    "subtitle": "A monotonic price progression across academic stages: mean \u20b9864/hr, median \u20b9650/hr",
+    "image": "assets/chart_education_levels.png",
+    "type": "ladder_chart",
+    "levels": [
+      {
+        "level": "Pre-Primary & Primary (Class 1\u20135)",
+        "fee": "\u20b9710/hr",
+        "index": "100 (Base)"
+      },
+      {
+        "level": "Middle School (Class 6\u20138)",
+        "fee": "\u20b9760/hr",
+        "index": "107"
+      },
+      {
+        "level": "Secondary / Board Exam (Class 9\u201310)",
+        "fee": "\u20b9825/hr",
+        "index": "116"
+      },
+      {
+        "level": "Higher Secondary / STEM (Class 11\u201312)",
+        "fee": "\u20b9950/hr",
+        "index": "134"
+      },
+      {
+        "level": "Undergraduate / College",
+        "fee": "\u20b91,080/hr",
+        "index": "152"
+      },
+      {
+        "level": "Professional & Competitive Skills",
+        "fee": "\u20b91,257/hr",
+        "index": "177 (+77% Premium)"
+      }
+    ],
+    "distribution_facts": [
+      "Right-skewed Pareto distribution: 50% of tutors charge \u20b9650 or less, but the top 8.6% charging \u20b92,000+ pull the national mean to \u20b9864.",
+      "Metro Urban Premium: Tier-1 tutors command an average hourly premium of \u20b9199 over Tier-3 tutors (\u20b91,022 vs \u20b9823).",
+      "Board Exam Inflection: Fees jump sharply (+15.2%) transitioning from Class 10 to Class 11-12 STEM competitive streams."
+    ],
+    "target_time": "45s",
+    "notes": "Examining fee structure, we observe a monotonic price ladder across education levels. The national median hourly rate is \u20b9650, while the mean is \u20b9864 due to high-fee outliers. Rates scale strictly with academic complexity: Pre-primary and Primary tutors average \u20b9710 per hour, Secondary tutors average \u20b9825, Higher Secondary averages \u20b9950, and Professional/College trainers average \u20b91,257\u2014a 77% premium over school foundations. Geographically, Tier-1 cities command an average premium of \u20b9199 per hour over Tier-3 towns (\u20b91,022 vs \u20b9823).",
+    "viva_q": "Why is the mean fee (\u20b9864) significantly higher than the median fee (\u20b9650)?",
+    "viva_a": "Tutoring fees exhibit a classic right-skewed Pareto distribution. While the bulk of tutors charge between \u20b9400 and \u20b9700, a specialized minority of competitive exam and coding instructors charge between \u20b92,000 and \u20b94,000, elevating the arithmetic mean."
+  },
+  {
+    "id": 11,
+    "badge": "Subject Bundling",
+    "title": "Curricular Clustering & Multi-Subject Analysis",
+    "subtitle": "Set-theoretic analysis of STEM coaching: specialization strongly dominates multi-subject generalists",
+    "image": "assets/venn_stem_trio.png",
+    "type": "venn_analysis",
+    "venn_stats": [
+      {
+        "val": "34,923",
+        "lbl": "Tutors Teaching STEM",
+        "desc": "Offer at least one of Maths, Physics, or Chemistry"
+      },
+      {
+        "val": "2,917",
+        "lbl": "The MPC Trio (8.35%)",
+        "desc": "Teach all three subjects simultaneously"
+      },
+      {
+        "val": "16,929",
+        "lbl": "Pure Mathematics (48.5%)",
+        "desc": "Specialize strictly in Maths, teaching no other science"
+      },
+      {
+        "val": "4,210",
+        "lbl": "Physics & Chemistry Only",
+        "desc": "Pair the experimental sciences without mathematics"
+      }
+    ],
+    "takeaway": "Commercial coaching ads frequently depict all-in-one science tutors, but empirical set intersection proves that only 8.35% of STEM educators teach all three core disciplines. As students advance into secondary board exams, educators specialize strictly in single subject domains.",
+    "target_time": "40s",
+    "notes": "Our normalized 3NF database allows us to analyze subject co-occurrence through set theory. A central question in Indian coaching is: how many educators teach the entire Science trio of Mathematics, Physics, and Chemistry? Across 107,673 tutors, 34,923 teach at least one of these three subjects. However, exactly 2,917 tutors\u2014only 8.35% of STEM educators\u2014teach all three simultaneously. In contrast, 16,929 tutors specialize strictly in Mathematics alone. Multi-subject generalists are rare; specialization dominates secondary and higher secondary coaching.",
+    "viva_q": "How does your web application generate this Venn diagram dynamically?",
+    "viva_a": "Our server executes a set intersection query using SQL INTERSECT and GROUP BY tutor_id on the teacher_subjects table, mapping 3 selected subjects into disjoint subsets with sub-second response times."
+  },
+  {
+    "id": 12,
+    "badge": "Demographics",
+    "title": "Educator Demographics, Gender & Degree Premium",
+    "subtitle": "Women constitute 58.7% of the tutor workforce; PhD degree holders command a 41.8% fee premium",
+    "image": "assets/fig2_experience_gender.png",
+    "type": "demographics_grid",
+    "gender_breakdown": [
+      {
+        "subject": "Hindi & Regional Languages",
+        "female_pct": "79% Female",
+        "male_pct": "21% Male"
+      },
+      {
+        "subject": "English Language",
+        "female_pct": "77% Female",
+        "male_pct": "23% Male"
+      },
+      {
+        "subject": "Biology & Life Sciences",
+        "female_pct": "73% Female",
+        "male_pct": "27% Male"
+      },
+      {
+        "subject": "School Mathematics",
+        "female_pct": "58% Female",
+        "male_pct": "42% Male"
+      },
+      {
+        "subject": "Computer Science & Coding",
+        "female_pct": "39% Female",
+        "male_pct": "61% Male (Only Male-Majority Domain)"
+      }
+    ],
+    "degree_premium": [
+      {
+        "tier": "PhD / Advanced Doctorate",
+        "fee": "\u20b91,179.5/hr",
+        "gap": "+41.8% vs UG (\u20b9832/hr)"
+      },
+      {
+        "tier": "Postgraduate (Master's / B.Ed)",
+        "fee": "\u20b9945.0/hr",
+        "gap": "+13.6% vs UG"
+      },
+      {
+        "tier": "Undergraduate (Bachelor's)",
+        "fee": "\u20b9832.0/hr",
+        "gap": "Baseline"
+      },
+      {
+        "tier": "Gig Economy Participation",
+        "fee": "20,275 tutors (18.8%)",
+        "gap": "Hold non-teaching primary jobs (IT, Engineering, Banking)"
+      }
+    ],
+    "target_time": "40s",
+    "notes": "In educator demographics, women represent the majority of private tutors at 58.7% of profiles reporting gender. This female representation is highest in languages and biological sciences: English at 77%, Hindi at 79%, and Biology at 73%. Mathematics is balanced at 58% women, while Coding is the only male-dominated discipline at 61% men. Regarding academic qualifications, tutors holding a PhD or Advanced Postgraduate degree command a 41.8% premium, averaging \u20b91,179.5 per hour versus \u20b9832 for Undergraduate degree holders.",
+    "viva_q": "Why is coding the only subject where male tutors outnumber female tutors?",
+    "viva_a": "This mirrors broader industry demographics in Indian software engineering and IT professionals participating in evening tuition as a secondary gig occupation (18.8% of our dataset)."
+  },
+  {
+    "id": 13,
+    "badge": "Econometric Model",
+    "title": "Econometric Pricing Model: Ridge Regression",
+    "subtitle": "Quantifying observable price drivers vs unobservable latent reputation factors",
+    "image": "assets/icon_price.png",
+    "type": "model_metrics",
+    "model_stats": [
+      {
+        "stat": "72,001",
+        "label": "Training Observations",
+        "sub": "Active tutors with explicit hourly fees"
+      },
+      {
+        "stat": "38",
+        "label": "Model Features",
+        "sub": "Dummy & continuous predictors"
+      },
+      {
+        "stat": "9.84%",
+        "label": "Model R\u00b2",
+        "sub": "Coefficient of determination"
+      },
+      {
+        "stat": "\u20b9370.67",
+        "label": "Mean Absolute Error",
+        "sub": "Test prediction error (\u20b9/hr)"
+      }
+    ],
+    "econometric_comparison": {
+      "observable": {
+        "title": "What Observable Data Captures (R\u00b2 = 9.84%)",
+        "items": [
+          "Teaching experience: +\u20b918.40 / year of experience",
+          "Tier-1 Metropolitan Location: +\u20b9199 / hr premium",
+          "Doctorate / Advanced Degree: +\u20b9347 / hr premium",
+          "Professional / College Level: +\u20b9320 / hr premium"
+        ]
+      },
+      "unobservable": {
+        "title": "Unobservable Latent Reputation Factors (90.16% Residual)",
+        "items": [
+          "Word-of-mouth parental reputation & local trust",
+          "Pedagogical patience & individual teaching style",
+          "Alumni institutional prestige (IIT/NIT/Premier universities)",
+          "Verifiable past student examination score improvements"
+        ]
+      }
+    },
+    "target_time": "55s",
+    "notes": "Fulfilling Tasks 49 to 61 in ProjectTracker.xlsx, we developed an econometric pricing model on 72,001 observations using Ridge regression with L2 regularization. The model incorporates 38 dummy and continuous features, achieving an R\u00b2 of 9.84% with a Mean Absolute Error of \u20b9370.67 per hour. A key question is: why does an objective 38-feature model explain only 9.84% of fee variance? Econometrically, tutoring is an experience good governed by unobservable latent factors: word-of-mouth reputation, personal patience, institutional pedigree, and past student examination results. Observable metrics establish a fair baseline range of \u00b1\u20b9370/hr, but individual pricing fundamentally hinges on parental trust.",
+    "viva_q": "Why did you use Ridge Regression instead of Ordinary Least Squares (OLS) or Random Forest?",
+    "viva_a": "One-hot encoding 386 subjects and categorical tiers introduces severe multicollinearity. Ridge regression's L2 penalty shrinks correlated coefficients, preventing coefficient inflation and ensuring that feature interpretations remain economically valid."
+  },
+  {
+    "id": 14,
+    "badge": "Directory",
+    "title": "Search & Filtering Dashboard (TutorMetric)",
+    "subtitle": "Interactive directory with sub-50ms latency across 107k profiles and 386 canonical subjects",
+    "image": "assets/screenshot_landing_directory.png",
+    "type": "feature_spotlight",
+    "filters": [
+      {
+        "name": "Location & Tier",
+        "desc": "Filter by all 38 states/UTs and Tier-1/2/3 urban classifications"
+      },
+      {
+        "name": "386 Canonical Subjects",
+        "desc": "Select from standardized disciplines across 6 macro-categories"
+      },
+      {
+        "name": "Fee Range Slider",
+        "desc": "Dynamic dual-handle slider from \u20b9100 to \u20b94,000/hr"
+      },
+      {
+        "name": "Experience & Modality",
+        "desc": "Toggle 0\u201330+ years experience and online vs home tutoring"
+      },
+      {
+        "name": "Active Verification",
+        "desc": "Isolate the 76,683 active verified teachers with one toggle"
+      },
+      {
+        "name": "Instant Excel Export",
+        "desc": "Download any filtered cohort directly as formatted .xlsx"
+      }
+    ],
+    "target_time": "40s",
+    "notes": "This slide illustrates the primary directory dashboard of TutorMetric. Users can isolate relevant educators in under four clicks using nine reactive multi-parameter filters. Parents can filter by state, city tier, hourly fee range, delivery modality, years of experience, gender, and active verification status. Crucially, all 386 clean canonical disciplines are indexed. The search executes with sub-50ms query latency against our SQLite backend, and any filtered view can be exported directly to Excel.",
+    "viva_q": "How does the directory handle 107k rows without crashing the browser?",
+    "viva_a": "We implemented server-side pagination with limit/offset queries and B-Tree indexing on SQLite, transmitting only 12 to 100 rows per JSON payload."
+  },
+  {
+    "id": 15,
+    "badge": "Interactive Tools",
+    "title": "Interactive Utilities: ML Fee AI & GenAI Bio Studio",
+    "subtitle": "Translating research models into live consumer applications deployed on Render",
+    "image": "assets/screenshot_fee_estimator.png",
+    "type": "two_tools",
+    "tool_a": {
+      "name": "Machine Learning Fee Estimator",
+      "desc": "Input 7 parameters (subject, education level, city tier, experience, mode, qualification) to calculate a personalized fair hourly rate.",
+      "features": [
+        "Recommended rate with confidence interval (\u00b1\u20b9370/hr)",
+        "Monthly & yearly income projections based on weekly hours",
+        "Itemized cost-driver breakdown showing feature premiums"
+      ]
+    },
+    "tool_b": {
+      "name": "Google Gemini GenAI Bio Studio",
+      "desc": "Transforms raw tutor credentials into professional, high-converting biographies tailored for parents and students.",
+      "features": [
+        "Two distinct tones: parent-focused (reassurance) & student-focused (mentorship)",
+        "Catchy conversion headlines tailored to subject domains",
+        "100% operational with offline fallback templates"
+      ]
+    },
+    "target_time": "45s",
+    "notes": "To translate our research into direct practical utilities, we engineered two interactive web tools: First, the AI Fee Estimator. A tutor or parent enters seven parameters\u2014subject, student level, city tier, experience, mode, and qualification. The backend model outputs a recommended hourly rate, a confidence range (\u00b1\u20b9370), estimated monthly and annual income, and an itemized cost driver breakdown. Second, the Bio Studio, powered by Google Gemini GenAI. It generates structured professional biographies tailored for parent and student conversions, producing engaging headlines and clear credentials.",
+    "viva_q": "What happens if the Gemini API key is missing or quota is exhausted?",
+    "viva_a": "The application gracefully falls back to a deterministic rule-based template engine that formats tutor experience and qualifications without interrupting the user experience."
+  },
+  {
+    "id": 16,
+    "badge": "Findings & Impact",
+    "title": "Key Empirical Findings & Future Research Scope",
+    "subtitle": "Five core discoveries and future engineering enhancements",
+    "image": "assets/conclusion_bg.png",
+    "type": "findings_grid",
+    "findings": [
+      {
+        "num": "01",
+        "title": "74.1% Tier-3 Concentration",
+        "desc": "Private tutoring in India is overwhelmingly a small-town, semi-urban industry rather than a metro phenomenon."
+      },
+      {
+        "num": "02",
+        "title": "Regional Supply Skew",
+        "desc": "Southern states supply over 40% of private tutors nationally, led by Tamil Nadu (16.8k) and Kerala (14.3k)."
+      },
+      {
+        "num": "03",
+        "title": "58.7% Female Majority",
+        "desc": "Women represent the dominant workforce in languages and sciences; coding remains the sole male-majority domain."
+      },
+      {
+        "num": "04",
+        "title": "STEM Specialization",
+        "desc": "Only 8.35% of science tutors teach the full Maths-Physics-Chemistry trio; single-subject specialization is the norm."
+      },
+      {
+        "num": "05",
+        "title": "Trust-Based Pricing",
+        "desc": "Observable metrics define an empirical floor (MAE \u20b9370/hr); unrecorded reputation and parental trust govern residual pricing."
+      }
+    ],
+    "future_work": [
+      "Longitudinal quarterly fee tracking to monitor inflation in shadow education",
+      "District-level GIS choropleths inside each state for hyper-local pricing",
+      "Integration of verified student outcome ratings into the regression model"
+    ],
+    "target_time": "45s",
+    "notes": "In conclusion, our B.Tech Mini Project delivers five verified empirical conclusions: First, 74.1% of tutoring operates in Tier-3 semi-urban markets. Second, Southern states dominate national supply, led by Tamil Nadu and Kerala. Third, women represent the majority of tutors at 58.7%, particularly in languages and sciences. Fourth, 18.8% of tutors teach alongside another primary occupation. Fifth, tutoring fees are anchored by trust and reputation, explaining the quantitative bounds of observable pricing models. For future work, we propose longitudinal fee tracking across quarters, district-level GIS mapping within states, and integrating student reviews and ratings into the pricing model.",
+    "viva_q": "How can this project impact educational policy in India?",
+    "viva_a": "By revealing that 74% of tutors are outside metros and that fees vary tenfold within identical zip codes, state education boards can understand the scale of shadow education and establish fair coaching guidelines."
+  },
+  {
+    "id": 17,
+    "badge": "Live Demonstration",
+    "title": "Conclusion & Live Platform Demonstration",
+    "subtitle": "Live web system deployed at bmptutors.onrender.com",
+    "image": "assets/g34_network_blue.png",
+    "type": "conclusion_demo",
+    "credits": {
+      "title": "TutorMetric \u2014 B.Tech Mini Project (SC452)",
+      "authors": "Nilesh Mori (202301473) & Pratik Chauhan (202301435) \u2014 Joint Equal Authors",
+      "mentor": "Dr. Parul Gupta \u2014 DA-IICT Gandhinagar",
+      "url": "https://bmptutors.onrender.com"
+    },
+    "demo_checklist": [
+      {
+        "step": "1. Multi-Filter Directory",
+        "action": "Filter Ahmedabad -> Class 10 -> Mathematics -> Active only -> Export to Excel."
+      },
+      {
+        "step": "2. Visual Analytics",
+        "action": "Inspect 74.1% Tier-3 pie chart, Leaflet state map, and interactive MPC 3-way Venn diagram."
+      },
+      {
+        "step": "3. Live Fee AI Estimator",
+        "action": "Calculate recommended fee and cost-driver breakdown for Class 10 CBSE Math tutor."
+      },
+      {
+        "step": "4. Gemini Bio Studio",
+        "action": "Generate conversion-tailored biography and headlines live on screen."
+      }
+    ],
+    "target_time": "Transition to Browser (5 Mins)",
+    "notes": "Thank you, professors. We invite questions on our database schema, cleaning methodology, or econometric findings. We will now switch to the live deployed application at bmptutors.onrender.com for our interactive system demonstration.",
+    "viva_q": "Is the deployed system running on local or cloud infrastructure?",
+    "viva_a": "It is deployed live on Render's container cloud platform using a production Dockerized environment with automated continuous integration from GitHub."
+  }
+];
+    let currentIndex = 0;
+
+    const renderContainer = document.getElementById('slide-render-container');
+    const topicBadge = document.getElementById('slide-topic-badge');
+    const slideCounter = document.getElementById('slide-counter');
+    const slideSelect = document.getElementById('slide-select');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+
+    const notesDrawer = document.getElementById('notes-drawer');
+    const notesToggleBtn = document.getElementById('notes-toggle-btn');
+    const notesCloseBtn = document.getElementById('notes-close-btn');
+    const notesTime = document.getElementById('notes-time');
+    const notesScript = document.getElementById('notes-script');
+    const notesVivaQ = document.getElementById('notes-viva-q');
+    const notesVivaA = document.getElementById('notes-viva-a');
+
+    const overviewModal = document.getElementById('overview-modal');
+    const overviewBtn = document.getElementById('overview-btn');
+    const overviewCloseBtn = document.getElementById('overview-close-btn');
+    const overviewGrid = document.getElementById('overview-grid');
+    const fsBtn = document.getElementById('fs-btn');
+
+    // Populate dropdown
+    SLIDES.forEach((s, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.textContent = `${String(idx + 1).padStart(2, '0')}: ${s.badge} - ${s.title.substring(0, 30)}...`;
+      slideSelect.appendChild(opt);
+    });
+
+    function renderSlide(idx) {
+      if (idx < 0 || idx >= SLIDES.length) return;
+      currentIndex = idx;
+      const s = SLIDES[idx];
+
+      // Update Topbar
+      topicBadge.textContent = s.badge;
+      slideCounter.textContent = `${String(idx + 1).padStart(2, '0')} / ${String(SLIDES.length).padStart(2, '0')}`;
+      slideSelect.value = idx;
+
+      // Update Drawer Notes
+      notesTime.textContent = s.target_time;
+      notesScript.textContent = `"${s.notes}"`;
+      notesVivaQ.textContent = s.viva_q;
+      notesVivaA.textContent = s.viva_a;
+
+      // Render Layout by Type
+      let html = '';
+
+      if (s.type === 'title') {
+        html = `
+          <div class="h-full flex flex-col justify-center items-center text-center max-w-4xl mx-auto space-y-6">
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-400/30 text-sky-400 text-xs font-mono font-semibold tracking-wider uppercase">
+              ${s.badge}
+            </div>
+            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
+              ${s.title}
+            </h1>
+            <p class="text-lg md:text-xl text-slate-300 max-w-2xl font-light">
+              ${s.subtitle}
+            </p>
+            <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-sm text-slate-400 max-w-3xl leading-relaxed">
+              ${s.content.summary}
+            </div>
+            <div class="pt-4 flex flex-col md:flex-row items-center justify-center gap-6 text-sm">
+              <div class="flex items-center space-x-4 bg-slate-900/80 px-6 py-3 rounded-xl border border-slate-700/60">
+                <div class="text-left">
+                  <div class="text-[10px] uppercase tracking-wider text-slate-400 font-mono">Joint Equal Authors</div>
+                  <div class="font-bold text-white">Nilesh Mori (202301473) &bull; Pratik Chauhan (202301435)</div>
+                </div>
+              </div>
+              <div class="bg-slate-900/80 px-6 py-3 rounded-xl border border-slate-700/60 text-left">
+                <div class="text-[10px] uppercase tracking-wider text-slate-400 font-mono">Mentor & Institution</div>
+                <div class="font-bold text-white">${s.content.mentor} &bull; <span class="text-sky-400">DA-IICT</span></div>
+              </div>
+            </div>
+            <div class="text-xs font-mono text-emerald-400">
+              Live Production Platform: <a href="https://${s.content.live_url}" target="_blank" class="underline hover:text-emerald-300">${s.content.live_url}</a>
+            </div>
+          </div>
+        `;
+      } else if (s.type === 'cards_grid') {
+        html = `
+          <div class="h-full flex flex-col justify-between">
+            <div class="mb-4">
+              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-400 mt-1">${s.subtitle}</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-auto">
+              ${s.cards.map(c => `
+                <div class="p-5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-sky-500/40 transition">
+                  <div class="flex items-center justify-between mb-2">
+                    <h3 class="font-semibold text-white text-base">${c.title}</h3>
+                    <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-sky-950 text-sky-400 border border-sky-800/50">${c.badge}</span>
+                  </div>
+                  <p class="text-xs md:text-sm text-slate-300 leading-relaxed">${c.text}</p>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else if (s.type === 'comparison') {
+        html = `
+          <div class="h-full flex flex-col justify-between">
+            <div class="mb-4">
+              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-400 mt-1">${s.subtitle}</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto">
+              <div class="p-6 rounded-2xl bg-rose-950/20 border border-rose-900/40">
+                <div class="flex items-center space-x-2 text-rose-400 font-bold mb-4 text-base">
+                  <span>✕</span> <span>${s.legacy.title}</span>
+                </div>
+                <ul class="space-y-3">
+                  ${s.legacy.items.map(it => `
+                    <li class="text-xs md:text-sm text-slate-300 flex items-start space-x-2">
+                      <span class="text-rose-400 mt-0.5">•</span>
+                      <span>${it}</span>
+                    </li>
+                  `).join('')}
+                </ul>
+              </div>
+              <div class="p-6 rounded-2xl bg-emerald-950/20 border border-emerald-500/40 shadow-lg shadow-emerald-950/30">
+                <div class="flex items-center space-x-2 text-emerald-400 font-bold mb-4 text-base">
+                  <span>✓</span> <span>${s.tutormetric.title}</span>
+                </div>
+                <ul class="space-y-3">
+                  ${s.tutormetric.items.map(it => `
+                    <li class="text-xs md:text-sm text-slate-200 flex items-start space-x-2">
+                      <span class="text-emerald-400 mt-0.5">✓</span>
+                      <span class="font-medium">${it}</span>
+                    </li>
+                  `).join('')}
+                </ul>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (s.type === 'roadmap') {
+        html = `
+          <div class="h-full flex flex-col justify-between">
+            <div class="mb-3">
+              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-400 mt-0.5">${s.subtitle}</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 my-auto">
+              ${s.steps.map(st => `
+                <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-sky-500/40 transition">
+                  <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-xs font-mono font-bold text-sky-400">${st.num}</span>
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">${st.tasks}</span>
+                  </div>
+                  <div class="font-bold text-white text-sm mb-1">${st.phase}</div>
+                  <div class="text-[11px] md:text-xs text-slate-300 leading-snug">${st.desc}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else if (s.type === 'pipeline_detail') {
+        html = `
+          <div class="h-full flex flex-col justify-between">
+            <div class="mb-2">
+              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-400 mt-0.5">${s.subtitle}</p>
+            </div>
+            <div class="grid grid-cols-4 gap-3 mb-3">
+              ${s.metrics.map(m => `
+                <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-center">
+                  <div class="text-xl font-extrabold text-sky-400 font-mono">${m.val}</div>
+                  <div class="text-[11px] text-slate-400 mt-0.5">${m.lbl}</div>
+                </div>
+              `).join('')}
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 my-auto">
+              ${s.protocol.map(p => `
+                <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800/80">
+                  <div class="text-xs font-bold text-sky-300 mb-1 flex items-center space-x-1.5">
+                    <span>◈</span> <span>${p.step}</span>
+                  </div>
+                  <div class="text-[11px] md:text-xs text-slate-300 leading-relaxed">${p.desc}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else if (s.type === 'database_schema') {
+        html = `
+          <div class="h-full flex flex-col justify-between">
+            <div class="mb-2">
+              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-400 mt-0.5">${s.subtitle}</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+              ${s.tables.map(t => `
+                <div class="p-4 rounded-xl bg-slate-900/90 border border-sky-900/40">
+                  <div class="flex items-center justify-between mb-1.5">
+                    <span class="font-mono font-bold text-sky-400 text-sm">table: ${t.name}</span>
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800/40">${t.rows}</span>
+                  </div>
+                  <p class="text-[11px] text-slate-400 mb-2">${t.desc}</p>
+                  <div class="flex flex-wrap gap-1">
+                    ${t.columns.map(c => `<span class="text-[10px] font-mono bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded">${c}</span>`).join('')}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+            <div class="grid grid-cols-3 gap-3">
+              ${s.advantages.map(a => `
+                <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-center">
+                  <div class="text-xl font-bold text-emerald-400 font-mono">${a.stat}</div>
+                  <div class="text-xs font-semibold text-slate-200 mt-0.5">${a.label}</div>
+                  <div class="text-[10px] text-slate-400 mt-1 leading-snug">${a.desc}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else if (s.type === 'geography_analysis' || s.type === 'tier_breakdown' || s.type === 'ladder_chart' || s.type === 'venn_analysis' || s.type === 'demographics_grid') {
+        // Two-column Split: Image on Left/Right + Analytical Text on other side
+        html = `
+          <div class="h-full flex flex-col justify-between">
+            <div class="mb-2">
+              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-400 mt-0.5">${s.subtitle}</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 my-auto items-center">
+              <div class="md:col-span-5 flex justify-center">
+                <div class="rounded-xl overflow-hidden border border-slate-700/80 shadow-2xl max-h-[340px] flex items-center justify-center bg-slate-950">
+                  <img src="${s.image}" alt="${s.title}" class="max-h-[340px] w-auto object-contain">
+                </div>
+              </div>
+              <div class="md:col-span-7 space-y-3">
+                ${s.top_states ? `
+                  <div class="space-y-1.5">
+                    ${s.top_states.map(st => `
+                      <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/80 border border-slate-800 text-xs">
+                        <span class="font-mono text-sky-400 font-semibold">${st.rank}. ${st.state}</span>
+                        <div class="flex items-center space-x-3">
+                          <span class="text-slate-300 font-medium">${st.count}</span>
+                          <span class="font-mono text-emerald-400">${st.fee}</span>
+                        </div>
+                      </div>
+                    `).join('')}
+                  </div>
+                  <p class="text-xs text-slate-400 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/80 leading-relaxed">${s.takeaway}</p>
+                ` : ''}
+
+                ${s.tiers ? `
+                  <div class="space-y-2">
+                    ${s.tiers.map(t => `
+                      <div class="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800">
+                        <div class="flex items-center justify-between text-xs">
+                          <span class="font-bold text-white">${t.tier}</span>
+                          <span class="font-mono text-sky-400 font-semibold">${t.share} (${t.count})</span>
+                        </div>
+                        <div class="text-[11px] text-slate-400 mt-0.5">${t.desc}</div>
+                      </div>
+                    `).join('')}
+                  </div>
+                  <p class="text-xs text-amber-300/90 p-2 rounded bg-amber-950/20 border border-amber-900/40">${s.insight}</p>
+                ` : ''}
+
+                ${s.levels ? `
+                  <div class="space-y-1.5">
+                    ${s.levels.map(l => `
+                      <div class="flex items-center justify-between p-2 rounded bg-slate-900/80 border border-slate-800 text-xs">
+                        <span class="text-slate-200">${l.level}</span>
+                        <div class="flex items-center space-x-3">
+                          <span class="font-mono text-emerald-400 font-semibold">${l.fee}</span>
+                          <span class="text-[10px] font-mono text-slate-400">${l.index}</span>
+                        </div>
+                      </div>
+                    `).join('')}
+                  </div>
+                  <div class="text-[11px] text-slate-400 space-y-1 pt-1">
+                    ${s.distribution_facts.map(f => `<div>• ${f}</div>`).join('')}
+                  </div>
+                ` : ''}
+
+                ${s.venn_stats ? `
+                  <div class="grid grid-cols-2 gap-2">
+                    ${s.venn_stats.map(v => `
+                      <div class="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800">
+                        <div class="text-base font-bold text-sky-400 font-mono">${v.val}</div>
+                        <div class="text-xs font-semibold text-white">${v.lbl}</div>
+                        <div class="text-[10px] text-slate-400 mt-0.5 leading-tight">${v.desc}</div>
+                      </div>
+                    `).join('')}
+                  </div>
+                  <p class="text-xs text-slate-300 p-2 rounded bg-slate-900/60 border border-slate-800 leading-relaxed">${s.takeaway}</p>
+                ` : ''}
+
+                ${s.gender_breakdown ? `
+                  <div class="space-y-1 text-xs">
+                    ${s.gender_breakdown.map(g => `
+                      <div class="flex items-center justify-between p-1.5 rounded bg-slate-900/80 border border-slate-800">
+                        <span class="text-slate-200">${g.subject}</span>
+                        <span class="font-mono text-sky-400">${g.female_pct}</span>
+                      </div>
+                    `).join('')}
+                  </div>
+                  <div class="pt-1 space-y-1 text-xs">
+                    ${s.degree_premium.map(d => `
+                      <div class="flex items-center justify-between text-[11px] text-slate-400">
+                        <span>${d.tier}</span>
+                        <span class="font-mono text-emerald-400">${d.fee} (${d.gap})</span>
+                      </div>
+                    `).join('')}
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (s.type === 'model_metrics') {
+        html = `
+          <div class="h-full flex flex-col justify-between">
+            <div class="mb-2">
+              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-400 mt-0.5">${s.subtitle}</p>
+            </div>
+            <div class="grid grid-cols-4 gap-3 mb-4">
+              ${s.model_stats.map(m => `
+                <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 text-center">
+                  <div class="text-2xl font-extrabold text-sky-400 font-mono">${m.stat}</div>
+                  <div class="text-xs font-semibold text-slate-200 mt-0.5">${m.label}</div>
+                  <div class="text-[10px] text-slate-400 mt-1">${m.sub}</div>
+                </div>
+              `).join('')}
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-auto">
+              <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800">
+                <div class="text-xs font-bold text-emerald-400 mb-2 uppercase tracking-wide font-mono">${s.econometric_comparison.observable.title}</div>
+                <ul class="space-y-2">
+                  ${s.econometric_comparison.observable.items.map(it => `
+                    <li class="text-xs text-slate-300 flex items-start space-x-2">
+                      <span class="text-emerald-400 font-bold">✓</span>
+                      <span>${it}</span>
+                    </li>
+                  `).join('')}
+                </ul>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800">
+                <div class="text-xs font-bold text-amber-400 mb-2 uppercase tracking-wide font-mono">${s.econometric_comparison.unobservable.title}</div>
+                <ul class="space-y-2">
+                  ${s.econometric_comparison.unobservable.items.map(it => `
+                    <li class="text-xs text-slate-300 flex items-start space-x-2">
+                      <span class="text-amber-400 font-bold">◈</span>
+                      <span>${it}</span>
+                    </li>
+                  `).join('')}
+                </ul>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (s.type === 'feature_spotlight') {
+        html = `
+          <div class="h-full flex flex-col justify-between">
+            <div class="mb-2">
+              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-400 mt-0.5">${s.subtitle}</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 my-auto items-center">
+              <div class="md:col-span-6 flex justify-center">
+                <div class="rounded-xl overflow-hidden border border-slate-700/80 shadow-2xl bg-slate-950">
+                  <img src="${s.image}" alt="Directory" class="max-h-[320px] w-auto object-contain">
+                </div>
+              </div>
+              <div class="md:col-span-6 grid grid-cols-2 gap-3">
+                ${s.filters.map(f => `
+                  <div class="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
+                    <div class="text-xs font-bold text-white">${f.name}</div>
+                    <div class="text-[11px] text-slate-400 mt-1 leading-snug">${f.desc}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (s.type === 'two_tools') {
+        html = `
+          <div class="h-full flex flex-col justify-between">
+            <div class="mb-2">
+              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-400 mt-0.5">${s.subtitle}</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto">
+              <div class="p-5 rounded-2xl bg-slate-900/80 border border-sky-500/30 flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center space-x-2 text-sky-400 font-bold text-base mb-2">
+                    <span>⚡</span> <span>${s.tool_a.name}</span>
+                  </div>
+                  <p class="text-xs text-slate-300 mb-3">${s.tool_a.desc}</p>
+                  <ul class="space-y-2">
+                    ${s.tool_a.features.map(f => `
+                      <li class="text-xs text-slate-200 flex items-start space-x-2">
+                        <span class="text-sky-400">✓</span> <span>${f}</span>
+                      </li>
+                    `).join('')}
+                  </ul>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-800 text-[10px] font-mono text-slate-400">
+                  Outputs: Base rate, confidence interval, annual potential
+                </div>
+              </div>
+
+              <div class="p-5 rounded-2xl bg-slate-900/80 border border-emerald-500/30 flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center space-x-2 text-emerald-400 font-bold text-base mb-2">
+                    <span>✨</span> <span>${s.tool_b.name}</span>
+                  </div>
+                  <p class="text-xs text-slate-300 mb-3">${s.tool_b.desc}</p>
+                  <ul class="space-y-2">
+                    ${s.tool_b.features.map(f => `
+                      <li class="text-xs text-slate-200 flex items-start space-x-2">
+                        <span class="text-emerald-400">✓</span> <span>${f}</span>
+                      </li>
+                    `).join('')}
+                  </ul>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-800 text-[10px] font-mono text-slate-400">
+                  Powered by Google Gemini GenAI with offline fallback
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (s.type === 'findings_grid') {
+        html = `
+          <div class="h-full flex flex-col justify-between">
+            <div class="mb-2">
+              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-400 mt-0.5">${s.subtitle}</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-3 my-auto">
+              ${s.findings.map(f => `
+                <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 flex flex-col justify-between">
+                  <div>
+                    <div class="text-xs font-mono font-bold text-sky-400 mb-1">${f.num}</div>
+                    <div class="text-xs font-bold text-white mb-1.5">${f.title}</div>
+                    <div class="text-[11px] text-slate-300 leading-snug">${f.desc}</div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900/50 border border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+              <span class="font-bold text-slate-300">Future Scope:</span>
+              ${s.future_work.map(w => `<span>• ${w}</span>`).join('')}
+            </div>
+          </div>
+        `;
+      } else if (s.type === 'conclusion_demo') {
+        html = `
+          <div class="h-full flex flex-col justify-between">
+            <div class="mb-2 text-center">
+              <h2 class="text-3xl font-bold text-white tracking-tight">${s.title}</h2>
+              <p class="text-sm text-sky-400 font-mono mt-1">${s.credits.url}</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto items-center">
+              <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4">
+                <div class="text-xs font-mono uppercase tracking-wider text-slate-400 font-bold">Project Credentials</div>
+                <div class="text-sm text-white font-medium">${s.credits.title}</div>
+                <div class="text-xs text-slate-300 leading-relaxed">${s.credits.authors}</div>
+                <div class="text-xs text-sky-400 font-semibold">${s.credits.mentor}</div>
+                <div class="pt-2">
+                  <a href="${s.credits.url}" target="_blank" class="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs transition shadow-lg shadow-sky-600/30">
+                    <span>Open Live Platform (Render)</span> <span>↗</span>
+                  </a>
+                </div>
+              </div>
+              <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                <div class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold">Live Demonstration Protocol (5 Mins)</div>
+                <div class="space-y-2">
+                  ${s.demo_checklist.map(d => `
+                    <div class="p-2.5 rounded-lg bg-slate-950 border border-slate-800/80 text-xs">
+                      <div class="font-bold text-white">${d.step}</div>
+                      <div class="text-[11px] text-slate-400 mt-0.5">${d.action}</div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      renderContainer.innerHTML = html;
+    }
+
+    // Navigation triggers
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex > 0) renderSlide(currentIndex - 1);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentIndex < SLIDES.length - 1) renderSlide(currentIndex + 1);
+    });
+
+    slideSelect.addEventListener('change', (e) => {
+      renderSlide(parseInt(e.target.value));
+    });
+
+    // Keyboard bindings
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        if (currentIndex < SLIDES.length - 1) renderSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        if (currentIndex > 0) renderSlide(currentIndex - 1);
+      } else if (e.key === 'Home') {
+        renderSlide(0);
+      } else if (e.key === 'End') {
+        renderSlide(SLIDES.length - 1);
+      } else if (e.key === 'n' || e.key === 'N') {
+        toggleNotes();
+      } else if (e.key === 'o' || e.key === 'O') {
+        toggleOverview();
+      } else if (e.key === 'Escape') {
+        closeOverview();
+        closeNotes();
+      }
+    });
+
+    // Notes Drawer
+    let notesOpen = false;
+    function toggleNotes() {
+      notesOpen = !notesOpen;
+      notesDrawer.style.transform = notesOpen ? 'translateX(0)' : 'translateX(100%)';
+    }
+    function closeNotes() {
+      notesOpen = false;
+      notesDrawer.style.transform = 'translateX(100%)';
+    }
+    notesToggleBtn.addEventListener('click', toggleNotes);
+    notesCloseBtn.addEventListener('click', closeNotes);
+
+    // Overview Grid
+    let overviewOpen = false;
+    function populateOverview() {
+      overviewGrid.innerHTML = '';
+      SLIDES.forEach((s, idx) => {
+        const card = document.createElement('div');
+        card.className = 'p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-sky-500 cursor-pointer transition flex flex-col justify-between h-36';
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between text-[10px] font-mono text-slate-400 mb-1">
+              <span>#${String(idx + 1).padStart(2, '0')}</span>
+              <span class="px-1.5 py-0.5 rounded bg-slate-800 text-sky-400">${s.badge}</span>
+            </div>
+            <div class="text-xs font-bold text-white line-clamp-2">${s.title}</div>
+          </div>
+          <div class="text-[10px] text-slate-400 font-mono">${s.target_time}</div>
+        `;
+        card.addEventListener('click', () => {
+          renderSlide(idx);
+          closeOverview();
+        });
+        overviewGrid.appendChild(card);
+      });
+    }
+
+    function toggleOverview() {
+      overviewOpen = !overviewOpen;
+      if (overviewOpen) {
+        populateOverview();
+        overviewModal.classList.remove('hidden');
+        setTimeout(() => overviewModal.classList.remove('opacity-0'), 10);
+      } else {
+        closeOverview();
+      }
+    }
+    function closeOverview() {
+      overviewOpen = false;
+      overviewModal.classList.add('opacity-0');
+      setTimeout(() => overviewModal.classList.add('hidden'), 250);
+    }
+    overviewBtn.addEventListener('click', toggleOverview);
+    overviewCloseBtn.addEventListener('click', closeOverview);
+
+    // Fullscreen
+    fsBtn.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    // Initial render
+    renderSlide(0);
+  </script>
+</body>
+</html>
