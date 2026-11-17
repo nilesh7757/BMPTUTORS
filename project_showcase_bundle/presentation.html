@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TutorMetric — Presentation Deck (SC452 DA-IICT)</title>
+  <title>TutorMetric — Presentation Deck (B.Tech Mini Project DA-IICT)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -34,10 +34,11 @@
     }
   </script>
   <style>
-    /* 16:9 Aspect Ratio Presentation Shell */
+    
+    /* Clean White Editorial Presentation Theme - Zero Blue */
     body {
-      background-color: #0b1120;
-      color: #f1f5f9;
+      background-color: #f8fafc;
+      color: #0f172a;
       margin: 0;
       padding: 0;
       overflow: hidden;
@@ -50,7 +51,7 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      background: radial-gradient(circle at 50% 20%, #172554 0%, #0b1120 70%, #030712 100%);
+      background: radial-gradient(circle at 50% 10%, #ffffff 0%, #f1f5f9 60%, #e2e8f0 100%);
       padding: 1.25rem 2rem 1rem;
       box-sizing: border-box;
       position: relative;
@@ -62,12 +63,11 @@
       display: flex;
       flex-direction: column;
       position: relative;
-      background: rgba(15, 23, 42, 0.75);
-      border: 1px solid rgba(56, 189, 248, 0.15);
-      backdrop-filter: blur(16px);
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
       border-radius: 1.25rem;
       padding: 2rem 2.5rem;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
       overflow: hidden;
     }
     .slide-content-area {
@@ -84,21 +84,25 @@
       height: 6px;
     }
     ::-webkit-scrollbar-track {
-      background: rgba(15, 23, 42, 0.6);
+      background: #f1f5f9;
     }
     ::-webkit-scrollbar-thumb {
-      background: rgba(56, 189, 248, 0.3);
+      background: #cbd5e1;
       border-radius: 3px;
     }
     /* Notes drawer */
     #notes-drawer {
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      background-color: #ffffff;
+      color: #0f172a;
+      border-left: 1px solid #e2e8f0;
     }
     /* Grid Overview Modal */
     #overview-modal {
       transition: opacity 0.25s ease;
+      background-color: rgba(255, 255, 255, 0.96);
     }
-  </style>
+</style>
 </head>
 <body class="font-sans antialiased">
 
@@ -108,26 +112,26 @@
     <!-- Top Bar: Project Tag & Slide Badge Indicator -->
     <header class="w-full max-width-1440 max-w-[1440px] flex items-center justify-between pb-3">
       <div class="flex items-center space-x-3">
-        <span class="px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-brand-950 border border-brand-500/30 text-sky-400 font-mono">
-          TutorMetric · SC452
+        <span class="px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-emerald-50 border border-emerald-200 text-emerald-700 font-mono">
+          TutorMetric · B.Tech Mini Project
         </span>
-        <span id="slide-topic-badge" class="px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 border border-slate-700 text-slate-200">
+        <span id="slide-topic-badge" class="px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 border border-slate-200 text-slate-800">
           <!-- Dynamic Badge -->
         </span>
       </div>
 
       <!-- Slide Jump Dropdown & Keyboard Hint -->
-      <div class="flex items-center space-x-4 text-xs text-slate-400 font-mono">
+      <div class="flex items-center space-x-4 text-xs text-slate-500 font-mono">
         <div class="flex items-center space-x-2">
           <span>Jump to:</span>
-          <select id="slide-select" class="bg-slate-900 border border-slate-700 text-slate-200 rounded px-2 py-1 text-xs focus:outline-none focus:border-sky-500">
+          <select id="slide-select" class="bg-slate-50 border border-slate-200 text-slate-800 rounded px-2 py-1 text-xs focus:outline-none focus:border-emerald-500">
             <!-- Dynamically populated -->
           </select>
         </div>
-        <span class="hidden md:inline px-2 py-1 rounded bg-slate-800/80 border border-slate-700 text-[11px]">
+        <span class="hidden md:inline px-2 py-1 rounded bg-slate-100/80 border border-slate-200 text-[11px]">
           [← / → Keys]
         </span>
-        <span id="slide-counter" class="text-sm font-bold text-sky-400 font-mono">
+        <span id="slide-counter" class="text-sm font-bold text-emerald-700 font-mono">
           01 / 17
         </span>
       </div>
@@ -142,28 +146,28 @@
     </main>
 
     <!-- Bottom Controls & Speaker Notes Drawer Trigger -->
-    <footer class="w-full max-w-[1440px] flex items-center justify-between pt-3 text-xs text-slate-400">
+    <footer class="w-full max-w-[1440px] flex items-center justify-between pt-3 text-xs text-slate-500">
       <div class="flex items-center space-x-3">
-        <button id="prev-btn" class="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-medium transition flex items-center space-x-1">
+        <button id="prev-btn" class="px-4 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-700 border border-slate-200 text-slate-800 font-medium transition flex items-center space-x-1">
           <span>←</span> <span>Previous</span>
         </button>
-        <button id="next-btn" class="px-4 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-medium transition flex items-center space-x-1 shadow-lg shadow-sky-600/30">
+        <button id="next-btn" class="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-slate-900 font-medium transition flex items-center space-x-1 shadow-lg shadow-emerald-600/20">
           <span>Next</span> <span>→</span>
         </button>
-        <button id="overview-btn" class="px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-300 transition">
+        <button id="overview-btn" class="px-3 py-1.5 rounded-lg bg-slate-100/80 hover:bg-slate-700 border border-slate-200 text-slate-700 transition">
           Overview (O)
         </button>
       </div>
 
       <div class="flex items-center space-x-4">
-        <div class="text-slate-400 text-xs flex items-center space-x-2">
+        <div class="text-slate-500 text-xs flex items-center space-x-2">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
           <span>Joint Equal Authors: Nilesh Mori & Pratik Chauhan</span>
         </div>
         <button id="notes-toggle-btn" class="px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 font-medium transition flex items-center space-x-1.5">
           <span>🎤</span> <span>Speaker Script & Viva (N)</span>
         </button>
-        <button id="fs-btn" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300">
+        <button id="fs-btn" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-700 border border-slate-200 text-slate-700">
           ⛶
         </button>
       </div>
@@ -171,42 +175,42 @@
   </div>
 
   <!-- Speaker Notes & Viva Drawer (Slide-Over Panel) -->
-  <aside id="notes-drawer" class="fixed right-0 top-0 bottom-0 w-full max-w-lg bg-slate-900/95 border-l border-slate-700 p-6 backdrop-blur-xl shadow-2xl z-50 transform translate-x-full overflow-y-auto">
+  <aside id="notes-drawer" class="fixed right-0 top-0 bottom-0 w-full max-w-lg bg-slate-50/95 border-l border-slate-200 p-6 backdrop-blur-xl shadow-2xl z-50 transform translate-x-full overflow-y-auto">
     <div class="flex items-center justify-between pb-4 border-b border-slate-800">
       <div class="flex items-center space-x-2">
         <span class="text-lg font-bold text-amber-400">🎤 Speaker Notes & Viva Defense</span>
       </div>
-      <button id="notes-close-btn" class="text-slate-400 hover:text-white text-lg p-1">✕</button>
+      <button id="notes-close-btn" class="text-slate-500 hover:text-slate-900 text-lg p-1">✕</button>
     </div>
 
     <div class="mt-4 space-y-4">
       <div>
-        <div class="text-xs font-mono uppercase tracking-wider text-slate-400">Pacing Target</div>
+        <div class="text-xs font-mono uppercase tracking-wider text-slate-500">Pacing Target</div>
         <div id="notes-time" class="text-sm font-semibold text-emerald-400 font-mono mt-0.5">35s</div>
       </div>
 
       <div>
         <div class="text-xs font-mono uppercase tracking-wider text-amber-400/90 font-semibold">Word-for-Word Script (Joint Equal Presentation)</div>
-        <div id="notes-script" class="mt-2 text-sm text-slate-200 leading-relaxed bg-slate-950/70 p-4 rounded-xl border border-slate-800">
+        <div id="notes-script" class="mt-2 text-sm text-slate-800 leading-relaxed bg-white/70 p-4 rounded-xl border border-slate-800">
           <!-- Injected Script -->
         </div>
       </div>
 
       <div class="pt-2 border-t border-slate-800">
-        <div class="text-xs font-mono uppercase tracking-wider text-sky-400 font-semibold">Anticipated Examiner Viva Defense</div>
-        <div class="mt-2 bg-sky-950/40 p-4 rounded-xl border border-sky-800/40">
-          <div class="text-xs text-sky-300 font-medium">Q: <span id="notes-viva-q"></span></div>
-          <div class="text-sm text-slate-300 mt-2 leading-relaxed">A: <span id="notes-viva-a"></span></div>
+        <div class="text-xs font-mono uppercase tracking-wider text-emerald-700 font-semibold">Anticipated Examiner Viva Defense</div>
+        <div class="mt-2 bg-sky-950/40 p-4 rounded-xl border border-emerald-200/40">
+          <div class="text-xs text-emerald-800 font-medium">Q: <span id="notes-viva-q"></span></div>
+          <div class="text-sm text-slate-700 mt-2 leading-relaxed">A: <span id="notes-viva-a"></span></div>
         </div>
       </div>
     </div>
   </aside>
 
   <!-- Slide Overview Grid Modal -->
-  <div id="overview-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 hidden opacity-0 flex flex-col p-8 overflow-y-auto">
+  <div id="overview-modal" class="fixed inset-0 bg-white/90 backdrop-blur-md z-50 hidden opacity-0 flex flex-col p-8 overflow-y-auto">
     <div class="flex items-center justify-between pb-4 border-b border-slate-800 max-w-6xl w-full mx-auto">
-      <h2 class="text-xl font-bold text-white">All 17 Presentation Slides</h2>
-      <button id="overview-close-btn" class="px-4 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700">Close (Esc)</button>
+      <h2 class="text-xl font-bold text-slate-900">All 17 Presentation Slides</h2>
+      <button id="overview-close-btn" class="px-4 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-700">Close (Esc)</button>
     </div>
     <div id="overview-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-6xl w-full mx-auto mt-6">
       <!-- Dynamic thumb cards -->
@@ -217,7 +221,7 @@
     const SLIDES = [
   {
     "id": 1,
-    "badge": "DA-IICT SC452 \u00b7 B.Tech Mini Project",
+    "badge": "DA-IICT B.Tech Mini Project \u00b7 B.Tech Mini Project",
     "title": "TutorMetric",
     "subtitle": "Empirical Market Dynamics & Transparent Pricing Benchmarks for 107,673 Private Tutors in India",
     "image": "assets/g34_network_cover_blue.png",
@@ -241,9 +245,9 @@
       "live_url": "bmptutors.onrender.com"
     },
     "target_time": "35s",
-    "notes": "Respected professors, examiners, and fellow students, good morning. We are Nilesh Mori and Pratik Chauhan, presenting our B.Tech Mini Project for course SC452 under the mentorship of Dr. Parul Gupta: TutorMetric \u2014 What 107,673 private tutors in India actually charge. Private tutoring in India is an unorganized shadow education market worth billions of rupees that operates in near-total informational secrecy. We took the raw scraped dataset our mentor provided, verified which profiles actively still teach, and built an open-access platform featuring fair-price benchmarks, geospatial analytics, dynamic subject bundling, and predictive fee tools. We engineered this entire system as joint equal co-engineers.",
+    "notes": "Respected professors, examiners, and fellow students, good morning. We are Nilesh Mori and Pratik Chauhan, presenting our B.Tech Mini Project for course B.Tech Mini Project under the mentorship of Dr. Parul Gupta: TutorMetric \u2014 What 107,673 private tutors in India actually charge. Private tutoring in India is an unorganized shadow education market worth billions of rupees that operates in near-total informational secrecy. We took the raw scraped dataset our mentor provided, verified which profiles actively still teach, and built an open-access platform featuring fair-price benchmarks, geospatial analytics, dynamic subject bundling, and predictive fee tools. We engineered this entire system as joint equal co-engineers.",
     "viva_q": "Why is this project classified as a Mini Project rather than commercial software?",
-    "viva_a": "This is an academic research engineering project for SC452 at DA-IICT. Its core objective is empirical market transparency, reproducible data cleaning, and econometric modeling based on the research roadmap set by Dr. Parul Gupta."
+    "viva_a": "This is an academic research engineering project for B.Tech Mini Project at DA-IICT. Its core objective is empirical market transparency, reproducible data cleaning, and econometric modeling based on the research roadmap set by Dr. Parul Gupta."
   },
   {
     "id": 2,
@@ -270,7 +274,7 @@
       },
       {
         "title": "Our Project Mandate",
-        "badge": "SC452 Research Scope",
+        "badge": "B.Tech Mini Project Research Scope",
         "text": "Ingest mentor-verified master data, clean and standardize curriculum taxonomy, normalize into a 3NF relational database, and build an open-access public utility for fair-rate discovery."
       }
     ],
@@ -281,13 +285,13 @@
   },
   {
     "id": 3,
-    "badge": "Value & Scope",
-    "title": "What TutorMetric does differently",
-    "subtitle": "Moving from static commercial ads to an open analytical utility",
+    "badge": "TutorMetric vs TeacherOn",
+    "title": "What TutorMetric does that TeacherOn doesn't do",
+    "subtitle": "TeacherOn is a paid classifieds portal; TutorMetric is an open analytical utility",
     "image": "assets/03_tutor_cards_directory.png",
     "type": "comparison",
     "legacy": {
-      "title": "Traditional Commercial Directories",
+      "title": "What TeacherOn Does (Commercial Marketplace)",
       "items": [
         "Opaque pricing: self-reported fee with zero comparative context",
         "Monetized contact unlocks: charges parents \u20b9500\u2013\u20b91,500 to view phone numbers",
@@ -296,7 +300,7 @@
       ]
     },
     "tutormetric": {
-      "title": "TutorMetric Research Platform",
+      "title": "What TutorMetric Adds (Research Utility)",
       "items": [
         "Empirical benchmarks: state medians, level ladders, and Ridge regression estimates",
         "Active verification status: clear indicator showing 76,683 active vs 30,990 inactive",
@@ -939,7 +943,7 @@
     "image": "assets/g34_network_blue.png",
     "type": "conclusion_demo",
     "credits": {
-      "title": "TutorMetric \u2014 B.Tech Mini Project (SC452)",
+      "title": "TutorMetric \u2014 B.Tech Mini Project (B.Tech Mini Project)",
       "authors": "Nilesh Mori (202301473) & Pratik Chauhan (202301435) \u2014 Joint Equal Authors",
       "mentor": "Dr. Parul Gupta \u2014 DA-IICT Gandhinagar",
       "url": "https://bmptutors.onrender.com"
@@ -1021,28 +1025,28 @@
       if (s.type === 'title') {
         html = `
           <div class="h-full flex flex-col justify-center items-center text-center max-w-4xl mx-auto space-y-6">
-            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-400/30 text-sky-400 text-xs font-mono font-semibold tracking-wider uppercase">
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-sky-500/10 border border-emerald-400/30 text-emerald-700 text-xs font-mono font-semibold tracking-wider uppercase">
               ${s.badge}
             </div>
-            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
+            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900 leading-tight">
               ${s.title}
             </h1>
-            <p class="text-lg md:text-xl text-slate-300 max-w-2xl font-light">
+            <p class="text-lg md:text-xl text-slate-700 max-w-2xl font-light">
               ${s.subtitle}
             </p>
-            <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-sm text-slate-400 max-w-3xl leading-relaxed">
+            <div class="p-4 rounded-xl bg-slate-50/60 border border-slate-800 text-sm text-slate-500 max-w-3xl leading-relaxed">
               ${s.content.summary}
             </div>
             <div class="pt-4 flex flex-col md:flex-row items-center justify-center gap-6 text-sm">
-              <div class="flex items-center space-x-4 bg-slate-900/80 px-6 py-3 rounded-xl border border-slate-700/60">
+              <div class="flex items-center space-x-4 bg-slate-50/80 px-6 py-3 rounded-xl border border-slate-200/60">
                 <div class="text-left">
-                  <div class="text-[10px] uppercase tracking-wider text-slate-400 font-mono">Joint Equal Authors</div>
-                  <div class="font-bold text-white">Nilesh Mori (202301473) &bull; Pratik Chauhan (202301435)</div>
+                  <div class="text-[10px] uppercase tracking-wider text-slate-500 font-mono">Joint Equal Authors</div>
+                  <div class="font-bold text-slate-900">Nilesh Mori (202301473) &bull; Pratik Chauhan (202301435)</div>
                 </div>
               </div>
-              <div class="bg-slate-900/80 px-6 py-3 rounded-xl border border-slate-700/60 text-left">
-                <div class="text-[10px] uppercase tracking-wider text-slate-400 font-mono">Mentor & Institution</div>
-                <div class="font-bold text-white">${s.content.mentor} &bull; <span class="text-sky-400">DA-IICT</span></div>
+              <div class="bg-slate-50/80 px-6 py-3 rounded-xl border border-slate-200/60 text-left">
+                <div class="text-[10px] uppercase tracking-wider text-slate-500 font-mono">Mentor & Institution</div>
+                <div class="font-bold text-slate-900">${s.content.mentor} &bull; <span class="text-emerald-700">DA-IICT</span></div>
               </div>
             </div>
             <div class="text-xs font-mono text-emerald-400">
@@ -1054,17 +1058,17 @@
         html = `
           <div class="h-full flex flex-col justify-between">
             <div class="mb-4">
-              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
-              <p class="text-sm text-slate-400 mt-1">${s.subtitle}</p>
+              <h2 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-500 mt-1">${s.subtitle}</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-auto">
               ${s.cards.map(c => `
-                <div class="p-5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-sky-500/40 transition">
+                <div class="p-5 rounded-xl bg-slate-50/80 border border-slate-800 hover:border-emerald-500/40 transition">
                   <div class="flex items-center justify-between mb-2">
-                    <h3 class="font-semibold text-white text-base">${c.title}</h3>
-                    <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-sky-950 text-sky-400 border border-sky-800/50">${c.badge}</span>
+                    <h3 class="font-semibold text-slate-900 text-base">${c.title}</h3>
+                    <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-sky-950 text-emerald-700 border border-emerald-200/50">${c.badge}</span>
                   </div>
-                  <p class="text-xs md:text-sm text-slate-300 leading-relaxed">${c.text}</p>
+                  <p class="text-xs md:text-sm text-slate-700 leading-relaxed">${c.text}</p>
                 </div>
               `).join('')}
             </div>
@@ -1074,8 +1078,8 @@
         html = `
           <div class="h-full flex flex-col justify-between">
             <div class="mb-4">
-              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
-              <p class="text-sm text-slate-400 mt-1">${s.subtitle}</p>
+              <h2 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-500 mt-1">${s.subtitle}</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto">
               <div class="p-6 rounded-2xl bg-rose-950/20 border border-rose-900/40">
@@ -1084,7 +1088,7 @@
                 </div>
                 <ul class="space-y-3">
                   ${s.legacy.items.map(it => `
-                    <li class="text-xs md:text-sm text-slate-300 flex items-start space-x-2">
+                    <li class="text-xs md:text-sm text-slate-700 flex items-start space-x-2">
                       <span class="text-rose-400 mt-0.5">•</span>
                       <span>${it}</span>
                     </li>
@@ -1097,7 +1101,7 @@
                 </div>
                 <ul class="space-y-3">
                   ${s.tutormetric.items.map(it => `
-                    <li class="text-xs md:text-sm text-slate-200 flex items-start space-x-2">
+                    <li class="text-xs md:text-sm text-slate-800 flex items-start space-x-2">
                       <span class="text-emerald-400 mt-0.5">✓</span>
                       <span class="font-medium">${it}</span>
                     </li>
@@ -1111,18 +1115,18 @@
         html = `
           <div class="h-full flex flex-col justify-between">
             <div class="mb-3">
-              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
-              <p class="text-sm text-slate-400 mt-0.5">${s.subtitle}</p>
+              <h2 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-500 mt-0.5">${s.subtitle}</p>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-3 gap-3 my-auto">
               ${s.steps.map(st => `
-                <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-sky-500/40 transition">
+                <div class="p-4 rounded-xl bg-slate-50/80 border border-slate-800 hover:border-emerald-500/40 transition">
                   <div class="flex items-center justify-between mb-1.5">
-                    <span class="text-xs font-mono font-bold text-sky-400">${st.num}</span>
-                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">${st.tasks}</span>
+                    <span class="text-xs font-mono font-bold text-emerald-700">${st.num}</span>
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-700">${st.tasks}</span>
                   </div>
-                  <div class="font-bold text-white text-sm mb-1">${st.phase}</div>
-                  <div class="text-[11px] md:text-xs text-slate-300 leading-snug">${st.desc}</div>
+                  <div class="font-bold text-slate-900 text-sm mb-1">${st.phase}</div>
+                  <div class="text-[11px] md:text-xs text-slate-700 leading-snug">${st.desc}</div>
                 </div>
               `).join('')}
             </div>
@@ -1132,24 +1136,24 @@
         html = `
           <div class="h-full flex flex-col justify-between">
             <div class="mb-2">
-              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
-              <p class="text-sm text-slate-400 mt-0.5">${s.subtitle}</p>
+              <h2 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-500 mt-0.5">${s.subtitle}</p>
             </div>
             <div class="grid grid-cols-4 gap-3 mb-3">
               ${s.metrics.map(m => `
-                <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-center">
-                  <div class="text-xl font-extrabold text-sky-400 font-mono">${m.val}</div>
-                  <div class="text-[11px] text-slate-400 mt-0.5">${m.lbl}</div>
+                <div class="p-3 rounded-xl bg-slate-50/90 border border-slate-800 text-center">
+                  <div class="text-xl font-extrabold text-emerald-700 font-mono">${m.val}</div>
+                  <div class="text-[11px] text-slate-500 mt-0.5">${m.lbl}</div>
                 </div>
               `).join('')}
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 my-auto">
               ${s.protocol.map(p => `
-                <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800/80">
-                  <div class="text-xs font-bold text-sky-300 mb-1 flex items-center space-x-1.5">
+                <div class="p-3.5 rounded-xl bg-slate-50/60 border border-slate-800/80">
+                  <div class="text-xs font-bold text-emerald-800 mb-1 flex items-center space-x-1.5">
                     <span>◈</span> <span>${p.step}</span>
                   </div>
-                  <div class="text-[11px] md:text-xs text-slate-300 leading-relaxed">${p.desc}</div>
+                  <div class="text-[11px] md:text-xs text-slate-700 leading-relaxed">${p.desc}</div>
                 </div>
               `).join('')}
             </div>
@@ -1159,29 +1163,29 @@
         html = `
           <div class="h-full flex flex-col justify-between">
             <div class="mb-2">
-              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
-              <p class="text-sm text-slate-400 mt-0.5">${s.subtitle}</p>
+              <h2 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-500 mt-0.5">${s.subtitle}</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
               ${s.tables.map(t => `
-                <div class="p-4 rounded-xl bg-slate-900/90 border border-sky-900/40">
+                <div class="p-4 rounded-xl bg-slate-50/90 border border-sky-900/40">
                   <div class="flex items-center justify-between mb-1.5">
-                    <span class="font-mono font-bold text-sky-400 text-sm">table: ${t.name}</span>
-                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800/40">${t.rows}</span>
+                    <span class="font-mono font-bold text-emerald-700 text-sm">table: ${t.name}</span>
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-950 text-emerald-800 border border-emerald-200/40">${t.rows}</span>
                   </div>
-                  <p class="text-[11px] text-slate-400 mb-2">${t.desc}</p>
+                  <p class="text-[11px] text-slate-500 mb-2">${t.desc}</p>
                   <div class="flex flex-wrap gap-1">
-                    ${t.columns.map(c => `<span class="text-[10px] font-mono bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded">${c}</span>`).join('')}
+                    ${t.columns.map(c => `<span class="text-[10px] font-mono bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">${c}</span>`).join('')}
                   </div>
                 </div>
               `).join('')}
             </div>
             <div class="grid grid-cols-3 gap-3">
               ${s.advantages.map(a => `
-                <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-center">
+                <div class="p-3 rounded-xl bg-slate-50/60 border border-slate-800 text-center">
                   <div class="text-xl font-bold text-emerald-400 font-mono">${a.stat}</div>
-                  <div class="text-xs font-semibold text-slate-200 mt-0.5">${a.label}</div>
-                  <div class="text-[10px] text-slate-400 mt-1 leading-snug">${a.desc}</div>
+                  <div class="text-xs font-semibold text-slate-800 mt-0.5">${a.label}</div>
+                  <div class="text-[10px] text-slate-500 mt-1 leading-snug">${a.desc}</div>
                 </div>
               `).join('')}
             </div>
@@ -1192,12 +1196,12 @@
         html = `
           <div class="h-full flex flex-col justify-between">
             <div class="mb-2">
-              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
-              <p class="text-sm text-slate-400 mt-0.5">${s.subtitle}</p>
+              <h2 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-500 mt-0.5">${s.subtitle}</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-12 gap-6 my-auto items-center">
               <div class="md:col-span-5 flex justify-center">
-                <div class="rounded-xl overflow-hidden border border-slate-700/80 shadow-2xl max-h-[340px] flex items-center justify-center bg-slate-950">
+                <div class="rounded-xl overflow-hidden border border-slate-200/80 shadow-2xl max-h-[340px] flex items-center justify-center bg-white">
                   <img src="${s.image}" alt="${s.title}" class="max-h-[340px] w-auto object-contain">
                 </div>
               </div>
@@ -1205,27 +1209,27 @@
                 ${s.top_states ? `
                   <div class="space-y-1.5">
                     ${s.top_states.map(st => `
-                      <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/80 border border-slate-800 text-xs">
-                        <span class="font-mono text-sky-400 font-semibold">${st.rank}. ${st.state}</span>
+                      <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50/80 border border-slate-800 text-xs">
+                        <span class="font-mono text-emerald-700 font-semibold">${st.rank}. ${st.state}</span>
                         <div class="flex items-center space-x-3">
-                          <span class="text-slate-300 font-medium">${st.count}</span>
+                          <span class="text-slate-700 font-medium">${st.count}</span>
                           <span class="font-mono text-emerald-400">${st.fee}</span>
                         </div>
                       </div>
                     `).join('')}
                   </div>
-                  <p class="text-xs text-slate-400 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/80 leading-relaxed">${s.takeaway}</p>
+                  <p class="text-xs text-slate-500 p-2.5 rounded-lg bg-slate-50/50 border border-slate-800/80 leading-relaxed">${s.takeaway}</p>
                 ` : ''}
 
                 ${s.tiers ? `
                   <div class="space-y-2">
                     ${s.tiers.map(t => `
-                      <div class="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800">
+                      <div class="p-2.5 rounded-lg bg-slate-50/80 border border-slate-800">
                         <div class="flex items-center justify-between text-xs">
-                          <span class="font-bold text-white">${t.tier}</span>
-                          <span class="font-mono text-sky-400 font-semibold">${t.share} (${t.count})</span>
+                          <span class="font-bold text-slate-900">${t.tier}</span>
+                          <span class="font-mono text-emerald-700 font-semibold">${t.share} (${t.count})</span>
                         </div>
-                        <div class="text-[11px] text-slate-400 mt-0.5">${t.desc}</div>
+                        <div class="text-[11px] text-slate-500 mt-0.5">${t.desc}</div>
                       </div>
                     `).join('')}
                   </div>
@@ -1235,16 +1239,16 @@
                 ${s.levels ? `
                   <div class="space-y-1.5">
                     ${s.levels.map(l => `
-                      <div class="flex items-center justify-between p-2 rounded bg-slate-900/80 border border-slate-800 text-xs">
-                        <span class="text-slate-200">${l.level}</span>
+                      <div class="flex items-center justify-between p-2 rounded bg-slate-50/80 border border-slate-800 text-xs">
+                        <span class="text-slate-800">${l.level}</span>
                         <div class="flex items-center space-x-3">
                           <span class="font-mono text-emerald-400 font-semibold">${l.fee}</span>
-                          <span class="text-[10px] font-mono text-slate-400">${l.index}</span>
+                          <span class="text-[10px] font-mono text-slate-500">${l.index}</span>
                         </div>
                       </div>
                     `).join('')}
                   </div>
-                  <div class="text-[11px] text-slate-400 space-y-1 pt-1">
+                  <div class="text-[11px] text-slate-500 space-y-1 pt-1">
                     ${s.distribution_facts.map(f => `<div>• ${f}</div>`).join('')}
                   </div>
                 ` : ''}
@@ -1252,28 +1256,28 @@
                 ${s.venn_stats ? `
                   <div class="grid grid-cols-2 gap-2">
                     ${s.venn_stats.map(v => `
-                      <div class="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800">
-                        <div class="text-base font-bold text-sky-400 font-mono">${v.val}</div>
-                        <div class="text-xs font-semibold text-white">${v.lbl}</div>
-                        <div class="text-[10px] text-slate-400 mt-0.5 leading-tight">${v.desc}</div>
+                      <div class="p-2.5 rounded-lg bg-slate-50/80 border border-slate-800">
+                        <div class="text-base font-bold text-emerald-700 font-mono">${v.val}</div>
+                        <div class="text-xs font-semibold text-slate-900">${v.lbl}</div>
+                        <div class="text-[10px] text-slate-500 mt-0.5 leading-tight">${v.desc}</div>
                       </div>
                     `).join('')}
                   </div>
-                  <p class="text-xs text-slate-300 p-2 rounded bg-slate-900/60 border border-slate-800 leading-relaxed">${s.takeaway}</p>
+                  <p class="text-xs text-slate-700 p-2 rounded bg-slate-50/60 border border-slate-800 leading-relaxed">${s.takeaway}</p>
                 ` : ''}
 
                 ${s.gender_breakdown ? `
                   <div class="space-y-1 text-xs">
                     ${s.gender_breakdown.map(g => `
-                      <div class="flex items-center justify-between p-1.5 rounded bg-slate-900/80 border border-slate-800">
-                        <span class="text-slate-200">${g.subject}</span>
-                        <span class="font-mono text-sky-400">${g.female_pct}</span>
+                      <div class="flex items-center justify-between p-1.5 rounded bg-slate-50/80 border border-slate-800">
+                        <span class="text-slate-800">${g.subject}</span>
+                        <span class="font-mono text-emerald-700">${g.female_pct}</span>
                       </div>
                     `).join('')}
                   </div>
                   <div class="pt-1 space-y-1 text-xs">
                     ${s.degree_premium.map(d => `
-                      <div class="flex items-center justify-between text-[11px] text-slate-400">
+                      <div class="flex items-center justify-between text-[11px] text-slate-500">
                         <span>${d.tier}</span>
                         <span class="font-mono text-emerald-400">${d.fee} (${d.gap})</span>
                       </div>
@@ -1288,35 +1292,35 @@
         html = `
           <div class="h-full flex flex-col justify-between">
             <div class="mb-2">
-              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
-              <p class="text-sm text-slate-400 mt-0.5">${s.subtitle}</p>
+              <h2 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-500 mt-0.5">${s.subtitle}</p>
             </div>
             <div class="grid grid-cols-4 gap-3 mb-4">
               ${s.model_stats.map(m => `
-                <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 text-center">
-                  <div class="text-2xl font-extrabold text-sky-400 font-mono">${m.stat}</div>
-                  <div class="text-xs font-semibold text-slate-200 mt-0.5">${m.label}</div>
-                  <div class="text-[10px] text-slate-400 mt-1">${m.sub}</div>
+                <div class="p-3.5 rounded-xl bg-slate-50/90 border border-slate-800 text-center">
+                  <div class="text-2xl font-extrabold text-emerald-700 font-mono">${m.stat}</div>
+                  <div class="text-xs font-semibold text-slate-800 mt-0.5">${m.label}</div>
+                  <div class="text-[10px] text-slate-500 mt-1">${m.sub}</div>
                 </div>
               `).join('')}
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-auto">
-              <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800">
+              <div class="p-4 rounded-xl bg-slate-50/70 border border-slate-800">
                 <div class="text-xs font-bold text-emerald-400 mb-2 uppercase tracking-wide font-mono">${s.econometric_comparison.observable.title}</div>
                 <ul class="space-y-2">
                   ${s.econometric_comparison.observable.items.map(it => `
-                    <li class="text-xs text-slate-300 flex items-start space-x-2">
+                    <li class="text-xs text-slate-700 flex items-start space-x-2">
                       <span class="text-emerald-400 font-bold">✓</span>
                       <span>${it}</span>
                     </li>
                   `).join('')}
                 </ul>
               </div>
-              <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800">
+              <div class="p-4 rounded-xl bg-slate-50/70 border border-slate-800">
                 <div class="text-xs font-bold text-amber-400 mb-2 uppercase tracking-wide font-mono">${s.econometric_comparison.unobservable.title}</div>
                 <ul class="space-y-2">
                   ${s.econometric_comparison.unobservable.items.map(it => `
-                    <li class="text-xs text-slate-300 flex items-start space-x-2">
+                    <li class="text-xs text-slate-700 flex items-start space-x-2">
                       <span class="text-amber-400 font-bold">◈</span>
                       <span>${it}</span>
                     </li>
@@ -1330,20 +1334,20 @@
         html = `
           <div class="h-full flex flex-col justify-between">
             <div class="mb-2">
-              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
-              <p class="text-sm text-slate-400 mt-0.5">${s.subtitle}</p>
+              <h2 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-500 mt-0.5">${s.subtitle}</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-12 gap-6 my-auto items-center">
               <div class="md:col-span-6 flex justify-center">
-                <div class="rounded-xl overflow-hidden border border-slate-700/80 shadow-2xl bg-slate-950">
+                <div class="rounded-xl overflow-hidden border border-slate-200/80 shadow-2xl bg-white">
                   <img src="${s.image}" alt="Directory" class="max-h-[320px] w-auto object-contain">
                 </div>
               </div>
               <div class="md:col-span-6 grid grid-cols-2 gap-3">
                 ${s.filters.map(f => `
-                  <div class="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
-                    <div class="text-xs font-bold text-white">${f.name}</div>
-                    <div class="text-[11px] text-slate-400 mt-1 leading-snug">${f.desc}</div>
+                  <div class="p-3 rounded-lg bg-slate-50/80 border border-slate-800">
+                    <div class="text-xs font-bold text-slate-900">${f.name}</div>
+                    <div class="text-[11px] text-slate-500 mt-1 leading-snug">${f.desc}</div>
                   </div>
                 `).join('')}
               </div>
@@ -1354,44 +1358,44 @@
         html = `
           <div class="h-full flex flex-col justify-between">
             <div class="mb-2">
-              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
-              <p class="text-sm text-slate-400 mt-0.5">${s.subtitle}</p>
+              <h2 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-500 mt-0.5">${s.subtitle}</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto">
-              <div class="p-5 rounded-2xl bg-slate-900/80 border border-sky-500/30 flex flex-col justify-between">
+              <div class="p-5 rounded-2xl bg-slate-50/80 border border-emerald-500/30 flex flex-col justify-between">
                 <div>
-                  <div class="flex items-center space-x-2 text-sky-400 font-bold text-base mb-2">
+                  <div class="flex items-center space-x-2 text-emerald-700 font-bold text-base mb-2">
                     <span>⚡</span> <span>${s.tool_a.name}</span>
                   </div>
-                  <p class="text-xs text-slate-300 mb-3">${s.tool_a.desc}</p>
+                  <p class="text-xs text-slate-700 mb-3">${s.tool_a.desc}</p>
                   <ul class="space-y-2">
                     ${s.tool_a.features.map(f => `
-                      <li class="text-xs text-slate-200 flex items-start space-x-2">
-                        <span class="text-sky-400">✓</span> <span>${f}</span>
+                      <li class="text-xs text-slate-800 flex items-start space-x-2">
+                        <span class="text-emerald-700">✓</span> <span>${f}</span>
                       </li>
                     `).join('')}
                   </ul>
                 </div>
-                <div class="mt-4 pt-3 border-t border-slate-800 text-[10px] font-mono text-slate-400">
+                <div class="mt-4 pt-3 border-t border-slate-800 text-[10px] font-mono text-slate-500">
                   Outputs: Base rate, confidence interval, annual potential
                 </div>
               </div>
 
-              <div class="p-5 rounded-2xl bg-slate-900/80 border border-emerald-500/30 flex flex-col justify-between">
+              <div class="p-5 rounded-2xl bg-slate-50/80 border border-emerald-500/30 flex flex-col justify-between">
                 <div>
                   <div class="flex items-center space-x-2 text-emerald-400 font-bold text-base mb-2">
                     <span>✨</span> <span>${s.tool_b.name}</span>
                   </div>
-                  <p class="text-xs text-slate-300 mb-3">${s.tool_b.desc}</p>
+                  <p class="text-xs text-slate-700 mb-3">${s.tool_b.desc}</p>
                   <ul class="space-y-2">
                     ${s.tool_b.features.map(f => `
-                      <li class="text-xs text-slate-200 flex items-start space-x-2">
+                      <li class="text-xs text-slate-800 flex items-start space-x-2">
                         <span class="text-emerald-400">✓</span> <span>${f}</span>
                       </li>
                     `).join('')}
                   </ul>
                 </div>
-                <div class="mt-4 pt-3 border-t border-slate-800 text-[10px] font-mono text-slate-400">
+                <div class="mt-4 pt-3 border-t border-slate-800 text-[10px] font-mono text-slate-500">
                   Powered by Google Gemini GenAI with offline fallback
                 </div>
               </div>
@@ -1402,22 +1406,22 @@
         html = `
           <div class="h-full flex flex-col justify-between">
             <div class="mb-2">
-              <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">${s.title}</h2>
-              <p class="text-sm text-slate-400 mt-0.5">${s.subtitle}</p>
+              <h2 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">${s.title}</h2>
+              <p class="text-sm text-slate-500 mt-0.5">${s.subtitle}</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-5 gap-3 my-auto">
               ${s.findings.map(f => `
-                <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 flex flex-col justify-between">
+                <div class="p-3.5 rounded-xl bg-slate-50/80 border border-slate-800 flex flex-col justify-between">
                   <div>
-                    <div class="text-xs font-mono font-bold text-sky-400 mb-1">${f.num}</div>
-                    <div class="text-xs font-bold text-white mb-1.5">${f.title}</div>
-                    <div class="text-[11px] text-slate-300 leading-snug">${f.desc}</div>
+                    <div class="text-xs font-mono font-bold text-emerald-700 mb-1">${f.num}</div>
+                    <div class="text-xs font-bold text-slate-900 mb-1.5">${f.title}</div>
+                    <div class="text-[11px] text-slate-700 leading-snug">${f.desc}</div>
                   </div>
                 </div>
               `).join('')}
             </div>
-            <div class="p-3 rounded-xl bg-slate-900/50 border border-slate-800 text-xs text-slate-400 flex items-center justify-between">
-              <span class="font-bold text-slate-300">Future Scope:</span>
+            <div class="p-3 rounded-xl bg-slate-50/50 border border-slate-800 text-xs text-slate-500 flex items-center justify-between">
+              <span class="font-bold text-slate-700">Future Scope:</span>
               ${s.future_work.map(w => `<span>• ${w}</span>`).join('')}
             </div>
           </div>
@@ -1426,28 +1430,28 @@
         html = `
           <div class="h-full flex flex-col justify-between">
             <div class="mb-2 text-center">
-              <h2 class="text-3xl font-bold text-white tracking-tight">${s.title}</h2>
-              <p class="text-sm text-sky-400 font-mono mt-1">${s.credits.url}</p>
+              <h2 class="text-3xl font-bold text-slate-900 tracking-tight">${s.title}</h2>
+              <p class="text-sm text-emerald-700 font-mono mt-1">${s.credits.url}</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto items-center">
-              <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4">
-                <div class="text-xs font-mono uppercase tracking-wider text-slate-400 font-bold">Project Credentials</div>
-                <div class="text-sm text-white font-medium">${s.credits.title}</div>
-                <div class="text-xs text-slate-300 leading-relaxed">${s.credits.authors}</div>
-                <div class="text-xs text-sky-400 font-semibold">${s.credits.mentor}</div>
+              <div class="p-6 rounded-2xl bg-slate-50/80 border border-slate-800 space-y-4">
+                <div class="text-xs font-mono uppercase tracking-wider text-slate-500 font-bold">Project Credentials</div>
+                <div class="text-sm text-slate-900 font-medium">${s.credits.title}</div>
+                <div class="text-xs text-slate-700 leading-relaxed">${s.credits.authors}</div>
+                <div class="text-xs text-emerald-700 font-semibold">${s.credits.mentor}</div>
                 <div class="pt-2">
-                  <a href="${s.credits.url}" target="_blank" class="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs transition shadow-lg shadow-sky-600/30">
+                  <a href="${s.credits.url}" target="_blank" class="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-slate-900 font-bold text-xs transition shadow-lg shadow-emerald-600/20">
                     <span>Open Live Platform (Render)</span> <span>↗</span>
                   </a>
                 </div>
               </div>
-              <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+              <div class="p-6 rounded-2xl bg-slate-50/80 border border-slate-800 space-y-3">
                 <div class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold">Live Demonstration Protocol (5 Mins)</div>
                 <div class="space-y-2">
                   ${s.demo_checklist.map(d => `
-                    <div class="p-2.5 rounded-lg bg-slate-950 border border-slate-800/80 text-xs">
-                      <div class="font-bold text-white">${d.step}</div>
-                      <div class="text-[11px] text-slate-400 mt-0.5">${d.action}</div>
+                    <div class="p-2.5 rounded-lg bg-white border border-slate-800/80 text-xs">
+                      <div class="font-bold text-slate-900">${d.step}</div>
+                      <div class="text-[11px] text-slate-500 mt-0.5">${d.action}</div>
                     </div>
                   `).join('')}
                 </div>
@@ -1512,16 +1516,16 @@
       overviewGrid.innerHTML = '';
       SLIDES.forEach((s, idx) => {
         const card = document.createElement('div');
-        card.className = 'p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-sky-500 cursor-pointer transition flex flex-col justify-between h-36';
+        card.className = 'p-3 rounded-xl bg-slate-50 border border-slate-800 hover:border-emerald-500 cursor-pointer transition flex flex-col justify-between h-36';
         card.innerHTML = `
           <div>
-            <div class="flex items-center justify-between text-[10px] font-mono text-slate-400 mb-1">
+            <div class="flex items-center justify-between text-[10px] font-mono text-slate-500 mb-1">
               <span>#${String(idx + 1).padStart(2, '0')}</span>
-              <span class="px-1.5 py-0.5 rounded bg-slate-800 text-sky-400">${s.badge}</span>
+              <span class="px-1.5 py-0.5 rounded bg-slate-100 text-emerald-700">${s.badge}</span>
             </div>
-            <div class="text-xs font-bold text-white line-clamp-2">${s.title}</div>
+            <div class="text-xs font-bold text-slate-900 line-clamp-2">${s.title}</div>
           </div>
-          <div class="text-[10px] text-slate-400 font-mono">${s.target_time}</div>
+          <div class="text-[10px] text-slate-500 font-mono">${s.target_time}</div>
         `;
         card.addEventListener('click', () => {
           renderSlide(idx);
