@@ -317,13 +317,13 @@ set_notes(s4, "40s",
 s5 = prs.slides.add_slide(blank_layout)
 add_white_bg(s5)
 add_top_bar(s5, "Data Cleaning", 5)
-add_header(s5, "Data Hygiene: Keeping promises while cleaning", "107,673 tutors, 403,221 offerings, and zero records lost")
+add_header(s5, "Data Cleaning: How We Prepared 107,673 Records", "Four essential cleaning steps to ensure trustworthy analysis with zero data loss")
 
 metrics5 = [
-    ("107,673", "Tutors in Dataset"),
-    ("403,221", "Subject Offerings (0 Lost)"),
-    ("₹4,000 / hr", "Winsorization Cap (99th %)"),
-    ("100%", "PII Anonymized (T1..T107673)")
+    ("107,673", "Verified Unique Tutors"),
+    ("403,221", "Offerings Preserved (0 Lost)"),
+    ("₹4,000 / hr", "Fee Cap (Winsorization)"),
+    ("95.6%", "Online Teaching Adoption")
 ]
 for i, (val, lbl) in enumerate(metrics5):
     m_box = s5.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8 + i * 2.98), Inches(2.0), Inches(2.8), Inches(1.1))
@@ -345,10 +345,10 @@ for i, (val, lbl) in enumerate(metrics5):
     r2.font.color.rgb = TEXT_MUTED
 
 clean_steps = [
-    ("Privacy First", "Stripped names, phones, emails, and exact addresses. Replaced with anonymous IDs T1, T2..."),
-    ("Fee Misclassifications", "Detected monthly rates (e.g. ₹15,000) typed into hourly fields. Capped at ₹4,000/hr (99th percentile)."),
-    ("Standard Categories", "Grouped states into 5 regions, cities into 3 tiers, and education into 4 clean qualification levels."),
-    ("Teaching Modality", "Cleaned experience into numeric years and flagged online (95.6%) vs in-person home tutoring.")
+    ("Deduplication & Merge", "Merged scraped (76,706) and unscraped (31,017) cohorts into 107,673 unique records with zero duplicate IDs."),
+    ("Fee Outliers (Winsorization)", "Caught monthly rates (₹10,000–₹50,000) typed into hourly fields. Bounded at ₹4,000/hr so models aren't skewed."),
+    ("Location & Tier Mapping", "Standardized unorganized cities into 5 macro zones (North, South, East, West, Central) and 3 city tiers."),
+    ("Experience & Modality", "Converted raw text into clean numeric years and identified delivery mode: 95.6% online vs 26.7% home tutoring.")
 ]
 clean_coords = [
     (Inches(0.8), Inches(3.3), Inches(5.7), Inches(1.8)),
@@ -376,10 +376,10 @@ for (t, d), (l, top, w, h) in zip(clean_steps, clean_coords):
     r2.font.size = Pt(10.5)
     r2.font.color.rgb = TEXT_BODY
 
-set_notes(s5, "45s",
-    "Our data cleaning followed strict hygiene rules. We removed personal info and assigned anonymous IDs T1 to T107673. We fixed unit issues where monthly fees were typed into hourly slots, and applied Winsorization at ₹4,000/hr to handle extreme fees without deleting valid high-end tutors. All 403,221 offerings survived the cleaning pass with zero records lost.",
+set_notes(s5, "35s",
+    "To make raw Excel data usable, we executed four essential cleaning rules. We merged scraped and unscraped sheets into 107,673 unique tutors. We resolved unit confusion where monthly coaching fees were typed into hourly slots by applying a ₹4,000/hr Winsorization ceiling. We mapped locations into standard zones and city tiers, and cleaned experience into numeric years. Every single one of our 403,221 offerings survived the pipeline with zero rows lost.",
     "Why Winsorize instead of deleting fees above ₹4,000?",
-    "Deleting them would bias our sample by removing top entrance exam specialists. Winsorization bounds their statistical influence while keeping their profile and subjects in the database.")
+    "Deleting them would bias our sample by removing top entrance exam specialists. Winsorization bounds extreme statistical influence while keeping their profile and subjects in the dataset.")
 
 # ----------------- SLIDE 6: Database (3NF) -----------------
 s6 = prs.slides.add_slide(blank_layout)

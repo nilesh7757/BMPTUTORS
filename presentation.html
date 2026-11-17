@@ -370,14 +370,14 @@
   {
     "id": 5,
     "badge": "Data Pipeline",
-    "title": "Data Hygiene: Keeping promises while cleaning",
-    "subtitle": "107,673 tutors, 403,221 offerings, and zero records lost",
+    "title": "Data Cleaning: How We Prepared 107,673 Records",
+    "subtitle": "Four essential cleaning steps to ensure trustworthy analysis with zero data loss",
     "image": "assets/cleaning_bg.png",
     "type": "pipeline_detail",
     "metrics": [
       {
         "val": "107,673",
-        "lbl": "Unique Tutors Verified"
+        "lbl": "Verified Unique Tutors"
       },
       {
         "val": "403,221",
@@ -385,33 +385,33 @@
       },
       {
         "val": "\u20b94,000/hr",
-        "lbl": "Winsorization Cap (99th %tile)"
+        "lbl": "Fee Cap (Winsorization)"
       },
       {
-        "val": "100%",
-        "lbl": "PII Anonymized (T1..T107673)"
+        "val": "95.6%",
+        "lbl": "Online Teaching Adoption"
       }
     ],
     "protocol": [
       {
-        "step": "Privacy & Anonymization",
-        "desc": "All direct PII (tutor names, phone numbers, email addresses, exact street addresses) was stripped. Every profile was assigned a synthetic surrogate key (T1, T2... T107673)."
+        "step": "Deduplication & Merge",
+        "desc": "Merged scraped (76,706) and unscraped (31,017) cohorts into 107,673 unique records with zero duplicate IDs."
       },
       {
-        "step": "Fee Normalization & Unit Cleaning",
-        "desc": "Resolved unit ambiguity where tutors entered monthly rates (e.g. \u20b915,000) or weekly packages into hourly rate fields. Applied 99th percentile Winsorization at \u20b94,000/hr to prevent extreme distortion."
+        "step": "Fee Outliers (Winsorization)",
+        "desc": "Caught monthly coaching fees (\u20b910,000\u2013\u20b950,000) typed into hourly fields. Bounded at \u20b94,000/hr so models aren't skewed."
       },
       {
-        "step": "Categorical Harmonization",
-        "desc": "Standardized locations into 5 macro-regions (North, South, East, West, Central) and 3 city tiers (Tier 1 Metros, Tier 2 Urban, Tier 3 Semi-Urban). Mapped academic qualifications into 4 standardized tiers."
+        "step": "Location & Tier Mapping",
+        "desc": "Standardized unorganized cities into 5 macro zones (North, South, East, West, Central) and 3 city tiers."
       },
       {
-        "step": "Experience & Modality Extraction",
-        "desc": "Parsed years of experience from mixed strings into numeric integers. Flagged delivery modes: online instruction (95.6%) versus in-person home tutoring."
+        "step": "Experience & Modality",
+        "desc": "Converted raw text into clean numeric years and identified delivery mode: 95.6% online vs 26.7% home tutoring."
       }
     ],
-    "target_time": "45s",
-    "notes": "Our data hygiene protocol adhered to strict academic data engineering standards. We stripped all personally identifiable information, replacing names with anonymous IDs T1 through T107673. We resolved severe unit misclassifications\u2014such as tutors entering a monthly coaching package of \u20b915,000 into an hourly fee field. To prevent statistical distortion without dropping valid premium educators, we applied Winsorization at the 99th percentile, capping hourly fees at \u20b94,000. All 403,221 subject offerings survived the pipeline without losing a single record.",
+    "target_time": "35s",
+    "notes": "To make raw Excel data usable, we executed four essential cleaning rules. We merged scraped and unscraped sheets into 107,673 unique tutors. We resolved unit confusion where monthly coaching fees were typed into hourly slots by applying a \u20b94,000/hr Winsorization ceiling. We mapped locations into standard zones and city tiers, and cleaned experience into numeric years. Every single one of our 403,221 offerings survived the pipeline with zero rows lost.",
     "viva_q": "Why did you use Winsorization instead of simply dropping outliers above \u20b94,000?",
     "viva_a": "Dropping high-fee tutors would cause sample selection bias, deleting legitimate top entrance-exam specialists. Winsorization retains their presence, demographics, and subject offerings while bounding extreme variance for econometric regression."
   },
