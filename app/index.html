@@ -95,80 +95,95 @@
             <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200" id="export-dropdown-chevron"></i>
           </button>
           
-          <div id="export-dropdown-menu" class="hidden absolute right-0 mt-2 w-[540px] bg-white rounded-2xl shadow-2xl border border-slate-200 p-4 z-50 text-slate-800 space-y-3.5">
+          <div id="export-dropdown-menu" style="width: 680px; max-width: 90vw;" class="hidden absolute right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200 p-4.5 z-50 text-slate-800 space-y-3.5">
             
             <!-- Header -->
             <div class="flex items-center justify-between pb-2.5 border-b border-slate-100 px-1">
               <div class="flex items-center gap-2">
                 <span class="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold">📥</span>
-                <span class="text-xs font-bold text-slate-900 font-mono uppercase tracking-wider">Export & Database Downloads</span>
+                <span class="text-xs font-extrabold text-slate-900 font-mono uppercase tracking-wider">Export & Database Downloads</span>
               </div>
-              <span class="text-[10px] text-slate-400 font-mono">107,673 Total Records</span>
+              <span class="text-[11px] text-slate-400 font-mono">107,673 Total Records</span>
             </div>
 
             <!-- Priority 1: Filtered Export with ALL Active Filters -->
-            <div class="p-3 rounded-xl bg-gradient-to-r from-emerald-50/90 to-teal-50/70 border border-emerald-200">
-              <div class="flex items-center justify-between gap-3">
-                <div>
-                  <span class="text-xs font-bold text-emerald-950 block">Download Filtered Excel (.xlsx)</span>
-                  <span class="text-[10px] text-emerald-800">Exports only tutors matching your active search, price range, state, and category filters.</span>
+            <div class="p-3.5 rounded-xl bg-gradient-to-r from-emerald-50 via-teal-50/70 to-emerald-50/40 border border-emerald-200/90 shadow-2xs">
+              <div class="flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm font-bold shadow-2xs shrink-0">
+                    <i class="fa-solid fa-filter"></i>
+                  </div>
+                  <div>
+                    <span class="text-xs font-bold text-emerald-950 block">Download Filtered Excel (.xlsx)</span>
+                    <span class="text-[11px] text-emerald-800">Only tutors matching your active search, price range, state, and category filters.</span>
+                  </div>
                 </div>
-                <button type="button" onclick="downloadFilteredExcel()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center gap-1.5 shrink-0 cursor-pointer">
-                  <i class="fa-solid fa-file-excel text-xs"></i>
+                <button type="button" onclick="downloadFilteredExcel()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center gap-2 shrink-0 cursor-pointer">
+                  <i class="fa-solid fa-file-excel"></i>
                   <span>Download Filtered</span>
                 </button>
               </div>
             </div>
 
-            <!-- Priority 2: 3NF Relational Database -->
-            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="text-[10px] font-bold uppercase tracking-wider text-teal-800 font-mono">3NF Relational Database</span>
-                <span class="text-[10px] font-mono font-bold bg-teal-100 text-teal-800 px-1.5 py-0.5 rounded">DBMS Schema</span>
-              </div>
-              <a href="/api/download/normalized-database-excel" download="BMP_Normalized_Database_2Tables.xlsx" class="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200 hover:border-teal-500 hover:bg-teal-50/30 transition-all group">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-7 h-7 rounded-lg bg-teal-600 text-white flex items-center justify-center text-xs font-bold shadow-2xs">
-                    <i class="fa-solid fa-file-excel"></i>
-                  </div>
-                  <div>
-                    <span class="text-xs font-bold text-slate-900 group-hover:text-teal-700 block">Combined Tutors & Subjects (.xlsx)</span>
-                    <span class="text-[10px] text-slate-500">2-Sheet Relational 3NF Package</span>
-                  </div>
+            <!-- 2-Column Grid: 3NF Relational DB (Left) & Full Master Archives (Right) -->
+            <div class="grid grid-cols-2 gap-3.5">
+              
+              <!-- Column 1: 3NF Relational Database -->
+              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between space-y-2.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-teal-800 font-mono">3NF Relational Database</span>
+                  <span class="text-[10px] font-mono font-bold bg-teal-100 text-teal-800 px-1.5 py-0.5 rounded">DBMS Schema</span>
                 </div>
-                <span class="text-[10px] font-mono font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">24 MB</span>
-              </a>
-              <div class="grid grid-cols-2 gap-1.5">
-                <a href="/api/download/normalized-tutors-excel" download="BMP_Tutors_Master_Normalized.xlsx" class="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold text-slate-700 bg-white border border-slate-200 hover:border-indigo-400 hover:text-indigo-600 transition-colors flex items-center justify-between">
-                  <span class="flex items-center gap-1.5"><i class="fa-solid fa-users text-indigo-500 text-[10px]"></i> Tutors Table (107k)</span>
-                  <i class="fa-solid fa-download text-[9px] text-slate-400"></i>
-                </a>
-                <a href="/api/download/normalized-subjects-excel" download="BMP_Subjects_Master_Normalized.xlsx" class="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold text-slate-700 bg-white border border-slate-200 hover:border-emerald-400 hover:text-emerald-600 transition-colors flex items-center justify-between">
-                  <span class="flex items-center gap-1.5"><i class="fa-solid fa-book text-emerald-500 text-[10px]"></i> Subjects Table (12k)</span>
-                  <i class="fa-solid fa-download text-[9px] text-slate-400"></i>
-                </a>
-              </div>
-            </div>
 
-            <!-- Priority 3: Master Excel Archives -->
-            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono block px-1">Full Datasets</span>
-              <div class="grid grid-cols-2 gap-2">
+                <a href="/api/download/normalized-database-excel" download="BMP_Normalized_Database_2Tables.xlsx" class="flex items-center justify-between p-2.5 rounded-lg bg-white border border-slate-200 hover:border-teal-500 hover:bg-teal-50/30 transition-all group">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-7 h-7 rounded-lg bg-teal-600 text-white flex items-center justify-center text-xs font-bold shadow-2xs shrink-0">
+                      <i class="fa-solid fa-file-excel"></i>
+                    </div>
+                    <div>
+                      <span class="text-xs font-bold text-slate-900 group-hover:text-teal-700 block">Combined 2-Sheet (.xlsx)</span>
+                      <span class="text-[10px] text-slate-500">Relational 3NF Package</span>
+                    </div>
+                  </div>
+                  <span class="text-[10px] font-mono font-bold text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded-md">24 MB</span>
+                </a>
+
+                <div class="grid grid-cols-2 gap-2 pt-0.5">
+                  <a href="/api/download/normalized-tutors-excel" download="BMP_Tutors_Master_Normalized.xlsx" class="p-2 rounded-lg text-[11px] font-semibold text-slate-700 bg-white border border-slate-200 hover:border-indigo-400 hover:text-indigo-600 transition-colors flex items-center justify-between">
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-users text-indigo-500 text-[10px]"></i> Tutors (107k)</span>
+                    <i class="fa-solid fa-download text-[9px] text-slate-400"></i>
+                  </a>
+                  <a href="/api/download/normalized-subjects-excel" download="BMP_Subjects_Master_Normalized.xlsx" class="p-2 rounded-lg text-[11px] font-semibold text-slate-700 bg-white border border-slate-200 hover:border-emerald-400 hover:text-emerald-600 transition-colors flex items-center justify-between">
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-book text-emerald-500 text-[10px]"></i> Subjects (12k)</span>
+                    <i class="fa-solid fa-download text-[9px] text-slate-400"></i>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Column 2: Full Master Archives -->
+              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between space-y-2.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono">Full Datasets</span>
+                  <span class="text-[10px] font-mono font-bold bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">All Tutors</span>
+                </div>
+
                 <a href="/api/download/active-master-excel" download="BMP_Tutors_Verified_Active_Master.xlsx" class="p-2.5 rounded-lg bg-white border border-slate-200 hover:border-indigo-400 transition-all flex flex-col justify-between group">
                   <div class="flex items-center justify-between">
                     <span class="text-xs font-bold text-slate-900 group-hover:text-indigo-600">Active Master Excel</span>
-                    <span class="text-[9px] font-mono text-slate-400 bg-slate-100 px-1 py-0.2 rounded">58 MB</span>
+                    <span class="text-[10px] font-mono font-bold text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded">58 MB</span>
                   </div>
-                  <span class="text-[10px] text-slate-500 mt-1">76,706 Active Tutors</span>
+                  <span class="text-[10px] text-slate-500 mt-0.5">76,706 Active Tutors</span>
                 </a>
+
                 <a href="/api/download/master-excel" download="BMP_Tutors_Cleaned_Master.xlsx" class="p-2.5 rounded-lg bg-white border border-slate-200 hover:border-indigo-400 transition-all flex flex-col justify-between group">
                   <div class="flex items-center justify-between">
                     <span class="text-xs font-bold text-slate-900 group-hover:text-indigo-600">All Tutors Master File</span>
-                    <span class="text-[9px] font-mono text-slate-400 bg-slate-100 px-1 py-0.2 rounded">79 MB</span>
+                    <span class="text-[10px] font-mono font-bold text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded">79 MB</span>
                   </div>
-                  <span class="text-[10px] text-slate-500 mt-1">All 107,673 Records</span>
+                  <span class="text-[10px] text-slate-500 mt-0.5">All 107,673 Records</span>
                 </a>
               </div>
+
             </div>
 
           </div>
