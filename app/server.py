@@ -1413,6 +1413,11 @@ async def report_view(request):
         html_content = f.read()
     return HTMLResponse(html_content)
 
+async def presentation_view(request):
+    with open(os.path.join(PROJECT_ROOT, "presentation.html"), "r", encoding="utf-8") as f:
+        html_content = f.read()
+    return HTMLResponse(html_content)
+
 PDF_REPORT_PATH = os.path.join(PROJECT_ROOT, "BMP_Tutors_Visual_Analytics_Complete_Report.pdf")
 
 def generate_visual_analytics_pdf():
@@ -1774,6 +1779,7 @@ routes = [
     Route("/healthz", healthz),
     Route("/", index),
     Route("/report", report_view),
+    Route("/presentation", presentation_view),
     Route("/api/stats", api_stats),
     Route("/api/filters", api_filters),
     Route("/api/venn/subjects", api_venn_subjects),

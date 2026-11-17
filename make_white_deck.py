@@ -192,15 +192,15 @@ for (t, b, d), (l, top, w, h) in zip(cards2, coords2):
     r2.font.color.rgb = TEXT_BODY
 
 set_notes(s2, "45s",
-    "We start directly with our project motivation. In India's private tuition market, severe information asymmetry harms families. In Ahmedabad for Class 10 Math, quotes range from ₹200 to ₹2,000 for identical syllabus, with zero benchmark to tell who is fair. Furthermore, commercial websites monetize phone unlocks and keep stale accounts active. Our audit showed 30,990 profiles (28.8%) were dormant. Our mandate was to clean this master data, identify active teachers, standardize subjects, and publish open pricing benchmarks.",
+    "We start directly with our project motivation. In India's private tuition market, severe information asymmetry harms families. In Ahmedabad for Class 10 Math, quotes range from ₹200 to ₹2,000 for identical syllabus, with zero benchmark to tell who is fair. Furthermore, commercial websites keep stale accounts active to inflate catalog numbers. Our audit showed 30,990 profiles (28.8%) were dormant. Our mandate was to clean this master data, identify active teachers, standardize subjects, and publish open pricing benchmarks.",
     "How did you verify the 28.8% inactive accounts?",
-    "We ran automated Playwright headless verification and activity checks on contact signals and response timestamps to isolate dormant profiles.")
+    "We analyzed activity telemetry, response signals, and last-active timestamps to isolate dormant profiles so families don't waste time contacting unavailable tutors.")
 
 # ----------------- SLIDE 3: Value (What TutorMetric does that TeacherOn doesn't) -----------------
 s3 = prs.slides.add_slide(blank_layout)
 add_white_bg(s3)
 add_top_bar(s3, "TutorMetric vs TeacherOn", 3)
-add_header(s3, "What TutorMetric does that TeacherOn doesn't do", "TeacherOn is a paid classifieds site; TutorMetric is an open analytical utility")
+add_header(s3, "What TutorMetric does that TeacherOn doesn't do", "TeacherOn is a commercial classifieds board; TutorMetric is an open academic research utility")
 
 # Left box (TeacherOn)
 b_l = s3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(2.0), Inches(5.7), Inches(4.7))
@@ -217,18 +217,18 @@ r.font.size = Pt(13.5)
 r.font.bold = True
 r.font.color.rgb = ACCENT_ROSE
 items_l = [
-    "Opaque Pricing: Only displays an unverified fee typed by the tutor with zero context.",
-    "Paywalls Contacts: Charges ₹500–₹1,500 in coins to unlock a phone number.",
-    "Retains Dormant Profiles: Keeps 30,990 inactive accounts online to inflate catalog size.",
-    "Text Fragmentation: 21,956 chaotic spellings with no subject taxonomy.",
-    "Zero Analytics: No macro charts, no GIS maps, no city tier analysis, no fee models.",
-    "Closed Data: Tutors and researchers cannot download or study the database."
+    "Unverified Self-Reported Pricing: Arbitrary fee entered by the tutor with zero comparative context or justification.",
+    "Inflated Catalog (Dormant Listings): Retains 30,990 inactive accounts online mixed into search to artificially inflate counts.",
+    "Text Fragmentation: 21,956 chaotic, duplicate subject spellings with no structured taxonomy.",
+    "No Comparison Tool: Cannot contrast two tutors' credentials, pricing baselines, or curriculum overlap side-by-side.",
+    "Zero Market Analytics: No macro charts, no GIS state maps, no fee density curves, no subject Venn diagrams.",
+    "Closed Proprietary Data: Tutors, parents, and researchers cannot export, download, or study the underlying dataset."
 ]
 for it in items_l:
     p = tf_l.add_paragraph()
     r = p.add_run()
     r.text = f"•  {it}\n"
-    r.font.size = Pt(10.5)
+    r.font.size = Pt(10.0)
     r.font.color.rgb = TEXT_DARK
 
 # Right box (TutorMetric)
@@ -246,26 +246,25 @@ r.font.size = Pt(13.5)
 r.font.bold = True
 r.font.color.rgb = ACCENT_PRIMARY
 items_r = [
-    "Fair Benchmarks: State medians, level ladders, and formula predicted rates.",
-    "100% Free & Open: No paywalls, no coin system, direct contact visibility.",
-    "Active Verification: Explicit flag showing 76,683 active vs 30,990 inactive.",
-    "Standardized 386 Subjects: Clean taxonomy across 6 macro categories with 0 loss.",
-    "Interactive Analytics: 14 charts, Leaflet state map, MPC 3-way Venn diagram.",
-    "ML & GenAI Tools: Live Fee Estimator and Google Gemini GenAI Bio Studio.",
-    "Open SQLite / Excel: Full 3NF database and filtered cohorts downloadable."
+    "Econometric Fee Justification: Ridge regression baseline with ±20% fair pricing band evaluating if rate is justified.",
+    "Active Cohort Verification: Explicit flag segregating 76,683 verified active educators from 30,990 dormant listings.",
+    "Standardized 386 Subjects: Clean 3NF taxonomy across 6 macro disciplines mapping 403,221 offerings with 0 data loss.",
+    "Side-by-Side Tutor Comparison: Instant comparative contrast of any two tutors across fees, qualifications, and curriculum.",
+    "Visual Analytics & GIS Heatmaps: 14 charts, fee distribution & density curve (Figure 2.1), Leaflet map, Venn diagram.",
+    "Open 3NF Relational Database: Full 3NF SQLite database & filtered Excel datasets freely downloadable for research."
 ]
 for it in items_r:
     p = tf_r.add_paragraph()
     r = p.add_run()
     r.text = f"✓  {it}\n"
-    r.font.size = Pt(10.5)
+    r.font.size = Pt(10.0)
     r.font.bold = True
     r.font.color.rgb = RGBColor(6, 78, 59)
 
 set_notes(s3, "45s",
-    "A central question is: what does TutorMetric do that TeacherOn doesn't do? TeacherOn is a commercial lead-generation marketplace. It monetizes contact unlocks, retains thousands of dormant accounts to inflate numbers, and shows self-written fees with no context. TutorMetric transforms this into an open analytical utility: we provide transparent price benchmarks, verify active teachers, normalize 21k messy subjects into 386 clean categories, offer interactive Leaflet maps and Venn diagrams, and deploy live ML fee estimators and Gemini Bio tools with 100% open data access.",
+    "A central question is: what does TutorMetric do that TeacherOn doesn't do? TeacherOn is a commercial classifieds board. It displays self-reported, unverified fees with zero context, mixes 30,990 dormant accounts into search results, leaves subject names fragmented across 21k variants, and locks data behind proprietary pages. TutorMetric transforms this into an open academic research utility: we evaluate whether fees are economically justified using a Ridge regression baseline, separate active teachers from dormant accounts, normalize 403k offerings into 386 clean subjects in 3NF, enable side-by-side candidate comparison, provide national visual analytics and GIS heatmaps, and offer complete 3NF relational databases for open research.",
     "What is the single biggest advantage of TutorMetric over TeacherOn?",
-    "Transparency. Parents get fair benchmark pricing and verified active teachers for free, while TeacherOn paywalls phone numbers and leaves families to guess what is fair.")
+    "Transparency and analytical rigor. While commercial boards simply display unverified classified ads, TutorMetric evaluates fee fairness econometrically, verifies active educators, standardizes curriculum into 3NF, allows side-by-side candidate comparison, and provides open-access datasets.")
 
 # ----------------- SLIDE 4: Project Tracker -----------------
 s4 = prs.slides.add_slide(blank_layout)

@@ -245,7 +245,7 @@
       "live_url": "bmptutors.onrender.com"
     },
     "target_time": "35s",
-    "notes": "Respected professors, examiners, and fellow students, good morning. We are Nilesh Mori and Pratik Chauhan, presenting our B.Tech Mini Project for course B.Tech Mini Project under the mentorship of Dr. Parul Gupta: TutorMetric \u2014 What 107,673 private tutors in India actually charge. Private tutoring in India is an unorganized shadow education market worth billions of rupees that operates in near-total informational secrecy. We took the raw scraped dataset our mentor provided, verified which profiles actively still teach, and built an open-access platform featuring fair-price benchmarks, geospatial analytics, dynamic subject bundling, and predictive fee tools. We engineered this entire system as joint equal co-engineers.",
+    "notes": "Respected professors, examiners, and fellow students, good morning. We are Nilesh Mori and Pratik Chauhan, presenting our B.Tech Mini Project at DA-IICT under the mentorship of Dr. Parul Gupta: TutorMetric \u2014 What 107,673 private tutors in India actually charge. Private tutoring in India is an unorganized shadow education market worth billions of rupees that operates in near-total informational secrecy. We took the raw scraped dataset our mentor provided, verified which profiles actively still teach, and built an open-access platform featuring fair-price benchmarks, geospatial analytics, dynamic subject bundling, and predictive fee tools. We engineered this entire system as joint equal co-engineers.",
     "viva_q": "Why is this project classified as a Mini Project rather than commercial software?",
     "viva_a": "This is an academic research engineering project for B.Tech Mini Project at DA-IICT. Its core objective is empirical market transparency, reproducible data cleaning, and econometric modeling based on the research roadmap set by Dr. Parul Gupta."
   },
@@ -265,7 +265,7 @@
       {
         "title": "28.8% Dormant Ghost Listings",
         "badge": "30,990 Inactive",
-        "text": "Commercial tutor portals monetize phone number unlocks and deliberately keep dead accounts online. 30,990 profiles in the dataset were completely inactive, wasting family search time."
+        "text": "Commercial tutor portals deliberately keep dead accounts online to artificially inflate catalog counts. 30,990 profiles in the dataset were completely inactive, wasting family search time."
       },
       {
         "title": "Fragmented Curriculum Text",
@@ -279,39 +279,43 @@
       }
     ],
     "target_time": "45s",
-    "notes": "We begin directly with the motivation of our project. In India's private tuition marketplace, severe information asymmetry harms both parents and educators. For instance, in Class 10 CBSE Mathematics within the same urban area, one tutor quotes \u20b9200 an hour while another quotes \u20b92,000 for the exact same syllabus, with zero public price benchmarks available to assess fair value. Furthermore, commercial listing portals monetize lead unlocking and keep stale listings online. Our empirical audit revealed that 30,990 profiles\u201428.8% of the dataset\u2014were completely inactive ghost accounts. Our project mandate was to clean this master data, eliminate stale listings, standardize curriculum taxonomy, and publish an open empirical benchmark of tutoring fees across India.",
+    "notes": "We begin directly with the motivation of our project. In India's private tuition marketplace, severe information asymmetry harms both parents and educators. For instance, in Class 10 CBSE Mathematics within the same urban area, one tutor quotes \u20b9200 an hour while another quotes \u20b92,000 for the exact same syllabus, with zero public price benchmarks available to assess fair value. Furthermore, commercial listing portals keep stale listings online to inflate directory numbers. Our empirical audit revealed that 30,990 profiles\u201428.8% of the dataset\u2014were completely inactive accounts. Our project mandate was to clean this master data, isolate stale listings, standardize curriculum taxonomy, and publish an open empirical benchmark of tutoring fees across India.",
     "viva_q": "How did you identify the 28.8% dormant profiles?",
-    "viva_a": "We developed automated Playwright headless scripts and activity telemetry auditing response signals, last-active timestamps, and uncontactable channels. Profiles exhibiting zero response activity were isolated into an inactive partition so users don't chase stale listings."
+    "viva_a": "We audited activity telemetry, last-active timestamps, and response signals across the dataset. Profiles exhibiting zero recent activity were isolated into an inactive partition so users don't chase stale listings."
   },
   {
     "id": 3,
     "badge": "TutorMetric vs TeacherOn",
     "title": "What TutorMetric does that TeacherOn doesn't do",
-    "subtitle": "TeacherOn is a paid classifieds portal; TutorMetric is an open analytical utility",
+    "subtitle": "TeacherOn is a commercial classifieds board; TutorMetric is an open academic research utility",
     "image": "assets/03_tutor_cards_directory.png",
     "type": "comparison",
     "legacy": {
       "title": "What TeacherOn Does (Commercial Marketplace)",
       "items": [
-        "Opaque pricing: self-reported fee with zero comparative context",
-        "Monetized contact unlocks: charges parents \u20b9500\u2013\u20b91,500 to view phone numbers",
-        "Stale database: retains inactive profiles indefinitely to inflate directory counts",
-        "Closed data: no bulk export, no API, no reproducible research access"
+        "Unverified self-reported pricing: arbitrary fee with zero comparative context or justification",
+        "Inflated catalog: retains 30,990 dormant profiles mixed into search results to inflate directory counts",
+        "Text fragmentation: 21,956 chaotic subject spellings with no structured taxonomy",
+        "No comparison tool: cannot contrast two candidates' rates, experience, or curriculum overlap",
+        "Zero macro analytics: no GIS heatmaps, fee distributions, or subject Venn diagrams",
+        "Closed proprietary data: no bulk export, no API, no reproducible research access"
       ]
     },
     "tutormetric": {
       "title": "What TutorMetric Adds (Research Utility)",
       "items": [
-        "Empirical benchmarks: state medians, level ladders, and Ridge regression estimates",
-        "Active verification status: clear indicator showing 76,683 active vs 30,990 inactive",
-        "Sub-50ms 9-filter search: multi-parameter faceted filtering across 386 clean subjects",
-        "Open academic access: full SQLite relational database and filtered Excel export"
+        "Econometric fee justification: Ridge model with \u00b120% fair range evaluating if fee is justified",
+        "Active cohort verification: explicit flag segregating 76,683 active vs 30,990 dormant listings",
+        "Standardized 386 subjects: 3NF relational schema mapping 403,221 offerings into 6 macro domains",
+        "Side-by-side tutor comparison: instant contrast of rates, experience, credentials, and subjects",
+        "Visual analytics & GIS maps: 14 charts, fee distribution & density curve, Leaflet map, Venn diagram",
+        "Open 3NF relational database: full SQLite DB and filtered Excel datasets freely downloadable"
       ]
     },
     "target_time": "35s",
-    "notes": "Traditional tutor websites merely display static advertisements: a photo, a name, and an unverified self-reported fee with zero context. TutorMetric transforms this into a transparent analytical utility. We add three distinct capabilities: First, transparent price benchmarks\u2014providing state medians and econometric baseline estimates. Second, active verification status so families never waste time contacting dormant profiles. Third, side-by-side comparability across 107,673 educators in an open, downloadable database for parents, tutors, and academic researchers.",
-    "viva_q": "Who are the primary target users of TutorMetric?",
-    "viva_a": "Three groups: 1) Parents evaluating private coaching quotes, 2) Tutors setting competitive fair rates based on their credentials, and 3) Academic and policy researchers studying shadow education in India."
+    "notes": "A central question is: what does TutorMetric do that TeacherOn doesn't do? TeacherOn is a commercial classifieds board. It displays self-reported, unverified fees with zero context, mixes 30,990 dormant accounts into search results, leaves subject names fragmented across 21k variants, and locks data behind proprietary pages. TutorMetric transforms this into an open academic research utility: we evaluate whether fees are economically justified using a Ridge regression baseline, separate active teachers from dormant accounts, normalize 403k offerings into 386 clean subjects in 3NF, enable side-by-side candidate comparison, provide national visual analytics and GIS heatmaps, and offer complete 3NF relational databases for open research.",
+    "viva_q": "What is the single biggest advantage of TutorMetric over TeacherOn?",
+    "viva_a": "Transparency and analytical rigor. While commercial boards simply display unverified classified ads, TutorMetric evaluates fee fairness econometrically, verifies active educators, standardizes curriculum into 3NF, allows side-by-side candidate comparison, and provides open-access datasets."
   },
   {
     "id": 4,
