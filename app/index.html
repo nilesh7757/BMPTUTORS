@@ -78,14 +78,8 @@
         </button>
       </nav>
 
-      <!-- Consolidated Actions: Export Dropdown + Academic Report Link -->
+      <!-- Consolidated Actions: Export Dropdown + Compare Tutors -->
       <div class="flex items-center gap-2.5 shrink-0">
-        <a href="/report" target="_blank" class="hidden sm:inline-flex px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 hover:border-slate-600 transition-all items-center gap-1.5 shadow-2xs">
-          <i class="fa-solid fa-file-invoice text-indigo-400"></i>
-          <span>Academic Report</span>
-          <i class="fa-solid fa-arrow-up-right-from-square text-[9px] opacity-60"></i>
-        </a>
-
         <!-- Compare Button -->
         <button id="btn-top-compare" onclick="openCompareModal()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 hover:border-slate-600 transition-all flex items-center gap-1.5 shadow-2xs">
           <i class="fa-solid fa-scale-unbalanced text-amber-400"></i>
@@ -101,22 +95,36 @@
             <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200" id="export-dropdown-chevron"></i>
           </button>
           
-          <div id="export-dropdown-menu" class="hidden absolute right-0 mt-2 w-[440px] bg-white rounded-2xl shadow-2xl border border-slate-200 p-3 z-50 text-slate-800 space-y-3">
+          <div id="export-dropdown-menu" class="hidden absolute right-0 mt-2 w-[540px] bg-white rounded-2xl shadow-2xl border border-slate-200 p-4 z-50 text-slate-800 space-y-3.5">
             
             <!-- Header -->
-            <div class="flex items-center justify-between pb-2 border-b border-slate-100 px-1">
+            <div class="flex items-center justify-between pb-2.5 border-b border-slate-100 px-1">
               <div class="flex items-center gap-2">
                 <span class="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold">📥</span>
-                <span class="text-xs font-bold text-slate-900 font-mono uppercase tracking-wider">Dataset & Export Hub</span>
+                <span class="text-xs font-bold text-slate-900 font-mono uppercase tracking-wider">Export & Database Downloads</span>
               </div>
-              <span class="text-[10px] text-slate-400 font-mono">107,673 Records</span>
+              <span class="text-[10px] text-slate-400 font-mono">107,673 Total Records</span>
             </div>
 
-            <!-- Group 1: 3NF Relational Database -->
-            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
+            <!-- Priority 1: Filtered Export with ALL Active Filters -->
+            <div class="p-3 rounded-xl bg-gradient-to-r from-emerald-50/90 to-teal-50/70 border border-emerald-200">
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <span class="text-xs font-bold text-emerald-950 block">Download Filtered Excel (.xlsx)</span>
+                  <span class="text-[10px] text-emerald-800">Exports only tutors matching your active search, price range, state, and category filters.</span>
+                </div>
+                <button type="button" onclick="downloadFilteredExcel()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center gap-1.5 shrink-0 cursor-pointer">
+                  <i class="fa-solid fa-file-excel text-xs"></i>
+                  <span>Download Filtered</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Priority 2: 3NF Relational Database -->
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
               <div class="flex items-center justify-between">
                 <span class="text-[10px] font-bold uppercase tracking-wider text-teal-800 font-mono">3NF Relational Database</span>
-                <span class="text-[10px] font-mono font-bold bg-teal-100 text-teal-800 px-1.5 py-0.5 rounded">2 Tables</span>
+                <span class="text-[10px] font-mono font-bold bg-teal-100 text-teal-800 px-1.5 py-0.5 rounded">DBMS Schema</span>
               </div>
               <a href="/api/download/normalized-database-excel" download="BMP_Normalized_Database_2Tables.xlsx" class="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200 hover:border-teal-500 hover:bg-teal-50/30 transition-all group">
                 <div class="flex items-center gap-2.5">
@@ -132,62 +140,35 @@
               </a>
               <div class="grid grid-cols-2 gap-1.5">
                 <a href="/api/download/normalized-tutors-excel" download="BMP_Tutors_Master_Normalized.xlsx" class="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold text-slate-700 bg-white border border-slate-200 hover:border-indigo-400 hover:text-indigo-600 transition-colors flex items-center justify-between">
-                  <span class="flex items-center gap-1.5"><i class="fa-solid fa-users text-indigo-500 text-[10px]"></i> Tutors (107k)</span>
+                  <span class="flex items-center gap-1.5"><i class="fa-solid fa-users text-indigo-500 text-[10px]"></i> Tutors Table (107k)</span>
                   <i class="fa-solid fa-download text-[9px] text-slate-400"></i>
                 </a>
                 <a href="/api/download/normalized-subjects-excel" download="BMP_Subjects_Master_Normalized.xlsx" class="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold text-slate-700 bg-white border border-slate-200 hover:border-emerald-400 hover:text-emerald-600 transition-colors flex items-center justify-between">
-                  <span class="flex items-center gap-1.5"><i class="fa-solid fa-book text-emerald-500 text-[10px]"></i> Offerings (403k)</span>
+                  <span class="flex items-center gap-1.5"><i class="fa-solid fa-book text-emerald-500 text-[10px]"></i> Subjects Table (12k)</span>
                   <i class="fa-solid fa-download text-[9px] text-slate-400"></i>
                 </a>
               </div>
             </div>
 
-            <!-- Group 2: Master Archives -->
-            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1.5">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono block px-1">Master Excel Archives</span>
-              <div class="grid grid-cols-2 gap-1.5">
-                <a href="/api/download/active-master-excel" download="BMP_Tutors_Verified_Active_Master.xlsx" class="p-2 rounded-lg bg-white border border-slate-200 hover:border-indigo-400 transition-all flex flex-col justify-between group">
+            <!-- Priority 3: Master Excel Archives -->
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono block px-1">Full Datasets</span>
+              <div class="grid grid-cols-2 gap-2">
+                <a href="/api/download/active-master-excel" download="BMP_Tutors_Verified_Active_Master.xlsx" class="p-2.5 rounded-lg bg-white border border-slate-200 hover:border-indigo-400 transition-all flex flex-col justify-between group">
                   <div class="flex items-center justify-between">
-                    <span class="text-[11px] font-bold text-slate-900 group-hover:text-indigo-600">Active Tutors</span>
+                    <span class="text-xs font-bold text-slate-900 group-hover:text-indigo-600">Active Master Excel</span>
                     <span class="text-[9px] font-mono text-slate-400 bg-slate-100 px-1 py-0.2 rounded">58 MB</span>
                   </div>
-                  <span class="text-[10px] text-slate-500 mt-1">76,706 Verified Live</span>
+                  <span class="text-[10px] text-slate-500 mt-1">76,706 Active Tutors</span>
                 </a>
-                <a href="/api/download/master-excel" download="BMP_Tutors_Cleaned_Master.xlsx" class="p-2 rounded-lg bg-white border border-slate-200 hover:border-indigo-400 transition-all flex flex-col justify-between group">
+                <a href="/api/download/master-excel" download="BMP_Tutors_Cleaned_Master.xlsx" class="p-2.5 rounded-lg bg-white border border-slate-200 hover:border-indigo-400 transition-all flex flex-col justify-between group">
                   <div class="flex items-center justify-between">
-                    <span class="text-[11px] font-bold text-slate-900 group-hover:text-indigo-600">Full Master</span>
+                    <span class="text-xs font-bold text-slate-900 group-hover:text-indigo-600">All Tutors Master File</span>
                     <span class="text-[9px] font-mono text-slate-400 bg-slate-100 px-1 py-0.2 rounded">79 MB</span>
                   </div>
                   <span class="text-[10px] text-slate-500 mt-1">All 107,673 Records</span>
                 </a>
               </div>
-            </div>
-
-            <!-- Group 3: Thematic Bundles & Academic Report -->
-            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono block px-1">Thematic Bundles & Reports</span>
-              <div class="grid grid-cols-2 gap-1.5">
-                <a href="/api/download/category-excel?category=science" class="px-2.5 py-1.5 rounded-lg text-[11px] font-medium bg-white border border-slate-200 hover:border-emerald-400 hover:text-emerald-700 transition-colors flex items-center justify-between">
-                  <span>🔬 Science</span>
-                  <span class="text-[9px] font-mono text-slate-400">62 MB</span>
-                </a>
-                <a href="/api/download/category-excel?category=languages" class="px-2.5 py-1.5 rounded-lg text-[11px] font-medium bg-white border border-slate-200 hover:border-amber-400 hover:text-amber-700 transition-colors flex items-center justify-between">
-                  <span>🗣️ Languages</span>
-                  <span class="text-[9px] font-mono text-slate-400">27 MB</span>
-                </a>
-                <a href="/api/download/category-excel?category=coding" class="px-2.5 py-1.5 rounded-lg text-[11px] font-medium bg-white border border-slate-200 hover:border-purple-400 hover:text-purple-700 transition-colors flex items-center justify-between">
-                  <span>💻 Coding</span>
-                  <span class="text-[9px] font-mono text-slate-400">15 MB</span>
-                </a>
-                <a href="/api/download/category-excel?category=commerce" class="px-2.5 py-1.5 rounded-lg text-[11px] font-medium bg-white border border-slate-200 hover:border-blue-400 hover:text-blue-700 transition-colors flex items-center justify-between">
-                  <span>📈 Commerce</span>
-                  <span class="text-[9px] font-mono text-slate-400">7 MB</span>
-                </a>
-              </div>
-              <a href="/api/export/visual-analytics-pdf" download="BMP_Tutors_Visual_Analytics_Complete_Report.pdf" class="flex items-center justify-between px-3 py-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 hover:bg-rose-100 transition-colors font-semibold text-xs mt-1">
-                <span class="flex items-center gap-2"><i class="fa-solid fa-file-pdf"></i> Download Printable PDF Report</span>
-                <i class="fa-solid fa-arrow-down text-[10px]"></i>
-              </a>
             </div>
 
           </div>
@@ -393,6 +374,31 @@
             <option value="active">🟢 Active Tutors (76,683)</option>
             <option value="inactive">🔴 Inactive / Archived (30,990)</option>
           </select>
+        </div>
+
+        <!-- Primary Filter 6: Hourly Price Range -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-semibold text-slate-700">Hourly Fee Range (₹/hr)</label>
+            <button type="button" onclick="clearPriceFilter()" class="text-[10px] text-slate-400 hover:text-rose-500 font-medium cursor-pointer">Reset</button>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="relative">
+              <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-semibold">₹</span>
+              <input type="number" id="filter-min-fee" min="0" step="50" placeholder="Min" oninput="onPriceFilterChange()" class="w-full pl-6 pr-2 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white transition-all shadow-2xs font-medium">
+            </div>
+            <div class="relative">
+              <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-semibold">₹</span>
+              <input type="number" id="filter-max-fee" min="0" step="50" placeholder="Max" oninput="onPriceFilterChange()" class="w-full pl-6 pr-2 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white transition-all shadow-2xs font-medium">
+            </div>
+          </div>
+          <!-- Quick Price Buttons -->
+          <div class="grid grid-cols-4 gap-1 pt-0.5">
+            <button type="button" onclick="setQuickPrice(0, 500)" class="px-1 py-1 text-[10px] font-semibold bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-600 rounded-lg border border-slate-200/70 transition-all text-center cursor-pointer">&lt; ₹500</button>
+            <button type="button" onclick="setQuickPrice(500, 1000)" class="px-1 py-1 text-[10px] font-semibold bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-600 rounded-lg border border-slate-200/70 transition-all text-center cursor-pointer">500–1k</button>
+            <button type="button" onclick="setQuickPrice(1000, 2500)" class="px-1 py-1 text-[10px] font-semibold bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-600 rounded-lg border border-slate-200/70 transition-all text-center cursor-pointer">1k–2.5k</button>
+            <button type="button" onclick="setQuickPrice(2500, null)" class="px-1 py-1 text-[10px] font-semibold bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-600 rounded-lg border border-slate-200/70 transition-all text-center cursor-pointer">₹2.5k+</button>
+          </div>
         </div>
 
         <!-- Data Quality & Cleansing Control Panel -->
@@ -837,6 +843,65 @@
           <p class="text-[11px] text-slate-500 italic pt-2 border-t border-slate-100">
             <strong>Note:</strong> Based on 105,840 tutors with experience between 0 and 30 years. Exactly 1,268 educators with unstated experience and 565 extreme entries (>30 years) were excluded.
           </p>
+        </div>
+      </div>
+
+      <!-- SECTION 3A: HOURLY TUITION FEE DISTRIBUTION (PRICE VS TUTOR COUNT) -->
+      <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider font-mono border border-emerald-200/60">Pricing Density Model</span>
+              <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-chart-column text-emerald-600"></i> Hourly Tuition Fee Distribution (Prices vs Tutor Count)
+              </h3>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">Histogram columns (building-style bars) showing how many tutors charge each hourly price bracket, overlaid with the continuous Density Trend Curve (KDE).</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] font-mono font-semibold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200">
+              N = 78,757 Tutors with Stated Fee
+            </span>
+          </div>
+        </div>
+
+        <!-- Summary Badges -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 my-4 text-center text-xs">
+          <div class="bg-gradient-to-br from-emerald-50 to-teal-50/40 p-3 rounded-xl border border-emerald-100">
+            <div class="text-[10px] text-emerald-700 uppercase font-bold tracking-wider">Peak Market Mode</div>
+            <div class="font-extrabold font-mono text-emerald-800 text-lg">₹250–500</div>
+            <div class="text-[10px] text-emerald-600 mt-0.5">22,730 tutors (28.9%)</div>
+          </div>
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+            <div class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Median Hourly Rate</div>
+            <div class="font-extrabold font-mono text-slate-900 text-lg">₹650 / hr</div>
+            <div class="text-[10px] text-slate-500 mt-0.5">50th percentile benchmark</div>
+          </div>
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+            <div class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Mean Hourly Rate</div>
+            <div class="font-extrabold font-mono text-slate-900 text-lg">₹864 / hr</div>
+            <div class="text-[10px] text-slate-500 mt-0.5">National sample average</div>
+          </div>
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+            <div class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">95th Percentile</div>
+            <div class="font-extrabold font-mono text-slate-900 text-lg">₹2,525 / hr</div>
+            <div class="text-[10px] text-slate-500 mt-0.5">Top 5% premium tier</div>
+          </div>
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+            <div class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">High-End Tier (&gt; ₹4k)</div>
+            <div class="font-extrabold font-mono text-slate-900 text-lg">0.56%</div>
+            <div class="text-[10px] text-slate-500 mt-0.5">442 niche specialists</div>
+          </div>
+        </div>
+
+        <!-- Chart Container -->
+        <div class="h-80 relative my-2">
+          <canvas id="chart-fee-distribution"></canvas>
+        </div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pt-3 border-t border-slate-100 text-[11px] text-slate-500 gap-2">
+          <span><strong>X-Axis:</strong> Hourly Tuition Fee Brackets (INR/hr) &bull; <strong>Y-Axis:</strong> Number of Registered Tutors</span>
+          <span class="italic text-slate-500">Green line: Smooth empirical density curve &bull; Indigo bars: Frequency count</span>
         </div>
       </div>
 
@@ -2256,7 +2321,6 @@
     <div class="w-full px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2">
       <p>TutorMetric &bull; Tutoring market data and maps across India &bull; September 2026</p>
       <div class="flex items-center space-x-4 flex-wrap gap-y-1">
-        <a href="/report" target="_blank" class="hover:text-indigo-600 transition-colors">Academic Report</a>
         <a href="/api/download/normalized-tutors-excel" class="hover:text-blue-600 transition-colors font-medium">Tutors Table (107k)</a>
         <a href="/api/download/normalized-subjects-excel" class="hover:text-teal-600 transition-colors font-medium">Subjects Table (403k Offerings)</a>
         <a href="/api/download/normalized-database-excel" class="hover:text-emerald-600 transition-colors font-semibold flex items-center gap-1">
@@ -2914,6 +2978,16 @@
       const statusVal = document.getElementById('filter-status')?.value;
       if (statusVal) chips.push({ label: `Status: ${statusVal === 'active' ? 'Active' : 'Inactive'}`, clear: () => { document.getElementById('filter-status').value = ''; applyFilters(); } });
 
+      const minFeeVal = document.getElementById('filter-min-fee')?.value;
+      const maxFeeVal = document.getElementById('filter-max-fee')?.value;
+      if (minFeeVal || maxFeeVal) {
+        let label = 'Fee: ';
+        if (minFeeVal && maxFeeVal) label += `₹${minFeeVal}–₹${maxFeeVal}/hr`;
+        else if (minFeeVal) label += `≥ ₹${minFeeVal}/hr`;
+        else label += `≤ ₹${maxFeeVal}/hr`;
+        chips.push({ label, clear: () => clearPriceFilter() });
+      }
+
       const emptyColLabels = {
         'name': 'Has Name',
         'fee': 'Has Stated Fee',
@@ -3474,6 +3548,8 @@
         state: document.getElementById("filter-state") ? document.getElementById("filter-state").value : "",
         qualification: document.getElementById("filter-qualification") ? document.getElementById("filter-qualification").value : "",
         status: document.getElementById("filter-status") ? document.getElementById("filter-status").value : "",
+        min_fee: document.getElementById("filter-min-fee") ? document.getElementById("filter-min-fee").value.trim() : "",
+        max_fee: document.getElementById("filter-max-fee") ? document.getElementById("filter-max-fee").value.trim() : "",
         seniority_tier: document.getElementById("filter-seniority") ? document.getElementById("filter-seniority").value : "",
         experience_role: document.getElementById("filter-role") ? document.getElementById("filter-role").value : "",
         occupation: document.getElementById("filter-occupation") ? document.getElementById("filter-occupation").value : "",
@@ -3690,6 +3766,33 @@
     });
 
     // Filter and Pagination helpers
+    let priceFilterTimeout = null;
+    function onPriceFilterChange() {
+      clearTimeout(priceFilterTimeout);
+      priceFilterTimeout = setTimeout(() => {
+        currentPage = 1;
+        applyFilters();
+      }, 400);
+    }
+
+    function setQuickPrice(min, max) {
+      const minEl = document.getElementById('filter-min-fee');
+      const maxEl = document.getElementById('filter-max-fee');
+      if (minEl) minEl.value = (min !== null && min !== undefined && min !== 0) ? min : '';
+      if (maxEl) maxEl.value = (max !== null && max !== undefined) ? max : '';
+      currentPage = 1;
+      applyFilters();
+    }
+
+    function clearPriceFilter() {
+      const minEl = document.getElementById('filter-min-fee');
+      const maxEl = document.getElementById('filter-max-fee');
+      if (minEl) minEl.value = '';
+      if (maxEl) maxEl.value = '';
+      currentPage = 1;
+      applyFilters();
+    }
+
     function applyFilters() {
       currentPage = 1;
       loadTutors();
@@ -3707,6 +3810,8 @@
       if (document.getElementById('filter-state')) document.getElementById('filter-state').value = '';
       if (document.getElementById('filter-qualification')) document.getElementById('filter-qualification').value = '';
       if (document.getElementById('filter-status')) document.getElementById('filter-status').value = '';
+      if (document.getElementById('filter-min-fee')) document.getElementById('filter-min-fee').value = '';
+      if (document.getElementById('filter-max-fee')) document.getElementById('filter-max-fee').value = '';
       if (document.getElementById('filter-seniority')) document.getElementById('filter-seniority').value = '';
       if (document.getElementById('filter-role')) document.getElementById('filter-role').value = '';
       if (document.getElementById('filter-occupation')) document.getElementById('filter-occupation').value = '';
@@ -3743,6 +3848,8 @@
         state: document.getElementById('filter-state') ? document.getElementById('filter-state').value : '',
         qualification: document.getElementById('filter-qualification') ? document.getElementById('filter-qualification').value : '',
         status: document.getElementById('filter-status') ? document.getElementById('filter-status').value : '',
+        min_fee: document.getElementById('filter-min-fee') ? document.getElementById('filter-min-fee').value.trim() : '',
+        max_fee: document.getElementById('filter-max-fee') ? document.getElementById('filter-max-fee').value.trim() : '',
         seniority_tier: document.getElementById('filter-seniority') ? document.getElementById('filter-seniority').value : '',
         experience_role: document.getElementById('filter-role') ? document.getElementById('filter-role').value : '',
         occupation: document.getElementById('filter-occupation') ? document.getElementById('filter-occupation').value : '',
@@ -4307,6 +4414,7 @@
         if (data.table2_8) renderFeeTable('math_english');
         if (data.figure1) renderFigure1('macro');
         if (data.figure3) renderFigure3('total');
+        if (data.fee_distribution_histogram) renderDashboardFeeDistribution(data.fee_distribution_histogram);
 
       } catch (err) {
         console.error('Error loading charts:', err);
@@ -4845,6 +4953,112 @@
                 maxTicksLimit: 12
               },
               grid: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    let chartFeeDistInstance = null;
+    function renderDashboardFeeDistribution(hist) {
+      if (!hist) return;
+      const canvas = document.getElementById('chart-fee-distribution');
+      if (!canvas) return;
+
+      if (chartFeeDistInstance) {
+        chartFeeDistInstance.destroy();
+      }
+
+      const ctx = canvas.getContext('2d');
+      chartFeeDistInstance = new Chart(ctx, {
+        data: {
+          labels: hist.labels,
+          datasets: [
+            {
+              type: 'line',
+              label: 'Density Trend Curve (KDE)',
+              data: hist.counts,
+              borderColor: '#10b981',
+              backgroundColor: 'rgba(16, 185, 129, 0.05)',
+              borderWidth: 3,
+              tension: 0.38,
+              fill: false,
+              pointRadius: 4,
+              pointBackgroundColor: '#ffffff',
+              pointBorderColor: '#10b981',
+              pointBorderWidth: 2,
+              pointHoverRadius: 6,
+              order: 1
+            },
+            {
+              type: 'bar',
+              label: 'Tutors Count (Histogram Columns)',
+              data: hist.counts,
+              backgroundColor: 'rgba(99, 102, 241, 0.75)',
+              hoverBackgroundColor: 'rgba(79, 70, 229, 0.95)',
+              borderColor: '#4338ca',
+              borderWidth: 1.5,
+              borderRadius: 6,
+              barPercentage: 0.92,
+              categoryPercentage: 0.96,
+              order: 2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                boxWidth: 14,
+                font: { size: 11, weight: 'bold' }
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  const count = ctx.parsed.y;
+                  const total = 78757;
+                  const share = ((count / total) * 100).toFixed(1);
+                  if (ctx.dataset.type === 'line') {
+                    return ` Density Trend: ${count.toLocaleString()} tutors (${share}%)`;
+                  }
+                  return ` Tutor Count: ${count.toLocaleString()} tutors (${share}%)`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { size: 11, weight: 'bold' }, color: '#475569' },
+              title: {
+                display: true,
+                text: 'Hourly Fee Bracket (₹/hr)',
+                font: { size: 11, weight: 'bold' },
+                color: '#64748b'
+              }
+            },
+            y: {
+              beginAtZero: true,
+              grid: { color: 'rgba(226, 232, 240, 0.6)' },
+              ticks: {
+                callback: val => val.toLocaleString(),
+                font: { size: 10 },
+                color: '#64748b'
+              },
+              title: {
+                display: true,
+                text: 'Number of Tutors',
+                font: { size: 11, weight: 'bold' },
+                color: '#64748b'
+              }
             }
           }
         }

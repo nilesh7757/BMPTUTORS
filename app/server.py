@@ -1158,9 +1158,31 @@ async def api_download_filtered_excel(request):
     exam = params.get("exam", "").strip()
     gender = params.get("gender", "").strip()
     teaches_online = params.get("teaches_online", "").strip()
+    status_filter = params.get("status", "").strip().lower()
+    min_fee = params.get("min_fee", "").strip()
+    max_fee = params.get("max_fee", "").strip()
 
     where_clauses = []
     args = []
+
+    if min_fee:
+        try:
+            where_clauses.append("t.hourly_fee_avg >= ?")
+            args.append(float(min_fee))
+        except ValueError:
+            pass
+
+    if max_fee:
+        try:
+            where_clauses.append("t.hourly_fee_avg <= ?")
+            args.append(float(max_fee))
+        except ValueError:
+            pass
+
+    if status_filter == "active":
+        where_clauses.append("t.is_active = 1")
+    elif status_filter in ("inactive", "dormant", "removed", "no_profile", "404", "unstated"):
+        where_clauses.append("t.is_active = 0")
 
     if search:
         where_clauses.append("(t.tutor_id LIKE ? OR t.teacher_name LIKE ? OR t.teacher_hookline LIKE ? OR t.location_raw LIKE ?)")
